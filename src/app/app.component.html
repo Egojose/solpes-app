@@ -1,20 +1,67 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div id="wrapper">
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand">
+        <a href="#">
+          Solpes App
+        </a>
+      </li>
+      <li>
+        <a routerLink="/mis-solicitudes" routerLinkActive="active">Mis solicitudes</a>
+      </li>
+      <li>
+        <a routerLink="/crear-solicitud" routerLinkActive="active">Crear solicitud</a>
+      </li>
+      <li>
+        <a routerLink="/consultar-solicitudes" routerLinkActive="active">Consultar solicitudes</a>
+      </li>
+      <li>
+        <a routerLink="/sondeo" routerLinkActive="active">Sondeo</a>
+      </li>
+      <li>
+        <a routerLink="/aprobar-sondeo" routerLinkActive="active">Aprobar sondeo</a>
+      </li>
+      <li>
+        <a routerLink="/entrega-bienes" routerLinkActive="active">Entrega de bienes</a>
+      </li>
+      <li>
+        <a routerLink="/entrega-servicios" routerLinkActive="active">Entrega de servicios</a>
+      </li>
+      <li>
+        <a routerLink="/contratos" routerLinkActive="active">Contratos</a>
+      </li>
+      <li>
+        <a routerLink="/recepcion-sap" routerLinkActive="active">Recepción SAP</a>
+      </li>
+      <li>
+        <a routerLink="/registrar-solp-sap" routerLinkActive="active">Registrar Solp SAP</a>
+      </li>
+      <li>
+        <a routerLink="/verificar-material" routerLinkActive="active">Verificar material</a>
+      </li>
+    </ul>
+  </div>
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Mostrar menú</a>
+          <!--<div class="zona-usuario-logueado">
+                      <div class="usuario">
+                          <img src="#" class="imagen-usuario" alt="usuario">
+                          <span class="usuario-logueado">Pepito Perez</span>
+                      </div>
+                      <div class="roles">
+                          <div class="rol">
+                              Rol
+                          </div>
+                      </div>
+                  </div>-->
+          <div class="contenido-aplicacion">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
