@@ -32,6 +32,31 @@ export class SPServicio {
     ObtenerUsuarioActual() {
         let respuesta = from(this.obtenerConfiguracion().web.currentUser.get());
         return respuesta;
-    } 
+    }
+
+    ObtenerTiposSolicitud(){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaTiposSolicitud).items.getAll());
+        return respuesta;
+    }
+
+    ObtenerEmpresas() {
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaEmpresas).items.getAll());
+        return respuesta;
+    }
+
+    ObtenerPaises() {
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaPaises).items.getAll());
+        return respuesta;
+    }
+
+    ObtenerCategorias() {
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCategorias).items.getAll());
+        return respuesta;
+    }
+
+    ObtenerSubcategorias(idCategoria: number) {
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.filter("CategoriaId eq " + idCategoria).get());
+        return respuesta;
+    }
 
 }

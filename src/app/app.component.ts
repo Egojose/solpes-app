@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { SPServicio } from './servicios/sp-servicio';
-import { environment } from 'src/environments/environment';
+import { Usuario } from './dominio/usuario';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +11,11 @@ import { environment } from 'src/environments/environment';
 export class AppComponent implements OnInit {
 
   title = 'solpes-app';
+  usuario: Usuario;
   nombreUsuario: string;
 
-  constructor(private servicio: SPServicio) {}
+  constructor(private servicio: SPServicio) {
+  }
 
   abrirCerrarMenu() {
     $(document).ready(function () {
@@ -27,7 +29,9 @@ export class AppComponent implements OnInit {
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (Response) => {
-        this.nombreUsuario = Response.Title;
+        this.usuario = new Usuario(Response.Id, Response.Title, Response.email);
+        this.nombreUsuario = this.usuario.nombre;
+        sessionStorage.setItem('usuario',JSON.stringify(this.usuario));
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
       }

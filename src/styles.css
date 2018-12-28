@@ -1,3 +1,5 @@
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 #wrapper {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
@@ -39,8 +41,6 @@
     position: absolute;
     margin-right: -250px;
 }
-
-/* Sidebar Styles */
 
 .sidebar-nav {
     position: absolute;
@@ -119,114 +119,9 @@
 .zona-usuario-logueado{
     float: right;
 }
-
-.roles {
-    margin-bottom: 1rem;
-    font-size: small;
-    margin-left: 69px;
-    margin-top: -16px;
-}
-
-.roles li{
-    box-sizing: border-box;
-    list-style-type: none;
-}
-
-.form-check-label {
-    margin-bottom: 0;
-    font-family: sans-serif;
-    font-size: larger;
-    color: lightslategrey;
-}
-
-input[type=file] {
-    cursor: pointer;
-    height: 34px;
-    overflow: hidden;
-    margin-top: 12px;
-}
   
-  input[type=file]:before {
-    width: 158px;
-    height: 32px;
-    font-size: 16px;
-    line-height: 32px;
-    content: 'Select your file';
-    display: inline-block;
-    background: white;
-    border: 1px solid #000;
-    padding: 0 10px;
-    text-align: center;
-    font-family: Helvetica, Arial, sans-serif;
-  }
-  
-  input[type=file]::-webkit-file-upload-button {
-    visibility: hidden;
-  }
-
-  .switch input { 
-    display:none;
-}
-
-.switch {
-    display:inline-block;
-    width:60px;
-    height:30px;
-    margin:8px;
-    transform:translateY(50%);
-    position:relative;
-}
-
-.slider {
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    border-radius:30px;
-    box-shadow:0 0 0 2px #777, 0 0 4px #777;
-    cursor:pointer;
-    border:4px solid transparent;
-    overflow:hidden;
-    transition:.4s;
-}
-.slider:before {
-    position:absolute;
-    content:"";
-    width:100%;
-    height:100%;
-    background:#777;
-    border-radius:30px;
-    transform:translateX(-30px);
-    transition:.4s;
-}
-
-input:checked + .slider:before {
-    transform:translateX(30px);
-    background:#17a2b8;
-}
-input:checked + .slider {
-    box-shadow:0 0 0 2px #17a2b8,0 0 2px #17a2b8;
-}
-
-.imagen-usuario{
-    width: 60px;
-    height: 50px;
-}
-
 .usuario-logueado{
     font-size: x-large;
-}
-
-button.btn.btn-outline-info.ng-pristine.ng-valid.ng-touched.selected{
-    background-color: #17a2b8;
-    color:white;
-    border-color: #17a2b8;
-    background-image: none;
-}
-
-.mis-actividades-gestionadas{
-    margin-top: 7px;
 }
 
 .loading {
@@ -238,13 +133,4 @@ button.btn.btn-outline-info.ng-pristine.ng-valid.ng-touched.selected{
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.aprobacion-actividad{
-    margin-left: 10px;
-}
-
-.exportar-excel{
-    margin-top: 20px;
-    margin-bottom: 20px;
 }

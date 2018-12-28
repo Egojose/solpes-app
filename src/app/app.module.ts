@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatRadioModule, MatRadioGroup } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
@@ -33,6 +35,8 @@ import { SPServicio } from './servicios/sp-servicio';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    MatRadioModule,
     RouterModule.forRoot([
       {path:'',redirectTo:'/mis-solicitudes',pathMatch:'full'},
       {path:'aprobar-sondeo', component:AprobarSondeoComponent},
