@@ -14,6 +14,7 @@ import { RecepcionSapComponent } from './recepcion-sap/recepcion-sap.component';
 import { MisSolicitudesComponent } from './mis-solicitudes/mis-solicitudes.component';
 import { ConsultarSolicitudesComponent } from './consultar-solicitudes/consultar-solicitudes.component';
 import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-sap.component';
+import { SPServicio } from './servicios/sp-servicio';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
       {path:'verificar-material', component:VerificarMaterialComponent}
     ])
   ],
-  providers: [],
+  providers: [SPServicio],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
