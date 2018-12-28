@@ -34,6 +34,11 @@ export class SPServicio {
         return respuesta;
     }
 
+    ObtenerTodosLosUsuarios(){
+        let respuesta = from(this.obtenerConfiguracion().web.siteUsers.get());
+        return respuesta;
+    }
+
     ObtenerTiposSolicitud(){
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaTiposSolicitud).items.getAll());
         return respuesta;

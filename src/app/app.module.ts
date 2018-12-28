@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatRadioModule, MatRadioGroup } from '@angular/material';
+import { MatRadioModule, MatRadioGroup, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
@@ -17,6 +17,7 @@ import { MisSolicitudesComponent } from './mis-solicitudes/mis-solicitudes.compo
 import { ConsultarSolicitudesComponent } from './consultar-solicitudes/consultar-solicitudes.component';
 import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-sap.component';
 import { SPServicio } from './servicios/sp-servicio';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -35,8 +36,14 @@ import { SPServicio } from './servicios/sp-servicio';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatRadioModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    MatInputModule,
     RouterModule.forRoot([
       {path:'',redirectTo:'/mis-solicitudes',pathMatch:'full'},
       {path:'aprobar-sondeo', component:AprobarSondeoComponent},

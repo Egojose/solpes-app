@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (Response) => {
-        this.usuario = new Usuario(Response.Id, Response.Title, Response.email);
+        this.usuario = new Usuario(Response.Title, Response.email,Response.Id);
         this.nombreUsuario = this.usuario.nombre;
         sessionStorage.setItem('usuario',JSON.stringify(this.usuario));
       }, err => {
