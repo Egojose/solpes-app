@@ -17,11 +17,20 @@ export class AppComponent implements OnInit {
   constructor(private servicio: SPServicio) {
   }
 
-  abrirCerrarMenu() {
+  abrirCerrarMenu(){
     $(document).ready(function () {
       $("#menu-toggle").click(function (e) {
+        let textoMenu  = e.target.innerText;
+        let nuevoTextoMenu = "";
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+        if (textoMenu == "Ocultar menú"){
+           nuevoTextoMenu = "Mostrar menú";
+           e.target.innerText = nuevoTextoMenu;
+        }else{
+           nuevoTextoMenu = "Ocultar menú";
+           e.target.innerText = nuevoTextoMenu;
+        }
       });
     });
   }

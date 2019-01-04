@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatRadioModule, MatRadioGroup, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule } from '@angular/material';
+import { Select2Module } from "ng-select2-component";
 
 import { AppComponent } from './app.component';
 import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
@@ -37,6 +38,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     FormsModule,
+    Select2Module,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatRadioModule,

@@ -26,7 +26,7 @@
       <div class="col-md-5">
         <input type="text" class="form-control" id="solicitante" value="{{nombreUsuario}}" disabled>
       </div>
-      <label for="solicitante" class="col-form-label">Empresa</label>
+      <label for="empresa" class="col-form-label">Empresa</label>
       <div class="col-md-5">
         <select id="empresa" formControlName="empresa" class="form-control">
           <option *ngFor="let empresa of empresas" [value]="empresa.nombre" [text]="empresa.nombre">
@@ -36,16 +36,37 @@
       </div>
     </div>
     <div class="form-group row">
-      <div class="col-md-5">
-        <mat-form-field class="example-full-width">
-          <input type="text" class="form-control" placeholder="Por favor busque el ordenador de gastos" aria-label="Number"
-            matInput [formControl]="myControl" [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-              {{option}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+      <div class="col-md-6">
+        <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label>
+        <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto"
+          class="form-control"></select2>
+      </div>
+      <div class="col-md-6">
+        <label for="pais" class="col-form-label">País</label>
+        <select id="pais" name="pais" formControlName="pais" class="form-control">
+          <option *ngFor="let pais of paises" [value]="pais.nombre" [text]="pais.nombre">
+            {{pais.nombre}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-6">
+        <label for="categoria" class="col-form-label">Categoría</label>
+        <select id="categoria" name="categoria" formControlName="categoria" class="form-control" (change)="filtrarSubcategorias($event.target.value)">
+          <option *ngFor="let categoria of categorias" [value]="categoria.id" [text]="categoria.nombre">
+            {{categoria.nombre}}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="subcategoria" class="col-form-label">Subcategoría</label>
+        <select id="subcategoria" name="subcategoria" formControlName="subcategoria" class="form-control">
+          <option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id" [text]="subcategoria.nombre">
+            {{subcategoria.nombre}}
+          </option>
+        </select>
       </div>
     </div>
   </form>

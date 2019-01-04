@@ -3,9 +3,11 @@ import { TipoSolicitud } from '../dominio/tipoSolicitud';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Usuario } from '../dominio/usuario';
 import { Empresa } from '../dominio/empresa';
-import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Select2Data } from 'ng-select2-component';
+import { Pais } from '../dominio/pais';
+import { Categoria } from '../dominio/categoria';
+import { Subcategoria } from '../dominio/subcategoria';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -13,7 +15,6 @@ import {map, startWith} from 'rxjs/operators';
   styleUrls: ['./crear-solicitud.component.css']
 })
 export class CrearSolicitudComponent implements OnInit {
-
   solpFormulario: FormGroup;
   tiposSolicitud: TipoSolicitud[] = [];
   empresas: Empresa[] = [];
@@ -21,43 +22,31 @@ export class CrearSolicitudComponent implements OnInit {
   usuarioActual: Usuario;
   usuarios: Usuario[] = [];
   nombreUsuario: string;
+  paises: Pais[] = [];
+  categorias: Categoria[] = [];
+  subcategorias: Subcategoria[] = [];
 
-  myControl = new FormControl();
-  options: string[] = [];
-  filteredOptions: Observable<string[]>;
+  valorUsuarioPorDefecto: string = "Seleccione";
+  dataUsuarios: Select2Data = [
+    { value: 'Seleccione', label: 'Seleccione' }
+  ];
 
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio) 
-  { 
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio) {
     this.mostrarContratoMarco = false;
   }
 
   ngOnInit() {
-    this.Autocompletado();
     this.RecuperarUsuario();
     this.RegistrarFormulario();
     this.obtenerTiposSolicitud();
-  }
-
-  Autocompletado(){
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
   }
 
   RegistrarFormulario() {
     this.solpFormulario = this.formBuilder.group({
       tipoSolicitud: ['', Validators.required],
       cm: [''],
-      empresa: ['', Validators.required],
-      myControl:['', Validators.required]
+      empresa: ['', Validators.required]
     });
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   RecuperarUsuario() {
@@ -65,7 +54,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.nombreUsuario = this.usuarioActual.nombre;
   }
 
-  obtenerTiposSolicitud(){
+  obtenerTiposSolicitud() {
     this.servicio.ObtenerTiposSolicitud().subscribe(
       (respuesta) => {
         this.tiposSolicitud = TipoSolicitud.fromJsonList(respuesta);
@@ -76,15 +65,20 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
-  mostrarCM(tipoSolicitud){
-    if(tipoSolicitud.tieneCm){
+  mostrarCM(tipoSolicitud) {
+    if (tipoSolicitud.tieneCm) {
       this.mostrarContratoMarco = true;
-    }else{
+    } else {
       this.mostrarContratoMarco = false;
+      this.LimpiarContratoMarco();
     }
   }
 
-  obtenerEmpresas(){
+  LimpiarContratoMarco(): any {
+    this.solpFormulario.controls["cm"].setValue("");
+  }
+
+  obtenerEmpresas() {
     this.servicio.ObtenerEmpresas().subscribe(
       (respuesta) => {
         this.empresas = Empresa.fromJsonList(respuesta);
@@ -95,17 +89,54 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
-  obtenerUsuariosSitio(){
+  obtenerUsuariosSitio() {
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
       (respuesta) => {
         this.usuarios = Usuario.fromJsonList(respuesta);
-        this.options = this.usuarios.map(u => u.nombre);
+        this.DataSourceUsuariosSelect2();
+        this.obtenerPaises();
       }, err => {
         console.log('Error obteniendo usuarios: ' + err);
       }
     )
   }
 
+  private DataSourceUsuariosSelect2() {
+    this.usuarios.forEach(usuario => {
+      this.dataUsuarios.push({ value: usuario.id.toString(), label: usuario.nombre });
+    });
+  }
 
+  obtenerPaises() {
+    this.servicio.ObtenerPaises().subscribe(
+      (respuesta) => {
+        this.paises = Pais.fromJsonList(respuesta);
+        this.obtenerCategorias();
+      }, err => {
+        console.log('Error obteniendo paises: ' + err);
+      }
+    )
+  }
+
+  obtenerCategorias() {
+    this.servicio.ObtenerCategorias().subscribe(
+      (respuesta) => {
+        this.categorias = Categoria.fromJsonList(respuesta);
+      }, err => {
+        console.log('Error obteniendo categorías: ' + err);
+      }
+    )
+  }
+
+  filtrarSubcategorias(categoriaId : number) {
+    this.servicio.ObtenerSubcategorias(categoriaId).subscribe(
+      (respuesta) => {
+        this.subcategorias = Subcategoria.fromJsonList(respuesta);
+        console.log(this.subcategorias);
+      }, err => {
+        console.log('Error obteniendo subcategorias: ' + err);
+      }
+    )
+  }
 
 }
