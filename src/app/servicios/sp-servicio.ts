@@ -22,7 +22,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvc3VyYW1lcmljYW5hLnNoYXJlcG9pbnQuY29tQDNjMGJkNGZlLTExMTEtNGQxMy04ZTBjLTdjMzNiOWViNzU4MSIsImlzcyI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEAzYzBiZDRmZS0xMTExLTRkMTMtOGUwYy03YzMzYjllYjc1ODEiLCJpYXQiOjE1NDU5MjMxNDEsIm5iZiI6MTU0NTkyMzE0MSwiZXhwIjoxNTQ1OTUyMjQxLCJpZGVudGl0eXByb3ZpZGVyIjoiMDAwMDAwMDEtMDAwMC0wMDAwLWMwMDAtMDAwMDAwMDAwMDAwQDNjMGJkNGZlLTExMTEtNGQxMy04ZTBjLTdjMzNiOWViNzU4MSIsIm5hbWVpZCI6IjRmNjQ0ODkyLWFkN2ItNDZjMC1hMGU0LTAzNjVhMzk2NWFmZUAzYzBiZDRmZS0xMTExLTRkMTMtOGUwYy03YzMzYjllYjc1ODEiLCJvaWQiOiIyNmIwOTQxNC1hNDRlLTQ5NjMtYmY5MC04ZTlkMTI4ZjA4ZDQiLCJzdWIiOiIyNmIwOTQxNC1hNDRlLTQ5NjMtYmY5MC04ZTlkMTI4ZjA4ZDQiLCJ0cnVzdGVkZm9yZGVsZWdhdGlvbiI6ImZhbHNlIn0.DlgZSXUtdeH-WVOdxQlWxckdIpMeKayqTGwSc2Mz3dgsucs982FFfarv15juGnpBF1e2s1s0X4Iif5hdyz_IIzXxlg9356dX088Gl2vcQrc6H9_UaG-yKRv6XqqseoSYFaUrjUSxTAcB9r-Hp6bHDPXyr_8oANTJszE1iku2I8vOtTN0vDeDNmc1Puzsyn7UjKBdHEenfFz5iKOcU6jKtQgKbT-S7yA_lZZR_oAEumcsA7hrhJKdsCvI2T2Rv0T5VJxygz4tBO-zuqgCbwMp873-zl5Gll3q4mCNlmY24AQKy806H0-l9SlCc9JOiAsY2D_HQXchGygB2JgmTzX7DA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ2NTQ2Mjk1LCJuYmYiOjE1NDY1NDYyOTUsImV4cCI6MTU0NjU3NTM5NSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.Q_1piEgd-eUvFeyvedPvPOq4kooJ0YCZPd8hpLmxmWbUnBuxyCRtfj2hdEEpOJADpjq1rY5tjqlnFGLSJH6K0sAVEc4RbOERH7IWeazRco1tkgMlb4tKcARc-55tup1yOBICP8mAWlJGh9u7Fc-Cug_ePTCiYYkOztWGAzXOXcuF6QION6MJnmDhMa3GK-0CjnQ3PzQitdo8BoX_i7sQKVA9c64cWNzJcOLnNEv8Jueuf5FfStsY8CzXl6mJ2-TOm-iIqd9Xzq-muD9JRuPHaEaVYw9o1T0jGQ3m4XZXGbOkNk1vUZkxMwHBeO4NSlKmE-d_oHOfv8ABFHCMIrw43A'
             }
         }, environment.urlWeb);
 
@@ -36,6 +36,11 @@ export class SPServicio {
 
     ObtenerTodosLosUsuarios(){
         let respuesta = from(this.obtenerConfiguracion().web.siteUsers.get());
+        return respuesta;
+    }
+
+    ObtenerSolicitudBienesServicios(){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle("Solicitudes").items.getById(1).select("FechaDeseadaEntrega","Solicitante","OrdenadorGasto","Empresa/Title","Pais/Title","Categoria","Subcategoria","Comprador","Alcance","Justificacion","CondicionesContractuales").expand("Empresa","Pais").get());
         return respuesta;
     }
 
@@ -61,7 +66,5 @@ export class SPServicio {
 
     ObtenerSubcategorias(idCategoria: number) {
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.filter("CategoriaId eq " + idCategoria).get());
-        return respuesta;
     }
-
 }
