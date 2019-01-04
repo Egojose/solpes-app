@@ -128,7 +128,7 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
-  filtrarSubcategorias(categoriaId : number) {
+  filtrarSubcategorias(categoriaId) {
     this.servicio.ObtenerSubcategorias(categoriaId).subscribe(
       (respuesta) => {
         this.subcategorias = Subcategoria.fromJsonList(respuesta);

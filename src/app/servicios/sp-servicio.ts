@@ -66,5 +66,6 @@ export class SPServicio {
 
     ObtenerSubcategorias(idCategoria: number) {
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.filter("CategoriaId eq " + idCategoria).get());
+        return respuesta;
     }
 }
