@@ -1,3 +1,7 @@
+<div class="loading" *ngIf='loading'>
+  <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
+    alt="loading...">
+</div>
 <div class="container">
   <form [formGroup]="solpFormulario">
     <div class="row">
@@ -5,9 +9,9 @@
         <div class="form-group">
           <label for="tipo-solicitud">Tipo de solicitud</label>
           <div class="row">
-            <mat-radio-group class="tipo-solicitud-group" formControlName="tipoSolicitud">
-              <mat-radio-button class="tipo-solicitud" *ngFor="let tipoSolicitud of tiposSolicitud" [value]="tipoSolicitud.nombre"
-                (change)="mostrarCM(tipoSolicitud)">
+            <mat-radio-group class="tipo-solicitud-group" layout="row" formControlName="tipoSolicitud">
+              <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" *ngFor="let tipoSolicitud of tiposSolicitud"
+                [value]="tipoSolicitud.nombre" (change)="ValidacionesTipoSolicitud(tipoSolicitud)">
                 {{tipoSolicitud.nombre}}
               </mat-radio-button>
             </mat-radio-group>
@@ -17,14 +21,15 @@
       <div class="col-md-6">
         <div class="zona-contrato-marco" [hidden]="!mostrarContratoMarco">
           <label for="contrato-marco">Contrato Marco</label>
-          <input type="text" id="cm" class="form-control" formControlName="cm">
+          <input type="text" id="cm" name="cm" class="form-control" formControlName="cm">
         </div>
       </div>
     </div>
     <div class="form-group row">
       <label for="solicitante" class="col-form-label">Solicitante</label>
       <div class="col-md-5">
-        <input type="text" class="form-control" id="solicitante" value="{{nombreUsuario}}" disabled>
+        <input type="text" class="form-control" id="solicitante" value="{{nombreUsuario}}" formControlName="solicitante"
+          [attr.disabled]="true">
       </div>
       <label for="empresa" class="col-form-label">Empresa</label>
       <div class="col-md-5">
@@ -69,5 +74,111 @@
         </select>
       </div>
     </div>
+
+    <div class="form-group row">
+      <div class="col-md-6">
+        <label for="comprador">Comprador</label>
+        <input type="text" id="comprador" name="comprador" formControlName="comprador" class="form-control">
+      </div>
+      <div class="col-md-6">
+        <label for="fecha-entrega-deseada">Fecha entrega deseada</label>
+        <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text"
+          placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig"
+          bsDatepicker>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-12">
+        <label for="alcance">Alcance</label>
+        <textarea id="alcance" name="alcance" formControlName="alcance" class="form-control" rows="4" placeholder="Describa el alcance de la compra..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-12">
+        <label for="justificacion">Justificación</label>
+        <textarea id="justificacion" name="justificacion" formControlName="justificacion" class="form-control" rows="4"
+          placeholder="Indique la justificación para llevar a cabo la compra..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-12">
+        <label for="condiciones-contractuales">Condiciones contractuales</label>
+        <div id="condiciones-contractuales" class="table-responsive">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Campo</th>
+                <th scope="col">Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let condicionContractual of condicionesContractuales">
+                <td>{{condicionContractual.nombre}}</td>
+                <td>
+                  <textarea id="condicionContractual-{{condicionContractual.id}}" name="condicionContractual-{{condicionContractual.id}}"
+                    formControlName="condicionContractual-{{condicionContractual.id}}" class="form-control" rows="2"></textarea>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-12">
+        <label for="condiciones-tecnicas-bienes">Condiciones técnicas bienes</label>
+        <div id="condiciones-tecnicas-bienes" class="table-responsive">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Fabricante</th>
+                <th scope="col">Clase SIA</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Valor Estimado</th>
+                <th scope="col">Adjunto</th>
+                <th scope="col">Comentarios</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-12">
+        <label for="condiciones-tecnicas-servicios">Condiciones técnicas servicios</label>
+        <div id="condiciones-tecnicas-servicios" class="table-responsive">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Valor Estimado</th>
+                <th scope="col">Adjunto</th>
+                <th scope="col">Comentarios</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-12">
+        <div class="botonera">
+          <button id="guardarSolicitud" 
+        </div>
+      </div>
+    </div>
+
+
   </form>
 </div>

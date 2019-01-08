@@ -68,4 +68,9 @@ export class SPServicio {
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.filter("CategoriaId eq " + idCategoria).get());
         return respuesta;
     }
+
+    ObtenerCondicionesContractuales(){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesContractuales).items.getAll());
+        return respuesta;
+    }
 }

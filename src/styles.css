@@ -134,3 +134,13 @@
     align-items: center;
     justify-content: center;
 }
+
+.mat-radio-label {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    margin-left: 31px;
+    margin-right: 10px;
+}
