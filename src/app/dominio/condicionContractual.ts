@@ -1,15 +1,10 @@
 export class CondicionContractual {
-    constructor(public nombre: string, public id: number) {}
 
-    public static fromJson(element: any) {
-        return new CondicionContractual(element.Title, element.ID);
-    }
+    nombre: string;
+    id: number;
 
-    public static fromJsonList(elements: any) {
-        var list = [];
-        for (var i = 0; i < elements.length; i++) {
-            list.push(this.fromJson(elements[i]));
-        }
-        return list;
+    constructor(nombre: string, id: number) {
+        this.nombre = nombre;
+        this.id = id;
     }
 }

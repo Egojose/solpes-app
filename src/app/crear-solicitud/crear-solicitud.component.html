@@ -34,6 +34,7 @@
       <label for="empresa" class="col-form-label">Empresa</label>
       <div class="col-md-5">
         <select id="empresa" formControlName="empresa" class="form-control">
+          <option value="">Seleccione</option>
           <option *ngFor="let empresa of empresas" [value]="empresa.nombre" [text]="empresa.nombre">
             {{empresa.nombre}}
           </option>
@@ -49,6 +50,7 @@
       <div class="col-md-6">
         <label for="pais" class="col-form-label">País</label>
         <select id="pais" name="pais" formControlName="pais" class="form-control">
+          <option value="">Seleccione</option>
           <option *ngFor="let pais of paises" [value]="pais.nombre" [text]="pais.nombre">
             {{pais.nombre}}
           </option>
@@ -60,6 +62,7 @@
       <div class="col-md-6">
         <label for="categoria" class="col-form-label">Categoría</label>
         <select id="categoria" name="categoria" formControlName="categoria" class="form-control" (change)="filtrarSubcategorias($event.target.value)">
+          <option value="">Seleccione</option>
           <option *ngFor="let categoria of categorias" [value]="categoria.id" [text]="categoria.nombre">
             {{categoria.nombre}}
           </option>
@@ -67,7 +70,8 @@
       </div>
       <div class="col-md-6">
         <label for="subcategoria" class="col-form-label">Subcategoría</label>
-        <select id="subcategoria" name="subcategoria" formControlName="subcategoria" class="form-control">
+        <select id="subcategoria" name="subcategoria" formControlName="subcategoria" class="form-control" (change)="cargarCondicionesContractuales($event.target.value)">
+          <option value="">Seleccione</option>
           <option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id" [text]="subcategoria.nombre">
             {{subcategoria.nombre}}
           </option>
@@ -78,7 +82,7 @@
     <div class="form-group row">
       <div class="col-md-6">
         <label for="comprador">Comprador</label>
-        <input type="text" id="comprador" name="comprador" formControlName="comprador" class="form-control">
+        <input type="text" id="comprador" name="comprador" formControlName="comprador" class="form-control" [attr.disabled]="true">
       </div>
       <div class="col-md-6">
         <label for="fecha-entrega-deseada">Fecha entrega deseada</label>
@@ -174,7 +178,7 @@
     <div class="form-group row">
       <div class="col-md-12">
         <div class="botonera">
-          <button id="guardarSolicitud" 
+          <button id="guardarSolicitud"></button>
         </div>
       </div>
     </div>

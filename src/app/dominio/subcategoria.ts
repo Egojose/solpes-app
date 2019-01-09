@@ -1,11 +1,16 @@
 export class Subcategoria {
-    constructor(public nombre: string,
+    constructor(
+        public nombre: string,
         public idCategoria: number,
+        public comprador: any,
+        public condicionesContractuales: any,
         public id: number) { }
 
     public static fromJson(element: any) {
         return new Subcategoria(element.Title,
-            element.CategoriaId,
+            element.Categoria.ID,
+            element.Comprador.Title,
+            element.CondicionesTecnicas.results,
             element.ID);
     }
 

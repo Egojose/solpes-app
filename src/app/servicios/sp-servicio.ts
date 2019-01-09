@@ -65,12 +65,8 @@ export class SPServicio {
     }
 
     ObtenerSubcategorias(idCategoria: number) {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.filter("CategoriaId eq " + idCategoria).get());
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID").expand("Categoria", "Comprador", "CondicionesTecnicas").filter("CategoriaId eq " + idCategoria).get());
         return respuesta;
     }
 
-    ObtenerCondicionesContractuales(){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesContractuales).items.getAll());
-        return respuesta;
-    }
 }

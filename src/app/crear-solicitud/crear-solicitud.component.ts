@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { TipoSolicitud } from '../dominio/tipoSolicitud';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { SPServicio } from '../servicios/sp-servicio';
@@ -30,6 +30,7 @@ export class CrearSolicitudComponent implements OnInit {
   paises: Pais[] = [];
   categorias: Categoria[] = [];
   subcategorias: Subcategoria[] = [];
+  subcategoriaSeleccionada: Subcategoria;
   condicionesContractuales: CondicionContractual[] = [];
   loading: boolean;
   valorUsuarioPorDefecto: string = "Seleccione";
@@ -158,18 +159,6 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicio.ObtenerCategorias().subscribe(
       (respuesta) => {
         this.categorias = Categoria.fromJsonList(respuesta);
-        this.obtenerCondicionesContractuales();
-      }, err => {
-        console.log('Error obteniendo categorías: ' + err);
-      }
-    )
-  }
-
-  obtenerCondicionesContractuales() {
-    this.servicio.ObtenerCondicionesContractuales().subscribe(
-      (respuesta) => {
-        this.condicionesContractuales = CondicionContractual.fromJsonList(respuesta);
-        this.registrarControlesCondicionesContractuales();
         this.loading = false;
       }, err => {
         console.log('Error obteniendo categorías: ' + err);
@@ -177,14 +166,9 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
-  registrarControlesCondicionesContractuales(): any {
-    this.condicionesContractuales.forEach(condicionContractual => {
-      this.solpFormulario.addControl('condicionContractual-' + condicionContractual.id, new FormControl());
-    });
-  }
-
   filtrarSubcategorias(categoriaId) {
     this.loading = true;
+    this.limpiarCondicionesContractuales();
     this.servicio.ObtenerSubcategorias(categoriaId).subscribe(
       (respuesta) => {
         this.subcategorias = Subcategoria.fromJsonList(respuesta);
@@ -193,5 +177,31 @@ export class CrearSolicitudComponent implements OnInit {
         console.log('Error obteniendo subcategorias: ' + err);
       }
     )
+  }
+
+  cargarCondicionesContractuales(subcategoriaId){
+    this.loading = true;
+    this.limpiarCondicionesContractuales();
+    this.subcategoriaSeleccionada = this.subcategorias.find(s => s.id == subcategoriaId);
+      this.subcategoriaSeleccionada.condicionesContractuales.forEach(element => {
+        this.condicionesContractuales.push(new CondicionContractual(element.Title, element.ID));
+      });
+      this.registrarControlesCondicionesContractuales();
+      this.cargarComprador(this.subcategoriaSeleccionada);
+      this.loading = false;
+  }
+
+  cargarComprador(subcategoriaSeleccionada: Subcategoria): any {
+    this.solpFormulario.controls["comprador"].setValue(subcategoriaSeleccionada.comprador);
+  }
+
+  limpiarCondicionesContractuales(): any {
+    this.condicionesContractuales = [];
+  }
+
+  registrarControlesCondicionesContractuales(): any {
+    this.condicionesContractuales.forEach(condicionContractual => {
+      this.solpFormulario.addControl('condicionContractual-' + condicionContractual.id, new FormControl());
+    });
   }
 }
