@@ -94,4 +94,12 @@ export class SPServicio {
         });
     }
 
+    agregarCondicionesTecnicasBienes(){
+
+    }
+
+    agregarCondicionesTecnicasServicios(){
+        
+    }
+
 }

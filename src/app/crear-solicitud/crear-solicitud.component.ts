@@ -58,12 +58,12 @@ export class CrearSolicitudComponent implements OnInit {
     this.loading = false;
   }
 
-  MostrarExitoso() {
-    this.toastr.successToastr('This is success toast.', 'Success!');
+  MostrarExitoso(mensaje: string) {
+    this.toastr.successToastr(mensaje, 'Confirmación!');
   }
 
-  mostrarError() {
-    this.toastr.errorToastr('This is error toast.', 'Oops!');
+  mostrarError(mensaje: string) {
+    this.toastr.errorToastr(mensaje, 'Oops!');
   }
 
   mostrarAdvertencia(mensaje: string) {
@@ -429,15 +429,22 @@ export class CrearSolicitudComponent implements OnInit {
         this.construirJsonCondicionesContractuales());
 
       this.servicio.agregarSolicitud(this.solicitudGuardar).then(
-        (iar: ItemAddResult) => {
-          this.router.navigate(['/mis-solicitudes']);
+        (item: ItemAddResult) => {
+          this.guardarCondicionesTecnicasBienes(item);
+          //this.MostrarExitoso("La solicitud se ha guardado correctamente");
+          //this.router.navigate(['/mis-solicitudes']);
         }, err => {
-          alert('Error en la creación de la solicitud!!');
+          this.mostrarError('Error en la creación de la solicitud');
         }
       )
     }
 
     console.log(this.solicitudGuardar);
+  }
+
+  guardarCondicionesTecnicasBienes(item: ItemAddResult): any {
+    console.log(item);
+
   }
 
   construirJsonCondicionesContractuales(): string {
