@@ -49,6 +49,7 @@ export class CrearSolicitudComponent implements OnInit {
   private bienes: Bienes[] = [];
   contadorServicios = 0;
   private servicios: Servicios[] = [];
+  cadenaJsonCondicionesContractuales: string;
   solicitudGuardar: Solicitud;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, public toastr: ToastrManager, private router: Router) {
@@ -330,7 +331,8 @@ export class CrearSolicitudComponent implements OnInit {
     let cm = this.solpFormulario.controls["cm"].value;
     let empresa = this.solpFormulario.controls["empresa"].value;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
-    let pais = this.solpFormulario.controls["pais"].value;
+    let valorPais = this.solpFormulario.controls["pais"].value;
+    let pais = valorPais.nombre;
     let categoria = this.solpFormulario.controls["categoria"].value;
     let subcategoria = this.solpFormulario.controls["subcategoria"].value;
     let comprador = this.solpFormulario.controls["comprador"].value;
@@ -417,7 +419,7 @@ export class CrearSolicitudComponent implements OnInit {
         this.usuarioActual.nombre,
         empresa,
         ordenadorGastos,
-        pais,
+        valorPais.id,
         categoria.nombre,
         subcategoria.nombre,
         comprador,
@@ -439,19 +441,14 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   construirJsonCondicionesContractuales(): string {
-
-    let cadenaJson;
-    cadenaJson.concat('{ "condiciones":[');
-
-    this.condicionesContractuales.forEach(element => {
-      
-      cadenaJson.concat('{"campo": "Campo 1", "descripcion": "Descripcion 1"},');
-
+    this.cadenaJsonCondicionesContractuales = '';
+    this.cadenaJsonCondicionesContractuales += ('{ "condiciones":[');
+    this.condicionesContractuales.forEach(condicionContractual => {
+      this.cadenaJsonCondicionesContractuales += ('{"campo": "'+condicionContractual.nombre+'", "descripcion": "'+this.solpFormulario.controls['condicionContractual'+ condicionContractual.id].value+'"},');
     });
-
-    cadenaJson.concat(']}')
-
-    return cadenaJson;
+    this.cadenaJsonCondicionesContractuales = this.cadenaJsonCondicionesContractuales.substring(0, this.cadenaJsonCondicionesContractuales.length - 1);
+    this.cadenaJsonCondicionesContractuales += (']}')
+    return this.cadenaJsonCondicionesContractuales;
   }
 
   private ValidarCondicionesTecnicasServicios(pais): boolean {

@@ -51,7 +51,7 @@
         <label for="pais" class="col-form-label">País</label>
         <select id="pais" name="pais" formControlName="pais" class="form-control">
           <option value="">Seleccione</option>
-          <option *ngFor="let pais of paises" [value]="pais.id" [text]="pais.nombre">
+          <option *ngFor="let pais of paises" [ngValue]="pais" [text]="pais.nombre">
             {{pais.nombre}}
           </option>
         </select>
