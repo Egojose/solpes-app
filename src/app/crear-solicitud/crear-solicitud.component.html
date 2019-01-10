@@ -242,6 +242,53 @@
                 <th scope="col">Comentarios</th>
               </tr>
             </thead>
+            <tbody>
+              <tr *ngFor="let servicio of servicios">
+                <td>
+                  <input formControlName="{{servicio.campoCodigo}}" class="form-control" type="text" />
+                </td>
+                <td>
+                  <textarea formControlName="{{servicio.campoDescripcion}}" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
+                </td>
+                <td>
+                  <input formControlName="{{servicio.campoCantidad}}" class="form-control" type="text" numbersOnly />
+                </td>
+                <td>
+                  <input formControlName="{{servicio.campoValorEstimado}}" class="form-control" type="text" numbersOnly />
+                </td>
+                <td>
+                  <input formControlName="{{servicio.campoAdjunto}}" type="file" />
+                </td>
+                <td>
+                  <textarea formControlName="{{servicio.campoComentarios}}" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
+                </td>
+                <td>
+                  <button class="btn btn-default" type="button" (click)="borrarServicios(servicio)">Borrar</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input formControlName="codigoServicios0"  class="form-control" type="text" />
+                </td>
+                <td>
+                  <textarea formControlName="descripcionServicios0" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
+                </td>
+                <td>
+                  <input formControlName="cantidadServicios0" class="form-control" type="text" numbersOnly />
+                </td>
+                <td>
+                  <input formControlName="valorEstimadoServicios0" class="form-control" type="text" numbersOnly />
+                </td>
+                <td>
+                  <input formControlName="adjuntoServicios0" type="file" />
+                </td>
+                <td>
+                  <textarea formControlName="comentariosServicios0" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
+                </td>
+                <td>
+                  <button class="btn btn-default" type="button" (click)="agregarServicios()">Agregar</button>
+                </td>
+              </tr>
           </table>
         </div>
       </div>
@@ -250,7 +297,8 @@
     <div class="form-group row">
       <div class="col-md-12">
         <div class="botonera">
-          <button (click)="guardarSolicitud();" class="guardar-solpes-btn btn btn-primary">Enviar</button>
+          <button (click)="salir();" class="salir-solpes-btn btn btn-default">Salir</button>
+          <button (click)="guardarSolicitud();" class="guardar-solpes-btn btn btn-primary">Enviar Solicitud</button>
         </div>
       </div>
     </div>

@@ -13,6 +13,9 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/public_api';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Bienes } from '../dominio/bienes';
+import { Servicios } from '../dominio/servicios';
+import { Router } from '@angular/router';
+import { Solicitud } from '../dominio/solicitud';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -43,35 +46,34 @@ export class CrearSolicitudComponent implements OnInit {
 
   contadorBienes = 0;
   private bienes: Bienes[] = [];
+  contadorServicios = 0;
+  private servicios: Servicios[] = [];
+  solicitudGuardar: Solicitud;
 
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, public toastr: ToastrManager) {
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
     this.mostrarContratoMarco = false;
     this.loading = false;
   }
 
-  showSuccess() {
+  MostrarExitoso() {
     this.toastr.successToastr('This is success toast.', 'Success!');
   }
 
-  showError() {
+  mostrarError() {
     this.toastr.errorToastr('This is error toast.', 'Oops!');
   }
 
-  showWarning(mensaje: string) {
+  mostrarAdvertencia(mensaje: string) {
     this.toastr.warningToastr(mensaje, 'Validación');
   }
 
-  showInfo() {
+  mostrarInformacion() {
     this.toastr.infoToastr('This is info toast.', 'Info');
   }
 
-  showCustom() {
+  mostrarPersonalizado() {
     this.toastr.customToastr('Custom Toast', null, { enableHTML: true });
-  }
-
-  showToast(position: any = 'top-left') {
-    this.toastr.infoToastr('This is a toast.', 'Toast', { position: position });
   }
 
   ngOnInit() {
@@ -110,7 +112,14 @@ export class CrearSolicitudComponent implements OnInit {
       cantidadBienes0: [''],
       valorEstimadoBienes0: [''],
       adjuntoBienes0: [''],
-      comentariosBienes0: ['']
+      comentariosBienes0: [''],
+      //Primera fila de condiciones técnicas servicios
+      codigoServicios0: [''],
+      descripcionServicios0: [''],
+      cantidadServicios0: [''],
+      valorEstimadoServicios0: [''],
+      adjuntoServicios0: [''],
+      comentariosServicios0: ['']
     });
   }
 
@@ -267,8 +276,25 @@ export class CrearSolicitudComponent implements OnInit {
     this.solpFormulario.addControl(campoAdjunto, new FormControl());
     this.solpFormulario.addControl(campoComentarios, new FormControl());
     this.bienes.push(new Bienes(indice, campoCodigo, campoDescripcion, campoModelo, campoFabricante, campoClaseSia, campoCantidad, campoValorEstimado, campoAdjunto, campoComentarios));
-
     this.contadorBienes++;
+  }
+
+  agregarServicios() {
+    let indice = this.contadorServicios + 1;
+    let campoCodigo = "codigoServicios" + indice.toString();
+    let campoDescripcion = "descripcionServicios" + indice.toString();
+    let campoCantidad = "cantidadServicios" + indice.toString();
+    let campoValorEstimado = "valorEstimadoServicios" + indice.toString();
+    let campoAdjunto = "adjuntoServicios" + indice.toString();
+    let campoComentarios = "comentariosServicios" + indice.toString();
+    this.solpFormulario.addControl(campoCodigo, new FormControl());
+    this.solpFormulario.addControl(campoDescripcion, new FormControl());
+    this.solpFormulario.addControl(campoCantidad, new FormControl());
+    this.solpFormulario.addControl(campoValorEstimado, new FormControl());
+    this.solpFormulario.addControl(campoAdjunto, new FormControl());
+    this.solpFormulario.addControl(campoComentarios, new FormControl());
+    this.servicios.push(new Servicios(indice, campoCodigo, campoDescripcion, campoCantidad, campoValorEstimado, campoAdjunto, campoComentarios));
+    this.contadorServicios++;
   }
 
   borrarBienes(bien) {
@@ -284,7 +310,18 @@ export class CrearSolicitudComponent implements OnInit {
     this.solpFormulario.removeControl(bien.campoComentarios);
   }
 
+  borrarServicios(servicio) {
+    this.servicios = this.servicios.filter(item => item !== servicio);
+    this.solpFormulario.removeControl(servicio.campoCodigo);
+    this.solpFormulario.removeControl(servicio.campoDescripcion);
+    this.solpFormulario.removeControl(servicio.campoCantidad);
+    this.solpFormulario.removeControl(servicio.campoValorEstimado);
+    this.solpFormulario.removeControl(servicio.campoAdjunto);
+    this.solpFormulario.removeControl(servicio.campoComentarios);
+  }
+
   guardarSolicitud() {
+
     let respuesta;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
@@ -299,88 +336,188 @@ export class CrearSolicitudComponent implements OnInit {
     let justificacion = this.solpFormulario.controls["justificacion"].value;
 
     if (this.EsCampoVacio(tipoSolicitud)) {
-      this.showWarning("El campo Tipo de solicitud es requerido");
+      this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
       return false;
     }
 
     if (this.EsCampoVacio(empresa)) {
-      this.showWarning("El campo Empresa es requerido");
+      this.mostrarAdvertencia("El campo Empresa es requerido");
       return false;
     }
 
     if (this.EsCampoVacio(ordenadorGastos)) {
-      this.showWarning("El campo Ordenador de gastos es requerido");
+      this.mostrarAdvertencia("El campo Ordenador de gastos es requerido");
       return false;
     }
 
     if (this.EsCampoVacio(pais)) {
-      this.showWarning("El campo País es requerido");
+      this.mostrarAdvertencia("El campo País es requerido");
       return false;
     }
 
     if (this.EsCampoVacio(categoria)) {
-      this.showWarning("El campo Categoría es requerido");
+      this.mostrarAdvertencia("El campo Categoría es requerido");
       return false;
     }
 
     if (this.EsCampoVacio(subcategoria)) {
-      this.showWarning("El campo Subcategoría es requerido");
+      this.mostrarAdvertencia("El campo Subcategoría es requerido");
       return false;
     }
 
     if (this.EsCampoVacio(comprador)) {
-      this.showWarning("El campo Comprador es requerido");
+      this.mostrarAdvertencia("El campo Comprador es requerido");
       return false;
     }
 
     if (this.EsCampoVacio(fechaEntregaDeseada)) {
-      this.showWarning("El campo Fecha entrega deseada es requerido");
+      this.mostrarAdvertencia("El campo Fecha entrega deseada es requerido");
       return false;
     }
 
     if (this.EsCampoVacio(alcance)) {
-      this.showWarning("El campo Alcance es requerido");
+      this.mostrarAdvertencia("El campo Alcance es requerido");
       return false;
     }
 
     if (tipoSolicitud == 'Solp' || tipoSolicitud == 'CM') {
       if (this.EsCampoVacio(justificacion)) {
-        this.showWarning("El campo Justificación es requerido");
+        this.mostrarAdvertencia("El campo Justificación es requerido");
         return false;
       }
     }
 
     respuesta = this.ValidarCondicionesContractuales();
 
-    if(respuesta == false){
+    if (respuesta == false) {
       return respuesta;
     }
 
     respuesta = this.ValidarCondicionesTecnicasBienes(pais);
-    
-    if(respuesta == false){
+
+    if (respuesta == false) {
       return respuesta;
     }
 
-    respuesta = this.ValidarCondicionesTecnicasServicios();
-    
-    if(respuesta == false){
+    respuesta = this.ValidarCondicionesTecnicasServicios(pais);
+
+    if (respuesta == false) {
       return respuesta;
     }
 
-    if(respuesta == true){
-      console.log("Puede guardar");
+    if (respuesta == true) {
+      this.solicitudGuardar = new Solicitud(
+        'Solicitud Solpes: ' + Date.now().toString(),
+        tipoSolicitud,
+        cm,
+        this.usuarioActual.nombre,
+        empresa,
+        ordenadorGastos,
+        pais,
+        categoria,
+        subcategoria,
+        comprador,
+        fechaEntregaDeseada,
+        alcance,
+        justificacion);
     }
-    
+
+    console.log(this.solicitudGuardar);
   }
 
-  private ValidarCondicionesTecnicasServicios() : boolean {
-    return true;
+  private ValidarCondicionesTecnicasServicios(pais): boolean {
+    let respuesta = true;
+    //Se debe validar la primera fila de servicios
+    let codigoServicios = this.solpFormulario.controls['codigoServicios0'].value;
+    let descripcion = this.solpFormulario.controls['descripcionServicios0'].value;
+    let cantidad = this.solpFormulario.controls['cantidadServicios0'].value;
+
+    if (pais == "Brasil") {
+      if (this.EsCampoVacio(codigoServicios)) {
+        this.mostrarAdvertencia("Hay algún código vacío en las Condiciones técnicas de servicios");
+        respuesta = false;
+      }
+    }
+
+    if (this.EsCampoVacio(descripcion)) {
+      this.mostrarAdvertencia("Hay alguna descripción vacía en las Condiciones técnicas de servicios");
+      respuesta = false;
+    }
+
+    if (this.EsCampoVacio(cantidad)) {
+      this.mostrarAdvertencia("Hay alguna cantidad vacía en las Condiciones técnicas de servicios");
+      respuesta = false;
+    }
+
+    this.servicios.forEach(element => {
+      let codigoServicios = this.solpFormulario.controls[element.campoCodigo].value;
+      let descripcion = this.solpFormulario.controls[element.campoDescripcion].value;
+      let cantidad = this.solpFormulario.controls[element.campoCantidad].value;
+
+      if (pais == "Brasil") {
+        if (this.EsCampoVacio(codigoServicios)) {
+          this.mostrarAdvertencia("Hay algún código vacío en las Condiciones técnicas de servicios");
+          respuesta = false;
+        }
+      }
+
+      if (this.EsCampoVacio(descripcion)) {
+        this.mostrarAdvertencia("Hay alguna descripción vacía en las Condiciones técnicas de servicios");
+        respuesta = false;
+      }
+
+      if (this.EsCampoVacio(cantidad)) {
+        this.mostrarAdvertencia("Hay alguna cantidad vacía en las Condiciones técnicas de servicios");
+        respuesta = false;
+      }
+
+    });
+
+    return respuesta;
   }
 
-  private ValidarCondicionesTecnicasBienes(pais) : boolean {
+  private ValidarCondicionesTecnicasBienes(pais): boolean {
     let respuesta = true;
     //Se debe validar la primera fila de bienes
+    let codigoBienes = this.solpFormulario.controls['codigoBienes0'].value;
+    let descripcion = this.solpFormulario.controls['descripcionBienes0'].value;
+    let modelo = this.solpFormulario.controls['modeloBienes0'].value;
+    let fabricante = this.solpFormulario.controls['fabricanteBienes0'].value;
+    let cantidad = this.solpFormulario.controls['cantidadBienes0'].value;
+    let adjunto = this.solpFormulario.controls['adjuntoBienes0'].value;
+
+    if (pais == "Brasil") {
+      if (this.EsCampoVacio(codigoBienes)) {
+        this.mostrarAdvertencia("Hay algún código vacío en las Condiciones técnicas de bienes");
+        respuesta = false;
+      }
+    }
+
+    if (this.EsCampoVacio(descripcion)) {
+      this.mostrarAdvertencia("Hay alguna descripción vacía en las Condiciones técnicas de bienes");
+      respuesta = false;
+    }
+
+    if (this.EsCampoVacio(modelo)) {
+      this.mostrarAdvertencia("Hay algún modelo vacío en las Condiciones técnicas de bienes");
+      respuesta = false;
+    }
+
+    if (this.EsCampoVacio(fabricante)) {
+      this.mostrarAdvertencia("Hay alguna fabricante vacío en las Condiciones técnicas de bienes");
+      respuesta = false;
+    }
+
+    if (this.EsCampoVacio(cantidad)) {
+      this.mostrarAdvertencia("Hay alguna cantidad vacía en las Condiciones técnicas de bienes");
+      respuesta = false;
+    }
+
+    if (this.EsCampoVacio(adjunto)) {
+      this.mostrarAdvertencia("Faltan adjuntos en las Condiciones técnicas de bienes");
+      respuesta = false;
+    }
+
     this.bienes.forEach(element => {
       let codigoBienes = this.solpFormulario.controls[element.campoCodigo].value;
       let descripcion = this.solpFormulario.controls[element.campoDescripcion].value;
@@ -389,51 +526,48 @@ export class CrearSolicitudComponent implements OnInit {
       let cantidad = this.solpFormulario.controls[element.campoCantidad].value;
       let adjunto = this.solpFormulario.controls[element.campoAdjunto].value;
 
-      console.log(pais);
       if (pais == "Brasil") {
         if (this.EsCampoVacio(codigoBienes)) {
-          this.showWarning("Hay algún código vacío en las Condiciones técnicas de bienes");
+          this.mostrarAdvertencia("Hay algún código vacío en las Condiciones técnicas de bienes");
           respuesta = false;
         }
       }
 
-      console.log(descripcion);
       if (this.EsCampoVacio(descripcion)) {
-        this.showWarning("Hay alguna descripción vacía en las Condiciones técnicas de bienes");
+        this.mostrarAdvertencia("Hay alguna descripción vacía en las Condiciones técnicas de bienes");
         respuesta = false;
       }
 
       if (this.EsCampoVacio(modelo)) {
-        this.showWarning("Hay algún modelo vacío en las Condiciones técnicas de bienes");
+        this.mostrarAdvertencia("Hay algún modelo vacío en las Condiciones técnicas de bienes");
         respuesta = false;
       }
 
       if (this.EsCampoVacio(fabricante)) {
-        this.showWarning("Hay alguna fabricante vacío en las Condiciones técnicas de bienes");
+        this.mostrarAdvertencia("Hay alguna fabricante vacío en las Condiciones técnicas de bienes");
         respuesta = false;
       }
 
       if (this.EsCampoVacio(cantidad)) {
-        this.showWarning("Hay alguna cantidad vacía en las Condiciones técnicas de bienes");
+        this.mostrarAdvertencia("Hay alguna cantidad vacía en las Condiciones técnicas de bienes");
         respuesta = false;
       }
 
       if (this.EsCampoVacio(adjunto)) {
-        this.showWarning("Faltan adjuntos en las Condiciones técnicas de bienes");
+        this.mostrarAdvertencia("Faltan adjuntos en las Condiciones técnicas de bienes");
         respuesta = false;
       }
     });
 
     return respuesta;
-
   }
 
-  private ValidarCondicionesContractuales() : boolean {
+  private ValidarCondicionesContractuales(): boolean {
     let respuesta = true;
     this.condicionesContractuales.forEach(element => {
       let condicionContractual = this.solpFormulario.controls["condicionContractual" + element.id].value;
       if (this.EsCampoVacio(condicionContractual)) {
-        this.showWarning("Hay condiciones contractuales sin llenar: " + element.nombre);
+        this.mostrarAdvertencia("Hay condiciones contractuales sin llenar: " + element.nombre);
         respuesta = false;
       }
     });
@@ -446,6 +580,10 @@ export class CrearSolicitudComponent implements OnInit {
       return true;
     }
     return false
+  }
+
+  salir() {
+    this.router.navigate(["/mis-solicitudes"]);
   }
 
 }

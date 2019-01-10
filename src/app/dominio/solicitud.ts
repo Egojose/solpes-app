@@ -7,14 +7,14 @@ export class Solicitud {
         public empresa: any,
         public ordenadorGastos: any,
         public pais: number,
-        public categpria: string,
+        public categoria: string,
         public subcategoria: string,
         public comprador: string,
         public fechaEntregaDeseada: Date,
         public alcance: string,
         public justificacion: string,
-        public condicionesContractuales: any,
-        public estado: string,
+        public condicionesContractuales?: any,
+        public estado?: string,
         public id?: number) { }
 
     public static fromJson(element: any) {
