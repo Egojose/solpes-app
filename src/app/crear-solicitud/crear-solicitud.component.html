@@ -21,7 +21,7 @@
       <div class="col-md-6">
         <div class="zona-contrato-marco" [hidden]="!mostrarContratoMarco">
           <label for="contrato-marco">Contrato Marco</label>
-          <input type="text" id="cm" name="cm" class="form-control" formControlName="cm">
+          <input type="text" id="cm" name="cm" class="form-control" formControlName="cm" autocomplete="off">
         </div>
       </div>
     </div>
@@ -39,13 +39,19 @@
             {{empresa.nombre}}
           </option>
         </select>
+        <div *ngIf="submitted && f.empresa.errors" class="invalid-feedback">
+          <div *ngIf="f.empresa.errors.required">Este campo es requerido</div>
+        </div>
       </div>
     </div>
     <div class="form-group row">
       <div class="col-md-6">
         <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label>
         <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto"
-          class="form-control"></select2>
+          class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ordenadorGastos.errors }"></select2>
+        <div *ngIf="submitted && f.ordenadorGastos.errors" class="invalid-feedback">
+          <div *ngIf="f.ordenadorGastos.errors.required">Este campo es requerido</div>
+        </div>
       </div>
       <div class="col-md-6">
         <label for="pais" class="col-form-label">País</label>
@@ -82,12 +88,13 @@
     <div class="form-group row">
       <div class="col-md-6">
         <label for="comprador">Comprador</label>
-        <input type="text" id="comprador" name="comprador" formControlName="comprador" class="form-control" [attr.disabled]="true">
+        <input type="text" id="comprador" name="comprador" formControlName="comprador" class="form-control"
+          [attr.disabled]="true">
       </div>
       <div class="col-md-6">
         <label for="fecha-entrega-deseada">Fecha entrega deseada</label>
         <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text"
-          placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig"
+          autocomplete="off" placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig"
           bsDatepicker>
       </div>
     </div>
@@ -122,8 +129,8 @@
               <tr *ngFor="let condicionContractual of condicionesContractuales">
                 <td>{{condicionContractual.nombre}}</td>
                 <td>
-                  <textarea id="condicionContractual-{{condicionContractual.id}}" name="condicionContractual-{{condicionContractual.id}}"
-                    formControlName="condicionContractual-{{condicionContractual.id}}" class="form-control" rows="2"></textarea>
+                  <textarea id="condicionContractual{{condicionContractual.id}}" name="condicionContractual{{condicionContractual.id}}"
+                    formControlName="condicionContractual{{condicionContractual.id}}" class="form-control" rows="2"></textarea>
                 </td>
               </tr>
             </tbody>
@@ -150,6 +157,71 @@
                 <th scope="col">Comentarios</th>
               </tr>
             </thead>
+            <tbody>
+              <tr *ngFor="let bien of bienes">
+                <td>
+                  <input formControlName="{{bien.campoCodigo}}" class="form-control" type="text" />
+                </td>
+                <td>
+                  <textarea formControlName="{{bien.campoDescripcion}}" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
+                </td>
+                <td>
+                  <input formControlName="{{bien.campoModelo}}" class="form-control" type="text" />
+                </td>
+                <td>
+                  <input formControlName="{{bien.campoFabricante}}" class="form-control" type="text" />
+                </td>
+                <td>
+                  <input formControlName="{{bien.campoClaseSia}}" class="form-control" type="text" />
+                </td>
+                <td>
+                  <input formControlName="{{bien.campoCantidad}}" class="form-control" type="text" numbersOnly />
+                </td>
+                <td>
+                  <input formControlName="{{bien.campoValorEstimado}}" class="form-control" type="text" numbersOnly />
+                </td>
+                <td>
+                  <input formControlName="{{bien.campoAdjunto}}" type="file" />
+                </td>
+                <td>
+                  <textarea formControlName="{{bien.campoComentarios}}" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
+                </td>
+                <td>
+                  <button class="btn btn-default" type="button" (click)="borrarBienes(bien)">Borrar</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input formControlName="codigoBienes0"  class="form-control" type="text" />
+                </td>
+                <td>
+                  <textarea formControlName="descripcionBienes0" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
+                </td>
+                <td>
+                  <input formControlName="modeloBienes0" class="form-control" type="text" />
+                </td>
+                <td>
+                  <input formControlName="fabricanteBienes0" class="form-control" type="text" />
+                </td>
+                <td>
+                  <input formControlName="claseSiaBienes0" class="form-control" type="text" />
+                </td>
+                <td>
+                  <input formControlName="cantidadBienes0" class="form-control" type="text" numbersOnly />
+                </td>
+                <td>
+                  <input formControlName="valorEstimadoBienes0" class="form-control" type="text" numbersOnly />
+                </td>
+                <td>
+                  <input formControlName="adjuntoBienes0" type="file" />
+                </td>
+                <td>
+                  <textarea formControlName="comentariosBienes0" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
+                </td>
+                <td>
+                  <button class="btn btn-default" type="button" (click)="agregarBienes()">Agregar</button>
+                </td>
+              </tr>
           </table>
         </div>
       </div>
@@ -178,11 +250,9 @@
     <div class="form-group row">
       <div class="col-md-12">
         <div class="botonera">
-          <button id="guardarSolicitud"></button>
+          <button (click)="guardarSolicitud();" class="guardar-solpes-btn btn btn-primary">Enviar</button>
         </div>
       </div>
     </div>
-
-
   </form>
 </div>

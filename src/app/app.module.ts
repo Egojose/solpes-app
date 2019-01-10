@@ -5,6 +5,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule } from '@angular/material';
 import { Select2Module } from "ng-select2-component";
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ToastrModule } from 'ng6-toastr-notifications';
 
 import { AppComponent } from './app.component';
 import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
@@ -20,6 +21,7 @@ import { ConsultarSolicitudesComponent } from './consultar-solicitudes/consultar
 import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-sap.component';
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NumberDirective } from './directivas/numbers-only.directive';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RecepcionSapComponent,
     MisSolicitudesComponent,
     ConsultarSolicitudesComponent,
-    RegistrarSolpSapComponent
+    RegistrarSolpSapComponent,
+    NumberDirective
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatAutocompleteModule,
     MatOptionModule,
     MatInputModule,
+    ToastrModule.forRoot(),
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
     RouterModule.forRoot([

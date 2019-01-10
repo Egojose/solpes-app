@@ -7,5 +7,6 @@ export const environment = {
   listaCategorias: 'Categorias',
   listaSubcategorias: 'Subcategorias',
   listaCondicionesContractuales: 'CondicionesContractuales',
-  listaTiposSolicitud: 'TiposSolicitud'
+  listaTiposSolicitud: 'TiposSolicitud',
+  listaSolicitudes: 'Solicitudes'
 };
