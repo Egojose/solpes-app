@@ -425,16 +425,16 @@ export class CrearSolicitudComponent implements OnInit {
         comprador,
         fechaEntregaDeseada,
         alcance,
-        justificacion, 
+        justificacion,
         this.construirJsonCondicionesContractuales());
 
-        this.servicio.agregarSolicitud(this.solicitudGuardar).then(
-          (iar: ItemAddResult) => {
-            this.router.navigate(['/mis-solicitudes']);
-          }, err => {
-            alert('Error en la creación de la solicitud!!');
-          }
-        )
+      this.servicio.agregarSolicitud(this.solicitudGuardar).then(
+        (iar: ItemAddResult) => {
+          this.router.navigate(['/mis-solicitudes']);
+        }, err => {
+          alert('Error en la creación de la solicitud!!');
+        }
+      )
     }
 
     console.log(this.solicitudGuardar);
@@ -444,7 +444,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.cadenaJsonCondicionesContractuales = '';
     this.cadenaJsonCondicionesContractuales += ('{ "condiciones":[');
     this.condicionesContractuales.forEach(condicionContractual => {
-      this.cadenaJsonCondicionesContractuales += ('{"campo": "'+condicionContractual.nombre+'", "descripcion": "'+this.solpFormulario.controls['condicionContractual'+ condicionContractual.id].value+'"},');
+      this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value + '"},');
     });
     this.cadenaJsonCondicionesContractuales = this.cadenaJsonCondicionesContractuales.substring(0, this.cadenaJsonCondicionesContractuales.length - 1);
     this.cadenaJsonCondicionesContractuales += (']}')
