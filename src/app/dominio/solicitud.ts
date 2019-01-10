@@ -4,8 +4,8 @@ export class Solicitud {
         public tipoSolicitud: string,
         public cm: string,
         public solicitante: string,
-        public empresa: any,
-        public ordenadorGastos: any,
+        public empresa: number,
+        public ordenadorGastos: number,
         public pais: number,
         public categoria: string,
         public subcategoria: string,
@@ -13,7 +13,7 @@ export class Solicitud {
         public fechaEntregaDeseada: Date,
         public alcance: string,
         public justificacion: string,
-        public condicionesContractuales?: any,
+        public condicionesContractuales: any,
         public estado?: string,
         public id?: number) { }
 

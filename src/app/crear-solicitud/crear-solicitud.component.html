@@ -35,29 +35,23 @@
       <div class="col-md-5">
         <select id="empresa" formControlName="empresa" class="form-control">
           <option value="">Seleccione</option>
-          <option *ngFor="let empresa of empresas" [value]="empresa.nombre" [text]="empresa.nombre">
+          <option *ngFor="let empresa of empresas" [value]="empresa.id" [text]="empresa.nombre">
             {{empresa.nombre}}
           </option>
         </select>
-        <div *ngIf="submitted && f.empresa.errors" class="invalid-feedback">
-          <div *ngIf="f.empresa.errors.required">Este campo es requerido</div>
-        </div>
       </div>
     </div>
     <div class="form-group row">
       <div class="col-md-6">
         <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label>
         <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto"
-          class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ordenadorGastos.errors }"></select2>
-        <div *ngIf="submitted && f.ordenadorGastos.errors" class="invalid-feedback">
-          <div *ngIf="f.ordenadorGastos.errors.required">Este campo es requerido</div>
-        </div>
+          class="form-control"></select2>
       </div>
       <div class="col-md-6">
         <label for="pais" class="col-form-label">País</label>
         <select id="pais" name="pais" formControlName="pais" class="form-control">
           <option value="">Seleccione</option>
-          <option *ngFor="let pais of paises" [value]="pais.nombre" [text]="pais.nombre">
+          <option *ngFor="let pais of paises" [value]="pais.id" [text]="pais.nombre">
             {{pais.nombre}}
           </option>
         </select>
@@ -67,18 +61,18 @@
     <div class="form-group row">
       <div class="col-md-6">
         <label for="categoria" class="col-form-label">Categoría</label>
-        <select id="categoria" name="categoria" formControlName="categoria" class="form-control" (change)="filtrarSubcategorias($event.target.value)">
+        <select id="categoria" name="categoria" formControlName="categoria" class="form-control" (change)="filtrarSubcategorias()">
           <option value="">Seleccione</option>
-          <option *ngFor="let categoria of categorias" [value]="categoria.id" [text]="categoria.nombre">
+          <option *ngFor="let categoria of categorias" [ngValue]="categoria" [text]="categoria.nombre">
             {{categoria.nombre}}
           </option>
         </select>
       </div>
       <div class="col-md-6">
         <label for="subcategoria" class="col-form-label">Subcategoría</label>
-        <select id="subcategoria" name="subcategoria" formControlName="subcategoria" class="form-control" (change)="cargarCondicionesContractuales($event.target.value)">
+        <select id="subcategoria" name="subcategoria" formControlName="subcategoria" class="form-control" (change)="cargarCondicionesContractuales()">
           <option value="">Seleccione</option>
-          <option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id" [text]="subcategoria.nombre">
+          <option *ngFor="let subcategoria of subcategorias" [ngValue]="subcategoria" [text]="subcategoria.nombre">
             {{subcategoria.nombre}}
           </option>
         </select>

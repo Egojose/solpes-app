@@ -16,6 +16,7 @@ import { Bienes } from '../dominio/bienes';
 import { Servicios } from '../dominio/servicios';
 import { Router } from '@angular/router';
 import { Solicitud } from '../dominio/solicitud';
+import { ItemAddResult } from 'sp-pnp-js';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -216,10 +217,11 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
-  filtrarSubcategorias(categoriaId) {
+  filtrarSubcategorias() {
     this.loading = true;
+    let categoria = this.solpFormulario.controls["categoria"].value;
     this.limpiarCondicionesContractuales();
-    this.servicio.ObtenerSubcategorias(categoriaId).subscribe(
+    this.servicio.ObtenerSubcategorias(categoria.id).subscribe(
       (respuesta) => {
         this.subcategorias = Subcategoria.fromJsonList(respuesta);
         this.loading = false;
@@ -229,10 +231,11 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
-  cargarCondicionesContractuales(subcategoriaId) {
+  cargarCondicionesContractuales() {
     this.loading = true;
+    let Subcategoria = this.solpFormulario.controls["subcategoria"].value;
     this.limpiarCondicionesContractuales();
-    this.subcategoriaSeleccionada = this.subcategorias.find(s => s.id == subcategoriaId);
+    this.subcategoriaSeleccionada = this.subcategorias.find(s => s.id == Subcategoria.id);
     this.subcategoriaSeleccionada.condicionesContractuales.forEach(element => {
       this.condicionesContractuales.push(new CondicionContractual(element.Title, element.ID));
     });
@@ -406,23 +409,49 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     if (respuesta == true) {
+
       this.solicitudGuardar = new Solicitud(
-        'Solicitud Solpes: ' + Date.now().toString(),
+        'Solicitud Solpes: ' + new Date(),
         tipoSolicitud,
         cm,
         this.usuarioActual.nombre,
         empresa,
         ordenadorGastos,
         pais,
-        categoria,
-        subcategoria,
+        categoria.nombre,
+        subcategoria.nombre,
         comprador,
         fechaEntregaDeseada,
         alcance,
-        justificacion);
+        justificacion, 
+        this.construirJsonCondicionesContractuales());
+
+        this.servicio.agregarSolicitud(this.solicitudGuardar).then(
+          (iar: ItemAddResult) => {
+            this.router.navigate(['/mis-solicitudes']);
+          }, err => {
+            alert('Error en la creación de la solicitud!!');
+          }
+        )
     }
 
     console.log(this.solicitudGuardar);
+  }
+
+  construirJsonCondicionesContractuales(): string {
+
+    let cadenaJson;
+    cadenaJson.concat('{ "condiciones":[');
+
+    this.condicionesContractuales.forEach(element => {
+      
+      cadenaJson.concat('{"campo": "Campo 1", "descripcion": "Descripcion 1"},');
+
+    });
+
+    cadenaJson.concat(']}')
+
+    return cadenaJson;
   }
 
   private ValidarCondicionesTecnicasServicios(pais): boolean {
