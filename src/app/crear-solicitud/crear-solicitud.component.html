@@ -136,87 +136,11 @@
     <div class="form-group row">
       <div class="col-md-12">
         <label for="condiciones-tecnicas-bienes">Condiciones técnicas bienes</label>
+        <div class="btn-agregar-condiciones-bienes">
+            <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar condicion técnica bienes</button>
+          </div>
         <div id="condiciones-tecnicas-bienes" class="table-responsive">
-          <table class="table">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">Código</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Modelo</th>
-                <th scope="col">Fabricante</th>
-                <th scope="col">Clase SIA</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Valor Estimado</th>
-                <th scope="col">Adjunto</th>
-                <th scope="col">Comentarios</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let bien of bienes">
-                <td>
-                  <input id="{{bien.campoCodigo}}" name="{{bien.campoCodigo}}" formControlName="{{bien.campoCodigo}}" class="form-control" type="text" />
-                </td>
-                <td>
-                  <textarea id="{{bien.campoDescripcion}}" name="{{bien.campoDescripcion}}" formControlName="{{bien.campoDescripcion}}" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
-                </td>
-                <td>
-                  <input id="{{bien.campoModelo}}" name="{{bien.campoModelo}}" formControlName="{{bien.campoModelo}}" class="form-control" type="text" />
-                </td>
-                <td>
-                  <input id="{{bien.campoFabricante}}" name="{{bien.campoFabricante}}" formControlName="{{bien.campoFabricante}}" class="form-control" type="text" />
-                </td>
-                <td>
-                  <input id="{{bien.campoClaseSia}}" name="{{bien.campoClaseSia}}" formControlName="{{bien.campoClaseSia}}" class="form-control" type="text" />
-                </td>
-                <td>
-                  <input id="{{bien.campoCantidad}}" name="{{bien.campoCantidad}}" formControlName="{{bien.campoCantidad}}" class="form-control" type="text" numbersOnly />
-                </td>
-                <td>
-                  <input id="{{bien.campoValorEstimado}}" name="{{bien.campoValorEstimado}}" formControlName="{{bien.campoValorEstimado}}" class="form-control" type="text" numbersOnly />
-                </td>
-                <td>
-                  <input id="{{bien.campoAdjunto}}" name="{{bien.campoAdjunto}}" formControlName="{{bien.campoAdjunto}}" type="file" />
-                </td>
-                <td>
-                  <textarea id="{{bien.campoComentarios}}" name="{{bien.campoComentarios}}" formControlName="{{bien.campoComentarios}}" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
-                </td>
-                <td>
-                  <button class="btn btn-default" type="button" (click)="borrarBienes(bien)">Borrar</button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input id="codigoBienes0" name="codigoBienes0" formControlName="codigoBienes0"  class="form-control" type="text" />
-                </td>
-                <td>
-                  <textarea id="descripcionBienes0" name="descripcionBienes0" formControlName="descripcionBienes0" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
-                </td>
-                <td>
-                  <input id="modeloBienes0" name="modeloBienes0" formControlName="modeloBienes0" class="form-control" type="text" />
-                </td>
-                <td>
-                  <input id="fabricanteBienes0" name="fabricanteBienes0" formControlName="fabricanteBienes0" class="form-control" type="text" />
-                </td>
-                <td>
-                  <input id="claseSiaBienes0" name="claseSiaBienes0" formControlName="claseSiaBienes0" class="form-control" type="text" />
-                </td>
-                <td>
-                  <input id="cantidadBienes0" name="cantidadBienes0" formControlName="cantidadBienes0" class="form-control" type="text" numbersOnly />
-                </td>
-                <td>
-                  <input id="valorEstimadoBienes0" name="valorEstimadoBienes0" formControlName="valorEstimadoBienes0" class="form-control" type="text" numbersOnly />
-                </td>
-                <td>
-                  <input id="adjuntoBienes0" name="adjuntoBienes0" formControlName="adjuntoBienes0" type="file" />
-                </td>
-                <td>
-                  <textarea id="comentariosBienes0" name="comentariosBienes0" formControlName="comentariosBienes0" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
-                </td>
-                <td>
-                  <button class="btn btn-default" type="button" (click)="agregarBienes()">Agregar</button>
-                </td>
-              </tr>
-          </table>
+
         </div>
       </div>
     </div>
@@ -224,66 +148,11 @@
     <div class="form-group row">
       <div class="col-md-12">
         <label for="condiciones-tecnicas-servicios">Condiciones técnicas servicios</label>
+        <div class="btn-agregar-condiciones-servicios">
+            <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar condicion técnica servicios</button>
+          </div>
         <div id="condiciones-tecnicas-servicios" class="table-responsive">
-          <table class="table">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">Código</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Valor Estimado</th>
-                <th scope="col">Adjunto</th>
-                <th scope="col">Comentarios</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let servicio of servicios">
-                <td>
-                  <input id="{{servicio.campoCodigo}}" name="{{servicio.campoCodigo}}" formControlName="{{servicio.campoCodigo}}" class="form-control" type="text" />
-                </td>
-                <td>
-                  <textarea id="{{servicio.campoCodigo}}" name="{{servicio.campoCodigo}}" formControlName="{{servicio.campoDescripcion}}" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
-                </td>
-                <td>
-                  <input id="{{servicio.campoCantidad}}" name="{{servicio.campoCantidad}}" formControlName="{{servicio.campoCantidad}}" class="form-control" type="text" numbersOnly />
-                </td>
-                <td>
-                  <input id="{{servicio.campoValorEstimado}}" name="{{servicio.campoValorEstimado}}" formControlName="{{servicio.campoValorEstimado}}" class="form-control" type="text" numbersOnly />
-                </td>
-                <td>
-                  <input id="{{servicio.campoAdjunto}}" name="{{servicio.campoAdjunto}}" formControlName="{{servicio.campoAdjunto}}" type="file" />
-                </td>
-                <td>
-                  <textarea id="{{servicio.campoComentarios}}" name="{{servicio.campoComentarios}}" formControlName="{{servicio.campoComentarios}}" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
-                </td>
-                <td>
-                  <button class="btn btn-default" type="button" (click)="borrarServicios(servicio)">Borrar</button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input id="codigoServicios0" name="codigoServicios0" formControlName="codigoServicios0"  class="form-control" type="text" />
-                </td>
-                <td>
-                  <textarea id="descripcionServicios0" name="descripcionServicios0" formControlName="descripcionServicios0" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
-                </td>
-                <td>
-                  <input id="cantidadServicios0" name="cantidadServicios0" formControlName="cantidadServicios0" class="form-control" type="text" numbersOnly />
-                </td>
-                <td>
-                  <input id="valorEstimadoServicios0" name="valorEstimadoServicios0" formControlName="valorEstimadoServicios0" class="form-control" type="text" numbersOnly />
-                </td>
-                <td>
-                  <input id="adjuntoServicios0" name="adjuntoServicios0" formControlName="adjuntoServicios0" type="file" />
-                </td>
-                <td>
-                  <textarea id="comentariosServicios0" name="comentariosServicios0" formControlName="comentariosServicios0" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
-                </td>
-                <td>
-                  <button class="btn btn-default" type="button" (click)="agregarServicios()">Agregar</button>
-                </td>
-              </tr>
-          </table>
+          
         </div>
       </div>
     </div>
@@ -298,3 +167,27 @@
     </div>
   </form>
 </div>
+
+<ng-template #templateCondicionesTecnicasBienes>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Agregar condición técnica bienes</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Just a modal with a bunch of words inside, nothing serious.
+    </div>
+  </ng-template>
+
+  <ng-template #templateCondicionesTecnicasServicios>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Agregar condición técnica servicios</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Just a modal with a bunch of words inside, nothing serious.
+      </div>
+    </ng-template>

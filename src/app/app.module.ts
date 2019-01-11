@@ -22,6 +22,7 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberDirective } from './directivas/numbers-only.directive';
+import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { NumberDirective } from './directivas/numbers-only.directive';
     Select2Module,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    ModalModule,
     MatRadioModule,
     MatFormFieldModule,
     MatAutocompleteModule,
@@ -68,7 +70,7 @@ import { NumberDirective } from './directivas/numbers-only.directive';
       {path:'verificar-material', component:VerificarMaterialComponent}
     ])
   ],
-  providers: [SPServicio],
+  providers: [SPServicio, BsModalService, ModalBackdropComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

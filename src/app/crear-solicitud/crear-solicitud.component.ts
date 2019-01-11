@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { TipoSolicitud } from '../dominio/tipoSolicitud';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { SPServicio } from '../servicios/sp-servicio';
@@ -19,6 +19,7 @@ import { Solicitud } from '../dominio/solicitud';
 import { ItemAddResult } from 'sp-pnp-js';
 import { CondicionTecnicaBienes } from '../dominio/condicionTecnicaBienes';
 import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -54,8 +55,9 @@ export class CrearSolicitudComponent implements OnInit {
   solicitudGuardar: Solicitud;
   condicionTBGuardar: CondicionTecnicaBienes;
   condicionTSGuardar: CondicionTecnicaServicios;
+  modalRef: BsModalRef;
 
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, public toastr: ToastrManager, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio,private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
     this.mostrarContratoMarco = false;
     this.loading = false;
@@ -95,7 +97,6 @@ export class CrearSolicitudComponent implements OnInit {
 
   RegistrarFormulario() {
     this.solpFormulario = this.formBuilder.group({
-      //Generales
       tipoSolicitud: [''],
       cm: [''],
       solicitante: [''],
@@ -107,24 +108,7 @@ export class CrearSolicitudComponent implements OnInit {
       comprador: [''],
       fechaEntregaDeseada: [''],
       alcance: [''],
-      justificacion: [''],
-      //Primera fila de condiciones técnicas bienes
-      codigoBienes0: [''],
-      descripcionBienes0: [''],
-      modeloBienes0: [''],
-      fabricanteBienes0: [''],
-      claseSiaBienes0: [''],
-      cantidadBienes0: [''],
-      valorEstimadoBienes0: [''],
-      adjuntoBienes0: [''],
-      comentariosBienes0: [''],
-      //Primera fila de condiciones técnicas servicios
-      codigoServicios0: [''],
-      descripcionServicios0: [''],
-      cantidadServicios0: [''],
-      valorEstimadoServicios0: [''],
-      adjuntoServicios0: [''],
-      comentariosServicios0: ['']
+      justificacion: ['']
     });
   }
 
@@ -262,71 +246,6 @@ export class CrearSolicitudComponent implements OnInit {
     });
   }
 
-  agregarBienes() {
-    let indice = this.contadorBienes + 1;
-    let campoCodigo = "codigoBienes" + indice.toString();
-    let campoDescripcion = "descripcionBienes" + indice.toString();
-    let campoModelo = "modeloBienes" + indice.toString();
-    let campoFabricante = "fabricanteBienes" + indice.toString();
-    let campoClaseSia = "claseSiaBienes" + indice.toString();
-    let campoCantidad = "cantidadBienes" + indice.toString();
-    let campoValorEstimado = "valorEstimadoBienes" + indice.toString();
-    let campoAdjunto = "adjuntoBienes" + indice.toString();
-    let campoComentarios = "comentariosBienes" + indice.toString();
-    this.solpFormulario.addControl(campoCodigo, new FormControl());
-    this.solpFormulario.addControl(campoDescripcion, new FormControl());
-    this.solpFormulario.addControl(campoModelo, new FormControl());
-    this.solpFormulario.addControl(campoFabricante, new FormControl());
-    this.solpFormulario.addControl(campoClaseSia, new FormControl());
-    this.solpFormulario.addControl(campoCantidad, new FormControl());
-    this.solpFormulario.addControl(campoValorEstimado, new FormControl());
-    this.solpFormulario.addControl(campoAdjunto, new FormControl());
-    this.solpFormulario.addControl(campoComentarios, new FormControl());
-    this.bienes.push(new Bienes(indice, campoCodigo, campoDescripcion, campoModelo, campoFabricante, campoClaseSia, campoCantidad, campoValorEstimado, campoAdjunto, campoComentarios));
-    this.contadorBienes++;
-  }
-
-  agregarServicios() {
-    let indice = this.contadorServicios + 1;
-    let campoCodigo = "codigoServicios" + indice.toString();
-    let campoDescripcion = "descripcionServicios" + indice.toString();
-    let campoCantidad = "cantidadServicios" + indice.toString();
-    let campoValorEstimado = "valorEstimadoServicios" + indice.toString();
-    let campoAdjunto = "adjuntoServicios" + indice.toString();
-    let campoComentarios = "comentariosServicios" + indice.toString();
-    this.solpFormulario.addControl(campoCodigo, new FormControl());
-    this.solpFormulario.addControl(campoDescripcion, new FormControl());
-    this.solpFormulario.addControl(campoCantidad, new FormControl());
-    this.solpFormulario.addControl(campoValorEstimado, new FormControl());
-    this.solpFormulario.addControl(campoAdjunto, new FormControl());
-    this.solpFormulario.addControl(campoComentarios, new FormControl());
-    this.servicios.push(new Servicios(indice, campoCodigo, campoDescripcion, campoCantidad, campoValorEstimado, campoAdjunto, campoComentarios));
-    this.contadorServicios++;
-  }
-
-  borrarBienes(bien) {
-    this.bienes = this.bienes.filter(item => item !== bien);
-    this.solpFormulario.removeControl(bien.campoCodigo);
-    this.solpFormulario.removeControl(bien.campoDescripcion);
-    this.solpFormulario.removeControl(bien.campoModelo);
-    this.solpFormulario.removeControl(bien.campoFabricante);
-    this.solpFormulario.removeControl(bien.campoClaseSia);
-    this.solpFormulario.removeControl(bien.campoCantidad);
-    this.solpFormulario.removeControl(bien.campoValorEstimado);
-    this.solpFormulario.removeControl(bien.campoAdjunto);
-    this.solpFormulario.removeControl(bien.campoComentarios);
-  }
-
-  borrarServicios(servicio) {
-    this.servicios = this.servicios.filter(item => item !== servicio);
-    this.solpFormulario.removeControl(servicio.campoCodigo);
-    this.solpFormulario.removeControl(servicio.campoDescripcion);
-    this.solpFormulario.removeControl(servicio.campoCantidad);
-    this.solpFormulario.removeControl(servicio.campoValorEstimado);
-    this.solpFormulario.removeControl(servicio.campoAdjunto);
-    this.solpFormulario.removeControl(servicio.campoComentarios);
-  }
-
   guardarSolicitud() {
     let respuesta;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
@@ -395,25 +314,11 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     respuesta = this.ValidarCondicionesContractuales();
-
-    if (respuesta == false) {
-      return respuesta;
-    }
-
-    respuesta = this.ValidarCondicionesTecnicasBienes(pais);
-
-    if (respuesta == false) {
-      return respuesta;
-    }
-
-    respuesta = this.ValidarCondicionesTecnicasServicios(pais);
-
     if (respuesta == false) {
       return respuesta;
     }
 
     if (respuesta == true) {
-
       this.solicitudGuardar = new Solicitud(
         'Solicitud Solpes: ' + new Date(),
         tipoSolicitud,
@@ -432,8 +337,6 @@ export class CrearSolicitudComponent implements OnInit {
 
       this.servicio.agregarSolicitud(this.solicitudGuardar).then(
         (item: ItemAddResult) => {
-          this.guardarCondicionesTecnicasBienes(item);
-          this.guardarCondicionesTecnicasServicios(item);
           this.MostrarExitoso("La solicitud se ha guardado correctamente");
           this.router.navigate(['/mis-solicitudes']);
         }, err => {
@@ -441,47 +344,6 @@ export class CrearSolicitudComponent implements OnInit {
         }
       )
     }
-  }
-
-  guardarCondicionesTecnicasServicios(itemSolicitud: ItemAddResult): any {
-    this.servicios.forEach(servicio => {
-      let codigo = this.solpFormulario.controls[servicio.campoCodigo].value;
-      let descripcion = this.solpFormulario.controls[servicio.campoDescripcion].value;
-      let cantidad = this.solpFormulario.controls[servicio.campoCantidad].value;
-      let valorEstimado = this.solpFormulario.controls[servicio.campoValorEstimado].value;
-      let comentarios = this.solpFormulario.controls[servicio.campoComentarios].value;
-      let adjunto = this.solpFormulario.controls[servicio.campoAdjunto];
-      this.condicionTSGuardar = new CondicionTecnicaServicios("Condición técnica de servicios", itemSolicitud.data.Id, codigo, descripcion, cantidad, valorEstimado, comentarios);
-      this.servicio.agregarCondicionesTecnicasServicios(this.condicionTSGuardar).then(
-        (itemCondicionTS: ItemAddResult) => {
-          console.log("Guarda la condición técnica de servicios: " + servicio.id);
-        }, err => {
-          this.mostrarError('Error en el guardado de condiciones técnicas de servicios');
-        }
-      )
-    });
-  }
-
-  guardarCondicionesTecnicasBienes(itemSolicitud: ItemAddResult): any {
-    this.bienes.forEach(bien => {
-      let codigo = this.solpFormulario.controls[bien.campoCodigo].value;
-      let descripcion = this.solpFormulario.controls[bien.campoDescripcion].value;
-      let modelo = this.solpFormulario.controls[bien.campoModelo].value;
-      let fabricante = this.solpFormulario.controls[bien.campoFabricante].value;
-      let claseSia = this.solpFormulario.controls[bien.campoClaseSia].value;
-      let cantidad = this.solpFormulario.controls[bien.campoCantidad].value;
-      let valorEstimado = this.solpFormulario.controls[bien.campoValorEstimado].value;
-      let comentarios = this.solpFormulario.controls[bien.campoComentarios].value;
-      let adjunto = this.solpFormulario.controls[bien.campoAdjunto];
-      this.condicionTBGuardar = new CondicionTecnicaBienes("Condición técnica de bienes", itemSolicitud.data.Id, codigo, descripcion, modelo, fabricante, claseSia, cantidad, valorEstimado, comentarios);
-      this.servicio.agregarCondicionesTecnicasBienes(this.condicionTBGuardar).then(
-        (itemCondicionTB: ItemAddResult) => {
-          console.log("Guarda la condición técnica de bienes: " + bien.id);
-        }, err => {
-          this.mostrarError('Error en el guardado de condiciones técnicas de bienes');
-        }
-      )
-    });
   }
 
   construirJsonCondicionesContractuales(): string {
@@ -493,143 +355,6 @@ export class CrearSolicitudComponent implements OnInit {
     this.cadenaJsonCondicionesContractuales = this.cadenaJsonCondicionesContractuales.substring(0, this.cadenaJsonCondicionesContractuales.length - 1);
     this.cadenaJsonCondicionesContractuales += (']}')
     return this.cadenaJsonCondicionesContractuales;
-  }
-
-  private ValidarCondicionesTecnicasServicios(pais): boolean {
-    let respuesta = true;
-    //Se debe validar la primera fila de servicios
-    let codigoServicios = this.solpFormulario.controls['codigoServicios0'].value;
-    let descripcion = this.solpFormulario.controls['descripcionServicios0'].value;
-    let cantidad = this.solpFormulario.controls['cantidadServicios0'].value;
-
-    if (pais == "Brasil") {
-      if (this.EsCampoVacio(codigoServicios)) {
-        this.mostrarAdvertencia("Hay algún código vacío en las Condiciones técnicas de servicios");
-        respuesta = false;
-      }
-    }
-
-    if (this.EsCampoVacio(descripcion)) {
-      this.mostrarAdvertencia("Hay alguna descripción vacía en las Condiciones técnicas de servicios");
-      respuesta = false;
-    }
-
-    if (this.EsCampoVacio(cantidad)) {
-      this.mostrarAdvertencia("Hay alguna cantidad vacía en las Condiciones técnicas de servicios");
-      respuesta = false;
-    }
-
-    this.servicios.forEach(element => {
-      let codigoServicios = this.solpFormulario.controls[element.campoCodigo].value;
-      let descripcion = this.solpFormulario.controls[element.campoDescripcion].value;
-      let cantidad = this.solpFormulario.controls[element.campoCantidad].value;
-
-      if (pais == "Brasil") {
-        if (this.EsCampoVacio(codigoServicios)) {
-          this.mostrarAdvertencia("Hay algún código vacío en las Condiciones técnicas de servicios");
-          respuesta = false;
-        }
-      }
-
-      if (this.EsCampoVacio(descripcion)) {
-        this.mostrarAdvertencia("Hay alguna descripción vacía en las Condiciones técnicas de servicios");
-        respuesta = false;
-      }
-
-      if (this.EsCampoVacio(cantidad)) {
-        this.mostrarAdvertencia("Hay alguna cantidad vacía en las Condiciones técnicas de servicios");
-        respuesta = false;
-      }
-
-    });
-
-    return respuesta;
-  }
-
-  private ValidarCondicionesTecnicasBienes(pais): boolean {
-    let respuesta = true;
-    //Se debe validar la primera fila de bienes
-    let codigoBienes = this.solpFormulario.controls['codigoBienes0'].value;
-    let descripcion = this.solpFormulario.controls['descripcionBienes0'].value;
-    let modelo = this.solpFormulario.controls['modeloBienes0'].value;
-    let fabricante = this.solpFormulario.controls['fabricanteBienes0'].value;
-    let cantidad = this.solpFormulario.controls['cantidadBienes0'].value;
-    let adjunto = this.solpFormulario.controls['adjuntoBienes0'].value;
-
-    if (pais == "Brasil") {
-      if (this.EsCampoVacio(codigoBienes)) {
-        this.mostrarAdvertencia("Hay algún código vacío en las Condiciones técnicas de bienes");
-        respuesta = false;
-      }
-    }
-
-    if (this.EsCampoVacio(descripcion)) {
-      this.mostrarAdvertencia("Hay alguna descripción vacía en las Condiciones técnicas de bienes");
-      respuesta = false;
-    }
-
-    if (this.EsCampoVacio(modelo)) {
-      this.mostrarAdvertencia("Hay algún modelo vacío en las Condiciones técnicas de bienes");
-      respuesta = false;
-    }
-
-    if (this.EsCampoVacio(fabricante)) {
-      this.mostrarAdvertencia("Hay alguna fabricante vacío en las Condiciones técnicas de bienes");
-      respuesta = false;
-    }
-
-    if (this.EsCampoVacio(cantidad)) {
-      this.mostrarAdvertencia("Hay alguna cantidad vacía en las Condiciones técnicas de bienes");
-      respuesta = false;
-    }
-
-    if (this.EsCampoVacio(adjunto)) {
-      this.mostrarAdvertencia("Faltan adjuntos en las Condiciones técnicas de bienes");
-      respuesta = false;
-    }
-
-    this.bienes.forEach(element => {
-      let codigoBienes = this.solpFormulario.controls[element.campoCodigo].value;
-      let descripcion = this.solpFormulario.controls[element.campoDescripcion].value;
-      let modelo = this.solpFormulario.controls[element.campoModelo].value;
-      let fabricante = this.solpFormulario.controls[element.campoFabricante].value;
-      let cantidad = this.solpFormulario.controls[element.campoCantidad].value;
-      let adjunto = this.solpFormulario.controls[element.campoAdjunto].value;
-
-      if (pais == "Brasil") {
-        if (this.EsCampoVacio(codigoBienes)) {
-          this.mostrarAdvertencia("Hay algún código vacío en las Condiciones técnicas de bienes");
-          respuesta = false;
-        }
-      }
-
-      if (this.EsCampoVacio(descripcion)) {
-        this.mostrarAdvertencia("Hay alguna descripción vacía en las Condiciones técnicas de bienes");
-        respuesta = false;
-      }
-
-      if (this.EsCampoVacio(modelo)) {
-        this.mostrarAdvertencia("Hay algún modelo vacío en las Condiciones técnicas de bienes");
-        respuesta = false;
-      }
-
-      if (this.EsCampoVacio(fabricante)) {
-        this.mostrarAdvertencia("Hay alguna fabricante vacío en las Condiciones técnicas de bienes");
-        respuesta = false;
-      }
-
-      if (this.EsCampoVacio(cantidad)) {
-        this.mostrarAdvertencia("Hay alguna cantidad vacía en las Condiciones técnicas de bienes");
-        respuesta = false;
-      }
-
-      if (this.EsCampoVacio(adjunto)) {
-        this.mostrarAdvertencia("Faltan adjuntos en las Condiciones técnicas de bienes");
-        respuesta = false;
-      }
-    });
-
-    return respuesta;
   }
 
   private ValidarCondicionesContractuales(): boolean {
@@ -654,6 +379,20 @@ export class CrearSolicitudComponent implements OnInit {
 
   salir() {
     this.router.navigate(["/mis-solicitudes"]);
+  }
+
+  abrirModalCTB(template: TemplateRef<any>){
+    this.modalRef = this.modalServicio.show(
+      template,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
+
+  abrirModalCTS(template: TemplateRef<any>){
+    this.modalRef = this.modalServicio.show(
+      template,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
   }
 
 }

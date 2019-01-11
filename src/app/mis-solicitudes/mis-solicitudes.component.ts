@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
@@ -11,7 +11,7 @@ import { Solicitud } from '../dominio/solicitud';
 export class MisSolicitudesComponent implements OnInit {
   usuarioActual : Usuario;
   misSolicitudes: Solicitud[] = [];
-  
+
   constructor( private servicio: SPServicio) { }
 
   ngOnInit() {
@@ -42,5 +42,4 @@ export class MisSolicitudesComponent implements OnInit {
       }
     )
   }
-
 }
