@@ -17,6 +17,8 @@ import { Servicios } from '../dominio/servicios';
 import { Router } from '@angular/router';
 import { Solicitud } from '../dominio/solicitud';
 import { ItemAddResult } from 'sp-pnp-js';
+import { CondicionTecnicaBienes } from '../dominio/condicionTecnicaBienes';
+import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -44,13 +46,14 @@ export class CrearSolicitudComponent implements OnInit {
   dataUsuarios: Select2Data = [
     { value: 'Seleccione', label: 'Seleccione' }
   ];
-
   contadorBienes = 0;
   private bienes: Bienes[] = [];
   contadorServicios = 0;
   private servicios: Servicios[] = [];
   cadenaJsonCondicionesContractuales: string;
   solicitudGuardar: Solicitud;
+  condicionTBGuardar: CondicionTecnicaBienes;
+  condicionTSGuardar: CondicionTecnicaServicios;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
@@ -325,7 +328,6 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   guardarSolicitud() {
-
     let respuesta;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
@@ -431,20 +433,55 @@ export class CrearSolicitudComponent implements OnInit {
       this.servicio.agregarSolicitud(this.solicitudGuardar).then(
         (item: ItemAddResult) => {
           this.guardarCondicionesTecnicasBienes(item);
-          //this.MostrarExitoso("La solicitud se ha guardado correctamente");
-          //this.router.navigate(['/mis-solicitudes']);
+          this.guardarCondicionesTecnicasServicios(item);
+          this.MostrarExitoso("La solicitud se ha guardado correctamente");
+          this.router.navigate(['/mis-solicitudes']);
         }, err => {
           this.mostrarError('Error en la creación de la solicitud');
         }
       )
     }
-
-    console.log(this.solicitudGuardar);
   }
 
-  guardarCondicionesTecnicasBienes(item: ItemAddResult): any {
-    console.log(item);
+  guardarCondicionesTecnicasServicios(itemSolicitud: ItemAddResult): any {
+    this.servicios.forEach(servicio => {
+      let codigo = this.solpFormulario.controls[servicio.campoCodigo].value;
+      let descripcion = this.solpFormulario.controls[servicio.campoDescripcion].value;
+      let cantidad = this.solpFormulario.controls[servicio.campoCantidad].value;
+      let valorEstimado = this.solpFormulario.controls[servicio.campoValorEstimado].value;
+      let comentarios = this.solpFormulario.controls[servicio.campoComentarios].value;
+      let adjunto = this.solpFormulario.controls[servicio.campoAdjunto];
+      this.condicionTSGuardar = new CondicionTecnicaServicios("Condición técnica de servicios", itemSolicitud.data.Id, codigo, descripcion, cantidad, valorEstimado, comentarios);
+      this.servicio.agregarCondicionesTecnicasServicios(this.condicionTSGuardar).then(
+        (itemCondicionTS: ItemAddResult) => {
+          console.log("Guarda la condición técnica de servicios: " + servicio.id);
+        }, err => {
+          this.mostrarError('Error en el guardado de condiciones técnicas de servicios');
+        }
+      )
+    });
+  }
 
+  guardarCondicionesTecnicasBienes(itemSolicitud: ItemAddResult): any {
+    this.bienes.forEach(bien => {
+      let codigo = this.solpFormulario.controls[bien.campoCodigo].value;
+      let descripcion = this.solpFormulario.controls[bien.campoDescripcion].value;
+      let modelo = this.solpFormulario.controls[bien.campoModelo].value;
+      let fabricante = this.solpFormulario.controls[bien.campoFabricante].value;
+      let claseSia = this.solpFormulario.controls[bien.campoClaseSia].value;
+      let cantidad = this.solpFormulario.controls[bien.campoCantidad].value;
+      let valorEstimado = this.solpFormulario.controls[bien.campoValorEstimado].value;
+      let comentarios = this.solpFormulario.controls[bien.campoComentarios].value;
+      let adjunto = this.solpFormulario.controls[bien.campoAdjunto];
+      this.condicionTBGuardar = new CondicionTecnicaBienes("Condición técnica de bienes", itemSolicitud.data.Id, codigo, descripcion, modelo, fabricante, claseSia, cantidad, valorEstimado, comentarios);
+      this.servicio.agregarCondicionesTecnicasBienes(this.condicionTBGuardar).then(
+        (itemCondicionTB: ItemAddResult) => {
+          console.log("Guarda la condición técnica de bienes: " + bien.id);
+        }, err => {
+          this.mostrarError('Error en el guardado de condiciones técnicas de bienes');
+        }
+      )
+    });
   }
 
   construirJsonCondicionesContractuales(): string {
@@ -612,7 +649,7 @@ export class CrearSolicitudComponent implements OnInit {
     if (valorCampo === "" || valorCampo == 'Seleccione' || valorCampo == null) {
       return true;
     }
-    return false
+    return false;
   }
 
   salir() {

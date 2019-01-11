@@ -154,31 +154,31 @@
             <tbody>
               <tr *ngFor="let bien of bienes">
                 <td>
-                  <input formControlName="{{bien.campoCodigo}}" class="form-control" type="text" />
+                  <input id="{{bien.campoCodigo}}" name="{{bien.campoCodigo}}" formControlName="{{bien.campoCodigo}}" class="form-control" type="text" />
                 </td>
                 <td>
-                  <textarea formControlName="{{bien.campoDescripcion}}" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
+                  <textarea id="{{bien.campoDescripcion}}" name="{{bien.campoDescripcion}}" formControlName="{{bien.campoDescripcion}}" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
                 </td>
                 <td>
-                  <input formControlName="{{bien.campoModelo}}" class="form-control" type="text" />
+                  <input id="{{bien.campoModelo}}" name="{{bien.campoModelo}}" formControlName="{{bien.campoModelo}}" class="form-control" type="text" />
                 </td>
                 <td>
-                  <input formControlName="{{bien.campoFabricante}}" class="form-control" type="text" />
+                  <input id="{{bien.campoFabricante}}" name="{{bien.campoFabricante}}" formControlName="{{bien.campoFabricante}}" class="form-control" type="text" />
                 </td>
                 <td>
-                  <input formControlName="{{bien.campoClaseSia}}" class="form-control" type="text" />
+                  <input id="{{bien.campoClaseSia}}" name="{{bien.campoClaseSia}}" formControlName="{{bien.campoClaseSia}}" class="form-control" type="text" />
                 </td>
                 <td>
-                  <input formControlName="{{bien.campoCantidad}}" class="form-control" type="text" numbersOnly />
+                  <input id="{{bien.campoCantidad}}" name="{{bien.campoCantidad}}" formControlName="{{bien.campoCantidad}}" class="form-control" type="text" numbersOnly />
                 </td>
                 <td>
-                  <input formControlName="{{bien.campoValorEstimado}}" class="form-control" type="text" numbersOnly />
+                  <input id="{{bien.campoValorEstimado}}" name="{{bien.campoValorEstimado}}" formControlName="{{bien.campoValorEstimado}}" class="form-control" type="text" numbersOnly />
                 </td>
                 <td>
-                  <input formControlName="{{bien.campoAdjunto}}" type="file" />
+                  <input id="{{bien.campoAdjunto}}" name="{{bien.campoAdjunto}}" formControlName="{{bien.campoAdjunto}}" type="file" />
                 </td>
                 <td>
-                  <textarea formControlName="{{bien.campoComentarios}}" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
+                  <textarea id="{{bien.campoComentarios}}" name="{{bien.campoComentarios}}" formControlName="{{bien.campoComentarios}}" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
                 </td>
                 <td>
                   <button class="btn btn-default" type="button" (click)="borrarBienes(bien)">Borrar</button>
@@ -186,31 +186,31 @@
               </tr>
               <tr>
                 <td>
-                  <input formControlName="codigoBienes0"  class="form-control" type="text" />
+                  <input id="codigoBienes0" name="codigoBienes0" formControlName="codigoBienes0"  class="form-control" type="text" />
                 </td>
                 <td>
-                  <textarea formControlName="descripcionBienes0" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
+                  <textarea id="descripcionBienes0" name="descripcionBienes0" formControlName="descripcionBienes0" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
                 </td>
                 <td>
-                  <input formControlName="modeloBienes0" class="form-control" type="text" />
+                  <input id="modeloBienes0" name="modeloBienes0" formControlName="modeloBienes0" class="form-control" type="text" />
                 </td>
                 <td>
-                  <input formControlName="fabricanteBienes0" class="form-control" type="text" />
+                  <input id="fabricanteBienes0" name="fabricanteBienes0" formControlName="fabricanteBienes0" class="form-control" type="text" />
                 </td>
                 <td>
-                  <input formControlName="claseSiaBienes0" class="form-control" type="text" />
+                  <input id="claseSiaBienes0" name="claseSiaBienes0" formControlName="claseSiaBienes0" class="form-control" type="text" />
                 </td>
                 <td>
-                  <input formControlName="cantidadBienes0" class="form-control" type="text" numbersOnly />
+                  <input id="cantidadBienes0" name="cantidadBienes0" formControlName="cantidadBienes0" class="form-control" type="text" numbersOnly />
                 </td>
                 <td>
-                  <input formControlName="valorEstimadoBienes0" class="form-control" type="text" numbersOnly />
+                  <input id="valorEstimadoBienes0" name="valorEstimadoBienes0" formControlName="valorEstimadoBienes0" class="form-control" type="text" numbersOnly />
                 </td>
                 <td>
-                  <input formControlName="adjuntoBienes0" type="file" />
+                  <input id="adjuntoBienes0" name="adjuntoBienes0" formControlName="adjuntoBienes0" type="file" />
                 </td>
                 <td>
-                  <textarea formControlName="comentariosBienes0" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
+                  <textarea id="comentariosBienes0" name="comentariosBienes0" formControlName="comentariosBienes0" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
                 </td>
                 <td>
                   <button class="btn btn-default" type="button" (click)="agregarBienes()">Agregar</button>
@@ -239,22 +239,22 @@
             <tbody>
               <tr *ngFor="let servicio of servicios">
                 <td>
-                  <input formControlName="{{servicio.campoCodigo}}" class="form-control" type="text" />
+                  <input id="{{servicio.campoCodigo}}" name="{{servicio.campoCodigo}}" formControlName="{{servicio.campoCodigo}}" class="form-control" type="text" />
                 </td>
                 <td>
-                  <textarea formControlName="{{servicio.campoDescripcion}}" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
+                  <textarea id="{{servicio.campoCodigo}}" name="{{servicio.campoCodigo}}" formControlName="{{servicio.campoDescripcion}}" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
                 </td>
                 <td>
-                  <input formControlName="{{servicio.campoCantidad}}" class="form-control" type="text" numbersOnly />
+                  <input id="{{servicio.campoCantidad}}" name="{{servicio.campoCantidad}}" formControlName="{{servicio.campoCantidad}}" class="form-control" type="text" numbersOnly />
                 </td>
                 <td>
-                  <input formControlName="{{servicio.campoValorEstimado}}" class="form-control" type="text" numbersOnly />
+                  <input id="{{servicio.campoValorEstimado}}" name="{{servicio.campoValorEstimado}}" formControlName="{{servicio.campoValorEstimado}}" class="form-control" type="text" numbersOnly />
                 </td>
                 <td>
-                  <input formControlName="{{servicio.campoAdjunto}}" type="file" />
+                  <input id="{{servicio.campoAdjunto}}" name="{{servicio.campoAdjunto}}" formControlName="{{servicio.campoAdjunto}}" type="file" />
                 </td>
                 <td>
-                  <textarea formControlName="{{servicio.campoComentarios}}" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
+                  <textarea id="{{servicio.campoComentarios}}" name="{{servicio.campoComentarios}}" formControlName="{{servicio.campoComentarios}}" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
                 </td>
                 <td>
                   <button class="btn btn-default" type="button" (click)="borrarServicios(servicio)">Borrar</button>
@@ -262,22 +262,22 @@
               </tr>
               <tr>
                 <td>
-                  <input formControlName="codigoServicios0"  class="form-control" type="text" />
+                  <input id="codigoServicios0" name="codigoServicios0" formControlName="codigoServicios0"  class="form-control" type="text" />
                 </td>
                 <td>
-                  <textarea formControlName="descripcionServicios0" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
+                  <textarea id="descripcionServicios0" name="descripcionServicios0" formControlName="descripcionServicios0" class="form-control" type="text" rows="1" placeholder="Escriba la descripción" style="width:120px;"></textarea>
                 </td>
                 <td>
-                  <input formControlName="cantidadServicios0" class="form-control" type="text" numbersOnly />
+                  <input id="cantidadServicios0" name="cantidadServicios0" formControlName="cantidadServicios0" class="form-control" type="text" numbersOnly />
                 </td>
                 <td>
-                  <input formControlName="valorEstimadoServicios0" class="form-control" type="text" numbersOnly />
+                  <input id="valorEstimadoServicios0" name="valorEstimadoServicios0" formControlName="valorEstimadoServicios0" class="form-control" type="text" numbersOnly />
                 </td>
                 <td>
-                  <input formControlName="adjuntoServicios0" type="file" />
+                  <input id="adjuntoServicios0" name="adjuntoServicios0" formControlName="adjuntoServicios0" type="file" />
                 </td>
                 <td>
-                  <textarea formControlName="comentariosServicios0" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
+                  <textarea id="comentariosServicios0" name="comentariosServicios0" formControlName="comentariosServicios0" class="form-control" type="text" rows="1" placeholder="Escriba los comentarios" style="width:120px;"></textarea>
                 </td>
                 <td>
                   <button class="btn btn-default" type="button" (click)="agregarServicios()">Agregar</button>

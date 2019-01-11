@@ -1,8 +1,10 @@
 import { environment } from "src/environments/environment";
-import { default as pnp } from 'sp-pnp-js';
+import { default as pnp, Web } from 'sp-pnp-js';
 import { Injectable } from "@angular/core";
 import { from } from 'rxjs';
 import { Solicitud } from "../dominio/solicitud";
+import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
+import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 
 @Injectable()
 export class SPServicio {
@@ -23,7 +25,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ3MTQ4MDIzLCJuYmYiOjE1NDcxNDgwMjMsImV4cCI6MTU0NzE3NzEyMywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.bsIQ7IS94333YeydD04T61iRawCG-ldn9Mzw5OF0g0cHHNJ-qDxl1jGHHTW-sbbC6HGjNm139XRavbYOJaxDce0GZ-nINmSsdgwn6NPltlCSB0SbSIV8sIJXPWG9sG8BeSb3BB8X5gX4fBylLOl-MNJYqosy5ZQnPyTm9nstvmCk6akFmMEyCuXoska2tViPnAq8NwYIrXCymHrcMig8IaQ5hibuOo-wokNSVS5f49c8pZ950B9ghiSp-NAxetjVJ8jfnwjtDGMZWUkQAfUTxDECKq3ZthNToP8ambQJrDpyde2-v8Lay_b4e3l1iKrciPGZd_SDE68F7ucNm-aDdA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ3MTc1NjMzLCJuYmYiOjE1NDcxNzU2MzMsImV4cCI6MTU0NzIwNDczMywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.iOQXFcr5KFuTOv81IZASfLrajR0_JGLw8VRHvxbHwhii11GLUjWTezzmUJbTOqj-CdC2MFKoO25EkNC0sYp_6ZHddDQGwKHlrQvNDkmlmPMUcVLgqa23NnJ3pVdqNBsSD20CMKb3fbXBSDsBZc8uF0vHDsIgvg8BeqZoTpmZTT3uzOXGDqgSz_5tJW_n8cQsgJKprRfPDi_jlr1cy5MlhlbEkU8egCqLzNVzLw8wYCIuXPvR7EdSrbTwIZfBNeJpG_3HVF2Ankz1yjCNvsdJvxP7R26N2SjDafpI-TJHxnG3HJa7bhiRFUFzV_sQ0CCEV_ep84cDMkRuj4HXF2dmQQ'
             }
         }, environment.urlWeb);
 
@@ -35,17 +37,17 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerTodosLosUsuarios(){
+    ObtenerTodosLosUsuarios() {
         let respuesta = from(this.obtenerConfiguracion().web.siteUsers.get());
         return respuesta;
     }
 
-    ObtenerSolicitudBienesServicios(){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle("Solicitudes").items.getById(1).select("FechaDeseadaEntrega","Solicitante","OrdenadorGasto","Empresa/Title","Pais/Title","Categoria","Subcategoria","Comprador","Alcance","Justificacion","CondicionesContractuales").expand("Empresa","Pais").get());
+    ObtenerSolicitudBienesServicios() {
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle("Solicitudes").items.getById(1).select("FechaDeseadaEntrega", "Solicitante", "OrdenadorGasto", "Empresa/Title", "Pais/Title", "Categoria", "Subcategoria", "Comprador", "Alcance", "Justificacion", "CondicionesContractuales").expand("Empresa", "Pais").get());
         return respuesta;
     }
 
-    ObtenerTiposSolicitud(){
+    ObtenerTiposSolicitud() {
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaTiposSolicitud).items.getAll());
         return respuesta;
     }
@@ -75,7 +77,7 @@ export class SPServicio {
         return respuesta;
     }
 
-    agregarSolicitud(solicitud: Solicitud){
+    agregarSolicitud(solicitud: Solicitud) {
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.add({
             Title: solicitud.titulo,
             TipoSolicitud: solicitud.tipoSolicitud,
@@ -94,12 +96,40 @@ export class SPServicio {
         });
     }
 
-    agregarCondicionesTecnicasBienes(){
-
+    agregarCondicionesTecnicasBienes(condicionTecnicaBienes: CondicionTecnicaBienes) {
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.add({
+            Title: condicionTecnicaBienes.titulo,
+            SolicitudId: condicionTecnicaBienes.idSolicitud,
+            Codigo: condicionTecnicaBienes.codigo,
+            Descripcion: condicionTecnicaBienes.descripcion,
+            Modelo: condicionTecnicaBienes.modelo,
+            Fabricante: condicionTecnicaBienes.fabricante,
+            ClaseSIA: condicionTecnicaBienes.claseSia,
+            Cantidad: condicionTecnicaBienes.cantidad,
+            ValorEstimado: condicionTecnicaBienes.valorEstimado,
+            Comentarios: condicionTecnicaBienes.comentarios
+        });
     }
 
-    agregarCondicionesTecnicasServicios(){
-        
+    agregarAdjuntoCondicionesTecnicasBienes(idSolicitud: number, nombreArchivo: string, archivo: File) {
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idSolicitud);
+        item.attachmentFiles.add("solp-" + Date.now() + "-" + nombreArchivo, archivo);
     }
 
+    agregarCondicionesTecnicasServicios(condicionTecnicaServicios: CondicionTecnicaServicios) {
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.add({
+            Title: condicionTecnicaServicios.titulo,
+            SolicitudId: condicionTecnicaServicios.idSolicitud,
+            Codigo: condicionTecnicaServicios.codigo,
+            Descripcion: condicionTecnicaServicios.descripcion,
+            Cantidad: condicionTecnicaServicios.cantidad,
+            ValorEstimado: condicionTecnicaServicios.valorEstimado,
+            Comentario: condicionTecnicaServicios.comentarios
+        });
+    }
+
+    agregarAdjuntoCondicionesTecnicasServicios(idSolicitud: number, nombreArchivo: string, archivo: File) {
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idSolicitud);
+        item.attachmentFiles.add("solp-" + Date.now() + "-" + nombreArchivo, archivo);
+    }
 }
