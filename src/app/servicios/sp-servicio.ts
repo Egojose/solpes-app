@@ -67,8 +67,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerSubcategorias(idCategoria: number) {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID").expand("Categoria", "Comprador", "CondicionesTecnicas").filter("CategoriaId eq " + idCategoria).get());
+    ObtenerSubcategorias(idCategoria: number, idPais: number) {
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "Pais/Title", "Pais/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID").expand("Categoria", "Comprador", "CondicionesTecnicas", "Pais").filter("CategoriaId eq " + idCategoria + "and PaisId eq " + idPais).get());
         return respuesta;
     }
 
@@ -131,5 +131,10 @@ export class SPServicio {
     agregarAdjuntoCondicionesTecnicasServicios(idSolicitud: number, nombreArchivo: string, archivo: File) {
         let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idSolicitud);
         item.attachmentFiles.add("solp-" + Date.now() + "-" + nombreArchivo, archivo);
+    }
+
+    obtenerParametrosConfiguracion(){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaConfiguracion).items.filter("Title eq 'Configuración'").get());
+        return respuesta;
     }
 }

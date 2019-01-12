@@ -49,7 +49,7 @@
       </div>
       <div class="col-md-6">
         <label for="pais" class="col-form-label">País</label>
-        <select id="pais" name="pais" formControlName="pais" class="form-control">
+        <select id="pais" name="pais" formControlName="pais" class="form-control" (change)="filtrarSubcategorias()">
           <option value="">Seleccione</option>
           <option *ngFor="let pais of paises" [ngValue]="pais" [text]="pais.nombre">
             {{pais.nombre}}
@@ -87,7 +87,7 @@
       </div>
       <div class="col-md-6">
         <label for="fecha-entrega-deseada">Fecha entrega deseada</label>
-        <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text"
+        <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text" [minDate]="minDate"
           autocomplete="off" placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig"
           bsDatepicker>
       </div>
@@ -137,9 +137,68 @@
       <div class="col-md-12">
         <label for="condiciones-tecnicas-bienes">Condiciones técnicas bienes</label>
         <div class="btn-agregar-condiciones-bienes">
-            <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar condicion técnica bienes</button>
-          </div>
+          <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar condicion
+            técnica bienes</button>
+        </div>
         <div id="condiciones-tecnicas-bienes" class="table-responsive">
+
+            <table mat-table
+            [dataSource]="dataSource" multiTemplateDataRows
+            class="mat-elevation-z8">
+       <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+         <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+         <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+       </ng-container>
+     
+       <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+       <ng-container matColumnDef="expandedDetail">
+         <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+           <div class="example-element-detail"
+                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="lista-datos-bienes">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <table st class="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th>Modelo</th>
+                                  <th>Fabricante</th>
+                                  <th>Clase SIA</th>
+                                  <th>Cantidad</th>
+                                  <th>Valor Estimado</th>
+                                  <th>Comentarios</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>{{element.modelo}}</td>
+                                  <td>{{element.fabricante}}</td>
+                                  <td>{{element.claseSia}}</td>
+                                  <td>{{element.cantidad}}</td>
+                                  <td>{{element.valorEstimado}}</td>
+                                  <td>{{element.comentarios}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                      </div>
+                        
+                    </div>
+                   
+
+                </div>
+           </div>
+         </td>
+       </ng-container>
+     
+       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+       <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+           class="example-element-row"
+           [class.example-expanded-row]="expandedElement === element"
+           (click)="expandedElement = expandedElement === element ? null : element">
+       </tr>
+       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+     </table>
+
 
         </div>
       </div>
@@ -149,10 +208,11 @@
       <div class="col-md-12">
         <label for="condiciones-tecnicas-servicios">Condiciones técnicas servicios</label>
         <div class="btn-agregar-condiciones-servicios">
-            <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar condicion técnica servicios</button>
-          </div>
+          <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar condicion
+            técnica servicios</button>
+        </div>
         <div id="condiciones-tecnicas-servicios" class="table-responsive">
-          
+
         </div>
       </div>
     </div>
@@ -169,25 +229,178 @@
 </div>
 
 <ng-template #templateCondicionesTecnicasBienes>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Agregar condición técnica bienes</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Agregar condición técnica bienes</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="ctbFormulario" (ngSubmit)="ctbOnSubmit()">
+        <div class="form-group">
+          <label for="codigo">Código</label>
+          <input id="codigoCTB" name="codigoCTB" formControlName="codigoCTB" class="form-control" type="text"
+            placeholder="Escriba el código" />
+        </div>
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcionCTB" name="descripcionCTB" formControlName="descripcionCTB" class="form-control"
+            type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctbSubmitted && f.descripcionCTB.errors }"></textarea>
+          <div *ngIf="ctbSubmitted && f.descripcionCTB.errors" class="invalid-feedback">
+            <div *ngIf="f.descripcionCTB.errors.required">Este campo es requerido</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="modelo">Modelo</label>
+              <input id="modeloCTB" name="modeloCTB" formControlName="modeloCTB" class="form-control" type="text"
+                placeholder="Escriba el modelo" [ngClass]="{ 'is-invalid': ctbSubmitted && f.modeloCTB.errors }" />
+              <div *ngIf="ctbSubmitted && f.modeloCTB.errors" class="invalid-feedback">
+                <div *ngIf="f.modeloCTB.errors.required">Este campo es requerido</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="fabricante">Fabricante</label>
+              <input id="fabricanteCTB" name="fabricanteCTB" formControlName="fabricanteCTB" class="form-control" type="text"
+                placeholder="Escriba el fabricante" [ngClass]="{ 'is-invalid': ctbSubmitted && f.fabricanteCTB.errors }" />
+              <div *ngIf="ctbSubmitted && f.fabricanteCTB.errors" class="invalid-feedback">
+                <div *ngIf="f.fabricanteCTB.errors.required">Este campo es requerido</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="claseSia">Clase SIA</label>
+              <input id="claseSiaCTB" name="claseSiaCTB" formControlName="claseSiaCTB" class="form-control" type="text"
+                placeholder="Escriba la clase SIA" />
+            </div>
+            <div class="col-md-6">
+              <label for="cantidad">Cantidad</label>
+              <input id="cantidadCTB" name="cantidadCTB" formControlName="cantidadCTB" class="form-control" type="text"
+                numbersOnly placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cantidadCTB.errors }" />
+              <div *ngIf="ctbSubmitted && f.cantidadCTB.errors" class="invalid-feedback">
+                <div *ngIf="f.cantidadCTB.errors.required">Este campo es requerido</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="valorEstimado">Valor Estimado</label>
+              <input id="valorEstimadoCTB" name="valorEstimadoCTB" formControlName="valorEstimadoCTB" class="form-control"
+                type="text" numbersOnly placeholder="Escriba el valor estimado" />
+            </div>
+            <div class="col-md-6">
+              <label for="tipo-moneda">Tipo de moneda</label>
+              <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control"
+                [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
+                <option value="">Seleccione</option>
+                <option value="COP">COP</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+              </select>
+              <div *ngIf="ctbSubmitted && f.tipoMonedaCTB.errors" class="invalid-feedback">
+                <div *ngIf="f.tipoMonedaCTB.errors.required">Este campo es requerido</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="adjunto">Adjunto</label>
+          <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control"
+            [ngClass]="{ 'is-invalid': ctbSubmitted && f.adjuntoCTB.errors }" />
+          <div *ngIf="ctbSubmitted && f.adjuntoCTB.errors" class="invalid-feedback">
+            <div *ngIf="f.adjuntoCTB.errors.required">Este campo es requerido</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="comentarios">Comentarios</label>
+          <textarea id="comentariosCTB" name="comentariosCTB" formControlName="comentariosCTB" class="form-control"
+            type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Guardar Condición</button>
+        </div>
+      </form>
     </div>
-    <div class="modal-body">
-      Just a modal with a bunch of words inside, nothing serious.
-    </div>
-  </ng-template>
+  </div>
+</ng-template>
 
-  <ng-template #templateCondicionesTecnicasServicios>
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Agregar condición técnica servicios</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Just a modal with a bunch of words inside, nothing serious.
-      </div>
-    </ng-template>
+<ng-template #templateCondicionesTecnicasServicios>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Agregar condición técnica servicios</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()">
+        <div class="form-group">
+          <label for="codigo">Código</label>
+          <input id="codigoCTS" name="codigoCTS" formControlName="codigoCTS" class="form-control" type="text"
+            placeholder="Escriba el código" />
+        </div>
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcionCTS" name="descripcionCTS" formControlName="descripcionCTS" class="form-control"
+            type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.descripcionCTS.errors }"></textarea>
+          <div *ngIf="ctsSubmitted && f2.descripcionCTS.errors" class="invalid-feedback">
+            <div *ngIf="f2.descripcionCTS.errors.required">Este campo es requerido</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cantidad">Cantidad</label>
+          <input id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text"
+            numbersOnly placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
+          <div *ngIf="ctsSubmitted && f2.cantidadCTS.errors" class="invalid-feedback">
+            <div *ngIf="f2.cantidadCTS.errors.required">Este campo es requerido</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="valorEstimado">Valor Estimado</label>
+              <input id="valorEstimadoCTS" name="valorEstimadoCTS" formControlName="valorEstimadoCTS" class="form-control"
+                type="text" numbersOnly placeholder="Escriba el valor estimado" />
+            </div>
+            <div class="col-md-6">
+              <label for="tipo-moneda">Tipo de moneda</label>
+              <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control"
+                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
+                <option value="">Seleccione</option>
+                <option value="COP">COP</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+              </select>
+              <div *ngIf="ctsSubmitted && f2.tipoMonedaCTS.errors" class="invalid-feedback">
+                <div *ngIf="f2.tipoMonedaCTS.errors.required">Este campo es requerido</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="adjunto">Adjunto</label>
+          <input id="adjuntoCTS" name="adjuntoCTS" formControlName="adjuntoCTS" type="file" class="form-control"
+            [ngClass]="{ 'is-invalid': ctsSubmitted && f2.adjuntoCTS.errors }" />
+          <div *ngIf="ctsSubmitted && f2.adjuntoCTS.errors" class="invalid-feedback">
+            <div *ngIf="f2.adjuntoCTS.errors.required">Este campo es requerido</div>
+          </div>
+        </div>
+        <div class="form-group">
+            <label for="comentarios">Comentarios</label>
+            <textarea id="comentariosCTS" name="comentariosCTS" formControlName="comentariosCTS" class="form-control"
+              type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
+          </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Guardar Condición</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>

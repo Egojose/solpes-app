@@ -4,7 +4,7 @@ import { setTheme } from 'ngx-bootstrap/utils';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Usuario } from '../dominio/usuario';
 import { Empresa } from '../dominio/empresa';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Select2Data } from 'ng-select2-component';
 import { Pais } from '../dominio/pais';
 import { Categoria } from '../dominio/categoria';
@@ -20,17 +20,32 @@ import { ItemAddResult } from 'sp-pnp-js';
 import { CondicionTecnicaBienes } from '../dominio/condicionTecnicaBienes';
 import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-crear-solicitud',
   templateUrl: './crear-solicitud.component.html',
-  styleUrls: ['./crear-solicitud.component.css']
+  styleUrls: ['./crear-solicitud.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class CrearSolicitudComponent implements OnInit {
+
+
+
   colorTheme = 'theme-blue';
   bsConfig: Partial<BsDatepickerConfig>;
+  minDate: Date;
   solpFormulario: FormGroup;
-  submitted = false;
+  ctbFormulario: FormGroup;
+  ctbSubmitted = false;
+  ctsFormulario: FormGroup;
+  ctsSubmitted = false;
   tiposSolicitud: TipoSolicitud[] = [];
   empresas: Empresa[] = [];
   mostrarContratoMarco: boolean;
@@ -53,14 +68,23 @@ export class CrearSolicitudComponent implements OnInit {
   private servicios: Servicios[] = [];
   cadenaJsonCondicionesContractuales: string;
   solicitudGuardar: Solicitud;
+
+  condicionesTB : CondicionTecnicaBienes [] = [];
   condicionTBGuardar: CondicionTecnicaBienes;
   condicionTSGuardar: CondicionTecnicaServicios;
   modalRef: BsModalRef;
+  diasEntregaDeseada: number;
 
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio,private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
+  dataSource = this.condicionesTB;
+  columnsToDisplay = ['codigo', 'descripcion'];
+  expandedElement: CondicionTecnicaBienes | null;
+
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
     this.mostrarContratoMarco = false;
     this.loading = false;
+    this.condicionesTB.push(new CondicionTecnicaBienes("prueba 1", 1, "1", "Esto es una descripción de pruebas 1", "modelo 1", "fabricante 1", "clase sia 1", 2, 2500000, "Comentarios 1"));
+    this.condicionesTB.push(new CondicionTecnicaBienes("prueba 2", 1, "2", "Esto es una descripción de pruebas 2", "modelo 2", "fabricante 2", "clase sia 2", 4, 3500000, "Comentarios 2"));
   }
 
   MostrarExitoso(mensaje: string) {
@@ -87,15 +111,78 @@ export class CrearSolicitudComponent implements OnInit {
     this.loading = true;
     this.aplicarTemaCalendario();
     this.RecuperarUsuario();
-    this.RegistrarFormulario();
+    this.RegistrarFormularioSolp();
+    this.RegistrarFormularioCTB();
+    this.RegistrarFormularioCTS();
+    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
+    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
     this.obtenerTiposSolicitud();
   }
 
   aplicarTemaCalendario() {
-    this.bsConfig = Object.assign({}, { containerClass: this.colorTheme });
+    this.bsConfig = Object.assign({}, { containerClass: this.colorTheme, dateInputFormat: 'DD/MM/YYYY' });
   }
 
-  RegistrarFormulario() {
+  RegistrarFormularioCTS() {
+    this.ctsFormulario = this.formBuilder.group({
+      codigoCTS: [''],
+      descripcionCTS: ['', Validators.required],
+      cantidadCTS: ['', Validators.required],
+      valorEstimadoCTS: [''],
+      tipoMonedaCTS: [''],
+      adjuntoCTS: ['', Validators.required],
+      comentariosCTS: ['']
+    });
+  }
+
+  RegistrarFormularioCTB() {
+    this.ctbFormulario = this.formBuilder.group({
+      codigoCTB: [''],
+      descripcionCTB: ['', Validators.required],
+      modeloCTB: ['', Validators.required],
+      fabricanteCTB: ['', Validators.required],
+      claseSiaCTB: [''],
+      cantidadCTB: ['', Validators.required],
+      valorEstimadoCTB: [''],
+      tipoMonedaCTB: [''],
+      adjuntoCTB: ['', Validators.required],
+      comentariosCTB: ['']
+    });
+  }
+
+  ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS() {
+    const tipoMonedaControl = this.ctsFormulario.get('tipoMonedaCTS');
+    this.ctsFormulario.get('valorEstimadoCTS').valueChanges.subscribe(
+      (valor: string) => {
+        if (valor != '') {
+          tipoMonedaControl.setValidators([Validators.required]);
+        }
+        else {
+          tipoMonedaControl.clearValidators();
+        }
+        tipoMonedaControl.updateValueAndValidity();
+      });
+  }
+
+  ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB() {
+    const tipoMonedaControl = this.ctbFormulario.get('tipoMonedaCTB');
+    this.ctbFormulario.get('valorEstimadoCTB').valueChanges.subscribe(
+      (valor: string) => {
+        if (valor != '') {
+          tipoMonedaControl.setValidators([Validators.required]);
+        }
+        else {
+          tipoMonedaControl.clearValidators();
+        }
+        tipoMonedaControl.updateValueAndValidity();
+      });
+  }
+
+  get f() { return this.ctbFormulario.controls; }
+
+  get f2() { return this.ctsFormulario.controls; }
+
+  RegistrarFormularioSolp() {
     this.solpFormulario = this.formBuilder.group({
       tipoSolicitud: [''],
       cm: [''],
@@ -198,6 +285,20 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicio.ObtenerCategorias().subscribe(
       (respuesta) => {
         this.categorias = Categoria.fromJsonList(respuesta);
+        this.obtenerParametrosConfiguracion();
+      }, err => {
+        console.log('Error obteniendo categorías: ' + err);
+      }
+    )
+  }
+
+  obtenerParametrosConfiguracion() {
+    this.servicio.obtenerParametrosConfiguracion().subscribe(
+      (respuesta) => {
+        this.diasEntregaDeseada = respuesta[0].ParametroDiasEntregaDeseada;
+        console.log(this.diasEntregaDeseada);
+        this.minDate = new Date();
+        this.minDate.setDate(this.minDate.getDate() + this.diasEntregaDeseada);
         this.loading = false;
       }, err => {
         console.log('Error obteniendo categorías: ' + err);
@@ -208,15 +309,22 @@ export class CrearSolicitudComponent implements OnInit {
   filtrarSubcategorias() {
     this.loading = true;
     let categoria = this.solpFormulario.controls["categoria"].value;
+    let pais = this.solpFormulario.controls["pais"].value;
     this.limpiarCondicionesContractuales();
-    this.servicio.ObtenerSubcategorias(categoria.id).subscribe(
-      (respuesta) => {
-        this.subcategorias = Subcategoria.fromJsonList(respuesta);
-        this.loading = false;
-      }, err => {
-        console.log('Error obteniendo subcategorias: ' + err);
-      }
-    )
+    if(categoria != '' && pais != ''){
+      this.servicio.ObtenerSubcategorias(categoria.id, pais.id).subscribe(
+        (respuesta) => {
+          console.log(respuesta);
+          this.subcategorias = Subcategoria.fromJsonList(respuesta);
+          console.log(this.subcategorias);
+          this.loading = false;
+        }, err => {
+          console.log('Error obteniendo subcategorias: ' + err);
+        }
+      )
+    }else{
+      this.loading = false;
+    }
   }
 
   cargarCondicionesContractuales() {
@@ -381,18 +489,33 @@ export class CrearSolicitudComponent implements OnInit {
     this.router.navigate(["/mis-solicitudes"]);
   }
 
-  abrirModalCTB(template: TemplateRef<any>){
+  abrirModalCTB(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
 
-  abrirModalCTS(template: TemplateRef<any>){
+  abrirModalCTS(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
 
+  ctbOnSubmit() {
+    this.ctbSubmitted = true;
+    if (this.ctbFormulario.invalid) {
+      return;
+    }
+    alert('SUCCESS!! :-)');
+  }
+
+  ctsOnSubmit() {
+    this.ctsSubmitted = true;
+    if (this.ctsFormulario.invalid) {
+      return;
+    }
+    alert('SUCCESS!! :-)');
+  }
 }
