@@ -87,9 +87,9 @@
       </div>
       <div class="col-md-6">
         <label for="fecha-entrega-deseada">Fecha entrega deseada</label>
-        <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text" [minDate]="minDate"
-          autocomplete="off" placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig"
-          bsDatepicker>
+        <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text"
+          [minDate]="minDate" autocomplete="off" placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker"
+          [bsConfig]="bsConfig" bsDatepicker>
       </div>
     </div>
 
@@ -132,7 +132,6 @@
         </div>
       </div>
     </div>
-
     <div class="form-group row">
       <div class="col-md-12">
         <label for="condiciones-tecnicas-bienes">Condiciones técnicas bienes</label>
@@ -140,66 +139,59 @@
           <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar condicion
             técnica bienes</button>
         </div>
-        <div id="condiciones-tecnicas-bienes" class="table-responsive">
 
-            <table mat-table
-            [dataSource]="dataSource" multiTemplateDataRows
-            class="mat-elevation-z8">
-       <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-         <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-         <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-       </ng-container>
-     
-       <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-       <ng-container matColumnDef="expandedDetail">
-         <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-           <div class="example-element-detail"
-                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                <div class="lista-datos-bienes">
+        <br/>
+        <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
+
+        <div id="condiciones-tecnicas-bienes" class="mat-elevation-z8" [hidden]="emptyCTB">
+          <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+            <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+              <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+              <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+            </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                  <div class="lista-datos-bienes">
                     <div class="row">
                       <div class="col-md-12">
-                          <table st class="table table-striped">
-                              <thead>
-                                <tr>
-                                  <th>Modelo</th>
-                                  <th>Fabricante</th>
-                                  <th>Clase SIA</th>
-                                  <th>Cantidad</th>
-                                  <th>Valor Estimado</th>
-                                  <th>Comentarios</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>{{element.modelo}}</td>
-                                  <td>{{element.fabricante}}</td>
-                                  <td>{{element.claseSia}}</td>
-                                  <td>{{element.cantidad}}</td>
-                                  <td>{{element.valorEstimado}}</td>
-                                  <td>{{element.comentarios}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
+                        <table st class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>Modelo</th>
+                              <th>Fabricante</th>
+                              <th>Clase SIA</th>
+                              <th>Cantidad</th>
+                              <th>Valor Estimado</th>
+                              <th>Tipo Moneda</th>
+                              <th>Comentarios</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{{element.modelo}}</td>
+                              <td>{{element.fabricante}}</td>
+                              <td>{{element.claseSia}}</td>
+                              <td>{{element.cantidad}}</td>
+                              <td>{{element.valorEstimado}}</td>
+                              <td>{{element.tipoMoneda}}</td>
+                              <td>{{element.comentarios}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                        
                     </div>
-                   
-
+                  </div>
                 </div>
-           </div>
-         </td>
-       </ng-container>
-     
-       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-       <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-           class="example-element-row"
-           [class.example-expanded-row]="expandedElement === element"
-           (click)="expandedElement = expandedElement === element ? null : element">
-       </tr>
-       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-     </table>
-
-
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+              [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+          </table>
         </div>
       </div>
     </div>
@@ -211,7 +203,11 @@
           <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar condicion
             técnica servicios</button>
         </div>
-        <div id="condiciones-tecnicas-servicios" class="table-responsive">
+
+        <br/>
+        <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
+
+        <div id="condiciones-tecnicas-servicios" class="mat-elevation-z8" [hidden]="emptyCTS">
 
         </div>
       </div>
@@ -393,10 +389,10 @@
           </div>
         </div>
         <div class="form-group">
-            <label for="comentarios">Comentarios</label>
-            <textarea id="comentariosCTS" name="comentariosCTS" formControlName="comentariosCTS" class="form-control"
-              type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
-          </div>
+          <label for="comentarios">Comentarios</label>
+          <textarea id="comentariosCTS" name="comentariosCTS" formControlName="comentariosCTS" class="form-control"
+            type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
+        </div>
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Guardar Condición</button>
         </div>

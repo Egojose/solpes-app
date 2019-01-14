@@ -21,6 +21,7 @@ import { CondicionTecnicaBienes } from '../dominio/condicionTecnicaBienes';
 import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -35,9 +36,6 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
   ],
 })
 export class CrearSolicitudComponent implements OnInit {
-
-
-
   colorTheme = 'theme-blue';
   bsConfig: Partial<BsDatepickerConfig>;
   minDate: Date;
@@ -68,23 +66,24 @@ export class CrearSolicitudComponent implements OnInit {
   private servicios: Servicios[] = [];
   cadenaJsonCondicionesContractuales: string;
   solicitudGuardar: Solicitud;
-
   condicionesTB : CondicionTecnicaBienes [] = [];
   condicionTBGuardar: CondicionTecnicaBienes;
+  emptyCTB: boolean;
   condicionTSGuardar: CondicionTecnicaServicios;
+  emptyCTS: boolean;
   modalRef: BsModalRef;
   diasEntregaDeseada: number;
-
-  dataSource = this.condicionesTB;
+  dataSource;
   columnsToDisplay = ['codigo', 'descripcion'];
   expandedElement: CondicionTecnicaBienes | null;
-
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
     this.mostrarContratoMarco = false;
     this.loading = false;
-    this.condicionesTB.push(new CondicionTecnicaBienes("prueba 1", 1, "1", "Esto es una descripción de pruebas 1", "modelo 1", "fabricante 1", "clase sia 1", 2, 2500000, "Comentarios 1"));
-    this.condicionesTB.push(new CondicionTecnicaBienes("prueba 2", 1, "2", "Esto es una descripción de pruebas 2", "modelo 2", "fabricante 2", "clase sia 2", 4, 3500000, "Comentarios 2"));
+    this.emptyCTB = true;
+    this.emptyCTS = true;
+    this.dataSource = new MatTableDataSource();
+    this.dataSource.data = this.condicionesTB;
   }
 
   MostrarExitoso(mensaje: string) {
@@ -99,12 +98,12 @@ export class CrearSolicitudComponent implements OnInit {
     this.toastr.warningToastr(mensaje, 'Validación');
   }
 
-  mostrarInformacion() {
-    this.toastr.infoToastr('This is info toast.', 'Info');
+  mostrarInformacion(mensaje: string) {
+    this.toastr.infoToastr(mensaje, 'Información importante');
   }
 
-  mostrarPersonalizado() {
-    this.toastr.customToastr('Custom Toast', null, { enableHTML: true });
+  mostrarPersonalizado(mensaje: string) {
+    this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
   ngOnInit() {
@@ -508,7 +507,32 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.ctbFormulario.invalid) {
       return;
     }
-    alert('SUCCESS!! :-)');
+
+    let codigo = this.ctbFormulario.controls["codigoCTB"].value;
+    let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
+    let modelo = this.ctbFormulario.controls["modeloCTB"].value;
+    let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
+    let claseSia = this.ctbFormulario.controls["claseSiaCTB"].value;
+    let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
+    let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
+    let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
+    let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
+    let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
+    this.condicionesTB.push(new CondicionTecnicaBienes("Condición Técnicas Bienes" + new Date().toDateString(), null, codigo, descripcion, modelo, fabricante, claseSia, cantidad, valorEstimado, tipoMoneda, comentarios));
+    
+    this.CargarTablaCTB();
+    this.limpiarControlesCTB();
+    this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
+    this.modalRef.hide();    
+  }
+
+  private CargarTablaCTB() {
+    this.dataSource.data = this.condicionesTB;
+    this.emptyCTB = false;
+  }
+
+  limpiarControlesCTB(): any {
+    this.ctbFormulario.reset();
   }
 
   ctsOnSubmit() {
@@ -516,6 +540,15 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.ctsFormulario.invalid) {
       return;
     }
+
+    let codigo = this.ctsFormulario.controls["codigoCTS"].value;
+    let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
+    let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
+    let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
+    let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
+    let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
+    let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
+
     alert('SUCCESS!! :-)');
   }
 }

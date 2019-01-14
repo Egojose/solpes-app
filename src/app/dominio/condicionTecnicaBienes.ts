@@ -8,7 +8,9 @@ export class CondicionTecnicaBienes {
         public claseSia: string,
         public cantidad: number,
         public valorEstimado: number,
+        public tipoMoneda: string,
         public comentarios: string,
+        public archivoAdjunto?: File,
         public adjunto?: any,
         public id?: number) { }
 
@@ -22,6 +24,7 @@ export class CondicionTecnicaBienes {
             element.ClaseSIA,
             element.Cantidad,
             element.ValorEstimado,
+            element.TipoMoneda,
             element.Comentarios,
             element.ID);
     }
