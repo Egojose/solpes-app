@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule } from '@angular/material';
+import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule } from '@angular/material';
 import { Select2Module } from "ng-select2-component";
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ng6-toastr-notifications';
@@ -54,6 +54,7 @@ import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent } f
     MatListModule,
     MatOptionModule,
     MatInputModule,
+    MatToolbarModule,
     ToastrModule.forRoot(),
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
