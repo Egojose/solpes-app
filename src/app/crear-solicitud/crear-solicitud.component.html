@@ -139,20 +139,25 @@
           <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar condicion
             técnica bienes</button>
         </div>
-
         <br/>
         <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
-
         <div id="condiciones-tecnicas-bienes" class="mat-elevation-z8" [hidden]="emptyCTB">
-          <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
-            <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-              <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-              <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+          <table mat-table [dataSource]="dataSourceCTB" multiTemplateDataRows class="mat-elevation-z8">
+            <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTB">
+                <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+                <div *ngIf="column == 'Acciones'; else contenidoCTB">
+                    <td mat-cell *matCellDef="let element"><img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarBienes(element, templateCondicionesTecnicasBienes);" tooltip="Editar bien"
+                      placement="bottom" />&nbsp;<img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/borrar.png" class="icono-tabla" alt="borrar" (click)="borrarBienes(element);" tooltip="Borrar bien"
+                      placement="bottom" /></td>
+                  </div>
+                  <ng-template #contenidoCTB>
+                      <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                  </ng-template>
             </ng-container>
             <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
             <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayCTB.length">
+                <div class="example-element-detail" [@detailExpand]="element == expandedElementCTB ? 'expanded' : 'collapsed'">
                   <div class="lista-datos-bienes">
                     <div class="row">
                       <div class="col-md-12">
@@ -186,9 +191,9 @@
                 </div>
               </td>
             </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
-              [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element">
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayCTB"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayCTB;" class="example-element-row"
+              [class.example-expanded-row]="expandedElementCTB === element" (click)="expandedElementCTB = expandedElementCTB === element ? null : element">
             </tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
           </table>
@@ -203,12 +208,51 @@
           <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar condicion
             técnica servicios</button>
         </div>
-
         <br/>
         <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
-
         <div id="condiciones-tecnicas-servicios" class="mat-elevation-z8" [hidden]="emptyCTS">
-
+          <table mat-table [dataSource]="dataSourceCTS" multiTemplateDataRows class="mat-elevation-z8">
+            <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTS">
+              <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+              <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+            </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayCTS.length">
+                <div class="example-element-detail" [@detailExpand]="element == expandedElementCTS ? 'expanded' : 'collapsed'">
+                  <div class="lista-datos-servicios">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <table st class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>Cantidad</th>
+                              <th>Valor Estimado</th>
+                              <th>Tipo Moneda</th>
+                              <th>Comentarios</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{{element.cantidad}}</td>
+                              <td>{{element.valorEstimado}}</td>
+                              <td>{{element.tipoMoneda}}</td>
+                              <td>{{element.comentarios}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayCTS"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayCTS;" class="example-element-row"
+              [class.example-expanded-row]="expandedElementCTS === element" (click)="expandedElementCTS = expandedElementCTS === element ? null : element">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+          </table>
         </div>
       </div>
     </div>
@@ -226,7 +270,7 @@
 
 <ng-template #templateCondicionesTecnicasBienes>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Agregar condición técnica bienes</h4>
+    <h4 class="modal-title pull-left">{{tituloModalCTB}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -320,7 +364,7 @@
             type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
         </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-primary">Guardar Condición</button>
+          <button type="submit" class="btn btn-primary">{{textoBotonGuardarCT}} Condición</button>
         </div>
       </form>
     </div>
@@ -329,7 +373,7 @@
 
 <ng-template #templateCondicionesTecnicasServicios>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Agregar condición técnica servicios</h4>
+    <h4 class="modal-title pull-left">{{tituloModalCTS}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -382,11 +426,7 @@
         </div>
         <div class="form-group">
           <label for="adjunto">Adjunto</label>
-          <input id="adjuntoCTS" name="adjuntoCTS" formControlName="adjuntoCTS" type="file" class="form-control"
-            [ngClass]="{ 'is-invalid': ctsSubmitted && f2.adjuntoCTS.errors }" />
-          <div *ngIf="ctsSubmitted && f2.adjuntoCTS.errors" class="invalid-feedback">
-            <div *ngIf="f2.adjuntoCTS.errors.required">Este campo es requerido</div>
-          </div>
+          <input id="adjuntoCTS" name="adjuntoCTS" formControlName="adjuntoCTS" type="file" class="form-control" />
         </div>
         <div class="form-group">
           <label for="comentarios">Comentarios</label>

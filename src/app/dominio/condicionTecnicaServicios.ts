@@ -7,6 +7,7 @@ export class CondicionTecnicaServicios{
         public valorEstimado: number,
         public comentarios: string,
         public adjunto?: any,
+        public tipoMoneda?: string,
         public id?: number) { }
 
     public static fromJson(element: any) {
@@ -17,6 +18,7 @@ export class CondicionTecnicaServicios{
             element.Cantidad,
             element.ValorEstimado,
             element.Comentario,
+            element.TipoMoneda,
             element.ID);
     }
 

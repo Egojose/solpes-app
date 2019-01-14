@@ -22,7 +22,7 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberDirective } from './directivas/numbers-only.directive';
-import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent } from 'ngx-bootstrap';
+import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -55,6 +55,7 @@ import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent } f
     MatOptionModule,
     MatInputModule,
     MatToolbarModule,
+    TooltipModule.forRoot(),
     ToastrModule.forRoot(),
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
