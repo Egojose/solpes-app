@@ -78,7 +78,8 @@ export class CrearSolicitudComponent implements OnInit {
   emptyCTS: boolean;
 
 
-  textoBotonGuardarCT: string;
+  textoBotonGuardarCTB: string;
+  textoBotonGuardarCTS: String;
   modalRef: BsModalRef;
   diasEntregaDeseada: number;
 
@@ -99,7 +100,8 @@ export class CrearSolicitudComponent implements OnInit {
     this.dataSourceCTS = new MatTableDataSource();
     this.dataSourceCTB.data = this.condicionesTB;
     this.dataSourceCTS.data = this.condicionesTS;
-    this.textoBotonGuardarCT = "Guardar";
+    this.textoBotonGuardarCTB = "Guardar";
+    this.textoBotonGuardarCTS = "Guardar";
     this.indiceCTB = 1;
     this.indiceCTS = 1;
 
@@ -509,7 +511,7 @@ export class CrearSolicitudComponent implements OnInit {
   abrirModalCTB(template: TemplateRef<any>) {
     this.limpiarControlesCTB();
     this.tituloModalCTB = "Agregar condición técnica de bienes";
-    this.textoBotonGuardarCT = "Guardar";
+    this.textoBotonGuardarCTB = "Guardar";
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' })
@@ -518,7 +520,7 @@ export class CrearSolicitudComponent implements OnInit {
 
   abrirModalCTS(template: TemplateRef<any>) {
     this.tituloModalCTS = "Agregar condición técnica de servicios";
-    this.textoBotonGuardarCT = "Guardar";
+    this.textoBotonGuardarCTS = "Guardar";
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' })
@@ -531,7 +533,7 @@ export class CrearSolicitudComponent implements OnInit {
       return;
     }
 
-    if (this.textoBotonGuardarCT == "Guardar") {
+    if (this.textoBotonGuardarCTB == "Guardar") {
       let codigo = this.ctbFormulario.controls["codigoCTB"].value;
       let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
       let modelo = this.ctbFormulario.controls["modeloCTB"].value;
@@ -550,7 +552,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.modalRef.hide();
     }
 
-    if (this.textoBotonGuardarCT == "Actualizar") {
+    if (this.textoBotonGuardarCTB == "Actualizar") {
       let codigo = this.ctbFormulario.controls["codigoCTB"].value;
       let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
       let modelo = this.ctbFormulario.controls["modeloCTB"].value;
@@ -595,7 +597,7 @@ export class CrearSolicitudComponent implements OnInit {
       return;
     }
 
-    if (this.textoBotonGuardarCT == "Guardar") {
+    if (this.textoBotonGuardarCTS == "Guardar") {
       let codigo = this.ctsFormulario.controls["codigoCTS"].value;
       let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
       let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
@@ -611,7 +613,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.modalRef.hide();
     }
 
-    if (this.textoBotonGuardarCT == "Actualizar") {
+    if (this.textoBotonGuardarCTS == "Actualizar") {
       let codigo = this.ctsFormulario.controls["codigoCTS"].value;
       let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
       let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
@@ -622,7 +624,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar,"Condición Técnicas Servicios" + new Date().toDateString(),null, codigo, descripcion, cantidad, valorEstimado, comentarios, '', tipoMoneda);
       let objIndex = this.condicionesTS.findIndex((obj => obj.indice == this.condicionTS.indice));
       this.condicionesTS[objIndex].indice = this.condicionTS.indice;
-      this.condicionesTB[objIndex].codigo = this.condicionTS.codigo;
+      this.condicionesTS[objIndex].codigo = this.condicionTS.codigo;
       this.condicionesTS[objIndex].descripcion = this.condicionTS.descripcion;
       this.condicionesTS[objIndex].cantidad = this.condicionTS.cantidad;
       this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
@@ -657,7 +659,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
     this.ctbFormulario.controls["comentariosCTB"].setValue(element.comentarios);
     this.tituloModalCTB = "Actualizar condición técnica de bienes";
-    this.textoBotonGuardarCT = "Actualizar";
+    this.textoBotonGuardarCTB = "Actualizar";
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' })
@@ -674,7 +676,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
     this.ctsFormulario.controls["comentariosCTS"].setValue(element.comentarios);
     this.tituloModalCTS = "Actualizar condición técnica de servicios";
-    this.textoBotonGuardarCT = "Actualizar";
+    this.textoBotonGuardarCTS = "Actualizar";
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: 'gray modal-lg' })
