@@ -62,20 +62,22 @@ export class CrearSolicitudComponent implements OnInit {
   contadorServicios = 0;
   cadenaJsonCondicionesContractuales: string;
   solicitudGuardar: Solicitud;
-  tituloModalCTB: string;
 
+  tituloModalCTB: string;
   indiceCTB: number;
   indiceCTBActualizar: number;
   condicionesTB: CondicionTecnicaBienes[] = [];
   condicionTB: CondicionTecnicaBienes;
   emptyCTB: boolean;
 
-
-
   tituloModalCTS: string;
+  indiceCTS: number;
+  indiceCTSActualizar: number;
   condicionesTS: CondicionTecnicaServicios[] = [];
-  condicionTSGuardar: CondicionTecnicaServicios;
+  condicionTS: CondicionTecnicaServicios;
   emptyCTS: boolean;
+
+
   textoBotonGuardarCT: string;
   modalRef: BsModalRef;
   diasEntregaDeseada: number;
@@ -84,7 +86,7 @@ export class CrearSolicitudComponent implements OnInit {
   columnsToDisplayCTB = ['codigo', 'descripcion', 'Acciones'];
   expandedElementCTB: CondicionTecnicaBienes | null;
   dataSourceCTS;
-  columnsToDisplayCTS = ['codigo', 'descripcion'];
+  columnsToDisplayCTS = ['codigo', 'descripcion', 'Acciones'];
   expandedElementCTS: CondicionTecnicaServicios | null;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
@@ -99,6 +101,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.dataSourceCTS.data = this.condicionesTS;
     this.textoBotonGuardarCT = "Guardar";
     this.indiceCTB = 1;
+    this.indiceCTS = 1;
 
   }
 
@@ -591,18 +594,45 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.ctsFormulario.invalid) {
       return;
     }
-    let codigo = this.ctsFormulario.controls["codigoCTS"].value;
-    let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
-    let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
-    let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
-    let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-    let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
-    let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
-    this.condicionesTS.push(new CondicionTecnicaServicios("Condición Técnicas Servicios" + new Date().toDateString(), null, codigo, descripcion, cantidad, valorEstimado, comentarios, '', tipoMoneda));
-    this.CargarTablaCTS();
-    this.limpiarControlesCTS();
-    this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
-    this.modalRef.hide();
+
+    if (this.textoBotonGuardarCT == "Guardar") {
+      let codigo = this.ctsFormulario.controls["codigoCTS"].value;
+      let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
+      let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
+      let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
+      let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
+      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
+      let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
+      this.condicionesTS.push(new CondicionTecnicaServicios(this.indiceCTS,"Condición Técnicas Servicios" + new Date().toDateString(), null, codigo, descripcion, cantidad, valorEstimado, comentarios, '', tipoMoneda));
+      this.indiceCTS++;
+      this.CargarTablaCTS();
+      this.limpiarControlesCTS();
+      this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
+      this.modalRef.hide();
+    }
+
+    if (this.textoBotonGuardarCT == "Actualizar") {
+      let codigo = this.ctsFormulario.controls["codigoCTS"].value;
+      let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
+      let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
+      let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
+      let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
+      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
+      let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
+      this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar,"Condición Técnicas Servicios" + new Date().toDateString(),null, codigo, descripcion, cantidad, valorEstimado, comentarios, '', tipoMoneda);
+      let objIndex = this.condicionesTS.findIndex((obj => obj.indice == this.condicionTS.indice));
+      this.condicionesTS[objIndex].indice = this.condicionTS.indice;
+      this.condicionesTB[objIndex].codigo = this.condicionTS.codigo;
+      this.condicionesTS[objIndex].descripcion = this.condicionTS.descripcion;
+      this.condicionesTS[objIndex].cantidad = this.condicionTS.cantidad;
+      this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
+      this.condicionesTS[objIndex].tipoMoneda = this.condicionTS.tipoMoneda;
+      this.condicionesTS[objIndex].comentarios = this.condicionTS.comentarios;
+      this.CargarTablaCTS();
+      this.limpiarControlesCTS();
+      this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
+      this.modalRef.hide();
+    }
   }
 
   CargarTablaCTS() {
@@ -634,11 +664,36 @@ export class CrearSolicitudComponent implements OnInit {
     );
   }
 
+  editarServicios(element, template: TemplateRef<any>) {
+    this.indiceCTSActualizar = element.indice;
+    this.ctsFormulario.controls["codigoCTS"].setValue(element.codigo);
+    this.ctsFormulario.controls["descripcionCTS"].setValue(element.descripcion);
+    this.ctsFormulario.controls["cantidadCTS"].setValue(element.cantidad);
+    this.ctsFormulario.controls["valorEstimadoCTS"].setValue(element.valorEstimado);
+    this.ctsFormulario.controls["tipoMonedaCTS"].setValue(element.tipoMoneda);
+    this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
+    this.ctsFormulario.controls["comentariosCTS"].setValue(element.comentarios);
+    this.tituloModalCTS = "Actualizar condición técnica de servicios";
+    this.textoBotonGuardarCT = "Actualizar";
+    this.modalRef = this.modalServicio.show(
+      template,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
+
   borrarBienes(element) {
     this.condicionesTB = this.condicionesTB.filter(obj => obj.indice !== element.indice);
     this.dataSourceCTB.data = this.condicionesTB;
-    if(this.dataSourceCTB.data.length == 0){
+    if (this.dataSourceCTB.data.length == 0) {
       this.emptyCTB = true;
+    }
+  }
+
+  borrarServicios(element) {
+    this.condicionesTS = this.condicionesTS.filter(obj => obj.indice !== element.indice);
+    this.dataSourceCTS.data = this.condicionesTS;
+    if (this.dataSourceCTS.data.length == 0) {
+      this.emptyCTS = true;
     }
   }
 }
