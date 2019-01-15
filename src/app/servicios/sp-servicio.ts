@@ -137,4 +137,9 @@ export class SPServicio {
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaConfiguracion).items.filter("Title eq 'Configuración'").get());
         return respuesta;
     }
+
+    obtenerdatosProfile(){
+        let respuesta = from(this.obtenerConfiguracion().profiles.myProperties.get());
+        return respuesta;
+    }
 }

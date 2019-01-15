@@ -318,6 +318,18 @@ export class CrearSolicitudComponent implements OnInit {
         this.diasEntregaDeseada = respuesta[0].ParametroDiasEntregaDeseada;
         this.minDate = new Date();
         this.minDate.setDate(this.minDate.getDate() + this.diasEntregaDeseada);
+        this.obtenerProfile();
+        //this.loading = false;
+      }, err => {
+        console.log('Error obteniendo categorías: ' + err);
+      }
+    )
+  }
+
+  obtenerProfile(){
+    this.servicio.obtenerdatosProfile().subscribe(
+      (respuesta) => {
+        console.log(respuesta);
         this.loading = false;
       }, err => {
         console.log('Error obteniendo categorías: ' + err);
