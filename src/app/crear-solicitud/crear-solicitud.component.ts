@@ -58,31 +58,29 @@ export class CrearSolicitudComponent implements OnInit {
   dataUsuarios: Select2Data = [
     { value: 'Seleccione', label: 'Seleccione' }
   ];
+  correoManager: string;
+  emptyManager: boolean;
   contadorBienes = 0;
   contadorServicios = 0;
   cadenaJsonCondicionesContractuales: string;
   solicitudGuardar: Solicitud;
-
+  idSolicitudGuardada: number;
   tituloModalCTB: string;
   indiceCTB: number;
   indiceCTBActualizar: number;
   condicionesTB: CondicionTecnicaBienes[] = [];
   condicionTB: CondicionTecnicaBienes;
   emptyCTB: boolean;
-
   tituloModalCTS: string;
   indiceCTS: number;
   indiceCTSActualizar: number;
   condicionesTS: CondicionTecnicaServicios[] = [];
   condicionTS: CondicionTecnicaServicios;
   emptyCTS: boolean;
-
-
   textoBotonGuardarCTB: string;
   textoBotonGuardarCTS: String;
   modalRef: BsModalRef;
   diasEntregaDeseada: number;
-
   dataSourceCTB;
   columnsToDisplayCTB = ['codigo', 'descripcion', 'Acciones'];
   expandedElementCTB: CondicionTecnicaBienes | null;
@@ -96,6 +94,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.loading = false;
     this.emptyCTB = true;
     this.emptyCTS = true;
+    this.emptyManager = true;
     this.dataSourceCTB = new MatTableDataSource();
     this.dataSourceCTS = new MatTableDataSource();
     this.dataSourceCTB.data = this.condicionesTB;
@@ -104,7 +103,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.textoBotonGuardarCTS = "Guardar";
     this.indiceCTB = 1;
     this.indiceCTS = 1;
-
+    this.correoManager = "";
   }
 
   MostrarExitoso(mensaje: string) {
@@ -168,6 +167,14 @@ export class CrearSolicitudComponent implements OnInit {
       adjuntoCTB: ['', Validators.required],
       comentariosCTB: ['']
     });
+  }
+
+  seleccionarOrdenadorGastos(event){
+    if(event != "Seleccione"){
+      this.emptyManager = false;
+    }else{
+      this.emptyManager = true;
+    }
   }
 
   ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS() {
@@ -319,7 +326,6 @@ export class CrearSolicitudComponent implements OnInit {
         this.minDate = new Date();
         this.minDate.setDate(this.minDate.getDate() + this.diasEntregaDeseada);
         this.obtenerProfile();
-        //this.loading = false;
       }, err => {
         console.log('Error obteniendo categorías: ' + err);
       }
@@ -329,10 +335,42 @@ export class CrearSolicitudComponent implements OnInit {
   obtenerProfile(){
     this.servicio.obtenerdatosProfile().subscribe(
       (respuesta) => {
-        console.log(respuesta);
+        if(respuesta.ExtendedManagers.results.length > 0){
+          this.correoManager = respuesta.ExtendedManagers.results[0];
+          this.correoManager = this.correoManager.split('|')[2];
+        }
+        if(this.correoManager != ""){
+          this.cargarJefePorDefecto();
+        }else{
+          this.agregarSolicitudInicial();
+        }
+      }, err => {
+        console.log('Error obteniendo profile: ' + err);
+      }
+    )
+  }
+
+  cargarJefePorDefecto(): any {
+    this.servicio.ObtenerUsuarioPorEmail(this.correoManager).subscribe(
+      (respuesta) => {
+        this.emptyManager = false;
+        this.valorUsuarioPorDefecto = respuesta.Id.toString();
+        this.agregarSolicitudInicial();
+      }, err => {
+        console.log('Error obteniendo jefe inmediato: ' + err);
+      }
+    )
+  }
+
+  agregarSolicitudInicial(): any {
+    this.solicitudGuardar = new Solicitud( 'Solicitud Solpes: ' + new Date(),'', '',this.usuarioActual.nombre, null, null, null, '', '', '', null, '', '', '', 'Borrador');
+    this.servicio.agregarSolicitud(this.solicitudGuardar).then(
+      (item: ItemAddResult) => {
+        this.idSolicitudGuardada = item.data.Id;
+        console.log(this.idSolicitudGuardada);
         this.loading = false;
       }, err => {
-        console.log('Error obteniendo categorías: ' + err);
+        this.mostrarError('Error en la creación de la solicitud');
       }
     )
   }
@@ -345,9 +383,7 @@ export class CrearSolicitudComponent implements OnInit {
     if (categoria != '' && pais != '') {
       this.servicio.ObtenerSubcategorias(categoria.id, pais.id).subscribe(
         (respuesta) => {
-          console.log(respuesta);
           this.subcategorias = Subcategoria.fromJsonList(respuesta);
-          console.log(this.subcategorias);
           this.loading = false;
         }, err => {
           console.log('Error obteniendo subcategorias: ' + err);
@@ -385,7 +421,7 @@ export class CrearSolicitudComponent implements OnInit {
     });
   }
 
-  guardarSolicitud() {
+  enviarSolicitud() {
     let respuesta;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
@@ -482,17 +518,20 @@ export class CrearSolicitudComponent implements OnInit {
           this.mostrarError('Error en la creación de la solicitud');
         }
       )
+
     }
   }
 
   construirJsonCondicionesContractuales(): string {
     this.cadenaJsonCondicionesContractuales = '';
-    this.cadenaJsonCondicionesContractuales += ('{ "condiciones":[');
-    this.condicionesContractuales.forEach(condicionContractual => {
-      this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value + '"},');
-    });
-    this.cadenaJsonCondicionesContractuales = this.cadenaJsonCondicionesContractuales.substring(0, this.cadenaJsonCondicionesContractuales.length - 1);
-    this.cadenaJsonCondicionesContractuales += (']}')
+    if(this.condicionesContractuales.length > 0){
+      this.cadenaJsonCondicionesContractuales += ('{ "condiciones":[');
+      this.condicionesContractuales.forEach(condicionContractual => {
+        this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value + '"},');
+      });
+      this.cadenaJsonCondicionesContractuales = this.cadenaJsonCondicionesContractuales.substring(0, this.cadenaJsonCondicionesContractuales.length - 1);
+      this.cadenaJsonCondicionesContractuales += (']}')
+    }
     return this.cadenaJsonCondicionesContractuales;
   }
 
@@ -709,5 +748,69 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.dataSourceCTS.data.length == 0) {
       this.emptyCTS = true;
     }
+  }
+
+  descartarSolicitud(template: TemplateRef<any>){
+    this.modalRef = this.modalServicio.show(template, {class: 'modal-lg'});
+  }
+
+  guardarParcialSolicitud(){
+
+    this.loading = true;
+    let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
+    let cm = this.solpFormulario.controls["cm"].value;
+    let empresa = this.solpFormulario.controls["empresa"].value;
+    let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
+    let valorPais = this.solpFormulario.controls["pais"].value;
+    let pais = valorPais.nombre;
+    let categoria = this.solpFormulario.controls["categoria"].value;
+    let subcategoria = this.solpFormulario.controls["subcategoria"].value;
+    let comprador = this.solpFormulario.controls["comprador"].value;
+    let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
+    let alcance = this.solpFormulario.controls["alcance"].value;
+    let justificacion = this.solpFormulario.controls["justificacion"].value;
+    let estado = "Borrador";
+
+    this.solicitudGuardar = new Solicitud(
+      'Solicitud Solpes: ' + new Date(),
+      (tipoSolicitud != '') ? tipoSolicitud : '',
+      (cm != '') ? cm : '',
+      this.usuarioActual.nombre,
+      (empresa != '') ? empresa : null,
+      (ordenadorGastos != 'Seleccione') ? ordenadorGastos : null,
+      (valorPais != '') ? valorPais.id : null,
+      (categoria != null) ? categoria.nombre : '',
+      (subcategoria != '') ? subcategoria.nombre : '',
+      (comprador != '') ? comprador : '',
+      (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
+      (alcance != '') ? alcance : '',
+      (justificacion != '') ? justificacion : '',
+      this.construirJsonCondicionesContractuales());
+
+      this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
+        (item: ItemAddResult) => {
+          this.MostrarExitoso("La solicitud ha tenido un guardado parcial correcto");
+          this.loading = false;
+        }, err => {
+          this.mostrarError('Error en guardado parcial de la solicitud');
+        }
+      )
+
+  }
+
+  confirmarDescartar(){
+    this.servicio.borrarSolicitud(this.idSolicitudGuardada).then(
+      (respuesta) => {
+        this.modalRef.hide();
+        this.MostrarExitoso("La solicitud se ha borrado correctamente");
+        this.router.navigate(['/mis-solicitudes']);
+      }, err => {
+        console.log('Error al borrar la solicitud: ' + err);
+      }
+    )
+  }
+
+  declinarDescartar(){
+    this.modalRef.hide();
   }
 }

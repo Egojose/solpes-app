@@ -45,7 +45,11 @@
       <div class="col-md-6">
         <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label>
         <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto"
-          class="form-control"></select2>
+          class="form-control" (update)="seleccionarOrdenadorGastos($event)">
+        </select2>
+        <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+            No tiene un jefe asignado en Office 365, debes seleccionar uno
+        </div>
       </div>
       <div class="col-md-6">
         <label for="pais" class="col-form-label">País</label>
@@ -268,7 +272,9 @@
       <div class="col-md-12">
         <div class="botonera">
           <button (click)="salir();" class="salir-solpes-btn btn btn-default">Salir</button>
-          <button (click)="guardarSolicitud();" class="guardar-solpes-btn btn btn-primary">Enviar Solicitud</button>
+          <button (click)="enviarSolicitud();" class="derecha-boton btn btn-success">Enviar Solicitud</button>
+          <button type="button" class="derecha-boton btn btn-primary" (click)="guardarParcialSolicitud();">Guardado parcial</button>
+          <button type="button" class="derecha-boton btn btn-danger" (click)="descartarSolicitud(templateConfirmacionDescartar);">Descartar</button>
         </div>
       </div>
     </div>
@@ -447,3 +453,11 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #templateConfirmacionDescartar>
+    <div class="modal-body text-center">
+      <p>¿Estás seguro que desea descartar la solicitud?</p>
+      <button type="button" class="btn btn-default" (click)="confirmarDescartar()" >Sí</button>
+      <button type="button" class="btn btn-primary" (click)="declinarDescartar()" >No</button>
+    </div>
+  </ng-template>
