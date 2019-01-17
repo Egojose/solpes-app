@@ -15,6 +15,9 @@ export class Solicitud {
         public justificacion: string,
         public condicionesContractuales: any,
         public estado?: string,
+        public responsable?: number,
+        public compraBienes?: boolean,
+        public compraServicios?: boolean,
         public id?: number) { }
 
     public static fromJson(element: any) {
@@ -33,6 +36,9 @@ export class Solicitud {
             element.Justificacion, 
             element.CondicionesContractuales, 
             element.Estado, 
+            element.Responsable,
+            element.CompraBienes,
+            element.CompraServicios,
             element.ID);
     }
 
