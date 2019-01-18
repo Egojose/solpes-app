@@ -145,11 +145,26 @@
     margin-right: 10px;
 }
 
-.guardar-solpes-btn{
+.derecha-boton{
     float: right;
 }
 
 .lista-datos-bienes{
     width: 100%;
 }
+
+.lista-datos-servicios{
+    width: 100%;
+}
+
+.icono-tabla{
+    cursor: pointer;
+}
+
+.asterisco-obligatorio{
+    color: red;
+    margin-left: 3px;
+    margin-top: 10px;
+}
+
 

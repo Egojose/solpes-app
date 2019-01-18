@@ -22,7 +22,8 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberDirective } from './directivas/numbers-only.directive';
-import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent } from 'ngx-bootstrap';
+import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule } from 'ngx-bootstrap';
+import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap-servicios/registrar-entradas-sap-servicios.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent } f
     MisSolicitudesComponent,
     ConsultarSolicitudesComponent,
     RegistrarSolpSapComponent,
-    NumberDirective
+    NumberDirective,
+    RegistrarEntradasSapServiciosComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +57,7 @@ import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent } f
     MatOptionModule,
     MatInputModule,
     MatToolbarModule,
+    TooltipModule.forRoot(),
     ToastrModule.forRoot(),
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
@@ -67,7 +70,8 @@ import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent } f
       {path:'entrega-bienes', component:EntregaBienesComponent},
       {path:'entrega-servicios', component:EntregaServiciosComponent},
       {path:'mis-solicitudes', component:MisSolicitudesComponent},
-      {path:'recepcion-sap', component:RecepcionSapComponent},
+      {path:'registrar-entradas-sap-bienes', component:RecepcionSapComponent},
+      {path:'registrar-entradas-sap-servicios', component:RegistrarEntradasSapServiciosComponent},
       {path:'registrar-solp-sap', component:RegistrarSolpSapComponent},
       {path:'sondeo', component:SondeoComponent},
       {path:'verificar-material', component:VerificarMaterialComponent}

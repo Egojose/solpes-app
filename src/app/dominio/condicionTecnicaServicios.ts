@@ -1,5 +1,7 @@
 export class CondicionTecnicaServicios{
-    constructor(public titulo: string,
+    constructor(
+        public indice: number,
+        public titulo: string,
         public idSolicitud: any,
         public codigo: string,
         public descripcion: string,
@@ -7,6 +9,7 @@ export class CondicionTecnicaServicios{
         public valorEstimado: number,
         public comentarios: string,
         public adjunto?: any,
+        public tipoMoneda?: string,
         public id?: number) { }
 
     public static fromJson(element: any) {
@@ -17,6 +20,7 @@ export class CondicionTecnicaServicios{
             element.Cantidad,
             element.ValorEstimado,
             element.Comentario,
+            element.TipoMoneda,
             element.ID);
     }
 

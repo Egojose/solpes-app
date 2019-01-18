@@ -67,15 +67,18 @@ export class SPServicio {
         return respuesta;
     }
 
+
     ObtenerSubcategorias(idCategoria: number, idPais: number) {
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "Pais/Title", "Pais/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID").expand("Categoria", "Comprador", "CondicionesTecnicas", "Pais").filter("CategoriaId eq " + idCategoria + "and PaisId eq " + idPais).get());
         return respuesta;
     }
 
+
     obtenerMisSolicitudes(usuarioId: number) {
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created").expand("Empresa", "Pais", "OrdenadorGastos", "Author").filter("AuthorId eq " + usuarioId + " ").get());
         return respuesta;
     }
+
 
     agregarSolicitud(solicitud: Solicitud) {
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.add({
@@ -92,7 +95,9 @@ export class SPServicio {
             FechaDeseadaEntrega: solicitud.fechaEntregaDeseada,
             Alcance: solicitud.alcance,
             Justificacion: solicitud.justificacion,
-            CondicionesContractuales: solicitud.condicionesContractuales
+            CondicionesContractuales: solicitud.condicionesContractuales,
+            ResponsableId: solicitud.responsable,
+            Estado: solicitud.estado
         });
     }
 
@@ -104,7 +109,6 @@ export class SPServicio {
             Descripcion: condicionTecnicaBienes.descripcion,
             Modelo: condicionTecnicaBienes.modelo,
             Fabricante: condicionTecnicaBienes.fabricante,
-            ClaseSIA: condicionTecnicaBienes.claseSia,
             Cantidad: condicionTecnicaBienes.cantidad,
             ValorEstimado: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios
@@ -135,6 +139,77 @@ export class SPServicio {
 
     obtenerParametrosConfiguracion(){
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaConfiguracion).items.filter("Title eq 'Configuración'").get());
+        return respuesta;
+    }
+
+    ObtenerUsuarioPorEmail(email : string){
+        let respuesta = from(this.obtenerConfiguracion().web.siteUsers.getByEmail(email).get());
+        return respuesta;
+    }   
+
+    borrarSolicitud(Idsolicitud: number){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(Idsolicitud).delete();
+    }
+
+    actualizarSolicitud(idSolicitud: number, solicitud: Solicitud){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update({
+            Title: solicitud.titulo,
+            TipoSolicitud: solicitud.tipoSolicitud,
+            CM: solicitud.cm,
+            Solicitante: solicitud.solicitante,
+            EmpresaId: solicitud.empresa,
+            OrdenadorGastosId: solicitud.ordenadorGastos,
+            PaisId: solicitud.pais,
+            Categoria: solicitud.categoria,
+            Subcategoria: solicitud.subcategoria,
+            Comprador: solicitud.comprador,
+            FechaDeseadaEntrega: solicitud.fechaEntregaDeseada,
+            Alcance: solicitud.alcance,
+            Justificacion: solicitud.justificacion,
+            CondicionesContractuales: solicitud.condicionesContractuales,
+            ResponsableId: solicitud.responsable,
+            CompraBienes: solicitud.compraBienes,
+            CompraServicios: solicitud.compraServicios,
+            Estado: solicitud.estado
+        });
+    }
+
+    actualizarCondicionesTecnicasBienes(idCondicionTecnicaBienes: number, condicionTecnicaBienes: CondicionTecnicaBienes){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).update({
+            Title: condicionTecnicaBienes.titulo,
+            SolicitudId: condicionTecnicaBienes.idSolicitud,
+            Codigo: condicionTecnicaBienes.codigo,
+            Descripcion: condicionTecnicaBienes.descripcion,
+            Modelo: condicionTecnicaBienes.modelo,
+            Fabricante: condicionTecnicaBienes.fabricante,
+            Cantidad: condicionTecnicaBienes.cantidad,
+            ValorEstimado: condicionTecnicaBienes.valorEstimado,
+            Comentarios: condicionTecnicaBienes.comentarios
+        });
+    }
+
+    borrarCondicionTecnicaBienes(idCondicionTecnicaBienes: number){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).delete();
+    }
+
+    actualizarCondicionesTecnicasServicios(idCondicionTecnicaServicios: number, condicionTecnicaServicios: CondicionTecnicaServicios){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicionTecnicaServicios).update({
+            Title: condicionTecnicaServicios.titulo,
+            SolicitudId: condicionTecnicaServicios.idSolicitud,
+            Codigo: condicionTecnicaServicios.codigo,
+            Descripcion: condicionTecnicaServicios.descripcion,
+            Cantidad: condicionTecnicaServicios.cantidad,
+            ValorEstimado: condicionTecnicaServicios.valorEstimado,
+            Comentario: condicionTecnicaServicios.comentarios
+        });
+    }
+
+    borrarCondicionTecnicaServicios(idCondicionTecnicaServicios: number){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicionTecnicaServicios).delete();
+    }
+
+    obtenerdatosProfile(){
+        let respuesta = from(this.obtenerConfiguracion().profiles.myProperties.get());
         return respuesta;
     }
 }
