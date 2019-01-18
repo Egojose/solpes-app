@@ -20,6 +20,7 @@ import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -72,6 +73,10 @@ export class CrearSolicitudComponent implements OnInit {
   condicionTB: CondicionTecnicaBienes;
   idCondicionTBGuardada: number;
   emptyCTB: boolean;
+  mostrarAdjuntoCTB: boolean;
+  rutaAdjuntoCTB: string;
+  nombreAdjuntoCTB: string;
+
   tituloModalCTS: string;
   indiceCTS: number;
   indiceCTSActualizar: number;
@@ -79,12 +84,16 @@ export class CrearSolicitudComponent implements OnInit {
   condicionTS: CondicionTecnicaServicios;
   idCondicionTSGuardada: number;
   emptyCTS: boolean;
+  rutaAdjuntoCTS: string;
+  nombreAdjuntoCTS: string;
+  mostrarAdjuntoCTS: boolean;
+
   textoBotonGuardarCTB: string;
   textoBotonGuardarCTS: String;
   modalRef: BsModalRef;
   diasEntregaDeseada: number;
   dataSourceCTB;
-  columnsToDisplayCTB =  ['codigo', 'descripcion', 'Acciones'];
+  columnsToDisplayCTB = ['codigo', 'descripcion', 'Acciones'];
   expandedElementCTB: CondicionTecnicaBienes | null;
   dataSourceCTS;
   columnsToDisplayCTS = ['codigo', 'descripcion', 'Acciones'];
@@ -103,6 +112,8 @@ export class CrearSolicitudComponent implements OnInit {
     this.emptyManager = true;
     this.emptyasteriscoCTB = false;
     this.emptyasteriscoCTs = false;
+    this.mostrarAdjuntoCTB = false;
+    this.mostrarAdjuntoCTS = false;
     this.dataSourceCTB = new MatTableDataSource();
     this.dataSourceCTS = new MatTableDataSource();
     this.dataSourceCTB.data = this.condicionesTB;
@@ -536,13 +547,12 @@ export class CrearSolicitudComponent implements OnInit {
           this.mostrarError('Error en la creación de la solicitud');
         }
       )
-
     }
   }
-  
+
   ValidarExistenciaCondicionesTecnicas(): boolean {
     let respuesta = true;
-    if(this.condicionesTB.length == 0 && this.condicionesTS.length == 0){
+    if (this.condicionesTB.length == 0 && this.condicionesTS.length == 0) {
       this.mostrarAdvertencia("Debe existir condiciones técnicas de bienes o condiciones técnicas de servicios");
       respuesta = false;
     }
@@ -587,6 +597,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   abrirModalCTB(template: TemplateRef<any>) {
+    this.mostrarAdjuntoCTB = false;
     this.limpiarControlesCTB();
     this.tituloModalCTB = "Agregar condición técnica de bienes";
     this.textoBotonGuardarCTB = "Guardar";
@@ -597,6 +608,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   abrirModalCTS(template: TemplateRef<any>) {
+    this.mostrarAdjuntoCTS = false;
     this.limpiarControlesCTS();
     this.tituloModalCTS = "Agregar condición técnica de servicios";
     this.textoBotonGuardarCTS = "Guardar";
@@ -612,6 +624,7 @@ export class CrearSolicitudComponent implements OnInit {
       return;
     }
 
+    this.loading = true;
     if (this.textoBotonGuardarCTB == "Guardar") {
       let codigo = this.ctbFormulario.controls["codigoCTB"].value;
       let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
@@ -620,20 +633,41 @@ export class CrearSolicitudComponent implements OnInit {
       let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
       let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
       let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
-      let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
       let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
-      this.condicionTB = new CondicionTecnicaBienes(this.indiceCTB, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+      this.condicionTB.indice = this.indiceCTB;
+      this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
+      this.condicionTB.idSolicitud = this.idSolicitudGuardada;
+      this.condicionTB.codigo = codigo;
+      this.condicionTB.descripcion = descripcion;
+      this.condicionTB.modelo = modelo;
+      this.condicionTB.fabricante = fabricante;
+      this.condicionTB.cantidad = cantidad;
+      this.condicionTB.valorEstimado = valorEstimado;
+      this.condicionTB.comentarios = comentarios;
+      this.condicionTB.tipoMoneda = tipoMoneda;
+      let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
       this.servicio.agregarCondicionesTecnicasBienes(this.condicionTB).then(
         (item: ItemAddResult) => {
           this.condicionTB.id = item.data.Id;
-          this.condicionesTB.push(this.condicionTB);
-          this.indiceCTB++;
-          this.CargarTablaCTB();
-          this.limpiarControlesCTB();
-          this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-          this.modalRef.hide();
+          this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.condicionTB.id, nombreArchivo, this.condicionTB.archivoAdjunto).then(
+            (respuesta) => {
+              console.log(respuesta);
+              this.condicionTB.rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
+              this.condicionesTB.push(this.condicionTB);
+              this.indiceCTB++;
+              this.CargarTablaCTB();
+              this.limpiarControlesCTB();
+              this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
+              this.modalRef.hide();
+              this.loading = false;
+            }, err => {
+              this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
+              this.loading = false;
+            }
+          )
         }, err => {
           this.mostrarError('Error en la creación de la condición técnica de bienes');
+          this.loading = false;
         }
       )
     }
@@ -648,29 +682,88 @@ export class CrearSolicitudComponent implements OnInit {
       let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
       let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
       let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
-      this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
-      this.condicionTB.id = this.idCondicionTBGuardada;
-      this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
-        (item: ItemAddResult) => {
-          let objIndex = this.condicionesTB.findIndex((obj => obj.indice == this.condicionTB.indice));
-          this.condicionesTB[objIndex].indice = this.condicionTB.indice;
-          this.condicionesTB[objIndex].codigo = this.condicionTB.codigo;
-          this.condicionesTB[objIndex].descripcion = this.condicionTB.descripcion;
-          this.condicionesTB[objIndex].modelo = this.condicionTB.modelo;
-          this.condicionesTB[objIndex].fabricante = this.condicionTB.fabricante;
-          this.condicionesTB[objIndex].cantidad = this.condicionTB.cantidad;
-          this.condicionesTB[objIndex].valorEstimado = this.condicionTB.valorEstimado;
-          this.condicionesTB[objIndex].tipoMoneda = this.condicionTB.tipoMoneda;
-          this.condicionesTB[objIndex].comentarios = this.condicionTB.comentarios;
-          this.condicionesTB[objIndex].id = this.condicionTB.id;
-          this.CargarTablaCTB();
-          this.limpiarControlesCTB();
-          this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-          this.modalRef.hide();
-        }, err => {
-          this.mostrarError('Error en la actualización de la condición técnica de bienes');
-        }
-      )
+      if (adjunto == null) {
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTB.id = this.idCondicionTBGuardada;
+        this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
+          (item: ItemAddResult) => {
+            let objIndex = this.condicionesTB.findIndex((obj => obj.indice == this.condicionTB.indice));
+            this.condicionesTB[objIndex].indice = this.condicionTB.indice;
+            this.condicionesTB[objIndex].codigo = this.condicionTB.codigo;
+            this.condicionesTB[objIndex].descripcion = this.condicionTB.descripcion;
+            this.condicionesTB[objIndex].modelo = this.condicionTB.modelo;
+            this.condicionesTB[objIndex].fabricante = this.condicionTB.fabricante;
+            this.condicionesTB[objIndex].cantidad = this.condicionTB.cantidad;
+            this.condicionesTB[objIndex].valorEstimado = this.condicionTB.valorEstimado;
+            this.condicionesTB[objIndex].tipoMoneda = this.condicionTB.tipoMoneda;
+            this.condicionesTB[objIndex].comentarios = this.condicionTB.comentarios;
+            this.condicionesTB[objIndex].id = this.condicionTB.id;
+            this.CargarTablaCTB();
+            this.limpiarControlesCTB();
+            this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
+            this.modalRef.hide();
+            this.loading = false;
+          }, err => {
+            this.mostrarError('Error en la actualización de la condición técnica de bienes');
+            this.loading = false;
+          }
+        )
+      } else {
+        this.condicionTB.id = this.idCondicionTBGuardada;
+        this.condicionTB.indice = this.indiceCTBActualizar;
+        this.condicionTB.titulo = "Condición Técnicas Bienes" + new Date().toDateString();
+        this.condicionTB.idSolicitud = this.idSolicitudGuardada;
+        this.condicionTB.codigo = codigo;
+        this.condicionTB.descripcion = descripcion;
+        this.condicionTB.modelo = modelo;
+        this.condicionTB.fabricante = fabricante;
+        this.condicionTB.cantidad = cantidad;
+        this.condicionTB.valorEstimado = valorEstimado;
+        this.condicionTB.comentarios = comentarios;
+        this.condicionTB.tipoMoneda = tipoMoneda;
+        let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
+        let nombreArchivoBorrar = this.rutaAdjuntoCTB.split('/');
+        this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
+          (item: ItemAddResult) => {
+            this.servicio.borrarAdjuntoCondicionesTecnicasBienes(this.condicionTB.id, nombreArchivoBorrar[nombreArchivoBorrar.length - 1]).then(
+              (respuesta) => {
+                this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.condicionTB.id, nombreArchivo, this.condicionTB.archivoAdjunto).then(
+                  (respuesta) => {
+                    this.nombreAdjuntoCTB = this.condicionTB.archivoAdjunto.name;
+                    let objIndex = this.condicionesTB.findIndex((obj => obj.indice == this.condicionTB.indice));
+                    this.condicionesTB[objIndex].indice = this.condicionTB.indice;
+                    this.condicionesTB[objIndex].codigo = this.condicionTB.codigo;
+                    this.condicionesTB[objIndex].descripcion = this.condicionTB.descripcion;
+                    this.condicionesTB[objIndex].modelo = this.condicionTB.modelo;
+                    this.condicionesTB[objIndex].fabricante = this.condicionTB.fabricante;
+                    this.condicionesTB[objIndex].cantidad = this.condicionTB.cantidad;
+                    this.condicionesTB[objIndex].valorEstimado = this.condicionTB.valorEstimado;
+                    this.condicionesTB[objIndex].tipoMoneda = this.condicionTB.tipoMoneda;
+                    this.condicionesTB[objIndex].comentarios = this.condicionTB.comentarios;
+                    this.condicionesTB[objIndex].archivoAdjunto = this.condicionTB.archivoAdjunto;
+                    this.condicionesTB[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
+                    this.condicionesTB[objIndex].id = this.condicionTB.id;
+                    this.CargarTablaCTB();
+                    this.limpiarControlesCTB();
+                    this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
+                    this.modalRef.hide();
+                    this.loading = false;
+                  }, err => {
+                    this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
+                    this.loading = false;
+                  }
+                )
+              }, err => {
+                this.mostrarError('Error borrando el archivo en las condiciones técnicas de bienes');
+                this.loading = false;
+              }
+            )
+          }, err => {
+            this.mostrarError('Error en la actualización de la condición técnica de bienes');
+            this.loading = false;
+          }
+        )
+      }
     }
   }
 
@@ -688,8 +781,13 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["cantidadCTB"].setValue('');
     this.ctbFormulario.controls["valorEstimadoCTB"].setValue('');
     this.ctbFormulario.controls["tipoMonedaCTB"].setValue('');
+    this.ctbFormulario.controls["adjuntoCTB"].setValidators([Validators.required]);
     this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
     this.ctbFormulario.controls["comentariosCTB"].setValue('');
+  }
+
+  subirAdjuntoCTB(event) {
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.target.files[0], '', '');
   }
 
   ctsOnSubmit() {
@@ -698,6 +796,7 @@ export class CrearSolicitudComponent implements OnInit {
       return;
     }
 
+    this.loading = true;
     if (this.textoBotonGuardarCTS == "Guardar") {
       let codigo = this.ctsFormulario.controls["codigoCTS"].value;
       let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
@@ -706,20 +805,59 @@ export class CrearSolicitudComponent implements OnInit {
       let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
       let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
-      this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado, comentarios, '', tipoMoneda);
-      this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
-        (item: ItemAddResult) => {
-          this.condicionTS.id = item.data.Id;
-          this.condicionesTS.push(this.condicionTS);
-          this.indiceCTS++;
-          this.CargarTablaCTS();
-          this.limpiarControlesCTS();
-          this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
-          this.modalRef.hide();
-        }, err => {
-          this.mostrarError('Error en la creación de la condición técnica de bienes');
-        }
-      )
+      if (adjunto == null) {
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
+          (item: ItemAddResult) => {
+            this.condicionTS.id = item.data.Id;
+            this.condicionesTS.push(this.condicionTS);
+            this.indiceCTS++;
+            this.CargarTablaCTS();
+            this.limpiarControlesCTS();
+            this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
+            this.modalRef.hide();
+            this.loading = false;
+          }, err => {
+            this.mostrarError('Error en la creación de la condición técnica de bienes');
+            this.loading = false;
+          }
+        )
+      } else {
+        this.condicionTS.indice = this.indiceCTS;
+        this.condicionTS.titulo = "Condición Técnicas Servicios" + new Date().toDateString();
+        this.condicionTS.idSolicitud = this.idSolicitudGuardada;
+        this.condicionTS.codigo = codigo;
+        this.condicionTS.descripcion = descripcion;
+        this.condicionTS.cantidad = cantidad;
+        this.condicionTS.valorEstimado = valorEstimado;
+        this.condicionTS.comentarios = comentarios;
+        this.condicionTS.tipoMoneda = tipoMoneda;
+        let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
+        this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
+          (item: ItemAddResult) => {
+            this.condicionTS.id = item.data.Id;
+            this.servicio.agregarAdjuntoCondicionesTecnicasServicios(this.condicionTS.id, nombreArchivo, this.condicionTS.archivoAdjunto).then(
+              (respuesta) => {
+                console.log(respuesta);
+                this.condicionTS.rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
+                this.condicionesTS.push(this.condicionTS);
+                this.indiceCTS++;
+                this.CargarTablaCTS();
+                this.limpiarControlesCTS();
+                this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
+                this.modalRef.hide();
+                this.loading = false;
+              }, err => {
+                this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
+                this.loading = false;
+              }
+            )
+          }, err => {
+            this.mostrarError('Error en la creación de la condición técnica de servicios');
+            this.loading = false;
+          }
+        )
+      }
     }
 
     if (this.textoBotonGuardarCTS == "Actualizar") {
@@ -730,27 +868,116 @@ export class CrearSolicitudComponent implements OnInit {
       let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
       let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
-      this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado, comentarios, '', tipoMoneda);
-      this.condicionTS.id = this.idCondicionTSGuardada;
-      this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
-        (item: ItemAddResult) => {
-          let objIndex = this.condicionesTS.findIndex((obj => obj.indice == this.condicionTS.indice));
-          this.condicionesTS[objIndex].indice = this.condicionTS.indice;
-          this.condicionesTS[objIndex].codigo = this.condicionTS.codigo;
-          this.condicionesTS[objIndex].descripcion = this.condicionTS.descripcion;
-          this.condicionesTS[objIndex].cantidad = this.condicionTS.cantidad;
-          this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
-          this.condicionesTS[objIndex].tipoMoneda = this.condicionTS.tipoMoneda;
-          this.condicionesTS[objIndex].comentarios = this.condicionTS.comentarios;
-          this.condicionesTS[objIndex].id = this.condicionTS.id;
-          this.CargarTablaCTS();
-          this.limpiarControlesCTS();
-          this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-          this.modalRef.hide();
-        }, err => {
-          this.mostrarError('Error en la actualización de la condición técnica de servicios');
+      if (adjunto == null) {
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTS.id = this.idCondicionTSGuardada;
+        this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
+          (item: ItemAddResult) => {
+            let objIndex = this.condicionesTS.findIndex((obj => obj.indice == this.condicionTS.indice));
+            this.condicionesTS[objIndex].indice = this.condicionTS.indice;
+            this.condicionesTS[objIndex].codigo = this.condicionTS.codigo;
+            this.condicionesTS[objIndex].descripcion = this.condicionTS.descripcion;
+            this.condicionesTS[objIndex].cantidad = this.condicionTS.cantidad;
+            this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
+            this.condicionesTS[objIndex].tipoMoneda = this.condicionTS.tipoMoneda;
+            this.condicionesTS[objIndex].comentarios = this.condicionTS.comentarios;
+            this.condicionesTS[objIndex].id = this.condicionTS.id;
+            this.CargarTablaCTS();
+            this.limpiarControlesCTS();
+            this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
+            this.modalRef.hide();
+            this.loading = false;
+          }, err => {
+            this.mostrarError('Error en la actualización de la condición técnica de servicios');
+            this.loading = false;
+          }
+        )
+      } else {
+        this.condicionTS.id = this.idCondicionTSGuardada;
+        this.condicionTS.indice = this.indiceCTSActualizar;
+        this.condicionTS.titulo = "Condición Técnicas Servicios" + new Date().toDateString();
+        this.condicionTS.idSolicitud = this.idSolicitudGuardada;
+        this.condicionTS.codigo = codigo;
+        this.condicionTS.descripcion = descripcion;
+        this.condicionTS.cantidad = cantidad;
+        this.condicionTS.valorEstimado = valorEstimado;
+        this.condicionTS.comentarios = comentarios;
+        this.condicionTS.tipoMoneda = tipoMoneda;
+        let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
+        if (this.rutaAdjuntoCTS != '') {
+          let nombreArchivoBorrar = this.rutaAdjuntoCTS.split('/');
+          this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
+            (item: ItemAddResult) => {
+              this.servicio.borraAdjuntoCondicionesTecnicasServicios(this.condicionTS.id, nombreArchivoBorrar[nombreArchivoBorrar.length - 1]).then(
+                (respuesta) => {
+                  this.servicio.agregarAdjuntoCondicionesTecnicasServicios(this.condicionTS.id, nombreArchivo, this.condicionTS.archivoAdjunto).then(
+                    (respuesta) => {
+                      this.nombreAdjuntoCTS = this.condicionTS.archivoAdjunto.name;
+                      let objIndex = this.condicionesTS.findIndex((obj => obj.indice == this.condicionTS.indice));
+                      this.condicionesTS[objIndex].indice = this.condicionTS.indice;
+                      this.condicionesTS[objIndex].codigo = this.condicionTS.codigo;
+                      this.condicionesTS[objIndex].descripcion = this.condicionTS.descripcion;
+                      this.condicionesTS[objIndex].cantidad = this.condicionTS.cantidad;
+                      this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
+                      this.condicionesTS[objIndex].tipoMoneda = this.condicionTS.tipoMoneda;
+                      this.condicionesTS[objIndex].comentarios = this.condicionTS.comentarios;
+                      this.condicionesTS[objIndex].archivoAdjunto = this.condicionTS.archivoAdjunto;
+                      this.condicionesTS[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
+                      this.condicionesTS[objIndex].id = this.condicionTS.id;
+                      this.CargarTablaCTS();
+                      this.limpiarControlesCTS();
+                      this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
+                      this.modalRef.hide();
+                      this.loading = false;
+                    }, err => {
+                      this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
+                      this.loading = false;
+                    }
+                  )
+                }, err => {
+                  this.mostrarError('Error borrando el archivo en las condiciones técnicas de servicios');
+                  this.loading = false;
+                }
+              )
+            }, err => {
+              this.mostrarError('Error en la actualización de la condición técnica de servicios');
+              this.loading = false;
+            }
+          )
+        } else {
+          this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
+            (item: ItemAddResult) => {
+              this.servicio.agregarAdjuntoCondicionesTecnicasServicios(this.condicionTS.id, nombreArchivo, this.condicionTS.archivoAdjunto).then(
+                (respuesta) => {
+                  this.nombreAdjuntoCTS = this.condicionTS.archivoAdjunto.name;
+                  let objIndex = this.condicionesTS.findIndex((obj => obj.indice == this.condicionTS.indice));
+                  this.condicionesTS[objIndex].indice = this.condicionTS.indice;
+                  this.condicionesTS[objIndex].codigo = this.condicionTS.codigo;
+                  this.condicionesTS[objIndex].descripcion = this.condicionTS.descripcion;
+                  this.condicionesTS[objIndex].cantidad = this.condicionTS.cantidad;
+                  this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
+                  this.condicionesTS[objIndex].tipoMoneda = this.condicionTS.tipoMoneda;
+                  this.condicionesTS[objIndex].comentarios = this.condicionTS.comentarios;
+                  this.condicionesTS[objIndex].archivoAdjunto = this.condicionTS.archivoAdjunto;
+                  this.condicionesTS[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
+                  this.condicionesTS[objIndex].id = this.condicionTS.id;
+                  this.CargarTablaCTS();
+                  this.limpiarControlesCTS();
+                  this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
+                  this.modalRef.hide();
+                  this.loading = false;
+                }, err => {
+                  this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
+                  this.loading = false;
+                }
+              )
+            }, err => {
+              this.mostrarError('Error en la actualización de la condición técnica de servicios');
+              this.loading = false;
+            }
+          )
         }
-      )
+      }
     }
   }
 
@@ -769,9 +996,17 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["comentariosCTS"].setValue('');
   }
 
+  subirAdjuntoCTS(event) {
+    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', event.target.files[0], '', '');
+  }
+
   editarBienes(element, template: TemplateRef<any>) {
+    this.mostrarAdjuntoCTB = true;
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
+    this.rutaAdjuntoCTB = element.rutaAdjunto;
+    this.nombreAdjuntoCTB = element.archivoAdjunto.name;
+    this.ctbFormulario.controls["adjuntoCTB"].clearValidators();
     this.ctbFormulario.controls["codigoCTB"].setValue(element.codigo);
     this.ctbFormulario.controls["descripcionCTB"].setValue(element.descripcion);
     this.ctbFormulario.controls["modeloCTB"].setValue(element.modelo);
@@ -792,6 +1027,15 @@ export class CrearSolicitudComponent implements OnInit {
   editarServicios(element, template: TemplateRef<any>) {
     this.indiceCTSActualizar = element.indice;
     this.idCondicionTSGuardada = element.id;
+    if (element.archivoAdjunto != null) {
+      this.mostrarAdjuntoCTS = true;
+      this.rutaAdjuntoCTS = element.rutaAdjunto;
+      this.nombreAdjuntoCTS = element.archivoAdjunto.name;
+    } else {
+      this.mostrarAdjuntoCTS = false;
+      this.rutaAdjuntoCTS = '';
+      this.nombreAdjuntoCTS = '';
+    }
     this.ctsFormulario.controls["codigoCTS"].setValue(element.codigo);
     this.ctsFormulario.controls["descripcionCTS"].setValue(element.descripcion);
     this.ctsFormulario.controls["cantidadCTS"].setValue(element.cantidad);
@@ -855,10 +1099,10 @@ export class CrearSolicitudComponent implements OnInit {
     let justificacion = this.solpFormulario.controls["justificacion"].value;
     let estado = "Borrador";
 
-    if(this.condicionesTB.length > 0){
+    if (this.condicionesTB.length > 0) {
       this.compraBienes = true;
     }
-    if(this.condicionesTS.length > 0){
+    if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
     }
     this.solicitudGuardar = new Solicitud(
@@ -875,7 +1119,7 @@ export class CrearSolicitudComponent implements OnInit {
       (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
       (alcance != '') ? alcance : '',
       (justificacion != '') ? justificacion : '',
-      this.construirJsonCondicionesContractuales(), 
+      this.construirJsonCondicionesContractuales(),
       estado,
       this.usuarioActual.id,
       this.compraBienes,
@@ -904,5 +1148,11 @@ export class CrearSolicitudComponent implements OnInit {
 
   declinarDescartar() {
     this.modalRef.hide();
+  }
+
+  generarllaveSoporte(): string {
+    var fecha = new Date();
+    var valorprimitivo = fecha.valueOf().toString();
+    return valorprimitivo;
   }
 }

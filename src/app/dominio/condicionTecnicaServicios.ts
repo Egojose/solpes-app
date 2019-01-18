@@ -8,7 +8,8 @@ export class CondicionTecnicaServicios{
         public cantidad: number,
         public valorEstimado: number,
         public comentarios: string,
-        public adjunto?: any,
+        public archivoAdjunto?: File,
+        public rutaAdjunto?: string,
         public tipoMoneda?: string,
         public id?: number) { }
 

@@ -11,7 +11,7 @@ export class CondicionTecnicaBienes {
         public valorEstimado: number,
         public comentarios: string,
         public archivoAdjunto?: File,
-        public adjunto?: any,
+        public rutaAdjunto?: string,
         public tipoMoneda?: string,
         public id?: number) { }
 

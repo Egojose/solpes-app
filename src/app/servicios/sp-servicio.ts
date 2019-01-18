@@ -25,7 +25,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ3NzYyMTY3LCJuYmYiOjE1NDc3NjIxNjcsImV4cCI6MTU0Nzc5MTI2NywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.BDrKSUD2R7l20zNWyhVGm74dfcsQtljjvTfATUEPEf91T8e-je_xorA0YaqjmdRZM3KvjNZsbM8ZFHu-gBqTwDi56cztRp-KQ7cS_AUvsjKilB5T2_01v1uDixJutzVjFHZKMrCiRQ8pryc8e7vZbKHgS4Jw4a6HyF1OieQ_we9YM9lNLMdAfYHOia2Isbaodjvkjlya-zSuo48J5XRHMQEsGjYJBnZOovDNnwN4mqcyK-65e0bh59riIxTyP5QQ0mNXbwvz6DcZr9eBOtUWWL8ZLizCqVQAfuWceWGu6L7-3M3RcJwHW-IpBMHxsXTujryuI31DdN9KuXlJikNDJg'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ3ODE4NzU3LCJuYmYiOjE1NDc4MTg3NTcsImV4cCI6MTU0Nzg0Nzg1NywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.FkciCKqnG7fYpRZCAzWvWMUHH-lGd6HvwkqwIhmZ0RERt5BaRDE0nfq_nh9yAr-WbfZ4kvRvkrtF_ALhVMeU_xPtjNqO3VwIdpFfAWJ-P7xDX5mmOYzu3OfNQoMT6NDoSj8wZY3GFRTzsKcDQSDo39Z7rmZ-0RiFxqV1qjCDkBaCFEJAqDVuflvycSWNcGW0T-OKOX3xpyRHVY9cBfVA23Vdk8dk6_iAzX-as88GM4XlhMoOzWfqZ-jEqjcKvA4sjpBGqVowkQQogKEuCTdUqBZcFc1Ife41dV4lsJCNVUOIaZqCyZTtAz-OGkpDmVJKTcxHYko0fvG_266ev9-9dQ'
             }
         }, environment.urlWeb);
 
@@ -162,9 +162,14 @@ export class SPServicio {
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).delete();
     }
 
-    agregarAdjuntoCondicionesTecnicasBienes(idSolicitud: number, nombreArchivo: string, archivo: File) {
-        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idSolicitud);
-        item.attachmentFiles.add("solp-" + Date.now() + "-" + nombreArchivo, archivo);
+    agregarAdjuntoCondicionesTecnicasBienes(idCondicion: number, nombreArchivo: string, archivo: File) {
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
+        return item.attachmentFiles.add(nombreArchivo, archivo);
+    }
+
+    borrarAdjuntoCondicionesTecnicasBienes(idCondicion: number, nombreArchivo: string){
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
+        return item.attachmentFiles.getByName(nombreArchivo).delete();
     }
 
     agregarCondicionesTecnicasServicios(condicionTecnicaServicios: CondicionTecnicaServicios) {
@@ -197,7 +202,12 @@ export class SPServicio {
 
     agregarAdjuntoCondicionesTecnicasServicios(idSolicitud: number, nombreArchivo: string, archivo: File) {
         let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idSolicitud);
-        item.attachmentFiles.add("solp-" + Date.now() + "-" + nombreArchivo, archivo);
+        return item.attachmentFiles.add(nombreArchivo, archivo);
+    }
+
+    borraAdjuntoCondicionesTecnicasServicios(idCondicion: number, nombreArchivo: string){
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicion);
+        return item.attachmentFiles.getByName(nombreArchivo).delete();
     }
 
     obtenerParametrosConfiguracion(){
