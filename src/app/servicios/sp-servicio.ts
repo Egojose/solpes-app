@@ -219,4 +219,5 @@ export class SPServicio {
         let respuesta = from(this.obtenerConfiguracion().profiles.myProperties.get());
         return respuesta;
     }
+
 }
