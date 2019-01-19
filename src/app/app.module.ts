@@ -26,6 +26,7 @@ import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, To
 import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap-servicios/registrar-entradas-sap-servicios.component';
 import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.component';
 import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.component';
+import { EditarSolicitudComponent } from './editar-solicitud/editar-solicitud.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.
     NumberDirective,
     RegistrarEntradasSapServiciosComponent,
     MisPendientesComponent,
-    VerSolicitudTabComponent
+    VerSolicitudTabComponent,
+    EditarSolicitudComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +78,7 @@ import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.
       {path:'consultar-solicitudes',component:ConsultarSolicitudesComponent},
       {path:'contratos', component:ContratosComponent},
       {path:'crear-solicitud', component:CrearSolicitudComponent},
+      {path: 'editar-solicitud', component:EditarSolicitudComponent},
       {path:'entrega-bienes', component:EntregaBienesComponent},
       {path:'entrega-servicios', component:EntregaServiciosComponent},
       {path:'mis-solicitudes', component:MisSolicitudesComponent},

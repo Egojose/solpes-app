@@ -18,6 +18,8 @@ export class Solicitud {
         public responsable?: number,
         public compraBienes?: boolean,
         public compraServicios?: boolean,
+        public consecutivo?: number,
+        public autor?: number,
         public id?: number) { }
 
     public static fromJson(element: any) {
@@ -39,6 +41,8 @@ export class Solicitud {
             element.Responsable,
             element.CompraBienes,
             element.CompraServicios,
+            element.Consecutivo,
+            element.AuthorId,
             element.ID);
     }
 

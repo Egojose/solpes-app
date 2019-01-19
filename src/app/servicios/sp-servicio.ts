@@ -27,7 +27,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ3ODU0NzE1LCJuYmYiOjE1NDc4NTQ3MTUsImV4cCI6MTU0Nzg4MzgxNSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.ZHvhpvOyO7wkZuru5PuVzFKbyLm-x4TK6ObgJIvZZDH3twgCBnHqx8e_ZfEnorH-dM2KbO0cT5WSxVWcTfhL9IrS0_SrUmaMHtyXSXKXMM3Fo5jZ97q1VLTI65BK6gTeDytOx6qnxgu2BInwAjOrDUqHxvxoIn2HcuOjPmui3homnbLdBxPPGa2iMb_D0V9b3ZuQPL-VlchnR0j9skretkf1QjgyCeg539eooqi1irwKXpn0K8U0x2esgRvMMNDGks6-IrswJjmBkdmo9OlzDJKUh8F67fEjkYGojVPfS-ziYmsb5YAcSygSxB_03eJBW2BlbolbLcAnDzBnS_8xgA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ3OTEwMzczLCJuYmYiOjE1NDc5MTAzNzMsImV4cCI6MTU0NzkzOTQ3MywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.S59silRHkiEtc3WDAYPEiKGurcapYZoPaLAY38SxR8os95fuptP08vvs2pJxW-HuytF__qAZHkZeAKGoj6i4vFqSjLtRTyfAmeX8fxgGP8_Q_pZngeXEnxUG8GPIM1sifY16Siny31KfmObFHgcIPeC3vviSRB2k3eGC9RZq6661DnSUy_i6WOiEDK3jGCyw3LKtJRRjCcyJQ-4i15SyTwXWVp0CHYUtf2Gj55J9lbh_M7qX-xXCWiuRcXx0zAtAs-03kHwlxk7h2vM2gBpPnwzlwV9BG5x-rITRCrngaanVvzT6y8jg93laK9uwSJKT-Fm8jcTD71VabYny_QAKaw'
             }
         }, environment.urlWeb);
 
@@ -75,7 +75,7 @@ export class SPServicio {
     }
 
     obtenerMisSolicitudes(usuarioId: number) {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created").expand("Empresa", "Pais", "OrdenadorGastos", "Author").filter("AuthorId eq " + usuarioId + " ").get());
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created", "Consecutivo").expand("Empresa", "Pais", "OrdenadorGastos", "Author").filter("AuthorId eq " + usuarioId + " ").get());
         return respuesta;
     }
 
@@ -96,7 +96,8 @@ export class SPServicio {
             Justificacion: solicitud.justificacion,
             CondicionesContractuales: solicitud.condicionesContractuales,
             ResponsableId: solicitud.responsable,
-            Estado: solicitud.estado
+            Estado: solicitud.estado,
+            AuthorId: solicitud.autor
         });
     }
 

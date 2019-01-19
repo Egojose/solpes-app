@@ -10,19 +10,28 @@ import { Router } from '@angular/router';
   templateUrl: './mis-solicitudes.component.html',
   styleUrls: ['./mis-solicitudes.component.css']
 })
+
 export class MisSolicitudesComponent implements OnInit {
   usuarioActual : Usuario;
   misSolicitudes: Solicitud[] = [];
   dataSource;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  loading: boolean;
+  empty: boolean;
   
-  constructor( private servicio: SPServicio, private router: Router) { }
+  constructor( private servicio: SPServicio, private router: Router) { 
+    this.loading = false;
+  }
+
+
+  displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'VerSolicitud']; 
 
   ngOnInit() {
+    this.loading = true;
     this.ObtenerUsuarioActual();
   }
-  displayedColumns: string[] = ['Pais','Tiposolicitud', 'fechaCreacion', 'fechaEntregaDeseada','Estado', 'Acciones']; 
+
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (Response) => {
@@ -30,6 +39,7 @@ export class MisSolicitudesComponent implements OnInit {
         this.ObtenerMisSolicitudes();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
+        this.loading = false;
       }
     )
   }
@@ -39,11 +49,18 @@ export class MisSolicitudesComponent implements OnInit {
     this.servicio.obtenerMisSolicitudes(idUsuario).subscribe(
       (respuesta) => {
         this.misSolicitudes = Solicitud.fromJsonList(respuesta);
-        this.dataSource = new MatTableDataSource(this.misSolicitudes);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        if (this.misSolicitudes.length > 0) {
+          this.empty = false;
+          this.dataSource = new MatTableDataSource(this.misSolicitudes);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }else{
+          this.empty = true;
+        }
+        this.loading = false;
       }, error => {
         console.log('Error obteniendo mis solicitudes: ' + error);
+        this.loading = false;
       }
     )
   }

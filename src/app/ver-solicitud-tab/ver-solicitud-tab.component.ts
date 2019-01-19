@@ -51,16 +51,11 @@ export class VerSolicitudTabComponent implements OnInit {
   submitted = false;
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router) { 
     this.loading = false;
-
-  }
-
-  recuperarIdSolicitud(){
     this.IdSolicitud = sessionStorage.getItem("IdSolicitud");
   }
 
   ngOnInit() {
     this.loading = true;
-    this.recuperarIdSolicitud();
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;
