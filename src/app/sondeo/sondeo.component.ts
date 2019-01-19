@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../sondeo/condicionesTecnicasBienes';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../sondeo/condicionesTecnicasServicios';
 import { ItemAddResult } from 'sp-pnp-js';
-import { ActivatedRoute } from '@angular/router';
 import { Usuario } from '../dominio/usuario';
+import { ToastrManager } from 'ng6-toastr-notifications';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sondeo',
@@ -32,7 +33,6 @@ export class SondeoComponent implements OnInit {
   IdSolicitud: any;
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
   ObjCondicionesTecnicasServicios: CondicionTecnicaServicios[] = [];
-  AgregarElementoForm: FormGroup;
   RDBOrdenadorGastos: any;
   numeroSolpSap: string;
   ComentarioRegistrarSap: string;
@@ -42,57 +42,97 @@ export class SondeoComponent implements OnInit {
   comentarioSondeo: any;
   historial: string;
   usuario: Usuario;
-  sondeo: FormGroup;
-  contadorControlesCTB: number;
-
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
+  loading: boolean;
+  constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
-    this.contadorControlesCTB = 0;
+    this.loading = false;
   }
 
-  RegistrarFormulario() {
-    this.sondeo = this.formBuilder.group({
-      comentarioGeneral: ['']
-    });
+  EsCampoVacio(valorCampo) {
+    if (valorCampo === "" || valorCampo == 'Seleccione' || valorCampo == null || valorCampo === undefined) {
+      return true;
+    }
+    return false;
   }
 
   GuardarSondeoBienes() {
-    debugger;
+    this.loading = true;
     let objSondeo;
     let contador = 0;
-    let comentarioGeneral = this.sondeo.controls["comentarioGeneral"].value;
-    for (let i = 0; i < this.contadorControlesCTB; i++) {
-      let cantidad = parseInt(this.sondeo.controls["cantidad" + i].value);
-      let precio = this.sondeo.controls["precio" + i].value;
-      let codigo = (this.sondeo.controls["codigo" + i].value).toString();
-      let comentario = this.sondeo.controls["comentario" + i].value;
 
-      objSondeo = {
-        CodigoSondeo: codigo,
-        CantidadSondeo: cantidad,
-        PrecioSondeo: precio,
-        Comentarios: comentario
+    for (let i = 0; i < this.ObjCondicionesTecnicas.length; i++) {
+
+      if (this.EsCampoVacio(this.ObjCondicionesTecnicas[i].cantidad)) {
+        this.mostrarAdvertencia("Hay alguna cantidad sin llenar en condiciones de bienes");
+        this.loading = false;
+        break;
       }
 
-      this.servicio.guardarSondeoBienes(this.IdSolicitud, objSondeo).then(
+      if (this.EsCampoVacio(this.ObjCondicionesTecnicas[i].valorEstimado)) {
+        this.mostrarAdvertencia("Hay algún precio sin llenar en condiciones de bienes");
+        this.loading = false;
+        break;
+      }
+
+      if (this.EsCampoVacio(this.ObjCondicionesTecnicas[i].codigo)) {
+        this.mostrarAdvertencia("Hay algún código sin llenar en condiciones de bienes");
+        this.loading = false;
+        break;
+      }
+
+      objSondeo = {
+        CodigoSondeo: this.ObjCondicionesTecnicas[i].codigo,
+        CantidadSondeo: this.ObjCondicionesTecnicas[i].cantidad,
+        PrecioSondeo: this.ObjCondicionesTecnicas[i].PrecioSondeo,
+        Comentarios: this.ObjCondicionesTecnicas[i].comentario
+      }
+
+      this.servicio.guardarSondeoBienes(this.ObjCondicionesTecnicas[i].IdBienes, objSondeo).then(
         (resultado: ItemAddResult) => {
-          contador++
-          if (contador === this.contadorControlesCTB) {
-            alert('se guardó el sondeo');
+          if (this.ObjCondicionesTecnicas[i].archivoAdjunto != null) {
+            let nombreArchivo = "sondeoBienes" + + this.generarllaveSoporte() + "-" + this.ObjCondicionesTecnicas[i].archivoAdjunto.name;
+            this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.ObjCondicionesTecnicas[i].IdBienes, nombreArchivo, this.ObjCondicionesTecnicas[i].archivoAdjunto).then(
+              (respuesta) => {
+                contador++
+                if (contador === this.ObjCondicionesTecnicas.length) {
+                  this.MostrarExitoso("El sondeo se ha guardado correctamente");
+                  this.loading = false;
+                }
+              }, err => {
+                this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
+                this.loading = false;
+              }
+            )
+          } else {
+            contador++
+            if (contador === this.ObjCondicionesTecnicas.length) {
+              this.MostrarExitoso("El sondeo se ha guardado correctamente");
+              this.loading = false;
+            }
           }
         }
       ).catch(
         (error) => {
           console.log(error);
+          this.loading = false;
         }
       )
+
     }
   }
 
   ngOnInit() {
-    console.log(this.IdSolicitudParms);
-    this.RegistrarFormulario();
+    this.loading = true;
     this.ObtenerUsuarioActual();
+  }
+
+  adjuntarArchivoCTB(event, item) {
+    let archivoAdjunto = event.target.files[0];
+    if (archivoAdjunto != null) {
+      item.archivoAdjunto = archivoAdjunto;
+    } else {
+      item.archivoAdjunto = null;
+    }
   }
 
   ObtenerUsuarioActual() {
@@ -102,6 +142,7 @@ export class SondeoComponent implements OnInit {
         this.ObtenerSolicitudBienesServicios();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
+        this.loading = false;
       }
     )
   }
@@ -121,41 +162,52 @@ export class SondeoComponent implements OnInit {
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
-        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        if (solicitud.CondicionesContractuales != null) {
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        }
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-            this.ObjCondicionesTecnicas.forEach(element => {
-              this.sondeo.addControl("cantidad" + this.contadorControlesCTB, new FormControl());
-              this.sondeo.controls["cantidad" + this.contadorControlesCTB].setValue(element.cantidad);
-              this.sondeo.addControl("precio" + this.contadorControlesCTB, new FormControl());
-              this.sondeo.controls["precio" + this.contadorControlesCTB].setValue(element.cantidad);
-              this.sondeo.addControl("codigo" + this.contadorControlesCTB, new FormControl());
-              this.sondeo.controls["codigo" + this.contadorControlesCTB].setValue(element.cantidad);
-              this.sondeo.addControl("comentario" + this.contadorControlesCTB, new FormControl());
-              this.sondeo.controls["comentario" + this.contadorControlesCTB].setValue(element.cantidad);
-              this.contadorControlesCTB++;
-            });
+            this.loading = false;
           }
         )
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            this.ObjCondicionesTecnicasServicios.forEach(element => {
-              this.sondeo.addControl("cantidadServicio" + this.contadorControlesCTB, new FormControl());
-              this.sondeo.controls["cantidadServicio" + this.contadorControlesCTB].setValue(element.cantidad);
-              this.sondeo.addControl("precioServicio" + this.contadorControlesCTB, new FormControl());
-              this.sondeo.controls["precioServicio" + this.contadorControlesCTB].setValue(element.cantidad);
-              this.sondeo.addControl("codigoServicio" + this.contadorControlesCTB, new FormControl());
-              this.sondeo.controls["codigoServicio" + this.contadorControlesCTB].setValue(element.cantidad);
-              this.sondeo.addControl("comentarioServicio" + this.contadorControlesCTB, new FormControl());
-              this.sondeo.controls["comentarioServicio" + this.contadorControlesCTB].setValue(element.cantidad);
-              this.contadorControlesCTB++;
-            })
-
+            this.loading = false;
           }
         )
       }
     );
+  }
+
+  MostrarExitoso(mensaje: string) {
+    this.toastr.successToastr(mensaje, 'Confirmación!');
+  }
+
+  mostrarError(mensaje: string) {
+    this.toastr.errorToastr(mensaje, 'Oops!');
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, 'Validación');
+  }
+
+  mostrarInformacion(mensaje: string) {
+    this.toastr.infoToastr(mensaje, 'Información importante');
+  }
+
+  mostrarPersonalizado(mensaje: string) {
+    this.toastr.customToastr(mensaje, null, { enableHTML: true });
+  }
+
+  salir() {
+    this.router.navigate(["/mis-solicitudes"]);
+  }
+
+  generarllaveSoporte(): string {
+    var fecha = new Date();
+    var valorprimitivo = fecha.valueOf().toString();
+    return valorprimitivo;
   }
 }

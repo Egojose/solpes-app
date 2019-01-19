@@ -7,9 +7,9 @@ export class CondicionesTecnicasBienes {
         public fabricante: string,
         public claseSIA: string,
         public cantidad: number,
-        public cantidadRecibida:number,
-        public totalCantidad:number,
-        public UltimaEntregaCTB:boolean,
+        public cantidadRecibida: number,
+        public totalCantidad: number,
+        public UltimaEntregaCTB: boolean,
         public valorEstimado?: string,
         public comentario?: string,
         public CodigoVerificar?: string,
@@ -25,13 +25,11 @@ export class CondicionesTecnicasBienes {
         public CantidadSondeo?: number,
         public PrecioSondeo?: number,
         public ComentarioSondeo?: string,
-        public Estado?: any
-    ) {
-
-    }
+        public archivoAdjunto?: File,
+        public Estado?: any) {}
 
     public static fromJson(element: any) {
-        return new CondicionesTecnicasBienes(element.Id ,element.CodigoVerificar, element.Descripcion, element.Modelo, element.FabricanteVerificar, element.ClaseSIAVerificar, element.CantidadVerificar, element.CantidadRecibida, element.CantidadVerificar-element.CantidadRecibida,element.UltimaEntrega,element.ValorEstimado,element.Comentarios);
+        return new CondicionesTecnicasBienes(element.Id, element.CodigoVerificar, element.Descripcion, element.Modelo, element.FabricanteVerificar, element.ClaseSIAVerificar, element.CantidadVerificar, element.CantidadRecibida, element.CantidadVerificar - element.CantidadRecibida, element.UltimaEntrega, element.ValorEstimado, element.Comentarios);
     }
 
 

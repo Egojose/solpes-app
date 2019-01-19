@@ -368,8 +368,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    guardarSondeoBienes(IdSolicitud, objSondeo){   
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(IdSolicitud).update(objSondeo);        
+    guardarSondeoBienes(idCondicion, objSondeo){   
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion).update(objSondeo);        
         return respuesta;
     }
 

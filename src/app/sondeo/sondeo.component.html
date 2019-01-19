@@ -1,9 +1,13 @@
+<div class="loading" *ngIf='loading'>
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
+      alt="loading...">
+      <b>PROCESANDO...</b>
+  </div>
 <div class="container">
   <br>
   <h3>SONDEAR</h3>
   <hr>
   <br>
-  <form [formGroup]="sondeo">
   <div class="row">
     <div class="form-group col-md-12">
       <label for="textarea" class="col-sm-3 control-label">Sondeo de bienes:</label>
@@ -19,19 +23,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of ObjCondicionesTecnicas let i = index" [attr.data-index]="i">
+          <tr *ngFor="let item of ObjCondicionesTecnicas let i=index" [attr.data-index]="i">
             <td>{{item.descripcion}}</td>
-            <td><input type="text" name="" id="inputCantidad" class="form-control text-center" min="0" step="" title=""
-                formControlName="cantidad{{i}}"></td>
-            <td><input type="text" name="" id="inputPrecio" class="form-control text-center" value="" min="0" step="" title=""
-                formControlName="precio{{i}}"></td>
-            <td><input type="text" name="" id="inputCodigo" class="form-control text-center" value="{{item.codigo}}" min="0"
-                step="" title="" formControlName="codigo{{i}}"></td>
-            <td><textarea type="text" name="" id="" class="form-control text-center" value="{{item.comentario}}" step="" title=""
-                formControlName="comentario{{i}}"></textarea></td>
-            <td><button type="button" class="btn btn-primary"><i class="material-icons">
-                  attach_file
-                </i></button></td>
+            <td>
+              <input type="text" numbersOnly class="form-control text-center" [(ngModel)]="item.cantidad">
+            </td>
+            <td>
+              <input type="text" numbersOnly class="form-control text-center" [(ngModel)]="item.valorEstimado">
+            </td>
+            <td>
+              <input type="text" class="form-control text-center" [(ngModel)]="item.codigo"></td>
+            <td>
+              <textarea type="text" class="form-control text-center" [(ngModel)]="item.comentario"></textarea>
+            </td>
+            <td>
+              <input type="file" name="adjunto" (change)="adjuntarArchivoCTB($event, item)">
+            </td>
           </tr>
         </tbody>
       </table>
@@ -51,7 +58,6 @@
                     <th>Descripción</th>
                     <th>Modelo</th>
                     <th>Fabricante</th>
-                    <!-- <th>Clase SIA</th> -->
                     <th>Cantidad</th>
                     <th>Valor Estimado</th>
                     <th>Adjunto</th>
@@ -64,7 +70,6 @@
                     <td>{{item.descripcion}}</td>
                     <td>{{item.modelo}}</td>
                     <td>{{item.fabricante}}</td>
-                    <!-- <td>{{item.claseSIA}}</td> -->
                     <td>{{item.cantidad}}</td>
                     <td>{{item.valorEstimado}}</td>
                     <td></td>
@@ -151,23 +156,21 @@
   <div class="row">
     <div class="form-group col-md-12">
       <label for="textarea" class="col-sm-3 control-label">Comentario del solicitante</label>
-      <textarea name="" id="comentSolcitante" class="form-control" rows="2" formControlName="comentarioGeneral" placeholder="Ingrese el comentario"></textarea>
+      <textarea name="" id="comentSolcitante" class="form-control" rows="2" placeholder="Ingrese el comentario"></textarea>
     </div>
   </div>
   <div class="row">
     <div class="form-group col-md-12">
       <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
-      <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder=""
-        disabled >{{comentarioSondeo}}</textarea>
+      <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioSondeo}}</textarea>
     </div>
   </div>
   <div class="row text-center">
     <div class="form-group col-md-12">
-      <input type="submit" class="btn btn-success" value="ENVIAR" (click)="GuardarSondeoBienes()" />
-      <input type="button" class="btn btn-danger" value="SALIR" onclick="" /> </div>
+      <input type="button" class="btn btn-success" value="ENVIAR" (click)="GuardarSondeoBienes()" />
+      <input type="button" class="btn btn-danger" value="SALIR" (click)="salir()" /> </div>
   </div>
   <hr>
-</form>
   <accordion>
     <accordion-group heading="Ver Información adicional">
       <div class="row espacio">
