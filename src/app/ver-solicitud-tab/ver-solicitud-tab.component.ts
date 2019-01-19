@@ -54,9 +54,13 @@ export class VerSolicitudTabComponent implements OnInit {
 
   }
 
+  recuperarIdSolicitud(){
+    this.IdSolicitud = sessionStorage.getItem("IdSolicitud");
+  }
+
   ngOnInit() {
     this.loading = true;
-    this.IdSolicitud = sessionStorage.getItem("IdSolicitud");
+    this.recuperarIdSolicitud();
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;
@@ -79,7 +83,11 @@ export class VerSolicitudTabComponent implements OnInit {
         this.numSolSAP = solicitud.NumSolSAP;
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
         this.tieneContrato = solicitud.TieneContrato;
-        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+
+        if(solicitud.CondicionesContractuales != null){
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        }
+        
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
@@ -108,7 +116,6 @@ export class VerSolicitudTabComponent implements OnInit {
           (respuesta) => {
             this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
           }
-          
         );
         this.loading = false;
       }
