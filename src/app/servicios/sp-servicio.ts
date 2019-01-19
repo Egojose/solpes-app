@@ -235,7 +235,7 @@ export class SPServicio {
     }
 
     ObtenerRecepcionesBienes(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("IdSolicitud eq " + IdSolicitud).get());
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("IdSolicitudId eq '" + IdSolicitud + "' and recibidoSap eq '0'").get());
         return respuesta;
     }
 
@@ -285,10 +285,10 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerRecepcionesServicios(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("IdSolicitud eq " + IdSolicitud).get());
+    ObtenerRecepcionesServicios(IdSolicitud:number){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("IdSolicitudId eq '" + IdSolicitud + "' and recibidoSap eq '0'").get());
         return respuesta;
-    }
+        }
 
     GuardarServiciosRecibidos(ObjRecepcionServicios: RecepcionServicios,IdSolicitud){
         let RecepcionBienesObj = {

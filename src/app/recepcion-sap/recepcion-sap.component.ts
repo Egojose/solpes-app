@@ -22,7 +22,7 @@ export class RecepcionSapComponent implements OnInit {
   IdSolicitud: number;
   ObjRecepcionServicios: any;
   recepcionBienes: FormGroup;
-  IdRecepcionBienes: any;
+  IdRecepcionBienes: number;
  
 constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
   
@@ -33,17 +33,18 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, priv
     let objRegistrar;
     objRegistrar = {
       NumeroRecepcion: this.numRecepcion.value,
-      recibidoSap: true
+      recibidoSap: true,
+      Estado: 'Terminado'
     }
-
     if (this.numRecepcion.value === "" || this.numRecepcion.value === null || this.numRecepcion.value === undefined) {
       alert('Debe suministrar el numero de recpción')
     }
+    else{
     let index = this.ObjRecepcionBienes.findIndex(x=> x.IdRecepcionBienes === item.IdRecepcionBienes);
     this.servicio.registrarRecepcionBienes(this.IdRecepcionBienes, objRegistrar).then(
       (resultado: ItemAddResult) => {
         alert('Recibido')
-        this.IdRecepcionBienes.splice(index, 1);
+        this.ObjRecepcionBienes.splice(index, 1);
       }
     ).catch(
       (error) => {
@@ -51,6 +52,7 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, priv
       }
     )
   }
+}
   ngOnInit() {
     this.IdSolicitudParms = localStorage.getItem('IdSolicitud')
     this.servicio.ObtenerRecepcionesBienes(1).subscribe(
