@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule, MatPaginatorModule } from '@angular/material';
+import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule, MatPaginatorModule, MatExpansionModule } from '@angular/material';
 import { Select2Module } from "ng-select2-component";
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ng6-toastr-notifications';
@@ -22,9 +22,10 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberDirective } from './directivas/numbers-only.directive';
-import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule, TypeaheadModule } from 'ngx-bootstrap';
+import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule, TypeaheadModule, TabsModule } from 'ngx-bootstrap';
 import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap-servicios/registrar-entradas-sap-servicios.component';
 import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.component';
+import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.componen
     RegistrarSolpSapComponent,
     NumberDirective,
     RegistrarEntradasSapServiciosComponent,
-    MisPendientesComponent
+    MisPendientesComponent,
+    VerSolicitudTabComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +60,8 @@ import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.componen
     MatListModule,
     MatOptionModule,
     MatInputModule,
+    MatExpansionModule,
+    TabsModule.forRoot(),
     MatToolbarModule,
     MatPaginatorModule,
     TooltipModule.forRoot(),
@@ -79,7 +83,8 @@ import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.componen
       {path:'registrar-entradas-sap-servicios', component:RegistrarEntradasSapServiciosComponent},
       {path:'registrar-solp-sap', component:RegistrarSolpSapComponent},
       {path:'sondeo', component:SondeoComponent},
-      {path:'verificar-material', component:VerificarMaterialComponent}
+      {path:'verificar-material', component:VerificarMaterialComponent},
+      { path: 'ver-solicitud-tab', component: VerSolicitudTabComponent }
     ])
   ],
   providers: [SPServicio, BsModalService, ModalBackdropComponent],

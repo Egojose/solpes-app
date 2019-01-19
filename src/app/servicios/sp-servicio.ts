@@ -347,4 +347,24 @@ export class SPServicio {
         return respuesta;
     }
 
+    guardarComentario(IdSolicitud, coment){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(coment);
+        return respuesta;
+    }
+
+    obtenerResponsableProcesos(IdPais){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaResponsableProceso).items.filter("PaisId eq '"+IdPais+"'").getAll());  
+        return respuesta;
+    }
+
+    guardarVerificarMaterial(IdSolicitud, objGuardarVerificar){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(IdSolicitud).update(objGuardarVerificar);
+        return respuesta;
+    }
+
+    ObtenerContratos(IdSolicitud){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.getAll());
+        return respuesta;
+    }
+
 }
