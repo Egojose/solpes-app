@@ -1,0 +1,14 @@
+:host>>>.tooltip-inner {
+    background-color: #ff2626;
+    color: #fff;
+    }
+     
+    :host>>>.tooltip.top .tooltip-arrow:before,
+    :host>>>.tooltip.top .tooltip-arrow {
+    border-top-color: #ff2626;
+    }
+
+    textarea#textareaHistorial {
+        background-color: white !important;
+        border: none !important
+    }

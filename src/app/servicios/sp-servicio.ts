@@ -367,4 +367,29 @@ export class SPServicio {
         return respuesta;
     }
 
+    guardarSondeoBienes(IdSolicitud, objSondeo){   
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(IdSolicitud).update(objSondeo);        
+        return respuesta;
+    }
+
+    guardarRegSondeo(IdSolicitud, ObjSolpSap){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjSolpSap);
+        return respuesta;
+    }
+
+    guardarSOLPSAP(IdSolicitud, ObjSolpSap){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjSolpSap);
+        return respuesta;
+    }
+
+    registrarRecepcionBienes(IdRecepcion, objRegistrar){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdRecepcion).update(objRegistrar);
+        return respuesta;
+    }
+
+    registrarRecepcion(IdRecepcion, objRegistrar){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdRecepcion).update(objRegistrar);
+        return respuesta;
+    }
+
 }

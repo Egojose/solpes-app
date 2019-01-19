@@ -22,7 +22,7 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberDirective } from './directivas/numbers-only.directive';
-import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule, TypeaheadModule, TabsModule } from 'ngx-bootstrap';
+import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule, TypeaheadModule, TabsModule, AccordionModule } from 'ngx-bootstrap';
 import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap-servicios/registrar-entradas-sap-servicios.component';
 import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.component';
 import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.component';
@@ -61,6 +61,7 @@ import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.
     MatOptionModule,
     MatInputModule,
     MatExpansionModule,
+    AccordionModule.forRoot(),
     TabsModule.forRoot(),
     MatToolbarModule,
     MatPaginatorModule,

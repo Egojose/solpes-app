@@ -1,3 +1,38 @@
-<p>
-  registrar-entradas-sap-servicios works!
-</p>
+<br>
+<br>
+<br>
+<h3>Registrar recepción servicio en SAP</h3>
+  <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover text-center">
+          <thead>
+              <tr>
+                  <!-- <th>Numero Pedido</th> -->
+                  <th>Responsable</th>
+                  <th>Ubicación</th>
+                  <th>Cantidad</th>
+                  <th>Mes</th>
+                  <th>Valor</th>
+                  <th>Comentarios</th>
+                  <th># Recepción SAP</th>
+                  <th>Guardar</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let item of ObjRecepcionServicios">
+                  <!-- <td></td> -->
+                  <td>{{item.Editor}}</td>
+                  <td>{{item.ubicacion}}</td>
+                  <td>{{item.cantidad}}</td>
+                  <td>{{item.mes}}</td>
+                  <td>{{item.valor}}</td>
+                  <td>{{item.comentario}}</td>
+                  <td>
+                      <input class="form-control" type="text" name="" id="" value="" [formControl]="numRecepcion">
+                  </td>
+                  <td>
+                      <input type="button" class="btn btn-primary" value="OK" (click)="Guardar(item)" />
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
