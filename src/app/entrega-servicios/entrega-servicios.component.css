@@ -1,0 +1,41 @@
+.espacio {
+    padding-bottom: 2%
+}
+
+.espacioFechaDeseada {
+    padding-top: 10%;
+}
+
+.footerPagina {
+    margin-top: 3%;
+}
+
+.espacioBotones {
+    padding-top: 5%;
+    padding-left: 30%;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+    max-height: 200px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.espacioRowPedido {
+    padding-bottom: 3%;
+}
+
+.botonera {
+    margin-right: 1%;
+}
+
+:host>>>.tooltip-inner {
+    background-color: #ff2626;
+    color: #fff;
+}
+
+ :host>>>.tooltip.top .tooltip-arrow:before,
+ :host>>>.tooltip.top .tooltip-arrow {
+    border-top-color: #ff2626;
+}

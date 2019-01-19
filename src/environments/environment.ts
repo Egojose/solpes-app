@@ -12,5 +12,8 @@ export const environment = {
   listaSolicitudes: 'Solicitudes',
   listaCondicionesTecnicasBienes: 'CondicionesTecnicasBienes',
   listaCondicionesTecnicasServicios: 'CondicionesTecnicasServicios',
-  listaConfiguracion: 'ConfiguracionAplicacion'
+  listaConfiguracion: 'ConfiguracionAplicacion',
+  listaRecepcionBienes: 'RecepcionBienes',
+  listaRecepcionServicios: 'RecepcionServicios',
+  listaContratos: 'Contratos'
 };

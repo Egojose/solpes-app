@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule } from '@angular/material';
+import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule, MatPaginatorModule } from '@angular/material';
 import { Select2Module } from "ng-select2-component";
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ng6-toastr-notifications';
@@ -22,8 +22,9 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberDirective } from './directivas/numbers-only.directive';
-import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule } from 'ngx-bootstrap';
+import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule, TypeaheadModule } from 'ngx-bootstrap';
 import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap-servicios/registrar-entradas-sap-servicios.component';
+import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap
     ConsultarSolicitudesComponent,
     RegistrarSolpSapComponent,
     NumberDirective,
-    RegistrarEntradasSapServiciosComponent
+    RegistrarEntradasSapServiciosComponent,
+    MisPendientesComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,9 @@ import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap
     MatOptionModule,
     MatInputModule,
     MatToolbarModule,
+    MatPaginatorModule,
     TooltipModule.forRoot(),
+    TypeaheadModule.forRoot(),
     ToastrModule.forRoot(),
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
@@ -70,6 +74,7 @@ import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap
       {path:'entrega-bienes', component:EntregaBienesComponent},
       {path:'entrega-servicios', component:EntregaServiciosComponent},
       {path:'mis-solicitudes', component:MisSolicitudesComponent},
+      {path:'mis-pendientes', component:MisPendientesComponent},
       {path:'registrar-entradas-sap-bienes', component:RecepcionSapComponent},
       {path:'registrar-entradas-sap-servicios', component:RegistrarEntradasSapServiciosComponent},
       {path:'registrar-solp-sap', component:RegistrarSolpSapComponent},

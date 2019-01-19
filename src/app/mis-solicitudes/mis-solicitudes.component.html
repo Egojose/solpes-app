@@ -1,5 +1,47 @@
 <h2>Mis Solicitudes</h2>
 
-<div class="container">
-     
-</div>
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar solicitud">
+</mat-form-field>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="Pais">
+        <th mat-header-cell *matHeaderCellDef> Pais </th>
+        <td mat-cell *matCellDef="let element"> {{element.pais.Title}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Tiposolicitud">
+        <th mat-header-cell *matHeaderCellDef> Tipo de solicitud </th>
+        <td mat-cell *matCellDef="let element"> {{element.tipoSolicitud}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaCreacion">
+        <th mat-header-cell *matHeaderCellDef> Fecha de creación </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="fechaEntregaDeseada">
+        <th mat-header-cell *matHeaderCellDef> Fecha entrega deseada </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaEntregaDeseada | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Estado">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Acciones">
+        <th mat-header-cell *matHeaderCellDef> Ver solicitud </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-flat-button class="colorBtn" (click)="VerSolicitud(element.id)">Ver</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>

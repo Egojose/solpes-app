@@ -1,3 +1,332 @@
-<p>
-  contratos works!
-</p>
+<div class="loading" *ngIf='loading'>
+  <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+</div>
+<br>
+<form autocomplete="off" [formGroup]="ContratosForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+      <div class="form-group col-md-6">
+          <label for="inputEmail4">Tipo de contrato <span class="camposRequeridos">*</span></label>
+          <select name="" id="" class="form-control" formControlName="TipoContrato" [ngClass]="{ 'is-invalid': submitted && f.TipoContrato.errors }">
+                        <option value="" [disabled]="Guardado === true"></option>
+                        <option value="Pedidos Directos - Contratos" [disabled]="Guardado === true">Pedidos Directos - Contratos</option>
+                        <option value="Ordenes a Marco" [disabled]="Guardado === true">Ordenes a Marco</option>
+                        <option value="Contrato" [disabled]="Guardado === true">Contrato</option>
+                        <option value="Pedidos de Emergencia" [disabled]="Guardado === true">Pedidos de Emergencia</option>
+                        <!-- <option *ngFor="let item of Tipo" [ngValue]="item">{{item.descripcion}}</option> -->
+                    </select>
+          <div *ngIf="submitted && f.TipoContrato.errors" class="invalid-feedback">
+              <div *ngIf="f.TipoContrato.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-6">
+          <label for="inputEmail4">N° SOLP SAP -RFP <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.SolpSapRfp.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">El numero debe estar entre 1099999980 ~ 9999999999</small>
+          <div *ngIf="submitted && f.SolpSapRfp.errors" class="invalid-feedback">
+              <div *ngIf="f.SolpSapRfp.errors.required">Es requerido</div>
+          </div>
+      </div>
+
+  </div>
+  <div class="row">
+      <div class="form-group col-md-6">
+          <label for="inputEmail4">N° Contrato/Orden de Compra <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">El numero debe estar entre 1099999980 ~ 9999999999</small>
+          <div *ngIf="submitted && f.ContratoOC.errors" class="invalid-feedback">
+              <div *ngIf="f.ContratoOC.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-6">
+          <label for="inputEmail4">Requiere N° de Orden Inicio <span class="camposRequeridos">*</span></label>
+          <select name="" id="" class="form-control" formControlName="OrdenInicio" [ngClass]="{ 'is-invalid': submitted && f.OrdenInicio.errors }">
+              <option value="" [disabled]="Guardado === true"></option>
+              <option value="Si" [disabled]="Guardado === true">Si</option>
+              <option value="No" [disabled]="Guardado === true">No</option>
+              <option value="N/A" [disabled]="Guardado === true">"N/A</option>
+          </select>
+          <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
+              <div *ngIf="f.OrdenInicio.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-12">
+          <label for="inputEmail4">Objeto del contrato <span class="camposRequeridos">*</span></label>
+          <textarea class="form-control" formControlName="ObjetoContrato" [ngClass]="{ 'is-invalid': submitted && f.ObjetoContrato.errors }" [readonly]="Guardado === true"></textarea>
+          <div *ngIf="submitted && f.ObjetoContrato.errors" class="invalid-feedback">
+              <div *ngIf="f.ObjetoContrato.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Fecha Firma de Contrato</label>
+          <input type="text" formControlName="FechaFirmaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.FechaFirmaContrato.errors }" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" [isDisabled]="Guardado === true" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.FechaFirmaContrato.errors" class="invalid-feedback">
+              <div *ngIf="f.FechaFirmaContrato.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Contrato de Obra o Conexo <span class="camposRequeridos">*</span></label>
+          <select name="" id="" class="form-control" formControlName="ContratoObraConexo" [ngClass]="{ 'is-invalid': submitted && f.ContratoObraConexo.errors }" [disabled]="Guardado === true">
+              <option value="" [disabled]="Guardado === true"></option>
+              <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+              <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+          </select>
+          <div *ngIf="submitted && f.ContratoObraConexo.errors" class="invalid-feedback">
+              <div *ngIf="f.ContratoObraConexo.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Fecha de Entrega CSC - BPO</label>
+          <input type="text" formControlName="FechaEntregaCSCBPO" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" [ngClass]="{ 'is-invalid': submitted && f.FechaEntregaCSCBPO.errors }" [isDisabled]="Guardado === true" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.FechaEntregaCSCBPO.errors" class="invalid-feedback">
+              <div *ngIf="f.FechaEntregaCSCBPO.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Fecha de envió al proveedor</label>
+          <input type="text" formControlName="FechaEnvioProvedor" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" [ngClass]="{ 'is-invalid': submitted && f.FechaEnvioProvedor.errors }" [isDisabled]="Guardado === true" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.FechaEnvioProvedor.errors" class="invalid-feedback">
+              <div *ngIf="f.FechaEnvioProvedor.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Fecha devolución proveedor</label>
+          <input type="text" formControlName="FechaDevolucionProvedor" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" [ngClass]="{ 'is-invalid': submitted && f.FechaDevolucionProvedor.errors }" [isDisabled]="Guardado === true" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.FechaDevolucionProvedor.errors" class="invalid-feedback">
+              <div *ngIf="f.FechaDevolucionProvedor.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Moneda del contrato <span class="camposRequeridos">*</span></label>
+          <select name="" id="" class="form-control" formControlName="MonedaContrato" [ngClass]="{ 'is-invalid': submitted && f.MonedaContrato.errors }">
+              <option value="" [disabled]="Guardado === true"></option>
+              <option value="COP" [disabled]="Guardado === true">COP</option>
+              <option value="USD" [disabled]="Guardado === true">USD</option>
+              <option value="EURO" [disabled]="Guardado === true">EURO</option>
+          </select>
+          <div *ngIf="submitted && f.MonedaContrato.errors" class="invalid-feedback">
+              <div *ngIf="f.MonedaContrato.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">TRM SAP</label>
+          <input type="text" formControlName="TrmSap" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.TrmSap.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Solo aplica para contratos con moneda USD</small>
+          <div *ngIf="submitted && f.TrmSap.errors" class="invalid-feedback">
+              <div *ngIf="f.TrmSap.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">IVA del contrato <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="IvaContrato" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Solo aplica para contratos con moneda USD</small>
+          <div *ngIf="submitted && f.IvaContrato.errors" class="invalid-feedback">
+              <div *ngIf="f.IvaContrato.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Valor Contractual <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="ValorContractual" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.ValorContractual.errors" class="invalid-feedback">
+              <div *ngIf="f.ValorContractual.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Valor final Sin IVA</label>
+          <input type="text" formControlName="ValorSinIVA" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ValorSinIVA.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Escriba el valor en Moneda local COP</small>
+          <div *ngIf="submitted && f.ValorSinIVA.errors" class="invalid-feedback">
+              <div *ngIf="f.ValorSinIVA.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Valor final incluido IVA</label>
+          <input type="text" formControlName="ValorFinalIVA" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ValorFinalIVA.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Escriba el valor del contrato en Moneda Local COP</small>
+          <div *ngIf="submitted && f.ValorFinalIVA.errors" class="invalid-feedback">
+              <div *ngIf="f.ValorFinalIVA.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Referencia</label>
+          <input type="text" formControlName="Referencia" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Referencia.errors }" [readonly]="Pais!='Colombia' || Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Campo solo aplica para el BPO Contratos</small>
+          <div *ngIf="submitted && f.Referencia.errors" class="invalid-feedback">
+              <div *ngIf="f.Referencia.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Línea base del contrato <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="LineaBaseContrato" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.LineaBaseContrato.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Escriba el valor del contrato en moneda local COP</small>
+          <div *ngIf="submitted && f.LineaBaseContrato.errors" class="invalid-feedback">
+              <div *ngIf="f.LineaBaseContrato.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Ahorro generado en contrato <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="AhorroGenerado" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.AhorroGenerado.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Escriba el valor en moneda local COP</small>
+          <div *ngIf="submitted && f.AhorroGenerado.errors" class="invalid-feedback">
+              <div *ngIf="f.AhorroGenerado.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Descripción calculo del ahorro generado en el contrato <span class="camposRequeridos">*</span></label>
+          <select name="" id="" class="form-control" formControlName="DescripcionCalculo" [ngClass]="{ 'is-invalid': submitted && f.DescripcionCalculo.errors }">
+              <option value=""></option>
+              <option value="Rondas de negociación" [disabled]="Guardado === true">Rondas de negociación</option>
+              <option value="Presupuesto del área" [disabled]="Guardado === true">Presupuesto del área</option>
+              <option value="Frente a valor que se venia pagandp en contrato anterior" [disabled]="Guardado === true">Frente a valor que se venia pagandp en contrato anterior</option>
+              <option value="Optimización de alcance o proceso" [disabled]="Guardado === true">Optimización de alcance o proceso</option>
+              <option value="No aplica" [disabled]="Guardado === true">No aplica</option>
+          </select>
+          <div *ngIf="submitted && f.DescripcionCalculo.errors" class="invalid-feedback">
+              <div *ngIf="f.DescripcionCalculo.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Vigencia del contrato <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="VigenciaContrato" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.VigenciaContrato.errors }" [readonly]="Pais!='Colombia' || Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Escriba la vigencia del contrato en días</small>
+          <div *ngIf="submitted && f.VigenciaContrato.errors" class="invalid-feedback">
+              <div *ngIf="f.VigenciaContrato.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Requiere SST <span class="camposRequeridos">*</span></label>
+          <select name="" id="" class="form-control" formControlName="RequiereSST" [ngClass]="{ 'is-invalid': submitted && f.RequiereSST.errors }">
+              <option value=""></option>
+              <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+              <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+          </select>
+          <div *ngIf="submitted && f.RequiereSST.errors" class="invalid-feedback">
+              <div *ngIf="f.RequiereSST.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Requiere póliza <span class="camposRequeridos">*</span></label>
+          <select name="" id="" class="form-control" formControlName="RequierePoliza" [ngClass]="{ 'is-invalid': submitted && f.RequierePoliza.errors }">
+              <option value=""></option>
+              <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+              <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+          </select>
+          <div *ngIf="submitted && f.RequierePoliza.errors" class="invalid-feedback">
+              <div *ngIf="f.RequierePoliza.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Fecha de entrega de la póliza</label>
+          <input type="text" formControlName="FechaEntrgaPoliza" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" [ngClass]="{ 'is-invalid': submitted && f.FechaEntrgaPoliza.errors }" [isDisabled]="Guardado === true" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.FechaEntrgaPoliza.errors" class="invalid-feedback">
+              <div *ngIf="f.FechaEntrgaPoliza.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Fecha de entrega real de póliza</label>
+          <input type="text" formControlName="FechaRealEntrgaPoliza" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" [ngClass]="{ 'is-invalid': submitted && f.FechaRealEntrgaPoliza.errors }" [isDisabled]="Guardado === true" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.FechaRealEntrgaPoliza.errors" class="invalid-feedback">
+              <div *ngIf="f.FechaRealEntrgaPoliza.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Fecha estado póliza</label>
+          <input type="text" formControlName="FechaEstadoPoliza" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" [ngClass]="{ 'is-invalid': submitted && f.FechaEstadoPoliza.errors }" [isDisabled]="Guardado === true" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.FechaEstadoPoliza.errors" class="invalid-feedback">
+              <div *ngIf="f.FechaEstadoPoliza.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Condición póliza</label>
+          <select name="" id="" class="form-control" formControlName="CondicionPoliza" [ngClass]="{ 'is-invalid': submitted && f.CondicionPoliza.errors }">
+              <option value="" [disabled]="Guardado === true"></option>
+              <option value="Conforme" [disabled]="Guardado === true">Conforme</option>
+              <option value="No conforme" [disabled]="Guardado === true">No conforme</option>
+              <option value="Pendiente" [disabled]="Guardado === true">Pendiente</option>
+          </select>
+          <div *ngIf="submitted && f.CondicionPoliza.errors" class="invalid-feedback">
+              <div *ngIf="f.CondicionPoliza.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Acreedor <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.Acreedor.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">NIT o documento de indentificación del proveedor, sin dígito de verificación</small>
+          <div *ngIf="submitted && f.Acreedor.errors" class="invalid-feedback">
+              <div *ngIf="f.Acreedor.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Dígito de verificación <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.DigitoVerificacion.errors }" [readonly]="Guardado === true">
+          <small id="emailHelp" class="form-text text-muted">Dígito de verificación del NIT o documento de identificación del proveedor</small>
+          <div *ngIf="submitted && f.DigitoVerificacion.errors" class="invalid-feedback">
+              <div *ngIf="f.DigitoVerificacion.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
+              <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">E-mail del proveedor <span class="camposRequeridos">*</span></label>
+          <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
+              <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
+              <div *ngIf="f.EmailProveedor.errors.email">El E-mail no es inválido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-4">
+          <label for="inputEmail4">Solicitante <span class="camposRequeridos">*</span></label>
+          <input type="text" formControlName="Solicitante" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Solicitante.errors }" [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.Solicitante.errors" class="invalid-feedback">
+              <div *ngIf="f.Solicitante.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-md-6">
+          <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
+          <ng-template #tolTemplate>el usuario no existe</ng-template>
+          <input formControlName="Comprador" [typeahead]="ObjUsuarios" typeaheadOptionField="Title" (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" triggers="" #customTooltip="bs-tooltip" placement="bottom" class="form-control"
+              [readonly]="Guardado === true">
+          <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
+              <div *ngIf="f.Comprador.errors.required">Es requerido</div>
+          </div>
+      </div>
+      <div class="form-group col-md-6">
+          <label for="inputEmail4">Observaciones adicionales <span class="camposRequeridos">*</span></label>
+          <textarea formControlName="ObervacionesAdicionales" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ObervacionesAdicionales.errors }" [readonly]="Guardado === true"></textarea>
+          <div *ngIf="submitted && f.ObervacionesAdicionales.errors" class="invalid-feedback">
+              <div *ngIf="f.ObervacionesAdicionales.errors.required">Es requerido</div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <button type="submit" class="btn btn-primary" [hidden]="Guardado === true" style="margin-right: 1%;">Guardar contrato</button>
+      <button type="button" class="btn btn-primary" (click)="Salir()">Salir</button>
+  </div>
+</form>
+<footer class="footerPagina"></footer>

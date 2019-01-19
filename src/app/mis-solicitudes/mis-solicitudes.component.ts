@@ -1,7 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
+import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-solicitudes',
@@ -11,13 +13,16 @@ import { Solicitud } from '../dominio/solicitud';
 export class MisSolicitudesComponent implements OnInit {
   usuarioActual : Usuario;
   misSolicitudes: Solicitud[] = [];
-
-  constructor( private servicio: SPServicio) { }
+  dataSource;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  
+  constructor( private servicio: SPServicio, private router: Router) { }
 
   ngOnInit() {
     this.ObtenerUsuarioActual();
   }
-
+  displayedColumns: string[] = ['Pais','Tiposolicitud', 'fechaCreacion', 'fechaEntregaDeseada','Estado', 'Acciones']; 
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (Response) => {
@@ -31,15 +36,25 @@ export class MisSolicitudesComponent implements OnInit {
 
   ObtenerMisSolicitudes() {
     let idUsuario = this.usuarioActual.id;
-    console.log(idUsuario);
     this.servicio.obtenerMisSolicitudes(idUsuario).subscribe(
       (respuesta) => {
-        console.log(respuesta);
         this.misSolicitudes = Solicitud.fromJsonList(respuesta);
-        console.log(this.misSolicitudes); 
+        this.dataSource = new MatTableDataSource(this.misSolicitudes);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       }, error => {
         console.log('Error obteniendo mis solicitudes: ' + error);
       }
     )
   }
+
+  VerSolicitud(id){
+    sessionStorage.setItem("IdSolicitud", id);
+    this.router.navigate(['/ver-solicitud-tab']);
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 }

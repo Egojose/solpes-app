@@ -1,0 +1,53 @@
+<h2>Mis Pendientes</h2>
+
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar solicitud">
+</mat-form-field>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="Pais">
+        <th mat-header-cell *matHeaderCellDef> Pais </th>
+        <td mat-cell *matCellDef="let element"> {{element.pais.Title}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Tiposolicitud">
+        <th mat-header-cell *matHeaderCellDef> Tipo de solicitud </th>
+        <td mat-cell *matCellDef="let element"> {{element.tipoSolicitud}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaCreacion">
+        <th mat-header-cell *matHeaderCellDef> Fecha de creación </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaCreacion | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="fechaEntregaDeseada">
+        <th mat-header-cell *matHeaderCellDef> Fecha entrega deseada </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaEntregaDeseada | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Estado">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Acciones">
+        <th mat-header-cell *matHeaderCellDef> Ver solicitud </th>
+        <td mat-cell *matCellDef="let element">
+            <button *ngIf="element.estado =='Por sondear'" class="btn btn-primary" (click)="PorSondear(element.id)">Sondear</button>
+            <button *ngIf="element.estado =='Por aprobar sondeo'" class="btn btn-primary" (click)="AprobarSondeo(element.id)">Ir aprobar sondeo</button>
+            <button *ngIf="element.estado =='Por verificar material'" class="btn btn-primary" (click)="VerificarMaterial(element.id)">Ir a verificar material</button>
+            <button *ngIf="element.estado =='Por registrar solp sap'" class="btn btn-primary" (click)="RegistrarSOLPSAP(element.id)">Ir a registrar SOLP SAP</button>
+            <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary" (click)="RegistrarContratos(element.id)">Ir a registrar contratos</button>
+            <button *ngIf="element.estado =='Por registrar entregas' && element.compraBienes === true" class="btn btn-primary btnBienes" (click)="RegistrarEntregas(element.id)">Registrar bienes</button>
+            <button *ngIf="element.estado =='Por registrar entregas' && element.compraServicios === true" class="btn btn-success" (click)="RegistrarEntregas(element.id)">Registrar servicios</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
