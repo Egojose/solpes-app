@@ -25,19 +25,16 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   IdRecepcionServicios: number;
 
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
-    // this.activarRoute.params.subscribe((parametro)=>{
-    //     this.IdSolicitudParms = parametro.idSolicitud; 
-    // });
+   
   }
 
   Guardar(item) {
     this.IdRecepcionServicios = item.IdRecepcionServicios;
-
     let objRegistrar;
-
     objRegistrar = {
       NumeroRecepcion: this.numRecepcion.value,
-      recibidoSap: true
+      recibidoSap: true,
+      Estado: 'Terminado'
     }
     if (this.numRecepcion.value === "" || this.numRecepcion.value === null || this.numRecepcion.value === undefined) {
       alert('Debe suministrar el numero de recpción')
