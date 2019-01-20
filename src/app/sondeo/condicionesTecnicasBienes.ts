@@ -32,7 +32,6 @@ export class CondicionesTecnicasBienes {
         return new CondicionesTecnicasBienes(element.Id, element.CodigoVerificar, element.Descripcion, element.Modelo, element.FabricanteVerificar, element.ClaseSIAVerificar, element.CantidadVerificar, element.CantidadRecibida, element.CantidadVerificar - element.CantidadRecibida, element.UltimaEntrega, element.ValorEstimado, element.Comentarios);
     }
 
-
     public static fromJsonList(elements: any) {
         var list = [];
         for (var i = 0; i < elements.length; i++) {

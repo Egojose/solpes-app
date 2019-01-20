@@ -1,54 +1,14 @@
 <div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
-      alt="loading...">
-      <b>PROCESANDO...</b>
-  </div>
+  <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
+    alt="loading...">
+  <b>PROCESANDO...</b>
+</div>
 <div class="container">
   <br>
   <h3>SONDEAR</h3>
   <hr>
   <br>
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label for="textarea" class="col-sm-3 control-label">Sondeo de bienes:</label>
-      <table class="table table-striped table-bordered table-hover text-center">
-        <thead>
-          <tr>
-            <th>Descripción</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Código</th>
-            <th>Comentarios</th>
-            <th>Adjuntos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of ObjCondicionesTecnicas let i=index" [attr.data-index]="i">
-            <td>{{item.descripcion}}</td>
-            <td>
-              <input type="text" numbersOnly class="form-control text-center" [(ngModel)]="item.cantidad">
-            </td>
-            <td>
-              <input type="text" numbersOnly class="form-control text-center" [(ngModel)]="item.valorEstimado">
-            </td>
-            <td>
-              <input type="text" class="form-control text-center" [(ngModel)]="item.codigo"></td>
-            <td>
-              <textarea type="text" class="form-control text-center" [(ngModel)]="item.comentario"></textarea>
-            </td>
-            <td>
-              <input type="file" name="adjunto" (change)="adjuntarArchivoCTB($event, item)">
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="row text-center">
-    <div class="form-group col-md-12">
-      <input type="button" class="btn btn-success" value="Guardar sondeo" (click)="GuardarSondeoBienes()" />
-      <input type="button" class="btn btn-danger" value="SALIR" (click)="salir()" /> </div>
-  </div>
+
   <accordion>
     <accordion-group heading="Ver condiciones técnicas bienes">
       <div class="form-group row">
@@ -89,9 +49,10 @@
     </accordion-group>
   </accordion>
   <hr>
+
   <div class="row">
     <div class="form-group col-md-12">
-      <label for="textarea" class="col-sm-3 control-label">Sondeo de servicios:</label>
+      <label for="textarea" class="col-sm-3 control-label">Sondeo de bienes:</label>
       <table class="table table-striped table-bordered table-hover text-center">
         <thead>
           <tr>
@@ -104,25 +65,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of ObjCondicionesTecnicasServicios let i = index" [attr.data-index]="i">
+          <tr *ngFor="let item of ObjCondicionesTecnicas let i=index" [attr.data-index]="i">
+            <td>{{item.descripcion}}</td>
             <td>
-              {{item.descripcion}}
+              <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.cantidad">
             </td>
             <td>
-              <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad"
-                min="0" step="" title="">
+              <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.valorEstimado">
             </td>
             <td>
-              <input type="text" name="" id="inputPrecio" class="form-control text-center" min="0" step=""
-                title="" [(ngModel)]="item.precioServicio">
-            </td>
+              <input type="text" class="form-control text-center" [(ngModel)]="item.codigo"></td>
             <td>
-              <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo"
-                min="0" step="" title="">
-            </td>
-            <td>
-              <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.comentario" step=""
-                title=""></textarea>
+              <textarea type="text" class="form-control text-center" [(ngModel)]="item.comentario"></textarea>
             </td>
             <td>
               <input type="file" name="adjunto" (change)="adjuntarArchivoCTB($event, item)">
@@ -132,11 +86,7 @@
       </table>
     </div>
   </div>
-  <div class="row text-center">
-    <div class="form-group col-md-12">
-      <input type="button" class="btn btn-success" value="Guardar sondeo" (click)="GuardarSondeoServicios()" />
-      <input type="button" class="btn btn-danger" value="SALIR" (click)="salir()" /> </div>
-  </div>
+
   <accordion>
     <accordion-group heading="Ver condiciones técnicas servicios">
       <div class="form-group row">
@@ -173,6 +123,50 @@
     </accordion-group>
   </accordion>
   <hr>
+
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label for="textarea" class="col-sm-3 control-label">Sondeo de servicios:</label>
+      <table class="table table-striped table-bordered table-hover text-center">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Código</th>
+            <th>Comentarios</th>
+            <th>Adjuntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ObjCondicionesTecnicasServicios let i = index" [attr.data-index]="i">
+            <td>
+              {{item.descripcion}}
+            </td>
+            <td>
+              <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad"
+                min="0" step="" title="">
+            </td>
+            <td>
+              <input type="text" name="" id="inputPrecio" class="form-control text-center" min="0" step="" title=""
+                [(ngModel)]="item.valorEstimado">
+            </td>
+            <td>
+              <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo"
+                min="0" step="" title="">
+            </td>
+            <td>
+              <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.comentario" step=""
+                title=""></textarea>
+            </td>
+            <td>
+              <input type="file" name="adjunto" (change)="adjuntarArchivoCTS($event, item)">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <div class="row">
     <div class="form-group col-md-12">
       <label for="textarea" class="col-sm-3 control-label">Comentario del solicitante</label>
@@ -187,7 +181,7 @@
   </div>
   <div class="row text-center">
     <div class="form-group col-md-12">
-      <input type="button" class="btn btn-success" value="Enviar comentario" (click)="GuardarComentario()" />
+      <input type="button" class="btn btn-success" value="Guardar y enviar" (click)="guardarEnviar()" />
       <input type="button" class="btn btn-danger" value="SALIR" (click)="salir()" /> </div>
   </div>
   <hr>
