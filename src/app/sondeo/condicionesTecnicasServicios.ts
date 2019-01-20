@@ -1,4 +1,6 @@
 export class CondicionTecnicaServicios{
+  IdServicios: any;
+ 
     constructor(
         public indice: number,
         public titulo: string,
@@ -10,6 +12,9 @@ export class CondicionTecnicaServicios{
         public comentarios: string,
         public adjunto?: any,
         public tipoMoneda?: string,
+        public PrecioSondeo?: number,
+        public archivoAdjunto?: File,
+        public Estado?: string,
         public id?: number) { }
 
     public static fromJson(element: any) {
