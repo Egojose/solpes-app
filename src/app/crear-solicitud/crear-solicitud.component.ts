@@ -102,6 +102,7 @@ export class CrearSolicitudComponent implements OnInit {
   emptyasteriscoCTs: boolean;
   compraBienes: boolean;
   compraServicios: boolean;
+  consecutivoActual: number;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
@@ -347,6 +348,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicio.obtenerParametrosConfiguracion().subscribe(
       (respuesta) => {
         this.diasEntregaDeseada = respuesta[0].ParametroDiasEntregaDeseada;
+        this.consecutivoActual = respuesta[0].ConsecutivoSolicitudes;
         this.minDate = new Date();
         this.minDate.setDate(this.minDate.getDate() + this.diasEntregaDeseada);
         this.obtenerProfile();
@@ -458,6 +460,7 @@ export class CrearSolicitudComponent implements OnInit {
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
+    let consecutivoNuevo = this.consecutivoActual + 1;
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
@@ -521,6 +524,13 @@ export class CrearSolicitudComponent implements OnInit {
       return respuesta;
     }
 
+    if (this.condicionesTB.length > 0) {
+      this.compraBienes = true;
+    }
+    if (this.condicionesTS.length > 0) {
+      this.compraServicios = true;
+    }
+
     if (respuesta == true) {
       this.solicitudGuardar = new Solicitud(
         'Solicitud Solpes: ' + new Date(),
@@ -536,12 +546,24 @@ export class CrearSolicitudComponent implements OnInit {
         fechaEntregaDeseada,
         alcance,
         justificacion,
-        this.construirJsonCondicionesContractuales());
+        this.construirJsonCondicionesContractuales(),
+        '',
+        null, 
+        this.compraBienes, 
+        this.compraServicios, 
+        consecutivoNuevo, 
+        this.usuarioActual.id);
 
-      this.servicio.agregarSolicitud(this.solicitudGuardar).then(
+      this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
         (item: ItemAddResult) => {
-          this.MostrarExitoso("La solicitud se ha guardado correctamente");
-          this.router.navigate(['/mis-solicitudes']);
+          this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
+            (item: ItemAddResult) => {
+              this.MostrarExitoso("La solicitud se ha guardado correctamente");
+              this.router.navigate(['/mis-solicitudes']);
+            }, err => {
+              this.mostrarError('Error en la actualización del consecutivo');
+            }
+          )
         }, err => {
           this.mostrarError('Error en la creación de la solicitud');
         }
@@ -1104,6 +1126,7 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
     }
+
     this.solicitudGuardar = new Solicitud(
       'Solicitud Solpes: ' + new Date(),
       (tipoSolicitud != '') ? tipoSolicitud : '',
