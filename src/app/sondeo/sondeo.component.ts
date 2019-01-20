@@ -84,7 +84,8 @@ export class SondeoComponent implements OnInit {
         CodigoSondeo: this.ObjCondicionesTecnicas[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicas[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicas[i].PrecioSondeo,
-        Comentarios: this.ObjCondicionesTecnicas[i].comentario
+        Comentarios: this.ObjCondicionesTecnicas[i].comentario,
+        Estado: 'Por revisar sondeo'
       }
 
       this.servicio.guardarSondeoBienes(this.ObjCondicionesTecnicas[i].IdBienes, objSondeo).then(
