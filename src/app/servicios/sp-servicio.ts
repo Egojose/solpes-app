@@ -230,11 +230,7 @@ export class SPServicio {
     }
 
     ObtenerSolicitudBienesServicios(IdSolicitud){
-<<<<<<< HEAD
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","FechaDeseadaEntrega","Solicitante","TipoSolicitud","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador","Alcance","Justificacion","CondicionesContractuales","AuthorId","ComentarioSondeo", "CodigoAriba").expand("OrdenadorGastos","Empresa","Pais").get());
-=======
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","FechaDeseadaEntrega","Solicitante","Responsable/Title","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador","Alcance","Justificacion","CondicionesContractuales","AuthorId","ComentarioSondeo", "CodigoAriba").expand("OrdenadorGastos","Responsable","Empresa","Pais").get());
->>>>>>> master
         return respuesta;
     }
 
