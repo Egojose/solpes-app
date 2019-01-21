@@ -1,5 +1,6 @@
 export class CondicionesTecnicasBienes {
 
+
     constructor(public IdBienes: number,
         public codigo: string,
         public descripcion: string,
@@ -7,8 +8,8 @@ export class CondicionesTecnicasBienes {
         public fabricante: string,        
         public cantidad: number,
         public valorEstimado?: string,
-        public comentario?: string,
-        public archivoAdjunto?: File        
+        public ComentarioSondeo?: string,
+        public archivoAdjunto?: File      
         ) {}
 
     public static fromJson(element: any) {
@@ -19,7 +20,7 @@ export class CondicionesTecnicasBienes {
             element.Fabricante,
             element.Cantidad,
             element.ValorEstimado, 
-            element.Comentarios);
+            element.ComentarioSondeo);
     }
 
     public static fromJsonList(elements: any) {

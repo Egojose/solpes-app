@@ -1,6 +1,7 @@
 export class CondicionTecnicaServicios{
   IdServicios: any;
  
+ 
     constructor(
         public titulo: string,
         public idSolicitud: any,
