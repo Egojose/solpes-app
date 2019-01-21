@@ -91,6 +91,7 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.servicio.guardarSOLPSAP(this.IdSolicitud, ObjSolpSap).then(
         (resultado: ItemAddResult) => {
           alert('se registro la SOLPE')
+          this.salir();
         }
       ).catch(
         (error) => {
