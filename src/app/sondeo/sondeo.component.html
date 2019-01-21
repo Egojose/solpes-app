@@ -29,7 +29,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of ObjCondicionesTecnicasBienes">
+                                    <tr *ngFor="let item of ObjCondicionesTecnicasBienesLectura">
                                         <td>{{item.codigo}}</td>
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.modelo}}</td>
@@ -37,7 +37,7 @@
                                         <td>{{item.cantidad}}</td>
                                         <td>{{item.valorEstimado}}</td>
                                         <td></td>
-                                        <td>{{item.comentario}}</td>
+                                        <td>{{item.Comentario}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of ObjCondicionesTecnicasBienes let i=index"  [attr.data-index]="i">
+                    <tr *ngFor="let item of ObjCondicionesTecnicasBienesGuardar let i=index"  [attr.data-index]="i">
                         <td>{{item.descripcion}}</td>
                         <td>
                             <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.cantidad">
@@ -75,7 +75,7 @@
                         <td>
                             <input type="text"  class="form-control text-center"  [(ngModel)]="item.codigo"></td>
                         <td>
-                            <textarea type="text"  class="form-control text-center"  [(ngModel)]="item.comentario"></textarea>
+                            <textarea type="text"  class="form-control text-center"  [(ngModel)]="item.ComentarioSondeo"></textarea>
                         </td>
                         <td>
                             <input type="file" name="adjunto" (change)="adjuntarArchivoCTB($event, item)">
@@ -105,7 +105,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
+                                    <tr *ngFor="let item of ObjCondicionesTecnicasServiciosLectura">
                                         <td>{{item.codigo}}</td>
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.cantidad}}</td>
@@ -138,7 +138,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of ObjCondicionesTecnicasServicios let i = index" [attr.data-index]="i">
+                    <tr *ngFor="let item of ObjCondicionesTecnicasServiciosGuardar let i = index" [attr.data-index]="i">
                         <td>
                             {{item.descripcion}}
                         </td>
@@ -152,7 +152,7 @@
                             <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo" min="0" step="" title="">
                         </td>
                         <td>
-                            <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.comentario" step="" title=""></textarea>
+                            <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.ComentarioSondeo" step="" title=""></textarea>
                         </td>
                         <td>
                             <input type="file" name="adjunto" (change)="adjuntarArchivoCTS($event, item)">
