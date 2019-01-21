@@ -426,6 +426,7 @@ export class CrearSolicitudComponent implements OnInit {
   cargarCondicionesContractuales() {
     this.loading = true;
     let Subcategoria = this.solpFormulario.controls["subcategoria"].value;
+    console.log(Subcategoria);
     this.limpiarCondicionesContractuales();
     this.subcategoriaSeleccionada = this.subcategorias.find(s => s.id == Subcategoria.id);
     this.subcategoriaSeleccionada.condicionesContractuales.forEach(element => {
