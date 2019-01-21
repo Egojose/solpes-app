@@ -4,7 +4,7 @@ import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../aprobar-sondeo/condicionesTecnicasBienes';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../aprobar-sondeo/condicionesTecnicasServicios';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
 import { Usuario } from '../dominio/usuario';
 
@@ -50,7 +50,7 @@ export class AprobarSondeoComponent implements OnInit {
   usuario: Usuario;
   loading: boolean;
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
+  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute, private router: Router) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.loading = false;
   }
@@ -122,6 +122,7 @@ export class AprobarSondeoComponent implements OnInit {
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
           alert('se guardó el sondeo')
+          this.salir();
         }
       ).catch(
         (error) => {
@@ -144,6 +145,10 @@ export class AprobarSondeoComponent implements OnInit {
         console.log('Error obteniendo usuario: ' + err);
       }
     )
+  }
+
+  salir() {
+    this.router.navigate(["/mis-pendientes"]);
   }
 
   ObtenerSolicitudBienesServicios() {

@@ -324,7 +324,7 @@ export class SondeoComponent implements OnInit {
   }
 
   salir() {
-    this.router.navigate(["/mis-solicitudes"]);
+    this.router.navigate(["/mis-pendientes"]);
   }
 
   generarllaveSoporte(): string {
