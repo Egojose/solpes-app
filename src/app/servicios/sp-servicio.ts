@@ -228,7 +228,7 @@ export class SPServicio {
     }
 
     ObtenerSolicitudBienesServicios(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","FechaDeseadaEntrega","Solicitante","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador","Alcance","Justificacion","CondicionesContractuales","AuthorId","ComentarioSondeo").expand("OrdenadorGastos","Empresa","Pais").get());
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","FechaDeseadaEntrega","Solicitante","TipoSolicitud","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador","Alcance","Justificacion","CondicionesContractuales","AuthorId","ComentarioSondeo", "CodigoAriba").expand("OrdenadorGastos","Empresa","Pais").get());
         return respuesta;
     }
 
