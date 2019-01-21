@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -24,7 +24,8 @@ export class ContratosComponent implements OnInit {
   loading:boolean;
   idSolicitudParameter: string;
   constructor(private servicio: SPServicio, private router: Router, private formBuilder: FormBuilder) {
-      this.Guardado=false;
+    this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
+    this.Guardado=false;
    }
    
   ngOnInit() {
@@ -66,8 +67,6 @@ export class ContratosComponent implements OnInit {
       ObervacionesAdicionales: ['', Validators.required]
     });
 
-    this.idSolicitudParameter =  localStorage.getItem("IdSolicitud");
-    
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
       (Usuarios)=>{
         this.ObjUsuarios = Usuarios;  
@@ -164,7 +163,8 @@ export class ContratosComponent implements OnInit {
         EmailProveedor: EmailProveedor,
         Solicitante: Solicitante,
         Comprador: Comprador,
-        ObservacionesAdicionales: ObervacionesAdicionales
+        ObservacionesAdicionales: ObervacionesAdicionales,
+        SolicitudId: this.idSolicitudParameter
       }
     }
     else{
@@ -200,7 +200,8 @@ export class ContratosComponent implements OnInit {
         EmailProveedor: EmailProveedor,
         Solicitante: Solicitante,
         Comprador: Comprador,
-        ObservacionesAdicionales: ObervacionesAdicionales
+        ObservacionesAdicionales: ObervacionesAdicionales,
+        SolicitudId: this.idSolicitudParameter
       }
     }
     this.servicio.GuardarContrato(ObjContrato).then(
