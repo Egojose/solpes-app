@@ -24,7 +24,6 @@ export class MisPendientesComponent implements OnInit {
   loading: boolean;
   empty: boolean;
 
-  
   constructor( private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager) {
     this.dataSource = new MatTableDataSource();
     this.dataSource.data = this.misSolicitudes;
