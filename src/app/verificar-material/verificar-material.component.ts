@@ -30,6 +30,7 @@ export class VerificarMaterialComponent implements OnInit {
   solicitante: string;
   verificarMaterialFormulario: FormGroup;
   verificarSubmitted = false;
+  codAriba: string;
   emptyVerificar: boolean;
   ordenadorGasto: string;
   empresa: string;
@@ -67,6 +68,7 @@ export class VerificarMaterialComponent implements OnInit {
   IdVerficar: any;
   paisId: any;
   IdResponsable: any;
+  IdSolicitudParms: string;
   constructor(
     private servicio: SPServicio,
     private formBuilder: FormBuilder,
@@ -76,6 +78,7 @@ export class VerificarMaterialComponent implements OnInit {
   ) {
     this.loading = false;
     this.emptyVerificar = true;
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
   }
    
   GuardarComentario() {
@@ -87,7 +90,7 @@ export class VerificarMaterialComponent implements OnInit {
       let comentarios = this.ComentarioVerificarMaterial;
 
       coment = {
-        Estado: 'Por registrar entregas',
+        Estado: 'Por registrar solp sap',
         ResponsableId: ResponsableProcesoId,
         ComentarioVerificarMaterial: comentarios
       }
@@ -126,7 +129,7 @@ export class VerificarMaterialComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
- 
+   debugger;
     this.RegistrarFormularioVerificar();
     this.ValidarNumReservaSiHayExistencias();
 
@@ -139,6 +142,7 @@ export class VerificarMaterialComponent implements OnInit {
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
         this.empresa = solicitud.Empresa.Title;
+        this.codAriba = solicitud.CodigoAriba;
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
@@ -189,9 +193,9 @@ export class VerificarMaterialComponent implements OnInit {
     this.router.navigate(["/mis-solicitudes"]);
   }
 
-  IdSolicitudParms(IdSolicitudParms: any): any {
-    throw new Error("Method not implemented.");
-  }
+  // IdSolicitudParms(IdSolicitudParms: any): any {
+  //   throw new Error("Method not implemented.");
+  // }
 
   RegistrarFormularioVerificar() {
     this.verificarMaterialFormulario = new FormGroup({

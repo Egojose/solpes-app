@@ -30,6 +30,7 @@ export class VerSolicitudTabComponent implements OnInit {
   categoria: string;
   subCategoria: string;
   comprador: string;
+  codAriba: string;
   justificacion: string;
   comentariosolicitudsondeo: string;
   comentarioverificarmaterial: string;
@@ -56,6 +57,7 @@ export class VerSolicitudTabComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    debugger;
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;
@@ -68,6 +70,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
         this.comprador = solicitud.Comprador;
+        this.codAriba = solicitud.CodigoAriba;
         this.alcance = solicitud.Alcance;
         this.resultadosondeo = solicitud.ResultadoSondeo;
         this.comentariorevisionsondeo = solicitud.ComentarioRevisionSondeo;

@@ -152,9 +152,13 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <strong>Comprador: </strong>{{comprador}}
                             </div>
+                            <div class="col-md-4">
+                                <strong>Código ariba: </strong>{{codAriba}}
+                            </div>
+                            <div class="col-md-4"></div>
                         </div>
                     </div>
                 </div>
@@ -165,13 +169,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
+                    <p id="exampleFormControlTextarea1">{{alcance}}</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Justificación</strong></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{justificacion}}</textarea>
+                    <p id="exampleFormControlTextarea1">{{justificacion}}</p>
                 </div>
             </div>
         </div>
