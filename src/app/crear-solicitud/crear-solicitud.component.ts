@@ -103,6 +103,7 @@ export class CrearSolicitudComponent implements OnInit {
   compraBienes: boolean;
   compraServicios: boolean;
   consecutivoActual: number;
+  compradorId: number;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
@@ -433,7 +434,8 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   cargarComprador(subcategoriaSeleccionada: Subcategoria): any {
-    this.solpFormulario.controls["comprador"].setValue(subcategoriaSeleccionada.comprador);
+    this.compradorId = subcategoriaSeleccionada.comprador.Id;
+    this.solpFormulario.controls["comprador"].setValue(subcategoriaSeleccionada.comprador.Title);
   }
 
   limpiarCondicionesContractuales(): any {
@@ -448,7 +450,10 @@ export class CrearSolicitudComponent implements OnInit {
 
   enviarSolicitud() {
     let respuesta;
+    let estado;
+    let responsable;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
+    console.log(tipoSolicitud);
     let cm = this.solpFormulario.controls["cm"].value;
     let empresa = this.solpFormulario.controls["empresa"].value;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
@@ -531,6 +536,15 @@ export class CrearSolicitudComponent implements OnInit {
       this.compraServicios = true;
     }
 
+    if(tipoSolicitud == 'Sondeo'){
+      estado = 'Por sondear';
+      responsable = this.compradorId;
+    }else if(tipoSolicitud == 'Solp'){
+      estado = '';
+    }else{
+      estado = '';
+    }
+
     if (respuesta == true) {
       this.solicitudGuardar = new Solicitud(
         'Solicitud Solpes: ' + new Date(),
@@ -547,8 +561,8 @@ export class CrearSolicitudComponent implements OnInit {
         alcance,
         justificacion,
         this.construirJsonCondicionesContractuales(),
-        '',
-        null, 
+        estado,
+        responsable, 
         this.compraBienes, 
         this.compraServicios, 
         consecutivoNuevo, 

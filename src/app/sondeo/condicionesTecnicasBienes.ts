@@ -29,7 +29,18 @@ export class CondicionesTecnicasBienes {
         public Estado?: any) {}
 
     public static fromJson(element: any) {
-        return new CondicionesTecnicasBienes(element.Id, element.CodigoVerificar, element.Descripcion, element.Modelo, element.FabricanteVerificar, element.ClaseSIAVerificar, element.CantidadVerificar, element.CantidadRecibida, element.CantidadVerificar - element.CantidadRecibida, element.UltimaEntrega, element.ValorEstimado, element.Comentarios);
+        return new CondicionesTecnicasBienes(element.Id, 
+            element.Codigo, 
+            element.Descripcion, 
+            element.Modelo, 
+            element.Fabricante, 
+            element.ClaseSIAVerificar, 
+            element.CantidadVerificar, 
+            element.CantidadRecibida, 
+            element.CantidadVerificar - element.CantidadRecibida, 
+            element.UltimaEntrega, 
+            element.ValorEstimado, 
+            element.Comentarios);
     }
 
     public static fromJsonList(elements: any) {

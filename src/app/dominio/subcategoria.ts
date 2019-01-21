@@ -11,7 +11,7 @@ export class Subcategoria {
         return new Subcategoria(element.Title,
             element.Categoria.ID,
             element.Pais,
-            element.Comprador.Title,
+            element.Comprador,
             element.CondicionesTecnicas.results,
             element.ID);
     }

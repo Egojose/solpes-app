@@ -8,14 +8,12 @@ import { ItemAddResult } from 'sp-pnp-js';
 import { Usuario } from '../dominio/usuario';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-sondeo',
   templateUrl: './sondeo.component.html',
   styleUrls: ['./sondeo.component.css']
 })
 export class SondeoComponent implements OnInit {
-
   name = new FormControl('');
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
@@ -115,34 +113,28 @@ export class SondeoComponent implements OnInit {
     this.loading = true;
     let objSondeo;
     let contador = 0;
-
     for (let i = 0; i < this.ObjCondicionesTecnicas.length; i++) {
-
       if (this.EsCampoVacio(this.ObjCondicionesTecnicas[i].cantidad)) {
         this.mostrarAdvertencia("Hay alguna cantidad sin llenar en condiciones de bienes");
         this.loading = false;
         break;
       }
-
       if (this.EsCampoVacio(this.ObjCondicionesTecnicas[i].valorEstimado)) {
         this.mostrarAdvertencia("Hay algún precio sin llenar en condiciones de bienes");
         this.loading = false;
         break;
       }
-
       if (this.EsCampoVacio(this.ObjCondicionesTecnicas[i].codigo)) {
         this.mostrarAdvertencia("Hay algún código sin llenar en condiciones de bienes");
         this.loading = false;
         break;
       }
-
       objSondeo = {
         CodigoSondeo: this.ObjCondicionesTecnicas[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicas[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicas[i].valorEstimado,
         Comentarios: this.ObjCondicionesTecnicas[i].comentario
       }
-
       this.servicio.guardarSondeoBienes(this.ObjCondicionesTecnicas[i].IdBienes, objSondeo).then(
         (resultado: ItemAddResult) => {
           if (this.ObjCondicionesTecnicas[i].archivoAdjunto != null) {
@@ -173,12 +165,10 @@ export class SondeoComponent implements OnInit {
           this.loading = false;
         }
       )
-
     }
   }
 
   GuardarSondeoServicios() {
-    
     let objSondeo;
     let contador = 0;
     for (let i = 0; i < this.ObjCondicionesTecnicasServicios.length; i++) {
@@ -187,26 +177,22 @@ export class SondeoComponent implements OnInit {
         this.loading = false;
         break;
       }
-
       if (this.EsCampoVacio(this.ObjCondicionesTecnicasServicios[i].valorEstimado)) {
         this.mostrarAdvertencia("Hay algún precio sin llenar en condiciones de servicios");
         this.loading = false;
         break;
       }
-
       if (this.EsCampoVacio(this.ObjCondicionesTecnicasServicios[i].codigo)) {
         this.mostrarAdvertencia("Hay algún código sin llenar en condiciones de servicios");
         this.loading = false;
         break;
       }
-
       objSondeo = {
         CodigoSondeo: this.ObjCondicionesTecnicasServicios[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasServicios[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicasServicios[i].valorEstimado,
         Comentario: this.ObjCondicionesTecnicasServicios[i].comentarios
       }
-
       this.servicio.guardarSondeoServicios(this.ObjCondicionesTecnicasServicios[i].id, objSondeo).then(
         (resultado: ItemAddResult) => {
           if (this.ObjCondicionesTecnicasServicios[i].archivoAdjunto != null) {
@@ -217,8 +203,6 @@ export class SondeoComponent implements OnInit {
                 if (contador === this.ObjCondicionesTecnicasServicios.length) {
                   this.MostrarExitoso("El sondeo de servicios se ha guardado correctamente");
                   this.guardarComentarioEstado();
-                  // this.loading = false;
-                  
                 }
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
@@ -230,8 +214,6 @@ export class SondeoComponent implements OnInit {
             if (contador === this.ObjCondicionesTecnicasServicios.length) {
               this.MostrarExitoso("El sondeo de servicios se ha guardado correctamente");
               this.guardarComentarioEstado();
-              // this.loading = false;
-
             }
           }
         }
@@ -245,16 +227,13 @@ export class SondeoComponent implements OnInit {
   }
 
   guardarComentarioEstado(){
-      
     let ObjSondeo;
     let fecha =  new Date();
     let dia = ("0" + fecha.getDate()).slice(-2);
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
-  
-
-    if (this.ComentarioSolicitante.length > 0) {
+    if (this.ComentarioSolicitante != undefined) {
       ObjSondeo = {
         ResponsableId: this.autorId,
         Estado: "Por aprobar sondeo",
@@ -279,8 +258,6 @@ export class SondeoComponent implements OnInit {
         console.log(error);
       }
     )
-    
-    
   }
 
   adjuntarArchivoCTB(event, item) {
