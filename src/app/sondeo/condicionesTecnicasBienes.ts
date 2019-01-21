@@ -8,8 +8,9 @@ export class CondicionesTecnicasBienes {
         public fabricante: string,        
         public cantidad: number,
         public valorEstimado?: string,
-        public ComentarioSondeo?: string,
-        public archivoAdjunto?: File      
+        public Comentario?: string,        
+        public archivoAdjunto?: File,
+        public ComentarioSondeo?:string  
         ) {}
 
     public static fromJson(element: any) {
@@ -20,6 +21,8 @@ export class CondicionesTecnicasBienes {
             element.Fabricante,
             element.Cantidad,
             element.ValorEstimado, 
+            element.Comentarios,
+            null,
             element.ComentarioSondeo);
     }
 
