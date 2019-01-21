@@ -99,6 +99,8 @@ export class VerificarMaterialComponent implements OnInit {
         this.servicio.guardarComentario(this.IdSolicitud, coment)
           .then((resultado: ItemAddResult) => {
         this.MostrarExitoso("Materiales verificados correctamente");
+        this.router.navigate(["/mis-pendientes"]);
+
           })
           .catch(error => {
             console.log(error);

@@ -359,11 +359,7 @@
         </div>
         <div class="form-group">
           <label for="adjunto">Adjunto</label><span class="asterisco-obligatorio">*</span>
-          <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event)"
-            [ngClass]="{ 'is-invalid': ctbSubmitted && f.adjuntoCTB.errors }" />
-          <div *ngIf="ctbSubmitted && f.adjuntoCTB.errors" class="invalid-feedback">
-            <div *ngIf="f.adjuntoCTB.errors.required">Este campo es requerido</div>
-          </div>
+          <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event)" />
           <br>
           <div [hidden]="!mostrarAdjuntoCTB" class="adjunto-guardado">
             <img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/file.png" alt="adjunto"><a href="{{rutaAdjuntoCTB}}" target="_blank">{{nombreAdjuntoCTB}}</a>
