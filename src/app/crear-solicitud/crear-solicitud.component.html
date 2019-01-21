@@ -99,6 +99,14 @@
     </div>
 
     <div class="form-group row">
+      <div class="col-md-6">
+        <label for="codigoAriba">Código Ariba</label>
+        <input type="text" id="codigoAriba" name="codigoAriba" formControlName="codigoAriba" class="form-control"
+        [attr.disabled]="true" />
+      </div>
+    </div>
+
+    <div class="form-group row">
       <div class="col-md-12">
         <label for="alcance">Alcance</label><span class="asterisco-obligatorio">*</span>
         <textarea id="alcance" name="alcance" formControlName="alcance" class="form-control" rows="4" placeholder="Describa el alcance de la compra..."></textarea>
