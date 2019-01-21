@@ -21,6 +21,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material';
 import { environment } from 'src/environments/environment';
+import { responsableProceso } from '../dominio/responsableProceso';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -104,6 +105,7 @@ export class CrearSolicitudComponent implements OnInit {
   compraServicios: boolean;
   consecutivoActual: number;
   compradorId: number;
+  responsableProcesoEstado: responsableProceso[] = [];
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
@@ -449,11 +451,11 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   enviarSolicitud() {
+    this.loading = true;
     let respuesta;
     let estado;
     let responsable;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
-    console.log(tipoSolicitud);
     let cm = this.solpFormulario.controls["cm"].value;
     let empresa = this.solpFormulario.controls["empresa"].value;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
@@ -469,63 +471,75 @@ export class CrearSolicitudComponent implements OnInit {
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
+      this.loading = false;
       return false;
     }
 
     if (this.EsCampoVacio(empresa)) {
       this.mostrarAdvertencia("El campo Empresa es requerido");
+      this.loading = false;
       return false;
     }
 
     if (this.EsCampoVacio(ordenadorGastos)) {
       this.mostrarAdvertencia("El campo Ordenador de gastos es requerido");
+      this.loading = false;
       return false;
     }
 
     if (this.EsCampoVacio(pais)) {
       this.mostrarAdvertencia("El campo País es requerido");
+      this.loading = false;
       return false;
     }
 
     if (this.EsCampoVacio(categoria)) {
       this.mostrarAdvertencia("El campo Categoría es requerido");
+      this.loading = false;
       return false;
     }
 
     if (this.EsCampoVacio(subcategoria)) {
       this.mostrarAdvertencia("El campo Subcategoría es requerido");
+      this.loading = false;
       return false;
     }
 
     if (this.EsCampoVacio(comprador)) {
       this.mostrarAdvertencia("El campo Comprador es requerido");
+      this.loading = false;
       return false;
     }
 
     if (this.EsCampoVacio(fechaEntregaDeseada)) {
       this.mostrarAdvertencia("El campo Fecha entrega deseada es requerido");
+      this.loading = false;
       return false;
     }
 
     if (this.EsCampoVacio(alcance)) {
       this.mostrarAdvertencia("El campo Alcance es requerido");
+      this.loading = false;
       return false;
     }
 
     if (tipoSolicitud == 'Solp' || tipoSolicitud == 'CM') {
       if (this.EsCampoVacio(justificacion)) {
         this.mostrarAdvertencia("El campo Justificación es requerido");
+        this.loading = false;
         return false;
       }
     }
 
     respuesta = this.ValidarCondicionesContractuales();
     if (respuesta == false) {
+      this.loading = false;
       return respuesta;
     }
 
     respuesta = this.ValidarExistenciaCondicionesTecnicas();
     if (respuesta == false) {
+      this.loading = false;
       return respuesta;
     }
 
@@ -536,53 +550,82 @@ export class CrearSolicitudComponent implements OnInit {
       this.compraServicios = true;
     }
 
-    if(tipoSolicitud == 'Sondeo'){
-      estado = 'Por sondear';
-      responsable = this.compradorId;
-    }else if(tipoSolicitud == 'Solp'){
-      estado = '';
-    }else{
-      estado = '';
-    }
+    this.servicio.obtenerResponsableProcesos(valorPais.id).subscribe(
+      (respuestaResponsable) => {
+        this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
+        if(tipoSolicitud == 'Sondeo'){
+          estado = 'Por sondear';
+          responsable = this.compradorId;
+        }else{
+          if(this.compraBienes){
+            estado = 'Por verificar material';
+            responsable = this.responsableProcesoEstado[0].porverificarMaterial;
+          }else{
+            estado = 'Por registrar solp sap';
+            responsable = this.responsableProcesoEstado[0].porRegistrarSolp;
+          }
+        }
 
-    if (respuesta == true) {
-      this.solicitudGuardar = new Solicitud(
-        'Solicitud Solpes: ' + new Date(),
-        tipoSolicitud,
-        cm,
-        this.usuarioActual.nombre,
-        empresa,
-        ordenadorGastos,
-        valorPais.id,
-        categoria.nombre,
-        subcategoria.nombre,
-        comprador,
-        fechaEntregaDeseada,
-        alcance,
-        justificacion,
-        this.construirJsonCondicionesContractuales(),
-        estado,
-        responsable, 
-        this.compraBienes, 
-        this.compraServicios, 
-        consecutivoNuevo, 
-        this.usuarioActual.id);
-
-      this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
-        (item: ItemAddResult) => {
-          this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
+        if (respuesta == true) {
+          this.solicitudGuardar = new Solicitud(
+            'Solicitud Solpes: ' + new Date(),
+            tipoSolicitud,
+            cm,
+            this.usuarioActual.nombre,
+            empresa,
+            ordenadorGastos,
+            valorPais.id,
+            categoria.nombre,
+            subcategoria.nombre,
+            comprador,
+            fechaEntregaDeseada,
+            alcance,
+            justificacion,
+            this.construirJsonCondicionesContractuales(),
+            estado,
+            responsable, 
+            this.compraBienes, 
+            this.compraServicios, 
+            consecutivoNuevo, 
+            this.usuarioActual.id);
+    
+          this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
             (item: ItemAddResult) => {
-              this.MostrarExitoso("La solicitud se ha guardado correctamente");
-              this.router.navigate(['/mis-solicitudes']);
+              this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
+                (item: ItemAddResult) => {
+
+                  let notificacion = {
+                    IdSolicitud : this.idSolicitudGuardada.toString(),
+                    ResponsableId: responsable,
+                    Estado: estado
+                  };
+
+                  this.servicio.agregarNotificacion(notificacion).then(
+                    (item: ItemAddResult) => {
+                      this.loading = false;
+                      this.MostrarExitoso("La solicitud se ha guardado correctamente");
+                      this.router.navigate(['/mis-solicitudes']);
+                    }, err => {
+                      this.mostrarError('Error agregando la notificación');
+                      this.loading = false;
+                    }
+                  )
+                }, err => {
+                  this.mostrarError('Error en la actualización del consecutivo');
+                  this.loading = false;
+                }
+              )
             }, err => {
-              this.mostrarError('Error en la actualización del consecutivo');
+              this.mostrarError('Error en el envío de la solicitud');
+              this.loading = false;
             }
           )
-        }, err => {
-          this.mostrarError('Error en la creación de la solicitud');
         }
-      )
-    }
+      }, err => {
+        this.mostrarError('Error obteniendo responsable procesos: ' + err);
+        this.loading = false;
+      }
+    )
   }
 
   ValidarExistenciaCondicionesTecnicas(): boolean {

@@ -29,7 +29,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of ObjCondicionesTecnicas">
+                                    <tr *ngFor="let item of ObjCondicionesTecnicasBienes">
                                         <td>{{item.codigo}}</td>
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.modelo}}</td>
@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of ObjCondicionesTecnicas let i=index"  [attr.data-index]="i">
+                    <tr *ngFor="let item of ObjCondicionesTecnicasBienes let i=index"  [attr.data-index]="i">
                         <td>{{item.descripcion}}</td>
                         <td>
                             <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.cantidad">

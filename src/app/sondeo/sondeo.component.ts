@@ -86,12 +86,14 @@ export class SondeoComponent implements OnInit {
         if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
+
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicasBienes = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.loading = false;
           }
         )
+
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
@@ -258,7 +260,7 @@ export class SondeoComponent implements OnInit {
     this.servicio.guardarRegSondeo(this.IdSolicitud,ObjSondeo).then(
       (respuesta)=>{
         this.loading = false;
-        sessionStorage.clear();
+        sessionStorage.removeItem("IdSolicitud");
         this.salir();
       }
     ).catch(

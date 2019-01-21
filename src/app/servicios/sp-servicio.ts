@@ -407,7 +407,10 @@ export class SPServicio {
                 ConsecutivoSolicitudes: consecutivoNuevo
             }
         );
-        
+    }
+
+    agregarNotificacion(objNotificacion){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaNotificaciones).items.add(objNotificacion);
     }
 
 }
