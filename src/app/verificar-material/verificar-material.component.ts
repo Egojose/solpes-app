@@ -302,16 +302,14 @@ export class VerificarMaterialComponent implements OnInit {
 
     this.servicio.guardarVerificarMaterial(this.IdVerficar, objGuardarVerificar)
       .then((resultado: ItemAddResult) => {
-        this.mostrarInformacion("Material guardado en la lista  correctamente");
+        this.mostrarInformacion("Material verificado correctamente");
       })
       .catch(error => {
         console.log(error);
       });
-
     this.dataSource = this.ObjCTVerificar;
     this.CargarTablaVerificar();
-    this.limpiarControlesVerificar();
-    this.mostrarInformacion("Material verificado correctamente");
+    this.limpiarControlesVerificar();    
     this.modalRef.hide();
   }
 

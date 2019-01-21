@@ -317,7 +317,7 @@
         <div class="container">
             <form [formGroup]="verificarMaterialFormulario" (ngSubmit)="VerificarOnSubmit()">
                 <div class="form-group">
-                    <label for="codigo">Código</label>
+                    <label for="codigo">Código</label><span class="asterisco-obligatorio">*</span>
                     <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }" type="text" placeholder="Escriba el código si lo conoce"
                         required="true" />
                     <div *ngIf="verificarSubmitted && f.codigoVerificar.errors" class="invalid-feedback">
@@ -325,7 +325,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="descripcion">Descripción</label>
+                    <label for="descripcion">Descripción</label><span class="asterisco-obligatorio">*</span>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar" [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
                     <div *ngIf="verificarSubmitted && f.descripcionVerificar.errors" class="invalid-feedback">
                         <div *ngIf="f.descripcionVerificar.errors.required">Este campo es requerido</div>
@@ -351,20 +351,20 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="existencias">Existencias</label>
-                                <input type="text" id="existenciasVerificar"  name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }"  placeholder="Escriba las existencias"
-                                    (change)="RestaCantidadReserva()" />
-                                <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
-                                    <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores a la cantidad
-                                    </div>
+                            <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }" placeholder="Escriba las existencias"
+                                (change)="RestaCantidadReserva()" />
+                            <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
+                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores a la cantidad
                                 </div>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label for="numReserva">Número de reserva</label>
-                                <input id="numReservaVerificar"  name="numReservaVerificar" numbersOnly  formControlName="numReservaVerificar"  class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }"  type="text" placeholder="Escriba el número de la reserva"
-                                      />
-                                <div *ngIf="verificarSubmitted && f.numReservaVerificar.errors" class="invalid-feedback">
-                                    <div *ngIf="f.numReservaVerificar.errors.required">Este campo es requerido</div>
-                                </div>
+                            <input id="numReservaVerificar" name="numReservaVerificar" numbersOnly formControlName="numReservaVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }" type="text" placeholder="Escriba el número de la reserva"
+                            />
+                            <div *ngIf="verificarSubmitted && f.numReservaVerificar.errors" class="invalid-feedback">
+                                <div *ngIf="f.numReservaVerificar.errors.required">Este campo es requerido</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -373,7 +373,7 @@
 
                         <div class="col-md-6">
                             <label for="cantidadReserva">Cantidad a comprar</label>
-                                <input type="text"  formControlName="cantidadReservaVerificar"  class="form-control" readonly />
+                            <input type="text" formControlName="cantidadReservaVerificar" class="form-control" readonly />
                         </div>
                     </div>
                 </div>
