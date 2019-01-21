@@ -25,7 +25,7 @@ export class MisSolicitudesComponent implements OnInit {
   }
 
 
-  displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'VerSolicitud']; 
+  displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Responsable', 'VerSolicitud']; 
 
   ngOnInit() {
     this.loading = true;

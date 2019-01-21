@@ -20,6 +20,7 @@ export class Solicitud {
         public compraServicios?: boolean,
         public consecutivo?: number,
         public autor?: number,
+        public nombreResponsable?: any,
         public id?: number) { }
 
     public static fromJson(element: any) {
@@ -43,6 +44,7 @@ export class Solicitud {
             element.CompraServicios,
             element.Consecutivo,
             element.AuthorId,
+            element.Responsable.Title,
             element.ID);
     }
 
