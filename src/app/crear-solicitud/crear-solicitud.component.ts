@@ -365,7 +365,8 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicio.obtenerdatosProfile().subscribe(
       (respuesta) => {
         if (respuesta.ExtendedManagers.results.length > 0) {
-          this.correoManager = respuesta.ExtendedManagers.results[0];
+          let posicionManager = respuesta.ExtendedManagers.results.length - 1;
+          this.correoManager = respuesta.ExtendedManagers.results[posicionManager];
           this.correoManager = this.correoManager.split('|')[2];
         }
         if (this.correoManager != "") {
@@ -459,6 +460,7 @@ export class CrearSolicitudComponent implements OnInit {
     let cm = this.solpFormulario.controls["cm"].value;
     let empresa = this.solpFormulario.controls["empresa"].value;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
+    console.log(ordenadorGastos);
     let valorPais = this.solpFormulario.controls["pais"].value;
     let pais = valorPais.nombre;
     let categoria = this.solpFormulario.controls["categoria"].value;
@@ -586,8 +588,7 @@ export class CrearSolicitudComponent implements OnInit {
             responsable, 
             this.compraBienes, 
             this.compraServicios, 
-            consecutivoNuevo, 
-            this.usuarioActual.id);
+            consecutivoNuevo);
     
           this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
             (item: ItemAddResult) => {
