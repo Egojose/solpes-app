@@ -22,7 +22,6 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { responsableProceso } from '../dominio/responsableProceso';
-import { normalize } from 'path';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -396,7 +395,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   agregarSolicitudInicial(): any {
-    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null, null, '', '', '', null, '', '', '', 'Borrador', this.usuarioActual.id, false, false, null, this.usuarioActual.id);
+    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null,null,'','','','',null, '','','','Borrador', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
     this.servicio.agregarSolicitud(this.solicitudGuardar).then(
       (item: ItemAddResult) => {
         this.idSolicitudGuardada = item.data.Id;
@@ -478,6 +477,7 @@ export class CrearSolicitudComponent implements OnInit {
     let categoria = this.solpFormulario.controls["categoria"].value;
     let subcategoria = this.solpFormulario.controls["subcategoria"].value;
     let comprador = this.solpFormulario.controls["comprador"].value;
+    let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
@@ -592,6 +592,7 @@ export class CrearSolicitudComponent implements OnInit {
             categoria.nombre,
             subcategoria.nombre,
             comprador,
+            codigoAriba,
             fechaEntregaDeseada,
             alcance,
             justificacion,
@@ -1245,10 +1246,10 @@ export class CrearSolicitudComponent implements OnInit {
     let empresa = this.solpFormulario.controls["empresa"].value;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
     let valorPais = this.solpFormulario.controls["pais"].value;
-    let pais = valorPais.nombre;
     let categoria = this.solpFormulario.controls["categoria"].value;
     let subcategoria = this.solpFormulario.controls["subcategoria"].value;
     let comprador = this.solpFormulario.controls["comprador"].value;
+    let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
@@ -1272,6 +1273,7 @@ export class CrearSolicitudComponent implements OnInit {
       (categoria != null) ? categoria.nombre : '',
       (subcategoria != '') ? subcategoria.nombre : '',
       (comprador != '') ? comprador : '',
+      (codigoAriba != '') ? codigoAriba : '',
       (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
       (alcance != '') ? alcance : '',
       (justificacion != '') ? justificacion : '',
