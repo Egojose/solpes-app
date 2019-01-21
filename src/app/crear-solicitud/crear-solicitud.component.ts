@@ -593,7 +593,7 @@ export class CrearSolicitudComponent implements OnInit {
             (item: ItemAddResult) => {
               this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
                 (item: ItemAddResult) => {
-
+                  
                   let notificacion = {
                     IdSolicitud : this.idSolicitudGuardada.toString(),
                     ResponsableId: responsable,
@@ -729,7 +729,6 @@ export class CrearSolicitudComponent implements OnInit {
           this.condicionTB.id = item.data.Id;
           this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.condicionTB.id, nombreArchivo, this.condicionTB.archivoAdjunto).then(
             (respuesta) => {
-              console.log(respuesta);
               this.condicionTB.rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
               this.condicionesTB.push(this.condicionTB);
               this.indiceCTB++;
