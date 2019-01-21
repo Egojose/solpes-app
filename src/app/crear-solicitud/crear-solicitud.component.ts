@@ -22,6 +22,7 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { responsableProceso } from '../dominio/responsableProceso';
+import { normalize } from 'path';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -105,6 +106,7 @@ export class CrearSolicitudComponent implements OnInit {
   compraServicios: boolean;
   consecutivoActual: number;
   compradorId: number;
+  codigoAriba: string;
   responsableProcesoEstado: responsableProceso[] = [];
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
@@ -248,6 +250,7 @@ export class CrearSolicitudComponent implements OnInit {
       categoria: [''],
       subcategoria: [''],
       comprador: [''],
+      codigoAriba: [''],
       fechaEntregaDeseada: [''],
       alcance: [''],
       justificacion: ['']
@@ -426,20 +429,29 @@ export class CrearSolicitudComponent implements OnInit {
   cargarCondicionesContractuales() {
     this.loading = true;
     let Subcategoria = this.solpFormulario.controls["subcategoria"].value;
-    console.log(Subcategoria);
-    this.limpiarCondicionesContractuales();
-    this.subcategoriaSeleccionada = this.subcategorias.find(s => s.id == Subcategoria.id);
-    this.subcategoriaSeleccionada.condicionesContractuales.forEach(element => {
-      this.condicionesContractuales.push(new CondicionContractual(element.Title, element.ID));
-    });
-    this.registrarControlesCondicionesContractuales();
-    this.cargarComprador(this.subcategoriaSeleccionada);
-    this.loading = false;
+    if(Subcategoria){
+      this.limpiarCondicionesContractuales();
+      this.subcategoriaSeleccionada = this.subcategorias.find(s => s.id == Subcategoria.id);
+      this.subcategoriaSeleccionada.condicionesContractuales.forEach(element => {
+        this.condicionesContractuales.push(new CondicionContractual(element.Title, element.ID));
+      });
+      this.registrarControlesCondicionesContractuales();
+      this.cargarDatosSubcategoria(this.subcategoriaSeleccionada);
+      this.loading = false;
+    }else{
+      this.solpFormulario.controls["comprador"].setValue('');
+      this.solpFormulario.controls['codigoAriba'].setValue('');
+      this.loading = false;
+    }
+
   }
 
-  cargarComprador(subcategoriaSeleccionada: Subcategoria): any {
-    this.compradorId = subcategoriaSeleccionada.comprador.Id;
-    this.solpFormulario.controls["comprador"].setValue(subcategoriaSeleccionada.comprador.Title);
+  cargarDatosSubcategoria(subcategoriaSeleccionada: Subcategoria): any {
+    let nombreComprador = (subcategoriaSeleccionada.comprador != null) ? subcategoriaSeleccionada.comprador.Title : '';
+    this.compradorId = (subcategoriaSeleccionada.comprador != null) ? subcategoriaSeleccionada.comprador.Id : null;
+    this.codigoAriba = (subcategoriaSeleccionada.codigoAriba != null) ? subcategoriaSeleccionada.codigoAriba : '';
+    this.solpFormulario.controls["comprador"].setValue(nombreComprador);
+    this.solpFormulario.controls['codigoAriba'].setValue(this.codigoAriba);
   }
 
   limpiarCondicionesContractuales(): any {
@@ -742,7 +754,8 @@ export class CrearSolicitudComponent implements OnInit {
                 this.limpiarControlesCTB();
                 this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
                 this.modalRef.hide();
-                this.loading = false;
+                this.condicionTB = null;
+                this.loading = false; 
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                 this.loading = false;
@@ -763,6 +776,7 @@ export class CrearSolicitudComponent implements OnInit {
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
             this.modalRef.hide();
+            this.condicionTB = null;
             this.loading = false;
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');

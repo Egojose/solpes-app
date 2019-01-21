@@ -29,6 +29,7 @@ export class VerificarMaterialComponent implements OnInit {
   solicitante: string;
   verificarMaterialFormulario: FormGroup;
   verificarSubmitted = false;
+  codAriba: string;
   emptyVerificar: boolean;
   ordenadorGasto: string;
   empresa: string;
@@ -76,7 +77,7 @@ export class VerificarMaterialComponent implements OnInit {
   ) {
     this.loading = false;
     this.emptyVerificar = true;
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud"); 
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
   }
    
   GuardarComentario() {
@@ -129,7 +130,7 @@ export class VerificarMaterialComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
- 
+   debugger;
     this.RegistrarFormularioVerificar();
     this.ValidarNumReservaSiHayExistencias();
 
@@ -142,6 +143,7 @@ export class VerificarMaterialComponent implements OnInit {
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
         this.empresa = solicitud.Empresa.Title;
+        this.codAriba = solicitud.CodigoAriba;
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
@@ -191,6 +193,10 @@ export class VerificarMaterialComponent implements OnInit {
   salir() {
     this.router.navigate(["/mis-solicitudes"]);
   }
+
+  // IdSolicitudParms(IdSolicitudParms: any): any {
+  //   throw new Error("Method not implemented.");
+  // }
 
   RegistrarFormularioVerificar() {
     this.verificarMaterialFormulario = new FormGroup({

@@ -38,11 +38,11 @@ export class RegistrarSolpSapComponent implements OnInit {
   ComentarioRegistrarSap: string;
   submitted = false;
   IdSolicitudParms: any;
+  loading: boolean;
 
  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
-  this.activarRoute.params.subscribe((parametro)=>{
-      this.IdSolicitudParms = parametro.idSolicitud; 
-  });
+  this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    this.loading = false;
  }
 
 
