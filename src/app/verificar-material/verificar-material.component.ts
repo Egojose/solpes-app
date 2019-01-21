@@ -9,7 +9,6 @@ import { ToastrManager } from "ng6-toastr-notifications";
 import { ItemAddResult } from "sp-pnp-js";
 import { CondicionTecnicaServicios } from "../verificar-material/condicionTecnicaServicios";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { animate, state, style, transition, trigger } from "@angular/animations";
 import { verificarMaterialCT } from "./verificarMaterialCT";
 import { MatTableDataSource, MatPaginator} from '@angular/material';
 
@@ -67,6 +66,7 @@ export class VerificarMaterialComponent implements OnInit {
   IdVerficar: any;
   paisId: any;
   IdResponsable: any;
+  IdSolicitudParms: string;
   constructor(
     private servicio: SPServicio,
     private formBuilder: FormBuilder,
@@ -76,6 +76,7 @@ export class VerificarMaterialComponent implements OnInit {
   ) {
     this.loading = false;
     this.emptyVerificar = true;
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud"); 
   }
    
   GuardarComentario() {
@@ -87,7 +88,7 @@ export class VerificarMaterialComponent implements OnInit {
       let comentarios = this.ComentarioVerificarMaterial;
 
       coment = {
-        Estado: 'Por registrar entregas',
+        Estado: 'Por registrar solp sap',
         ResponsableId: ResponsableProcesoId,
         ComentarioVerificarMaterial: comentarios
       }
@@ -187,10 +188,6 @@ export class VerificarMaterialComponent implements OnInit {
 
   salir() {
     this.router.navigate(["/mis-solicitudes"]);
-  }
-
-  IdSolicitudParms(IdSolicitudParms: any): any {
-    throw new Error("Method not implemented.");
   }
 
   RegistrarFormularioVerificar() {

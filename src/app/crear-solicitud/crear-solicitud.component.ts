@@ -365,7 +365,8 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicio.obtenerdatosProfile().subscribe(
       (respuesta) => {
         if (respuesta.ExtendedManagers.results.length > 0) {
-          this.correoManager = respuesta.ExtendedManagers.results[0];
+          let posicion = respuesta.ExtendedManagers.results.length - 1;
+          this.correoManager = respuesta.ExtendedManagers.results[posicion];
           this.correoManager = this.correoManager.split('|')[2];
         }
         if (this.correoManager != "") {
