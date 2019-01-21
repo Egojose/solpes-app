@@ -5,7 +5,7 @@ import { CondicionesTecnicasBienes } from '../registrar-solp-sap/condicionesTecn
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../registrar-solp-sap/condicionesTecnicasServicios';
 import { ItemAddResult } from 'sp-pnp-js';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { timeout } from 'q';
 
 @Component({
@@ -39,8 +39,9 @@ export class RegistrarSolpSapComponent implements OnInit {
   submitted = false;
   IdSolicitudParms: any;
   loading: boolean;
+ 
 
- constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
+ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute, private router: Router) {
   this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.loading = false;
  }
@@ -99,11 +100,11 @@ export class RegistrarSolpSapComponent implements OnInit {
     }
   }
 
-  Cancelar() {
-    this.RDBOrdenadorGastos === "";
-    this.ComentarioRegistrarSap === "";
-    this.numeroSolpSap === "";
+  
+  salir() {
+    this.router.navigate(["/mis-pendientes"]);
   }
+
 
   ngOnInit() {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
