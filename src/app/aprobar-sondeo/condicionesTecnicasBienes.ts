@@ -6,12 +6,20 @@ export class CondicionesTecnicasBienes {
         public CantidadSondeo: number,
         public PrecioSondeo: number,
         public ComentarioSondeo: string,
-        public Estado?: any
+        public Estado?: any,
+        public RutaArchivo?:string            
     ) {
 
     }
 
     public static fromJson(element: any) {
+        let RutaArchivo;
+        if (element.Attachments === true) {
+            RutaArchivo = element.AttachmentFiles.results[0].ServerRelativeUrl
+        }
+        else {
+            RutaArchivo = "false"
+        }
         return new CondicionesTecnicasBienes(element.Id ,element.CodigoSondeo, element.Descripcion, element.CantidadSondeo, element.PrecioSondeo, element.ComentarioSondeo, element.Estado);
     }
 

@@ -24,9 +24,11 @@
               <td>{{item.CantidadSondeo}}</td>
               <td>{{item.PrecioSondeo}}</td>
               <td>{{item.ComentarioSondeo}}</td>
-              <td><i class="material-icons">
-                  attach_file
-                </i></td>
+              <td>
+                <a *ngIf="item.RutaArchivo !== 'false'" href="{{item.RutaArchivo}}">
+                  <button type="button" class="btn btn-primary">Ver Archivo</button>
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>
