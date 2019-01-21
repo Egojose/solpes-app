@@ -48,11 +48,11 @@ export class AprobarSondeoComponent implements OnInit {
   historial: string;
   comentarioSondeo: string;
   usuario: Usuario;
+  loading: boolean;
  
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
-    this.activarRoute.params.subscribe((parametro)=>{
-        this.IdSolicitudParms = parametro.idSolicitud; 
-    });
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    this.loading = false;
    }
 
 
