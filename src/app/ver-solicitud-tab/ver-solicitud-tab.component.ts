@@ -88,6 +88,7 @@ export class VerSolicitudTabComponent implements OnInit {
         
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
+            console.log(RespuestaCondiciones);
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             console.log(this.ObjCondicionesTecnicas);
           }
@@ -95,14 +96,12 @@ export class VerSolicitudTabComponent implements OnInit {
         this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjContratos = Contratos.fromJsonList(RespuestaCondiciones);
-            console.log(this.ObjContratos);
           }
         );
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
 
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            console.log(this.ObjCondicionesTecnicasServicios);
           }
         );
         this.servicio.ObtenerRecepcionesBienes(this.IdSolicitud).subscribe(

@@ -21,15 +21,29 @@ export class CondicionesTecnicasBienes {
         public cantidadverificar?: number,
         public existenciasverificar?: number,
         public numreservaverificar?: string,
-        public cantidadreservaverificar?: number
-    ) {
-
-    }
+        public cantidadreservaverificar?: number,
+        public adjunto?: any) { }
 
     public static fromJson(element: any) {
-        return new CondicionesTecnicasBienes(element.Id, element.Codigo, element.Descripcion, element.Modelo, element.Fabricante, element.ClaseSIA,
-            element.Cantidad, element.ValorEstimado, element.Comentarios, element.CodigoSondeo, element.CantidadSondeo, element.PrecioSondeo, element.ComentarioSondeo,
-            element.CodigoVerificar,element.DescripcionVerificar, element.ModeloVerificar, element.FabricanteVerificar, element.ClaseSIAVerificar,element.CantidadVerificar, element.ExistenciasVerificar, element.NumReservaVerificar, element.CantidadReservaVerificar);
+        return new CondicionesTecnicasBienes(element.Id, 
+            element.Codigo, 
+            element.Descripcion, 
+            element.Modelo, 
+            element.Fabricante, 
+            element.ClaseSIA,
+            element.Cantidad, 
+            element.ValorEstimado, 
+            element.Comentarios, element.CodigoSondeo, element.CantidadSondeo, element.PrecioSondeo, element.ComentarioSondeo,
+            element.CodigoVerificar, 
+            element.DescripcionVerificar, 
+            element.ModeloVerificar, 
+            element.FabricanteVerificar, 
+            element.ClaseSIAVerificar, 
+            element.CantidadVerificar, 
+            element.ExistenciasVerificar, 
+            element.NumReservaVerificar, 
+            element.CantidadReservaVerificar,
+            element.AttachmentFiles);
     }
 
     public static fromJsonList(elements: any) {

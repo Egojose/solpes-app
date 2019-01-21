@@ -1,5 +1,6 @@
 <div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
+        alt="loading...">
 </div>
 <br>
 <div>
@@ -121,7 +122,13 @@
 
                             <td>{{item.cantidad}}</td>
                             <td>{{item.valorEstimado}}</td>
-                            <td></td>
+                            <td>
+                                <div *ngIf="item.adjunto.results.length > 0; else sinAdjunto">
+                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank">Adjunto</a>
+                                </div>
+                                <ng-template #sinAdjunto>
+                                </ng-template>
+                            </td>
                             <td>{{item.comentario}}</td>
                         </tr>
                     </tbody>
@@ -162,7 +169,7 @@
         <tab heading="Sondeo">
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Sondeo</strong></label>
-            <p id="exampleFormControlTextarea5" >{{comentariosolicitudsondeo}}</p>
+            <p id="exampleFormControlTextarea5">{{comentariosolicitudsondeo}}</p>
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo Bienes</strong></label>
             <div class="table-wrapper-scroll-y">
@@ -241,7 +248,7 @@
             </div>
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Revisión Sondeo</strong></label>
-            <p  id="exampleFormControlTextarea5"     >{{comentariorevisionsondeo}}</p>
+            <p id="exampleFormControlTextarea5">{{comentariorevisionsondeo}}</p>
             <br>
             <div class="col-md-12 row">
                 <div>
@@ -256,7 +263,7 @@
         <tab heading="Verificación de material">
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Verificar Material</strong></label>
-            <p  id="VerificarMaterialComentario"     >{{comentarioverificarmaterial}}</p>
+            <p id="VerificarMaterialComentario">{{comentarioverificarmaterial}}</p>
             <br>
             <div class="col-md-12 row">
                 <strong>Verificar material - Condiciones técnicas bienes:</strong>
@@ -324,7 +331,7 @@
             </div>
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario</strong></label>
-            <p id="ComentarioRegistrarSolpSAP"     >{{comentarioRegistrarSAP}}</p>
+            <p id="ComentarioRegistrarSolpSAP">{{comentarioRegistrarSAP}}</p>
             <br>
             <div class="col-md-12 row">
                 <div>
