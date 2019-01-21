@@ -1,283 +1,278 @@
 <div class="loading" *ngIf='loading'>
-  <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
-    alt="loading...">
-  <b>PROCESANDO...</b>
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+    <b>PROCESANDO...</b>
 </div>
 <div class="container">
-  <br>
-  <h3>SONDEAR</h3>
-  <hr>
-  <br>
+    <br>
+    <h3>SONDEAR</h3>
+    <hr>
+    <br>
 
-  <accordion>
-    <accordion-group heading="Ver condiciones técnicas bienes">
-      <div class="form-group row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones técnicas bienes</strong></label>
-            <div class="table-wrapper-scroll-y">
-              <table class="table table-striped table-bordered table-hover text-center">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Modelo</th>
-                    <th>Fabricante</th>
-                    <th>Cantidad</th>
-                    <th>Valor Estimado</th>
-                    <th>Adjunto</th>
-                    <th>Comentario</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of ObjCondicionesTecnicas">
-                    <td>{{item.codigo}}</td>
-                    <td>{{item.descripcion}}</td>
-                    <td>{{item.modelo}}</td>
-                    <td>{{item.fabricante}}</td>
-                    <td>{{item.cantidad}}</td>
-                    <td>{{item.valorEstimado}}</td>
-                    <td></td>
-                    <td>{{item.comentario}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </accordion-group>
-  </accordion>
-  <hr>
-
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label for="textarea" class="col-sm-3 control-label">Sondeo de bienes:</label>
-      <table class="table table-striped table-bordered table-hover text-center">
-        <thead>
-          <tr>
-            <th>Descripción</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Código</th>
-            <th>Comentarios</th>
-            <th>Adjuntos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of ObjCondicionesTecnicas let i=index" [attr.data-index]="i">
-            <td>{{item.descripcion}}</td>
-            <td>
-              <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.cantidad">
-            </td>
-            <td>
-              <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.valorEstimado">
-            </td>
-            <td>
-              <input type="text" class="form-control text-center" [(ngModel)]="item.codigo"></td>
-            <td>
-              <textarea type="text" class="form-control text-center" [(ngModel)]="item.comentario"></textarea>
-            </td>
-            <td>
-              <input type="file" name="adjunto" (change)="adjuntarArchivoCTB($event, item)">
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <accordion>
-    <accordion-group heading="Ver condiciones técnicas servicios">
-      <div class="form-group row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones técnicas servicios</strong></label>
-            <div class="table-wrapper-scroll-y">
-              <table class="table table-striped table-bordered table-hover text-center">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Valor Estimado</th>
-                    <th>Adjunto</th>
-                    <th>Comentario</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                    <td>{{item.codigo}}</td>
-                    <td>{{item.descripcion}}</td>
-                    <td>{{item.cantidad}}</td>
-                    <td>{{item.valorEstimado}}</td>
-                    <td></td>
-                    <td>{{item.comentario}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </accordion-group>
-  </accordion>
-  <hr>
-
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label for="textarea" class="col-sm-3 control-label">Sondeo de servicios:</label>
-      <table class="table table-striped table-bordered table-hover text-center">
-        <thead>
-          <tr>
-            <th>Descripción</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Código</th>
-            <th>Comentarios</th>
-            <th>Adjuntos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of ObjCondicionesTecnicasServicios let i = index" [attr.data-index]="i">
-            <td>
-              {{item.descripcion}}
-            </td>
-            <td>
-              <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad"
-                min="0" step="" title="">
-            </td>
-            <td>
-              <input type="text" name="" id="inputPrecio" class="form-control text-center" min="0" step="" title=""
-                [(ngModel)]="item.valorEstimado">
-            </td>
-            <td>
-              <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo"
-                min="0" step="" title="">
-            </td>
-            <td>
-              <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.comentario" step=""
-                title=""></textarea>
-            </td>
-            <td>
-              <input type="file" name="adjunto" (change)="adjuntarArchivoCTS($event, item)">
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label for="textarea" class="col-sm-3 control-label">Comentario del solicitante</label>
-      <textarea name="" id="comentSolcitante" class="form-control" rows="2" placeholder="Ingrese el comentario"></textarea>
-    </div>
-  </div>
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
-      <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioSondeo}}</textarea>
-    </div>
-  </div>
-  <div class="row text-center">
-    <div class="form-group col-md-12">
-      <input type="button" class="btn btn-success" value="Guardar y enviar" (click)="guardarEnviar()" />
-      <input type="button" class="btn btn-danger" value="SALIR" (click)="salir()" /> </div>
-  </div>
-  <hr>
-  <accordion>
-    <accordion-group heading="Ver Información adicional">
-      <div class="row espacio">
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-header">
-              <strong>Fecha deseada de entrega</strong>
-            </div>
-            <div class="card-body">
-              {{fechaDeseada | date:'dd/MM/yyyy'}}
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <strong>Información de la solicitud</strong>
-            </div>
-            <div class="card-body">
-              <div class="row espacio">
-                <div class="col-md-4">
-                  <strong>Solicitante: </strong>{{solicitante}}
-                </div>
-                <div class="col-md-4">
-                  <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
-                </div>
-                <div class="col-md-4">
-                  <strong>Empresa: </strong>{{empresa}}
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-md-4">
-                  <strong>País: </strong>{{pais}}
-                </div>
-                <div class="col-md-4">
-                  <strong>Categoría: </strong>{{categoria}}
-                </div>
-                <div class="col-md-4">
-                  <strong>Sub-Categoría: </strong>{{subCategoria}}
-                </div>
-              </div>
-              <br>
-              <div class="row">
+    <accordion>
+        <accordion-group heading="Ver condiciones técnicas bienes">
+            <div class="form-group row">
                 <div class="col-md-12">
-                  <strong>Comprador: </strong>{{comprador}}
+                    <div class="form-group">
+                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones técnicas bienes</strong></label>
+                        <div class="table-wrapper-scroll-y">
+                            <table class="table table-striped table-bordered table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descripción</th>
+                                        <th>Modelo</th>
+                                        <th>Fabricante</th>
+                                        <th>Cantidad</th>
+                                        <th>Valor Estimado</th>
+                                        <th>Adjunto</th>
+                                        <th>Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of ObjCondicionesTecnicas">
+                                        <td>{{item.codigo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.modelo}}</td>
+                                        <td>{{item.fabricante}}</td>
+                                        <td>{{item.cantidad}}</td>
+                                        <td>{{item.valorEstimado}}</td>
+                                        <td></td>
+                                        <td>{{item.comentario}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="row ">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{justificacion}}</textarea>
-          </div>
-        </div>
-      </div>
-      <br>
-      <div class="form-group row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
-            <div class="table-wrapper-scroll-y">
-              <table class="table table-striped">
+        </accordion-group>
+    </accordion>
+    <hr>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label for="textarea" class="col-sm-3 control-label">Sondeo de bienes:</label>
+            <table class="table table-striped table-bordered table-hover text-center">
                 <thead>
-                  <tr>
-                    <th scope="col">Campo</th>
-                    <th scope="col">Descripción</th>
-                  </tr>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Código</th>
+                        <th>Comentarios</th>
+                        <th>Adjuntos</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of condicionesContractuales">
-                    <td>{{item.campo}}</td>
-                    <td>{{item.descripcion}}</td>
-                  </tr>
+                    <tr *ngFor="let item of ObjCondicionesTecnicas let i=index"  [attr.data-index]="i">
+                        <td>{{item.descripcion}}</td>
+                        <td>
+                            <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.cantidad">
+                        </td>
+                        <td>
+                            <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.valorEstimado">
+                        </td>
+                        <td>
+                            <input type="text"  class="form-control text-center"  [(ngModel)]="item.codigo"></td>
+                        <td>
+                            <textarea type="text"  class="form-control text-center"  [(ngModel)]="item.comentario"></textarea>
+                        </td>
+                        <td>
+                            <input type="file" name="adjunto" (change)="adjuntarArchivoCTB($event, item)">
+                        </td>
+                        </tr>
                 </tbody>
-              </table>
-            </div>
-          </div>
+            </table>
         </div>
-      </div>
-    </accordion-group>
-  </accordion>
+    </div>
+
+    <accordion>
+        <accordion-group heading="Ver condiciones técnicas servicios">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones técnicas servicios</strong></label>
+                        <div class="table-wrapper-scroll-y">
+                            <table class="table table-striped table-bordered table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descripción</th>
+                                        <th>Cantidad</th>
+                                        <th>Valor Estimado</th>
+                                        <th>Adjunto</th>
+                                        <th>Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
+                                        <td>{{item.codigo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.cantidad}}</td>
+                                        <td>{{item.valorEstimado}}</td>
+                                        <td></td>
+                                        <td>{{item.comentario}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </accordion-group>
+    </accordion>
+    <hr>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label for="textarea" class="col-sm-3 control-label">Sondeo de servicios:</label>
+            <table class="table table-striped table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Código</th>
+                        <th>Comentarios</th>
+                        <th>Adjuntos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of ObjCondicionesTecnicasServicios let i = index" [attr.data-index]="i">
+                        <td>
+                            {{item.descripcion}}
+                        </td>
+                        <td>
+                            <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad" min="0" step="" title="">
+                        </td>
+                        <td>
+                            <input type="text" name="" id="inputPrecio" class="form-control text-center" min="0" step="" title="" [(ngModel)]="item.valorEstimado">
+                        </td>
+                        <td>
+                            <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo" min="0" step="" title="">
+                        </td>
+                        <td>
+                            <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.comentario" step="" title=""></textarea>
+                        </td>
+                        <td>
+                            <input type="file" name="adjunto" (change)="adjuntarArchivoCTS($event, item)">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label for="textarea" class="col-sm-3 control-label">Comentario del solicitante</label>
+            <textarea name="" id="comentSolcitante" class="form-control" rows="2" placeholder="Ingrese el comentario" [(ngModel)]="ComentarioSolicitante"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
+            <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioSondeo}}</textarea>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="form-group col-md-12">
+            <input type="button" class="btn btn-success" value="Guardar y enviar" (click)="guardarEnviar()" />
+            <input type="button" class="btn btn-danger" value="SALIR" (click)="salir()" /> </div>
+    </div>
+    <hr>
+    <accordion>
+        <accordion-group heading="Ver Información adicional">
+            <div class="row espacio">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Fecha deseada de entrega</strong>
+                        </div>
+                        <div class="card-body">
+                            {{fechaDeseada | date:'dd/MM/yyyy'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Información de la solicitud</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="row espacio">
+                                <div class="col-md-4">
+                                    <strong>Solicitante: </strong>{{solicitante}}
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Empresa: </strong>{{empresa}}
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <strong>País: </strong>{{pais}}
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Categoría: </strong>{{categoria}}
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Sub-Categoría: </strong>{{subCategoria}}
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong>Comprador: </strong>{{comprador}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{justificacion}}</textarea>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
+                        <div class="table-wrapper-scroll-y">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Campo</th>
+                                        <th scope="col">Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of condicionesContractuales">
+                                        <td>{{item.campo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </accordion-group>
+    </accordion>
 </div>

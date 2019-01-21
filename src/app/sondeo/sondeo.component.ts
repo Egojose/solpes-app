@@ -43,6 +43,9 @@ export class SondeoComponent implements OnInit {
   historial: string;
   usuario: Usuario;
   loading: boolean;
+  ComentarioSolicitante: string;
+  PaisId: any;
+  autorId: any;
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.loading = false;
@@ -66,7 +69,7 @@ export class SondeoComponent implements OnInit {
   }
 
   ObtenerSolicitudBienesServicios() {
-    this.servicio.ObtenerSolicitudBienesServicios(1).subscribe(
+    this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
@@ -74,12 +77,14 @@ export class SondeoComponent implements OnInit {
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
+        this.PaisId = solicitud.Pais.Id
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
         this.comprador = solicitud.Comprador;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
+        this.autorId = solicitud.AuthorId;
         if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
@@ -173,6 +178,7 @@ export class SondeoComponent implements OnInit {
   }
 
   GuardarSondeoServicios() {
+    
     let objSondeo;
     let contador = 0;
     for (let i = 0; i < this.ObjCondicionesTecnicasServicios.length; i++) {
@@ -210,7 +216,9 @@ export class SondeoComponent implements OnInit {
                 contador++
                 if (contador === this.ObjCondicionesTecnicasServicios.length) {
                   this.MostrarExitoso("El sondeo de servicios se ha guardado correctamente");
-                  this.loading = false;
+                  this.guardarComentarioEstado();
+                  // this.loading = false;
+                  
                 }
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
@@ -221,7 +229,9 @@ export class SondeoComponent implements OnInit {
             contador++
             if (contador === this.ObjCondicionesTecnicasServicios.length) {
               this.MostrarExitoso("El sondeo de servicios se ha guardado correctamente");
-              this.loading = false;
+              this.guardarComentarioEstado();
+              // this.loading = false;
+
             }
           }
         }
@@ -232,6 +242,45 @@ export class SondeoComponent implements OnInit {
         }
       )
     }
+  }
+
+  guardarComentarioEstado(){
+      
+    let ObjSondeo;
+    let fecha =  new Date();
+    let dia = ("0" + fecha.getDate()).slice(-2);
+    let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
+    let año = fecha.getFullYear();
+    let fechaFormateada = dia + "/" + mes + "/" + año;
+  
+
+    if (this.ComentarioSolicitante.length > 0) {
+      ObjSondeo = {
+        ResponsableId: this.autorId,
+        Estado: "Por aprobar sondeo",
+        ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
+      }
+    }
+    else{
+      ObjSondeo = {
+        ResponsableId: this.autorId,
+        Estado: "Por aprobar sondeo"
+      }
+    }
+
+    this.servicio.guardarRegSondeo(this.IdSolicitud,ObjSondeo).then(
+      (respuesta)=>{
+        this.loading = false;
+        sessionStorage.clear();
+        this.salir();
+      }
+    ).catch(
+      (error)=>{
+        console.log(error);
+      }
+    )
+    
+    
   }
 
   adjuntarArchivoCTB(event, item) {
