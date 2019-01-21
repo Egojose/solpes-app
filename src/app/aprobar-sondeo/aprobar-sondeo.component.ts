@@ -48,21 +48,21 @@ export class AprobarSondeoComponent implements OnInit {
   historial: string;
   comentarioSondeo: string;
   usuario: Usuario;
- 
+  loading: boolean;
+
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
-    this.activarRoute.params.subscribe((parametro)=>{
-        this.IdSolicitudParms = parametro.idSolicitud; 
-    });
-   }
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    this.loading = false;
+  }
 
 
-   GuardarRevSondeo() {
-    let fecha =  new Date();
+  GuardarRevSondeo() {
+    let fecha = new Date();
     let dia = ("0" + fecha.getDate()).slice(-2);
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
-    
+
     let ObjSondeo;
     if (this.RDBsondeo === undefined) {
       alert("debe seleccionar un ordenador de gastos")
@@ -91,7 +91,7 @@ export class AprobarSondeoComponent implements OnInit {
 
         return false;
       }
-      
+
       else if (this.RDBsondeo === 2) {
         ObjSondeo = {
           // Estado: "Por verificar material"
@@ -104,7 +104,7 @@ export class AprobarSondeoComponent implements OnInit {
           ResultadoSondeo: "Descartar",
         }
       }
-      if(this.RDBsondeo === 4 && this.justificacionSondeo === undefined) {
+      if (this.RDBsondeo === 4 && this.justificacionSondeo === undefined) {
         this.tooltip1.show();
         setTimeout(() => {
           this.tooltip1.hide();
@@ -119,7 +119,7 @@ export class AprobarSondeoComponent implements OnInit {
           Justificacion: this.justificacionSondeo
         }
       }
-        this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
+      this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
           alert('se guardó el sondeo')
         }
@@ -138,7 +138,7 @@ export class AprobarSondeoComponent implements OnInit {
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (Response) => {
-        this.usuario = new Usuario(Response.Title, Response.email,Response.Id);
+        this.usuario = new Usuario(Response.Title, Response.email, Response.Id);
         this.ObtenerSolicitudBienesServicios();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
@@ -146,7 +146,7 @@ export class AprobarSondeoComponent implements OnInit {
     )
   }
 
-  ObtenerSolicitudBienesServicios(){
+  ObtenerSolicitudBienesServicios() {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;
@@ -162,7 +162,11 @@ export class AprobarSondeoComponent implements OnInit {
         this.alcance = solicitud.Alcance;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.justificacion = solicitud.Justificacion;
-        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+
+        if(solicitud.CondicionesContractuales != null){
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        }
+
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
@@ -171,7 +175,6 @@ export class AprobarSondeoComponent implements OnInit {
         )
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
-
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             console.log(this.ObjCondicionesTecnicasServicios);
           }
@@ -179,5 +182,4 @@ export class AprobarSondeoComponent implements OnInit {
       }
     );
   }
-
-  }
+}

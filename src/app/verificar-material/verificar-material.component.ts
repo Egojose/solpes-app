@@ -69,6 +69,7 @@ export class VerificarMaterialComponent implements OnInit {
   paisId: any;
   IdResponsable: any;
   IdSolicitudParms: string;
+
   constructor(
     private servicio: SPServicio,
     private formBuilder: FormBuilder,
@@ -101,6 +102,8 @@ export class VerificarMaterialComponent implements OnInit {
         this.servicio.guardarComentario(this.IdSolicitud, coment)
           .then((resultado: ItemAddResult) => {
         this.MostrarExitoso("Materiales verificados correctamente");
+        this.router.navigate(["/mis-pendientes"]);
+
           })
           .catch(error => {
             console.log(error);

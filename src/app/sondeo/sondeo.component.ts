@@ -91,6 +91,7 @@ export class SondeoComponent implements OnInit {
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicasBienes = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.loading = false;
+            console.log(this.ObjCondicionesTecnicasBienes);
           }
         )
 
