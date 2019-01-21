@@ -22,6 +22,10 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { responsableProceso } from '../dominio/responsableProceso';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1d4c152154bfee0400a5d5f0c3c20ab4213beede
 
 @Component({
   selector: 'app-crear-solicitud',
