@@ -22,7 +22,7 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { responsableProceso } from '../dominio/responsableProceso';
-import { normalize } from 'path';
+
 
 @Component({
   selector: 'app-crear-solicitud',
