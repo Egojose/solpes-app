@@ -13,7 +13,8 @@ export class CondicionTecnicaServicios{
         public tipoMoneda?: string,
         public PrecioSondeo?: number,
         public id?: number,
-        public archivoAdjunto?: File) { }
+        public archivoAdjunto?: File,
+        public ComentarioSondeo?: string) { }
 
     public static fromJson(element: any) {
         return new CondicionTecnicaServicios(element.Title,
@@ -25,7 +26,9 @@ export class CondicionTecnicaServicios{
             element.Comentario,
             element.TipoMoneda,
             element.PrecioSondeo,
-            element.ID);
+            element.ID,
+            null,
+            element.ComentarioSondeo);
     }
 
     public static fromJsonList(elements: any) {

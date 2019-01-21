@@ -5,7 +5,7 @@ export class CondicionesTecnicasBienes {
         public descripcion: string,
         public CantidadSondeo: number,
         public PrecioSondeo: number,
-        public ComentarioSondeo: string,
+        public Comentario: string,
         public Estado?: any,
         public RutaArchivo?:string            
     ) {
@@ -20,7 +20,7 @@ export class CondicionesTecnicasBienes {
         else {
             RutaArchivo = "false"
         }
-        return new CondicionesTecnicasBienes(element.Id ,element.CodigoSondeo, element.Descripcion, element.CantidadSondeo, element.PrecioSondeo, element.ComentarioSondeo, element.Estado);
+        return new CondicionesTecnicasBienes(element.Id ,element.CodigoSondeo, element.Descripcion, element.CantidadSondeo, element.PrecioSondeo, element.Comentario, element.Estado,RutaArchivo);
     }
 
 
