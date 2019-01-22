@@ -250,6 +250,9 @@ export class SondeoComponent implements OnInit {
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
     if (this.ComentarioSolicitante != undefined) {
+      if(this.comentarioSondeo === null) {
+        this.comentarioSondeo = "Comentarios:"
+      }
       ObjSondeo = {
         ResponsableId: this.autorId,
         Estado: "Por aprobar sondeo",

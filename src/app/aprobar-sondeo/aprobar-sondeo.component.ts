@@ -103,6 +103,7 @@ export class AprobarSondeoComponent implements OnInit {
         if (this.ObjCondicionesTecnicas.length > 0) {
           let Responsable = this.ObResProceso[0].porverificarMaterial;
           ObjSondeo = {
+            TipoSolicitud: "Solp",
             ResponsableId: Responsable,
             Estado: "Por verificar material",
             ResultadoSondeo: "Convertir en SOLP",
@@ -111,6 +112,7 @@ export class AprobarSondeoComponent implements OnInit {
         }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           let Responsable = this.ObResProceso[0].porRegistrarSolp;
           ObjSondeo = {
+            TipoSolicitud: "Solp",
             ResponsableId: Responsable,
             Estado: "Por registrar solp sap",
             ResultadoSondeo: "Convertir en SOLP",
@@ -136,6 +138,7 @@ export class AprobarSondeoComponent implements OnInit {
         if (this.ObjCondicionesTecnicas.length > 0) {
           let Responsable = this.ObResProceso[0].porverificarMaterial;
           ObjSondeo = {
+            TipoSolicitud: "CM",
             ResponsableId: Responsable,
             Estado: "Por verificar material",
             ResultadoSondeo: "Convertir en CM",
@@ -144,6 +147,7 @@ export class AprobarSondeoComponent implements OnInit {
         }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           let Responsable = this.ObResProceso[0].porRegistrarSolp;
           ObjSondeo = {
+            TipoSolicitud: "CM",
             ResponsableId: Responsable,
             Estado: "Por registrar solp sap",
             ResultadoSondeo: "Convertir en CM",
@@ -153,7 +157,7 @@ export class AprobarSondeoComponent implements OnInit {
       }
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
-          this.MostrarExitoso("La accion se ha guardado con éxito");
+          this.MostrarExitoso("La acción se ha guardado con éxito");
           sessionStorage.removeItem("IdSolicitud");
           setTimeout(() => {
             this.salir();

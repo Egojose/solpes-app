@@ -20,7 +20,6 @@ export class CondicionesTecnicasBienes {
 
     public static fromJsonList(elements: any) {
         var list = [];
-        debugger;
         for (var i = 0; i < elements.length; i++) {
             list.push(this.fromJson(elements[i]));
         }
