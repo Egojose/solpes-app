@@ -25,6 +25,7 @@ export class CondicionTecnicaServicios{
             element.CantidadSondeo,
             element.PrecioSondeo,
             element.ComentarioSondeo,
+            element.AttachmentFiles,
             element.ID);
     }
 
