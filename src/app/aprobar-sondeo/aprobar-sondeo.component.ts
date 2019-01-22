@@ -7,6 +7,8 @@ import { CondicionTecnicaServicios } from '../aprobar-sondeo/condicionesTecnicas
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
 import { Usuario } from '../dominio/usuario';
+import { responsableProceso } from '../dominio/responsableProceso';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 
 @Component({
@@ -49,8 +51,10 @@ export class AprobarSondeoComponent implements OnInit {
   comentarioSondeo: string;
   usuario: Usuario;
   loading: boolean;
+  paisId: any;
+  ObResProceso: responsableProceso[]=[];
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute, private router: Router) {
+  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.loading = false;
   }
@@ -77,30 +81,46 @@ export class AprobarSondeoComponent implements OnInit {
         return false;
       }
       else if (this.RDBsondeo === 1) {
+        //Comprador
         ObjSondeo = {
-          Estado: "Por aprobar sondeo",
+          ResponsableId: this.comprador,
+          Estado: "Por sondear",
           ResultadoSondeo: "Sondeo adicional",
           ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSondeo
         }
       }
       else if (this.RDBsondeo === 2 && this.justificacionSondeo === undefined) {
         this.tooltip1.show();
+
         setTimeout(() => {
           this.tooltip1.hide();
         }, 3000);
 
         return false;
       }
-
       else if (this.RDBsondeo === 2) {
-        ObjSondeo = {
-          // Estado: "Por verificar material"
-          ResultadoSondeo: "Convertir en SOLP",
-          Justificacion: this.justificacionSondeo
-        }
+
+        if (this.ObjCondicionesTecnicas.length > 0) {
+          let Responsable = this.ObResProceso[0].porverificarMaterial;
+          ObjSondeo = {
+            ResponsableId: Responsable,
+            Estado: "Por verificar material",
+            ResultadoSondeo: "Convertir en SOLP",
+            Justificacion: this.justificacionSondeo
+          }
+        }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
+          let Responsable = this.ObResProceso[0].porRegistrarSolp;
+          ObjSondeo = {
+            ResponsableId: Responsable,
+            Estado: "Por registrar solp sap",
+            ResultadoSondeo: "Convertir en SOLP",
+            Justificacion: this.justificacionSondeo
+          }
+        }        
       }
       else if (this.RDBsondeo === 3) {
         ObjSondeo = {
+          ResponsableId: -1,
           ResultadoSondeo: "Descartar",
         }
       }
@@ -113,16 +133,31 @@ export class AprobarSondeoComponent implements OnInit {
         return false;
       }
       else if (this.RDBsondeo === 4) {
-        ObjSondeo = {
-          // Estado:
-          ResultadoSondeo: "Convertir en CM",
-          Justificacion: this.justificacionSondeo
-        }
+        if (this.ObjCondicionesTecnicas.length > 0) {
+          let Responsable = this.ObResProceso[0].porverificarMaterial;
+          ObjSondeo = {
+            ResponsableId: Responsable,
+            Estado: "Por verificar material",
+            ResultadoSondeo: "Convertir en CM",
+            Justificacion: this.justificacionSondeo
+          }
+        }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
+          let Responsable = this.ObResProceso[0].porRegistrarSolp;
+          ObjSondeo = {
+            ResponsableId: Responsable,
+            Estado: "Por registrar solp sap",
+            ResultadoSondeo: "Convertir en CM",
+            Justificacion: this.justificacionSondeo
+          }
+        } 
       }
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
-          alert('se guardó el sondeo')
-          this.salir();
+          this.MostrarExitoso("La accion se ha guardado con éxito");
+          sessionStorage.removeItem("IdSolicitud");
+          setTimeout(() => {
+            this.salir();
+          }, 1500);         
         }
       ).catch(
         (error) => {
@@ -151,6 +186,18 @@ export class AprobarSondeoComponent implements OnInit {
     this.router.navigate(["/mis-pendientes"]);
   }
 
+  MostrarExitoso(mensaje: string) {
+    this.toastr.successToastr(mensaje, 'Confirmación!');
+  }
+
+  mostrarError(mensaje: string) {
+    this.toastr.errorToastr(mensaje, 'Oops!');
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, 'Validación');
+  }
+
   ObtenerSolicitudBienesServicios() {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
@@ -161,9 +208,10 @@ export class AprobarSondeoComponent implements OnInit {
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
+        this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador;
+        this.comprador = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.justificacion = solicitud.Justificacion;
@@ -182,6 +230,12 @@ export class AprobarSondeoComponent implements OnInit {
           RespuestaCondicionesServicios => {
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             console.log(this.ObjCondicionesTecnicasServicios);
+          }
+        )
+
+        this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+          (RespuestaProcesos)=>{
+              this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
           }
         )
       }
