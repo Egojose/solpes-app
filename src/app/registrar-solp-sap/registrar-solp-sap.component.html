@@ -10,16 +10,22 @@
       </div>
       <div class="card-body">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBOrdenadorGastos" [value]="1">
-          <label class="form-check-label" for="inlineRadio1">Aprobado</label>
+          <label>
+            <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBOrdenadorGastos" [value]="1">
+            Aprobado
+          </label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBOrdenadorGastos" [value]="2">
-          <label class="form-check-label" for="inlineRadio2">Rechazado</label>
+          <label>
+            <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBOrdenadorGastos" [value]="2">
+            Rechazado
+          </label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBOrdenadorGastos" [value]="3">
-          <label class="form-check-label" for="inlineRadio2">No tiene presupuesto Disponible</label>
+          <label>
+            <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBOrdenadorGastos" [value]="3">
+            No tiene presupuesto Disponible
+          </label>
         </div>
       </div>
     </div>
@@ -45,8 +51,8 @@
   </div>
   <div class="row text-center">
     <div class="col-md-12">
-    <input type="button" class="btn btn-success" value="ENVIAR" (click)="GuardarSolSAP()" />
-    <input type="button" class="btn btn-danger" value="CANCELAR" (click)="salir()" />
+    <input type="button" class="btn btn-success" value="Registrar" (click)="GuardarSolSAP()" />
+    <input type="button" class="btn btn-danger" value="Cancelar" (click)="salir()" />
   </div>
   </div>
   <hr>
@@ -156,7 +162,6 @@
                 <th>Descripción</th>
                 <th>Modelo</th>
                 <th>Fabricante</th>
-                <th>Clase SIA</th>
                 <th>Cantidad</th>
                 <th>Valor Estimado</th>
                 <th>Adjunto</th>
@@ -169,7 +174,6 @@
                 <td>{{item.descripcion}}</td>
                 <td>{{item.modelo}}</td>
                 <td>{{item.fabricante}}</td>
-                <td>{{item.claseSIA}}</td>
                 <td>{{item.cantidad}}</td>
                 <td>{{item.valorEstimado}}</td>
                 <td></td>
