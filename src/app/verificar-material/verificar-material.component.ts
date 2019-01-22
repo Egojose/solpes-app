@@ -132,7 +132,6 @@ export class VerificarMaterialComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-   debugger;
     this.RegistrarFormularioVerificar();
     this.ValidarNumReservaSiHayExistencias();
 
