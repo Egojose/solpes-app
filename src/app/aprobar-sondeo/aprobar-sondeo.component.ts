@@ -209,7 +209,7 @@ export class AprobarSondeoComponent implements OnInit {
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
-        this.paisId = solicitud.Pais.Id;
+        this.paisId = solicitud.Pais.ID;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
         this.comprador = solicitud.Comprador.Id;
