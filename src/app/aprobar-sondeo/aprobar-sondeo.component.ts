@@ -157,7 +157,7 @@ export class AprobarSondeoComponent implements OnInit {
       }
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
-          this.MostrarExitoso("La accion se ha guardado con éxito");
+          this.MostrarExitoso("La acción se ha guardado con éxito");
           sessionStorage.removeItem("IdSolicitud");
           setTimeout(() => {
             this.salir();
