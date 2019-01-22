@@ -286,7 +286,7 @@ export class SPServicio {
     } 
     
     ObtenerCondicionesTecnicasServicios(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).get());
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());
         return respuesta;
     }
 

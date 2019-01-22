@@ -122,10 +122,10 @@
                             <td>{{item.cantidad}}</td>
                             <td>{{item.valorEstimado}}</td>
                             <td>
-                                <div *ngIf="item.adjunto.results.length > 0; else sinAdjunto">
+                                <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTB">
                                     <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank">Adjunto</a>
                                 </div>
-                                <ng-template #sinAdjunto>
+                                <ng-template #sinAdjuntoCTB>
                                 </ng-template>
                             </td>
                             <td>{{item.comentario}}</td>
@@ -152,7 +152,13 @@
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidad}}</td>
                             <td>{{item.valorEstimado}}</td>
-                            <td></td>
+                            <td>
+                                    <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
+                                        <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank">Adjunto</a>
+                                    </div>
+                                    <ng-template #sinAdjuntoCTS>
+                                    </ng-template>
+                                </td>
                             <td>{{item.comentarios}}</td>
                         </tr>
                     </tbody>
