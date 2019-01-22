@@ -157,7 +157,7 @@ export class AprobarSondeoComponent implements OnInit {
           sessionStorage.removeItem("IdSolicitud");
           setTimeout(() => {
             this.salir();
-          }, 1500);         
+          }, 1000);         
         }
       ).catch(
         (error) => {
@@ -232,7 +232,6 @@ export class AprobarSondeoComponent implements OnInit {
             console.log(this.ObjCondicionesTecnicasServicios);
           }
         )
-
         this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
           (RespuestaProcesos)=>{
               this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
