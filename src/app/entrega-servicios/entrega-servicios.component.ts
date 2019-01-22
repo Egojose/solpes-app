@@ -64,7 +64,7 @@ export class EntregaServiciosComponent implements OnInit {
     });
 
     this.ObjMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    this.IdSolicitudParms = localStorage.getItem("IdSolicitud");
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       (solicitud) => {
         this.IdSolicitud = solicitud.Id;

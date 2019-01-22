@@ -28,6 +28,7 @@ export class MisPendientesComponent implements OnInit {
     this.dataSource = new MatTableDataSource();
     this.dataSource.data = this.misSolicitudes;
     this.loading = false;
+    
    }
 
   ngOnInit() {
@@ -101,9 +102,14 @@ export class MisPendientesComponent implements OnInit {
     this.router.navigate(['/contratos']);
   }
 
-  RegistrarEntregas(id){
+  RegistrarEntregasBienes(id){    
     sessionStorage.setItem("IdSolicitud", id);
-    this.router.navigate(['/ver-solicitud-tab']);
+    this.router.navigate(['/entrega-bienes']);
+  }
+
+  RegistrarEntregasServicios(id){
+    sessionStorage.setItem("IdSolicitud", id);
+    this.router.navigate(['/entrega-servicios']);
   }
 
   applyFilter(filterValue: string) {

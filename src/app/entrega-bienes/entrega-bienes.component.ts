@@ -74,7 +74,8 @@ export class EntregaBienesComponent implements OnInit {
       UltimaEntrega: ['', Validators.required],
       Comentario: ['']
     });
-    this.IdSolicitudParms = localStorage.getItem("IdSolicitud");
+    
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;

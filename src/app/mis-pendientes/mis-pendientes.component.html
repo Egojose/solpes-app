@@ -1,6 +1,10 @@
 <div class="loading" *ngIf='loading'>
+<<<<<<< HEAD
     <img class="img-logo" src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
         alt="loading...">
+=======
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+>>>>>>> master
     <b>PROCESANDO...</b>
 </div>
 
@@ -56,10 +60,8 @@
                     a registrar SOLP SAP</button>
                 <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary" (click)="RegistrarContratos(element.id)">Ir
                     a registrar contratos</button>
-                <button *ngIf="element.estado =='Por registrar entregas' && element.compraBienes === true" class="btn btn-primary btnBienes"
-                    (click)="RegistrarEntregas(element.id)">Registrar bienes</button>
-                <button *ngIf="element.estado =='Por registrar entregas' && element.compraServicios === true" class="btn btn-success"
-                    (click)="RegistrarEntregas(element.id)">Registrar servicios</button>
+                <button *ngIf="element.estado =='Por registrar entregas' && element.compraBienes === true" class="btn btn-primary btnBienes" (click)="RegistrarEntregasBienes(element.id)">Registrar bienes</button>
+                <button *ngIf="element.estado =='Por registrar entregas' && element.compraServicios === true" class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Registrar servicios</button>
             </td>
         </ng-container>
 

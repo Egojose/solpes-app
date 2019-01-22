@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrManager } from 'ng6-toastr-notifications';
+import { responsableProceso } from '../dominio/responsableProceso';
 
 @Component({
   selector: 'app-contratos',
@@ -23,7 +25,11 @@ export class ContratosComponent implements OnInit {
   autor: any;
   loading:boolean;
   idSolicitudParameter: string;
-  constructor(private servicio: SPServicio, private router: Router, private formBuilder: FormBuilder) {
+  CompraBienes: any;
+  CompraServicios: any;
+  paisId: any;
+  ObResProceso: responsableProceso[];
+  constructor(private servicio: SPServicio, private router: Router, public toastr: ToastrManager,private formBuilder: FormBuilder) {
     this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
     this.Guardado=false;
    }
@@ -36,28 +42,28 @@ export class ContratosComponent implements OnInit {
       ContratoOC: ['', Validators.required],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
-      FechaFirmaContrato: [''],
+      // FechaFirmaContrato: [''],
       ContratoObraConexo: ['', Validators.required],
-      FechaEntregaCSCBPO: [''],
-      FechaEnvioProvedor: [''],
-      FechaDevolucionProvedor: [''],
+      // FechaEntregaCSCBPO: [''],
+      // FechaEnvioProvedor: [''],
+      // FechaDevolucionProvedor: [''],
       MonedaContrato: ['', Validators.required],
-      TrmSap: [''],
+      // TrmSap: [''],
       IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
-      ValorSinIVA: [''],
-      ValorFinalIVA: [''],
-      Referencia: [''],
+      // ValorSinIVA: [''],
+      // ValorFinalIVA: [''],
+      // Referencia: [''],
       LineaBaseContrato: ['', Validators.required],
       AhorroGenerado: ['', Validators.required],
       DescripcionCalculo: ['', Validators.required],
       VigenciaContrato: ['', Validators.required],
       RequiereSST: ['', Validators.required],
       RequierePoliza: ['', Validators.required],
-      FechaEntrgaPoliza: [''],
-      FechaRealEntrgaPoliza: [''],
-      FechaEstadoPoliza: [''],
-      CondicionPoliza: [''],
+      // FechaEntrgaPoliza: [''],
+      // FechaRealEntrgaPoliza: [''],
+      // FechaEstadoPoliza: [''],
+      // CondicionPoliza: [''],
       Acreedor: ['', Validators.required],
       DigitoVerificacion: ['', Validators.required],
       NombreRazonSocial: ['', Validators.required],
@@ -72,11 +78,19 @@ export class ContratosComponent implements OnInit {
         this.ObjUsuarios = Usuarios;  
         this.servicio.ObtenerSolicitudBienesServicios(this.idSolicitudParameter).subscribe(
           (respuesta)=>{
-            this.ObjSolicitud = respuesta;
-            this.Pais=this.ObjSolicitud.Pais.Title;
-            this.IdSolicitud = this.ObjSolicitud.Id;
-            this.autor = this.ObjSolicitud.AuthorId;
-            this.loading=false;
+              this.ObjSolicitud = respuesta;
+              this.Pais=this.ObjSolicitud.Pais.Title;
+              this.paisId = this.ObjSolicitud.Pais.Id;
+              this.IdSolicitud = this.ObjSolicitud.Id;
+              this.autor = this.ObjSolicitud.AuthorId;
+              this.CompraBienes = this.ObjSolicitud.CompraBienes;
+              this.CompraServicios = this.ObjSolicitud.CompraServicios;
+              this.loading=false;
+              this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+                (RespuestaProcesos)=>{
+                    this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
+                }
+              )
           }
         )      
       }
@@ -97,28 +111,28 @@ export class ContratosComponent implements OnInit {
     let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
     let OrdenInicio = this.ContratosForm.controls["OrdenInicio"].value; 
     let ObjetoContrato = this.ContratosForm.controls["ObjetoContrato"].value;
-    let FechaFirmaContrato = this.ContratosForm.controls["FechaFirmaContrato"].value;
+    // let FechaFirmaContrato = this.ContratosForm.controls["FechaFirmaContrato"].value;
     let ContratoObraConexo = this.ContratosForm.controls["ContratoObraConexo"].value;
-    let FechaEntregaCSCBPO = this.ContratosForm.controls["FechaEntregaCSCBPO"].value;
-    let FechaEnvioProvedor = this.ContratosForm.controls["FechaEnvioProvedor"].value;
-    let FechaDevolucionProvedor = this.ContratosForm.controls["FechaDevolucionProvedor"].value;
+    // let FechaEntregaCSCBPO = this.ContratosForm.controls["FechaEntregaCSCBPO"].value;
+    // let FechaEnvioProvedor = this.ContratosForm.controls["FechaEnvioProvedor"].value;
+    // let FechaDevolucionProvedor = this.ContratosForm.controls["FechaDevolucionProvedor"].value;
     let MonedaContrato = this.ContratosForm.controls["MonedaContrato"].value;
-    let TrmSap = this.ContratosForm.controls["TrmSap"].value;
+    // let TrmSap = this.ContratosForm.controls["TrmSap"].value;
     let IvaContrato = this.ContratosForm.controls["IvaContrato"].value;
     let ValorContractual = this.ContratosForm.controls["ValorContractual"].value;
-    let ValorSinIVA = this.ContratosForm.controls["ValorSinIVA"].value;
-    let ValorFinalIVA = this.ContratosForm.controls["ValorFinalIVA"].value;
-    let Referencia = this.ContratosForm.controls["Referencia"].value;
+    // let ValorSinIVA = this.ContratosForm.controls["ValorSinIVA"].value;
+    // let ValorFinalIVA = this.ContratosForm.controls["ValorFinalIVA"].value;
+    // let Referencia = this.ContratosForm.controls["Referencia"].value;
     let LineaBaseContrato = this.ContratosForm.controls["LineaBaseContrato"].value;
     let AhorroGenerado = this.ContratosForm.controls["AhorroGenerado"].value;
     let DescripcionCalculo = this.ContratosForm.controls["DescripcionCalculo"].value;
     let VigenciaContrato = this.ContratosForm.controls["VigenciaContrato"].value;
     let RequiereSST = this.ContratosForm.controls["RequiereSST"].value;
     let RequierePoliza = this.ContratosForm.controls["RequierePoliza"].value;
-    let FechaEntrgaPoliza = this.ContratosForm.controls["FechaEntrgaPoliza"].value;
-    let FechaRealEntrgaPoliza = this.ContratosForm.controls["FechaRealEntrgaPoliza"].value;
-    let FechaEstadoPoliza = this.ContratosForm.controls["FechaEstadoPoliza"].value;
-    let CondicionPoliza = this.ContratosForm.controls["CondicionPoliza"].value;
+    // let FechaEntrgaPoliza = this.ContratosForm.controls["FechaEntrgaPoliza"].value;
+    //let FechaRealEntrgaPoliza = this.ContratosForm.controls["FechaRealEntrgaPoliza"].value;
+    // let FechaEstadoPoliza = this.ContratosForm.controls["FechaEstadoPoliza"].value;
+    // let CondicionPoliza = this.ContratosForm.controls["CondicionPoliza"].value;
     let Acreedor = this.ContratosForm.controls["Acreedor"].value;
     let DigitoVerificacion = this.ContratosForm.controls["DigitoVerificacion"].value;
     let NombreRazonSocial = this.ContratosForm.controls["NombreRazonSocial"].value;
@@ -135,28 +149,28 @@ export class ContratosComponent implements OnInit {
         CM: ContratoOC,
         RequiereNumOrdenInicio: OrdenInicio,
         ObjContrato: ObjetoContrato,
-        FechaFirmaContrato: new Date(FechaFirmaContrato),
+        // FechaFirmaContrato: new Date(FechaFirmaContrato),
         ContratoObra: ContratoObraConexo,
-        FechaEntregaCSC: new Date(FechaEntregaCSCBPO),
-        FechaEnvioProveedor: new Date(FechaEnvioProvedor),
-        FechaDevolucionProveedor: new Date(FechaDevolucionProvedor),
+        // FechaEntregaCSC: new Date(FechaEntregaCSCBPO),
+        // FechaEnvioProveedor: new Date(FechaEnvioProvedor),
+        // FechaDevolucionProveedor: new Date(FechaDevolucionProvedor),
         MonedaContrato: MonedaContrato,
-        TMRSAP: TrmSap,
+        // TMRSAP: TrmSap,
         IvaContrato: IvaContrato,
         ValorContractual: ValorContractual,
-        ValorFinalSinIva: ValorSinIVA,
-        ValorFinal: ValorFinalIVA,
-        Referencia: Referencia,
+        // ValorFinalSinIva: ValorSinIVA,
+        // ValorFinal: ValorFinalIVA,
+        // Referencia: Referencia,
         LineaBaseContrato: LineaBaseContrato,
         AhorroGenerado: AhorroGenerado,
         DescripcionCalculoAhorroGenerado: DescripcionCalculo,
         VigenciaContrato: VigenciaContrato,
         RequiereSST: RequiereSST,
         RequierePoliza: RequierePoliza,
-        FechaEntregaPoliza: new Date(FechaEntrgaPoliza),
-        FechaEntregaRealPoliza: new Date(FechaRealEntrgaPoliza),
-        FechaEstadoPoliza: new Date(FechaEstadoPoliza),
-        CondicionPoliza: CondicionPoliza,
+        // FechaEntregaPoliza: new Date(FechaEntrgaPoliza),
+        // FechaEntregaRealPoliza: new Date(FechaRealEntrgaPoliza),
+        // FechaEstadoPoliza: new Date(FechaEstadoPoliza),
+        // CondicionPoliza: CondicionPoliza,
         Acreedor: Acreedor,
         DigitoVerificacion: DigitoVerificacion,
         NombreProveedor: NombreRazonSocial,
@@ -166,6 +180,8 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter
       }
+
+
     }
     else{
       ObjContrato = {
@@ -174,26 +190,26 @@ export class ContratosComponent implements OnInit {
         CM: ContratoOC,
         RequiereNumOrdenInicio: OrdenInicio,
         ObjContrato: ObjetoContrato,
-        FechaFirmaContrato: new Date(FechaFirmaContrato),
+        // FechaFirmaContrato: new Date(FechaFirmaContrato),
         ContratoObra: ContratoObraConexo,
-        FechaEntregaCSC: new Date(FechaEntregaCSCBPO),
-        FechaEnvioProveedor: new Date(FechaEnvioProvedor),
-        FechaDevolucionProveedor: new Date(FechaDevolucionProvedor),
+        // FechaEntregaCSC: new Date(FechaEntregaCSCBPO),
+        // FechaEnvioProveedor: new Date(FechaEnvioProvedor),
+        // FechaDevolucionProveedor: new Date(FechaDevolucionProvedor),
         MonedaContrato: MonedaContrato,
-        TMRSAP: TrmSap,
+        // TMRSAP: TrmSap,
         IvaContrato: IvaContrato,
         ValorContractual: ValorContractual,
-        ValorFinalSinIva: ValorSinIVA,
-        ValorFinal: ValorFinalIVA,
+        // ValorFinalSinIva: ValorSinIVA,
+        // ValorFinal: ValorFinalIVA,
         LineaBaseContrato: LineaBaseContrato,
         AhorroGenerado: AhorroGenerado,
         DescripcionCalculoAhorroGenerado: DescripcionCalculo,
         RequiereSST: RequiereSST,
         RequierePoliza: RequierePoliza,
-        FechaEntregaPoliza: new Date(FechaEntrgaPoliza),
-        FechaEntregaRealPoliza: new Date(FechaRealEntrgaPoliza),
-        FechaEstadoPoliza: new Date(FechaEstadoPoliza),
-        CondicionPoliza: CondicionPoliza,
+        // FechaEntregaPoliza: new Date(FechaEntrgaPoliza),
+        // FechaEntregaRealPoliza: new Date(FechaRealEntrgaPoliza),
+        // FechaEstadoPoliza: new Date(FechaEstadoPoliza),
+        // CondicionPoliza: CondicionPoliza,
         Acreedor: Acreedor,
         DigitoVerificacion: DigitoVerificacion,
         NombreProveedor: NombreRazonSocial,
@@ -202,18 +218,31 @@ export class ContratosComponent implements OnInit {
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter
-      }
-    }
+      }      
+    }    
+  
     this.servicio.GuardarContrato(ObjContrato).then(
       (resultado)=>{
         this.Guardado=true;
-        this.servicio.cambioEstadoSolicitud(this.IdSolicitud,"PorRegistrarEntregas",this.autor).then(
-          (resultado)=>{
-              
+        let ResponsableServicios=null;
+        let ResponsablesBienes=null;
+        if (this.CompraServicios) {
+            ResponsableServicios=this.autor;
+        }
+        if (this.CompraBienes) {
+          ResponsableServicios=this.ObResProceso[0].porConfirmarEntregaBienes;
+
+        }
+        this.servicio.cambioEstadoSolicitud(this.IdSolicitud,"Por registrar entregas",null,ResponsableServicios,ResponsablesBienes).then(
+          (resultado)=>{             
+              this.MostrarExitoso("El contrato se ha guardado correctamente");
+              setTimeout(() => {
+                this.salir();
+              }, 1000);
           }
         ).catch(
           (error)=>{
-            console.log(error);
+            console.log(error); 
           }
         );
       }      
@@ -221,11 +250,28 @@ export class ContratosComponent implements OnInit {
       (error)=>{
 
     });
+    
+  }
+
+  salir() {
+    this.router.navigate(["/mis-pendientes"]);
   }
  
   onSelect(event: any): void {
     console.log("Sfs");
     this.selectedOption = event.item;
+  }
+
+  MostrarExitoso(mensaje: string) {
+    this.toastr.successToastr(mensaje, 'Confirmación!');
+  }
+
+  mostrarError(mensaje: string) {
+    this.toastr.errorToastr(mensaje, 'Oops!');
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, 'Validación');
   }
 
   ValidarUsuario(){
