@@ -103,6 +103,7 @@ export class AprobarSondeoComponent implements OnInit {
         if (this.ObjCondicionesTecnicas.length > 0) {
           let Responsable = this.ObResProceso[0].porverificarMaterial;
           ObjSondeo = {
+            TipoSolicitud: "Solp",
             ResponsableId: Responsable,
             Estado: "Por verificar material",
             ResultadoSondeo: "Convertir en SOLP",
@@ -136,6 +137,7 @@ export class AprobarSondeoComponent implements OnInit {
         if (this.ObjCondicionesTecnicas.length > 0) {
           let Responsable = this.ObResProceso[0].porverificarMaterial;
           ObjSondeo = {
+            TipoSolicitud: "CM",
             ResponsableId: Responsable,
             Estado: "Por verificar material",
             ResultadoSondeo: "Convertir en CM",
