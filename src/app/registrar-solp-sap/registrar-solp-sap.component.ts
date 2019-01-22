@@ -7,6 +7,8 @@ import { CondicionTecnicaServicios } from '../registrar-solp-sap/condicionesTecn
 import { ItemAddResult } from 'sp-pnp-js';
 import { ActivatedRoute, Router } from '@angular/router';
 import { timeout } from 'q';
+import { responsableProceso } from '../dominio/responsableProceso';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
   selector: 'app-registrar-solp-sap',
@@ -39,9 +41,12 @@ export class RegistrarSolpSapComponent implements OnInit {
   submitted = false;
   IdSolicitudParms: any;
   loading: boolean;
+  paisId: any;
+  ObResProceso: responsableProceso[]=[];
+  Autor: any;
  
 
- constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute, private router: Router) {
+ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
   this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.loading = false;
  }
@@ -63,7 +68,10 @@ export class RegistrarSolpSapComponent implements OnInit {
         return false;
       }
       else if (this.RDBOrdenadorGastos === 1) {
+       
         ObjSolpSap = {
+          ResponsableId: this.comprador,
+          Estado: "Por registrar contratos",
           EstadoRegistrarSAP: "Aprobado",
           NumSolSAP: this.numeroSolpSap
         }
@@ -78,23 +86,31 @@ export class RegistrarSolpSapComponent implements OnInit {
       }
       else if (this.RDBOrdenadorGastos === 2) {
         ObjSolpSap = {
+          ResponsableId: -1,
+          Estado: "Finalizado",
           EstadoRegistrarSAP: "Rechazado",
           ComentarioRegistrarSAP: this.ComentarioRegistrarSap
         }
       }
       else if (this.RDBOrdenadorGastos === 3) {
         ObjSolpSap = {
+          ResponsableId: this.Autor,
+          Estado: "Sin presupuesto",
           EstadoRegistrarSAP: "No tiene presupuesto disponible",
           ComentarioRegistrarSAP: this.ComentarioRegistrarSap
         }
       }
         this.servicio.guardarSOLPSAP(this.IdSolicitud, ObjSolpSap).then(
         (resultado: ItemAddResult) => {
-          alert('se registro la SOLPE')
-          this.salir();
+          this.MostrarExitoso("Se registro la SOLP con éxito");
+          setTimeout(() => {
+            this.salir();
+          }, 1000);
+          
         }
       ).catch(
         (error) => {
+          this.mostrarError("Error al registrar la SOLP");
           console.log(error);
         }
       )
@@ -104,6 +120,18 @@ export class RegistrarSolpSapComponent implements OnInit {
   
   salir() {
     this.router.navigate(["/mis-pendientes"]);
+  }
+
+  MostrarExitoso(mensaje: string) {
+    this.toastr.successToastr(mensaje, 'Confirmación!');
+  }
+
+  mostrarError(mensaje: string) {
+    this.toastr.errorToastr(mensaje, 'Oops!');
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, 'Validación');
   }
 
 
@@ -116,11 +144,13 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
+        this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador;
+        this.comprador = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
+        this.Autor = solicitud.AuthorId;
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
@@ -133,6 +163,11 @@ export class RegistrarSolpSapComponent implements OnInit {
 
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             console.log(this.ObjCondicionesTecnicasServicios);
+          }
+        )
+        this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+          (RespuestaProcesos)=>{
+              this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
           }
         )
       }
