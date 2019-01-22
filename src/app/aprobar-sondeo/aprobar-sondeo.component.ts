@@ -52,7 +52,7 @@ export class AprobarSondeoComponent implements OnInit {
   usuario: Usuario;
   loading: boolean;
   paisId: any;
-  ObResProceso: responsableProceso;
+  ObResProceso: responsableProceso[]=[];
 
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
@@ -101,7 +101,7 @@ export class AprobarSondeoComponent implements OnInit {
       else if (this.RDBsondeo === 2) {
 
         if (this.ObjCondicionesTecnicas.length > 0) {
-          let Responsable = this.ObResProceso.porverificarMaterial;
+          let Responsable = this.ObResProceso[0].porverificarMaterial;
           ObjSondeo = {
             ResponsableId: Responsable,
             Estado: "Por verificar material",
@@ -109,7 +109,7 @@ export class AprobarSondeoComponent implements OnInit {
             Justificacion: this.justificacionSondeo
           }
         }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
-          let Responsable = this.ObResProceso.porRegistrarSolp;
+          let Responsable = this.ObResProceso[0].porRegistrarSolp;
           ObjSondeo = {
             ResponsableId: Responsable,
             Estado: "Por registrar solp sap",
@@ -134,7 +134,7 @@ export class AprobarSondeoComponent implements OnInit {
       }
       else if (this.RDBsondeo === 4) {
         if (this.ObjCondicionesTecnicas.length > 0) {
-          let Responsable = this.ObResProceso.porverificarMaterial;
+          let Responsable = this.ObResProceso[0].porverificarMaterial;
           ObjSondeo = {
             ResponsableId: Responsable,
             Estado: "Por verificar material",
@@ -142,7 +142,7 @@ export class AprobarSondeoComponent implements OnInit {
             Justificacion: this.justificacionSondeo
           }
         }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
-          let Responsable = this.ObResProceso.porRegistrarSolp;
+          let Responsable = this.ObResProceso[0].porRegistrarSolp;
           ObjSondeo = {
             ResponsableId: Responsable,
             Estado: "Por registrar solp sap",
@@ -155,10 +155,9 @@ export class AprobarSondeoComponent implements OnInit {
         (resultado: ItemAddResult) => {
           this.MostrarExitoso("La accion se ha guardado con éxito");
           sessionStorage.removeItem("IdSolicitud");
-          setTimeout(function(){
+          setTimeout(() => {
             this.salir();
-          },3000);
-         
+          }, 1500);         
         }
       ).catch(
         (error) => {
@@ -209,10 +208,10 @@ export class AprobarSondeoComponent implements OnInit {
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
-        this.paisId = solicitud.Pais.ID;
+        this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador.Id;
+        this.comprador = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.justificacion = solicitud.Justificacion;
@@ -236,7 +235,7 @@ export class AprobarSondeoComponent implements OnInit {
 
         this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
           (RespuestaProcesos)=>{
-              this.ObResProceso = responsableProceso.fromJson(RespuestaProcesos);              
+              this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
           }
         )
       }
