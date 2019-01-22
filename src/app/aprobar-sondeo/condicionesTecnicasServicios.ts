@@ -1,27 +1,35 @@
 export class CondicionTecnicaServicios{
-    constructor(
-        public indice: number,
+    constructor(        
         public titulo: string,
         public idSolicitud: any,
-        public codigo: string,
+        public codigoSondeo: string,
         public descripcion: string,
-        public cantidad: number,
-        public valorEstimado: number,
-        public comentarios: string,
+        public cantidadSondeo: number,
+        public precioSondeo: number,
+        public comentarioSondeo: string,
         public adjunto?: any,
-        public tipoMoneda?: string,
-        public id?: number) { }
+        public id?: number,
+        public RutaArchivo?:string) { }
 
     public static fromJson(element: any) {
-        return new CondicionTecnicaServicios(element.Title,
-            element.Solicitud,
-            element.Codigo,
+        let RutaArchivo;
+        if (element.Attachments === true) {
+            RutaArchivo = element.AttachmentFiles.results[0].ServerRelativeUrl
+        }
+        else {
+            RutaArchivo = "false"
+        }
+        return new CondicionTecnicaServicios(
+            element.Title,
+            element.SolicitudId,
+            element.CodigoSondeo,
             element.Descripcion,
-            element.Cantidad,
-            element.ValorEstimado,
-            element.Comentario,
-            element.TipoMoneda,
-            element.ID);
+            element.CantidadSondeo,
+            element.PrecioSondeo,
+            element.ComentarioSondeo,
+            null,
+            element.Id,
+            RutaArchivo);
     }
 
     public static fromJsonList(elements: any) {
