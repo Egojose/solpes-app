@@ -167,4 +167,8 @@
     margin-top: 10px;
 }
 
+td.mat-cell,td.mat-footer-cell, th.mat-header-cell {
+    padding: 20px !important;
+}
+
 

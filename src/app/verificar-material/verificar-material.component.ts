@@ -149,14 +149,16 @@ export class VerificarMaterialComponent implements OnInit {
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador;
+        this.subCategoria = solicitud.subCategoria;
+        this.comprador = solicitud.Comprador.Title;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
         this.ComentarioSondeo = solicitud.ComentarioSondeo;
-        this.condicionesContractuales = JSON.parse(
-          solicitud.CondicionesContractuales
-        ).condiciones;
+
+        if(solicitud.CondicionesContractuales != null){
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        }
+        
         this.servicio
           .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
           .subscribe(RespuestaCondiciones => {

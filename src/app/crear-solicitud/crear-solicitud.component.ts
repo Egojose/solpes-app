@@ -395,7 +395,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   agregarSolicitudInicial(): any {
-    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null,null,'','','','',null, '','','','Inicial', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
+    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null,null,'','',null,'',null, '','','','Inicial', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
     this.servicio.agregarSolicitud(this.solicitudGuardar).then(
       (item: ItemAddResult) => {
         this.idSolicitudGuardada = item.data.Id;
@@ -591,7 +591,7 @@ export class CrearSolicitudComponent implements OnInit {
             valorPais.id,
             categoria.nombre,
             subcategoria.nombre,
-            comprador,
+            subcategoria.comprador.ID,
             codigoAriba,
             fechaEntregaDeseada,
             alcance,
@@ -1272,7 +1272,7 @@ export class CrearSolicitudComponent implements OnInit {
       (valorPais != '') ? valorPais.id : null,
       (categoria != null) ? categoria.nombre : '',
       (subcategoria != '') ? subcategoria.nombre : '',
-      (comprador != '') ? comprador : '',
+      (subcategoria != '') ? subcategoria.comprador.ID : null,
       (codigoAriba != '') ? codigoAriba : '',
       (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
       (alcance != '') ? alcance : '',
@@ -1288,6 +1288,7 @@ export class CrearSolicitudComponent implements OnInit {
         this.loading = false;
       }, err => {
         this.mostrarError('Error en guardado parcial de la solicitud');
+        this.loading = false;
       }
     )
   }

@@ -9,7 +9,7 @@ export class Solicitud {
         public pais: number,
         public categoria: string,
         public subcategoria: string,
-        public comprador: string,
+        public comprador: any,
         public codigoAriba: string,
         public fechaEntregaDeseada: Date,
         public alcance: string,
