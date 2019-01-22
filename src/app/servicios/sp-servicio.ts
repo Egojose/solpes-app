@@ -339,13 +339,8 @@ export class SPServicio {
         return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
     }
 
-<<<<<<< HEAD
-    cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
-=======
     cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor,ResponsableBienes,ResponsableServicios){
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
->>>>>>> master
             {
                 Estado: nombreEstado,
                 ResponsableId: autor,
