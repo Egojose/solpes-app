@@ -249,6 +249,15 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.controls["cantidadVerificar"].setValue(
       element.cantidad
     );
+    this.verificarMaterialFormulario.controls["existenciasVerificar"].setValue(
+      element.existenciasverificar
+    );
+    this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(
+      element.numreservaverificar
+    );
+    this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(
+      element.cantidadreservaverificar
+    );
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: "gray modal-lg" })
