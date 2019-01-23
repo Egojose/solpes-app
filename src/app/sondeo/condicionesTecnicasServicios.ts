@@ -13,10 +13,26 @@ export class CondicionTecnicaServicios{
         public tipoMoneda?: string,
         public PrecioSondeo?: number,
         public id?: number,
-        public archivoAdjunto?: File,
+        public archivoAdjunto?: any,
         public ComentarioSondeo?: string) { }
 
     public static fromJson(element: any) {
+
+        let RutaArchivo = "";
+        if (element.Attachments ===true) {
+           let ObjArchivos = element.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="solp") {
+                        RutaArchivo=element.ServerRelativeUrl;
+                   }                
+               }
+           });
+        }        
+
         return new CondicionTecnicaServicios(element.Title,
             element.Solicitud,
             element.Codigo,
@@ -27,7 +43,7 @@ export class CondicionTecnicaServicios{
             element.TipoMoneda,
             element.PrecioSondeo,
             element.ID,
-            null,
+            RutaArchivo,
             element.ComentarioSondeo);
     }
 

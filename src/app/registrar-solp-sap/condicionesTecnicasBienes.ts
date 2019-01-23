@@ -23,15 +23,33 @@ export class CondicionesTecnicasBienes {
         public CantidadSondeo?: number,
         public PrecioSondeo?: number,
         public ComentarioSondeo?: string,
-        public Estado?: any
+        public Estado?: any,
+        public adjunto?: any
     ) {
 
     }
 
     public static fromJson(element: any) {
+
+        let RutaArchivo = "";
+        if (element.Attachments ===true) {
+           let ObjArchivos = element.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="sondeoBienes") {
+                        RutaArchivo=element.ServerRelativeUrl;
+                   }
+                
+               }
+           });
+        }        
+
         return new CondicionesTecnicasBienes(element.Id ,element.Codigo, element.Descripcion, element.Modelo, element.Fabricante, element.Cantidad, element.CantidadRecibida, element.CantidadVerificar-element.CantidadRecibida,element.UltimaEntrega,element.ValorEstimado,element.Comentarios,element.CodigoVerificar,element.ModeloVerificar,element.FabricanteVerificar,
             element.CantidadVerificar,element.ExistenciasVerificar,element.NumReservaVerificar,element.CantidadReservaVerificar,element.EntradaSolicitanteVerificar,element.CodigoSondeo,element.CantidadSondeo,element.PrecioSondeo,
-            element.ComentarioSondeo);
+            element.ComentarioSondeo,element.Estado,RutaArchivo);
     }
 
 

@@ -9,7 +9,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { timeout } from 'q';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
+import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
   import { from } from 'rxjs';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 @Component({
   selector: 'app-registrar-solp-sap',
   templateUrl: './registrar-solp-sap.component.html',
@@ -18,6 +21,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 export class RegistrarSolpSapComponent implements OnInit {
   @ViewChild('customTooltip') tooltip: any;
   @ViewChild('customTooltip1') tooltip1: any;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   tipoSolicitud: string;
   codigoAriba: string;
   numeroOrdenEstadistica: string;
@@ -50,6 +54,13 @@ export class RegistrarSolpSapComponent implements OnInit {
   paisId: any;
   ObResProceso: responsableProceso[]=[];
   Autor: any;
+  ObjCTVerificar: any[];
+  dataSource;
+  dataSourceTS;
+  CTS: boolean;
+  CTB: boolean;
+
+
  
 
  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
@@ -182,6 +193,27 @@ export class RegistrarSolpSapComponent implements OnInit {
               this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
           }
         )
+        this.servicio
+          .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
+          .subscribe(RespuestaCondiciones => {                   
+            this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
+            if (this.ObjCTVerificar.length>0) {
+              this.CTB = true;
+            }
+            this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+            this.dataSource.paginator = this.paginator;   
+            this.servicio
+          .ObtenerCondicionesTecnicasServicios(this.IdSolicitud)
+          .subscribe(RespuestaCondicionesServicios => {           
+            this.ObjCondicionesTecnicasServicios = resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
+            if (this.ObjCondicionesTecnicasServicios.length>0) {
+              this.CTS = true;
+            }
+            this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
+            this.dataSourceTS.paginator = this.paginator;
+            this.loading = false;
+          });
+          });
       }
     );
   }

@@ -9,11 +9,28 @@ export class CondicionesTecnicasBienes {
         public cantidad: number,
         public valorEstimado?: string,
         public Comentario?: string,        
-        public archivoAdjunto?: File,
+        public archivoAdjunto?: any,
         public ComentarioSondeo?:string  
         ) {}
 
     public static fromJson(element: any) {
+
+        let RutaArchivo = "";
+        if (element.Attachments ===true) {
+           let ObjArchivos = element.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="solp") {
+                        RutaArchivo=element.ServerRelativeUrl;
+                   }
+                
+               }
+           });
+        }        
+
         return new CondicionesTecnicasBienes(element.Id, 
             element.Codigo, 
             element.Descripcion, 
@@ -22,7 +39,7 @@ export class CondicionesTecnicasBienes {
             element.Cantidad,
             element.ValorEstimado, 
             element.Comentarios,
-            null,
+            RutaArchivo,
             element.ComentarioSondeo);
     }
 
