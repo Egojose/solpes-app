@@ -69,7 +69,7 @@
 <div class="row" *ngIf="SwtichOrdenEstadistica===true">
     <div class="form-group col-md-6">
         <label for="adjunto"> <strong> Adjuntar solicitud creación de activos </strong></label><span class="asterisco-obligatorio">*</span>
-        <input id="" name="" formControlName="" type="file" class="form-control" />
+        <input id="adjuntoSolicituAF" name="adjuntoSolicituAF" formControlName="adjuntoSolicituAF" type="file" class="form-control" />
         <br>
     </div>
 </div>
@@ -186,7 +186,7 @@
         <ng-container *ngIf="OrdenEstadistica === true; else mostrarOrdenEstadistica">
             <div class="form-group row">
                 <div class="col-md-12">
-                    <h4><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h4>
+                    <h5><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h5>
                 </div>
             </div>
         </ng-container>
@@ -247,7 +247,8 @@
                                 <td>{{item.valorEstimado}}</td>
                                 <td>
                                     <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTB">
-                                        <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary"> Ver archivo</button></a>
+                                        <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary">
+                        Ver archivo</button></a>
                                     </div>
                                     <ng-template #sinAdjuntoCTB>
                                     </ng-template>
@@ -285,7 +286,8 @@
                                     <td>{{item.valorEstimado}}</td>
                                     <td>
                                         <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
-                                            <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary"> Ver archivo</button></a>
+                                            <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary">
+                          Ver archivo</button></a>
                                         </div>
                                         <ng-template #sinAdjuntoCTS>
                                         </ng-template>
@@ -312,7 +314,6 @@
                                     <th>Cantidad</th>
                                     <th>Precio</th>
                                     <th>Comentarios</th>
-                                    <th>Adjunto</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -322,9 +323,6 @@
                                     <td>{{item.cantidadSondeo}}</td>
                                     <td>{{item.precioSondeo}}</td>
                                     <td>{{item.comentarioSondeo}}</td>
-                                    <td>
-
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -403,7 +401,6 @@
                 </div>
                 <div class="form-group">
                     <div class="row">
-
                         <div class="col-md-6">
                             <label for="cantidadReserva">Cantidad a comprar</label>
                             <input type="text" formControlName="cantidadReservaVerificar" class="form-control" readonly />

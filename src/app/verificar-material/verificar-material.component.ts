@@ -314,6 +314,8 @@ export class VerificarMaterialComponent implements OnInit {
     this.ObjCTVerificar[index].cantidadreservaverificar = cantidadreservaverificar;
     this.ObjCTVerificar[index].MaterialVerificado = true;
 
+    let sum = this.ObjCTVerificar.map(item => item.cantidadreservaverificar).reduce((prev, next) => prev + next);
+
     objGuardarVerificar = {
       CodigoVerificar: codigoVerificar,
       DescripcionVerificar: descripcionVerificar,
@@ -334,8 +336,11 @@ export class VerificarMaterialComponent implements OnInit {
       .then((resultado: ItemAddResult) => {
         this.mostrarInformacion("Material verificado correctamente");
         this.cantidadTotalCompra =  this.cantidadTotalCompra + cantidadreservaverificar;
-        if (this.cantidadTotalCompra > 0 && this.OrdenEstadistica === true) {
+        if (sum > 0 && this.OrdenEstadistica === true) {
           this.SwtichOrdenEstadistica = true;
+        }
+        else{
+          this.SwtichOrdenEstadistica = false;
         }
       })
       .catch(error => {
@@ -385,7 +390,7 @@ export class VerificarMaterialComponent implements OnInit {
 
 export function ValidarMayorExistencias(valor): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    return control.value < valor ? null : {
+    return control.value <= valor ? null : {
       cantidadMenor: {
         valid: false
       }
