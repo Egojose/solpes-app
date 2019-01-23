@@ -36,6 +36,7 @@ export class VerificarMaterialComponent implements OnInit {
   ordenadorGasto: string;
   empresa: string;
   pais: string;
+  numOrdenEstadistica: string;
   categoria: string;
   subCategoria: string;
   comprador: string;
@@ -148,6 +149,7 @@ export class VerificarMaterialComponent implements OnInit {
         this.codAriba = solicitud.CodigoAriba;
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
+        this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Subcategoria;
         this.comprador = solicitud.Comprador.Title;
@@ -318,6 +320,10 @@ export class VerificarMaterialComponent implements OnInit {
       MaterialVerificado: true
     }
 
+    // subirAdjuntoCA(event) {
+    //   this.ObjCondicionesTecnicas = new CondicionesTecnicasBienes(null, '', null, '', '', '', '', null, null, '', event.target.files[0], '', '');
+    // }
+
     this.servicio.guardarVerificarMaterial(this.IdVerficar, objGuardarVerificar)
       .then((resultado: ItemAddResult) => {
         this.mostrarInformacion("Material verificado correctamente");
@@ -330,6 +336,16 @@ export class VerificarMaterialComponent implements OnInit {
     this.limpiarControlesVerificar();    
     this.modalRef.hide();
   }
+
+//  getSum(index: number) : number {
+//   let sum = 0;
+//   let index = this.ObjCTVerificar.findIndex(x => x.id === this.IdVerficar);
+//   this.ObjCTVerificar[index].cantidadreservaverificar = cantidadreservaverificar;
+//   for(let i = 0; i < this.items.length; i++) {
+//     sum += this.items[i][index];
+//   }
+//   return sum;
+// }
 
   RestaCantidadReserva() {
     let Existencia: number = this.verificarMaterialFormulario.controls[
