@@ -9,8 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { timeout } from 'q';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { CondicionesTecnicasBienesLectura } from '../registrar-solp-sap/condicionesTecnicasBienesLectura'
-import { CondicionesTecnicasServiciosLectura } from '../registrar-solp-sap/condicionesTecnicasServiciosLectura'
   import { from } from 'rxjs';
 @Component({
   selector: 'app-registrar-solp-sap',
@@ -37,9 +35,10 @@ export class RegistrarSolpSapComponent implements OnInit {
   alcance: string;
   ObjCondicionesContractuales: any;
   IdSolicitud: any;
-  ObjCondicionesTecnicasBienesLectura: CondicionesTecnicasBienesLectura[] = [];
-  ObjCondicionesTecnicasServiciosLectura: CondicionesTecnicasServiciosLectura[] = [];
+  ObjCondicionesTecnicasBienesLectura: CondicionesTecnicasBienes[] = [];
+  ObjResultadosondeo: CondicionesTecnicasBienes[] = [];
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
+  ObjCondicionesTecnicasServiciosLectura: CondicionTecnicaServicios[] = [];
   ObjCondicionesTecnicasServicios: CondicionTecnicaServicios[] = [];
   AgregarElementoForm: FormGroup;
   RDBOrdenadorGastos: any;
@@ -145,7 +144,6 @@ export class RegistrarSolpSapComponent implements OnInit {
   ngOnInit() {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
-        debugger
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.codigoAriba = solicitud.CodigoAriba;
         this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
@@ -167,6 +165,7 @@ export class RegistrarSolpSapComponent implements OnInit {
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            this.ObjResultadosondeo = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             console.log(this.ObjCondicionesTecnicas);
           }
         )
