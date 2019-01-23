@@ -24,6 +24,9 @@ export class AprobarSondeoComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   solicitante: string;
+  tipoSolicitud: string;
+  codigoAriba: string;
+  numeroOrdenEstadistico: string;
   ordenadorGasto: string;
   empresa: string;
   pais: string;
@@ -205,6 +208,9 @@ export class AprobarSondeoComponent implements OnInit {
   ObtenerSolicitudBienesServicios() {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
+        this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.codigoAriba = solicitud.CodigoAriba;
+        this.numeroOrdenEstadistico = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;
         this.historial = solicitud.ComentarioSondeo;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
@@ -215,7 +221,7 @@ export class AprobarSondeoComponent implements OnInit {
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador.ID;
+        this.comprador = solicitud.Comprador.Title;
         this.alcance = solicitud.Alcance;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.justificacion = solicitud.Justificacion;

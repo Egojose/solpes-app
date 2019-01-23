@@ -152,7 +152,7 @@ export class SondeoComponent implements OnInit {
       this.servicio.guardarSondeoBienes(this.ObjCondicionesTecnicasBienesGuardar[i].IdBienes, objSondeo).then(
         (resultado: ItemAddResult) => {
           if (this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto != null) {
-            let nombreArchivo = "sondeoBienes-" + this.generarllaveSoporte() + "-" + this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto.name;
+            let nombreArchivo = "sondeoBienes-" + this.generarllaveSoporte() + "_" + this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto.name;
             this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.ObjCondicionesTecnicasBienesGuardar[i].IdBienes, nombreArchivo, this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto).then(
               (respuesta) => {
                 contador++
@@ -218,7 +218,7 @@ export class SondeoComponent implements OnInit {
       this.servicio.guardarSondeoServicios(this.ObjCondicionesTecnicasServiciosGuardar[i].id, objSondeo).then(
         (resultado: ItemAddResult) => {
           if (this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto != null) {
-            let nombreArchivo = "sondeoServicios-" + this.generarllaveSoporte() + "-" + this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto.name;
+            let nombreArchivo = "sondeoServicios-" + this.generarllaveSoporte() + "_" + this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto.name;
             this.servicio.agregarAdjuntoCondicionesTecnicasServicios(this.ObjCondicionesTecnicasServiciosGuardar[i].id, nombreArchivo, this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto).then(
               (respuesta) => {
                 contador++
