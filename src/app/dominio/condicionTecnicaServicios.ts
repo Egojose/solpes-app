@@ -14,13 +14,17 @@ export class CondicionTecnicaServicios{
         public id?: number) { }
 
     public static fromJson(element: any) {
-        return new CondicionTecnicaServicios(element.Title,
+        return new CondicionTecnicaServicios(
+            element.ID,
+            element.Title,
             element.Solicitud,
             element.Codigo,
             element.Descripcion,
             element.Cantidad,
             element.ValorEstimado,
             element.Comentario,
+            element.AttachmentFiles,
+            element.AttachmentFiles,
             element.TipoMoneda,
             element.ID);
     }

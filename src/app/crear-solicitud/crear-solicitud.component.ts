@@ -109,7 +109,6 @@ export class CrearSolicitudComponent implements OnInit {
   codigoAriba: string;
   responsableProcesoEstado: responsableProceso[] = [];
   emptyNumeroOrdenEstadistica: boolean;
-  ordencomprasEstadistica: string[] = [];
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
@@ -135,7 +134,6 @@ export class CrearSolicitudComponent implements OnInit {
     this.compraServicios = false;
     this.compraOrdenEstadistica = false;
     this.emptyNumeroOrdenEstadistica = false;
-    this.ordencomprasEstadistica.push("NO", "SI");
   }
 
   MostrarExitoso(mensaje: string) {
@@ -262,6 +260,7 @@ export class CrearSolicitudComponent implements OnInit {
       compraOrdenEstadistica: ['NO'],
       numeroOrdenEstadistica: ['']
     });
+    
   }
 
   RecuperarUsuario() {
@@ -422,7 +421,12 @@ export class CrearSolicitudComponent implements OnInit {
     if (categoria != '' && pais != '') {
       this.servicio.ObtenerSubcategorias(categoria.id, pais.id).subscribe(
         (respuesta) => {
-          this.subcategorias = Subcategoria.fromJsonList(respuesta);
+          if(respuesta.length > 0){
+            this.subcategorias = Subcategoria.fromJsonList(respuesta);
+          }else{
+            this.subcategorias = [];
+            this.solpFormulario.controls["subcategoria"].setValue("");
+          }
           this.loading = false;
         }, err => {
           console.log('Error obteniendo subcategorias: ' + err);
@@ -776,8 +780,8 @@ export class CrearSolicitudComponent implements OnInit {
       this.condicionTB.fabricante = fabricante;
       this.condicionTB.cantidad = cantidad;
       this.condicionTB.valorEstimado = valorEstimado;
-      this.condicionTB.comentarios = comentarios;
       this.condicionTB.tipoMoneda = tipoMoneda;
+      this.condicionTB.comentarios = comentarios;
       if (adjunto != null) {
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
         this.servicio.agregarCondicionesTecnicasBienes(this.condicionTB).then(
@@ -1368,8 +1372,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.emptyNumeroOrdenEstadistica = true;
     }else{
       this.emptyNumeroOrdenEstadistica = false;
-      valorOrdenEstadistica = "";
-      this.solpFormulario.controls["numeroOrdenEstadistica"].setValue(valorOrdenEstadistica);
+      this.solpFormulario.controls["numeroOrdenEstadistica"].setValue("");
     }
   }
 }

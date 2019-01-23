@@ -9,10 +9,9 @@ import { ToastrManager } from "ng6-toastr-notifications";
 import { ItemAddResult } from "sp-pnp-js";
 import { CondicionTecnicaServicios } from "../verificar-material/condicionTecnicaServicios";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { animate, state, style, transition, trigger } from "@angular/animations";
 import { verificarMaterialCT } from "./verificarMaterialCT";
 import { MatTableDataSource, MatPaginator} from '@angular/material';
-import { Subcategoria } from '../dominio/subcategoria';
+
 
 @Component({
   selector: "app-verificar-material",
@@ -384,7 +383,7 @@ export class VerificarMaterialComponent implements OnInit {
 
 export function ValidarMayorExistencias(valor): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    return control.value < valor ? null : {
+    return control.value <= valor ? null : {
       cantidadMenor: {
         valid: false
       }

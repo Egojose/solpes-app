@@ -145,15 +145,14 @@
         </div>
       </div>
     </div>
+
     <hr>
     <div class="form-group row">
       <div class="col-md-6">
         <label for="CompraEstadística">Compra orden de estadística</label>
         <mat-radio-group class="orden-estadistica-group" layout="row" formControlName="compraOrdenEstadistica">
-            <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" *ngFor="let ordencompraEstadistica of ordencomprasEstadistica"
-              [value]="ordencompraEstadistica.valor" (change)="mostrarNumeroOrdenEstadistica(ordencompraEstadistica)">
-              {{ordencompraEstadistica}}
-            </mat-radio-button>
+            <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO" (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>
+            <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="SI" (change)="mostrarNumeroOrdenEstadistica($event.value)">SI</mat-radio-button>
           </mat-radio-group>
       </div>
       <div class="col-md-6">

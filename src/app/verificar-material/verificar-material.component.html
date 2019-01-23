@@ -387,7 +387,7 @@
                             <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }" placeholder="Escriba las existencias"
                                 (change)="RestaCantidadReserva()" />
                             <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
-                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores ni iguales a la cantidad
+                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores a la cantidad
                                 </div>
                             </div>
                         </div>
