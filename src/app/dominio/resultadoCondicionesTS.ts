@@ -1,16 +1,12 @@
-export class CondicionTecnicaServicios{
-    constructor(
-        public titulo: string,
-        public idSolicitud: any,
+export class resultadoCondicionesTS {
+
+    constructor(public IdBienes: number,
         public codigo: string,
-        public descripcion: string,
+        public descripcion: string,              
         public cantidad: number,
-        public valorEstimado: number,
-        public comentarios: string,
-        public adjunto?: any,
-        public tipoMoneda?: string,
-        public id?: number,
-        ) { }
+        public valorEstimado?: string,
+        public moneda?: string,
+        public adjunto?: any) { }
 
     public static fromJson(element: any) {
 
@@ -29,17 +25,13 @@ export class CondicionTecnicaServicios{
            });
         }        
 
-
-        return new CondicionTecnicaServicios(element.Title,
-            element.Solicitud,
-            element.Codigo,
-            element.Descripcion,
-            element.Cantidad,
-            element.ValorEstimado,
-            element.Comentario,
-            RutaArchivo,
+        return new resultadoCondicionesTS(element.Id, 
+            element.Codigo, 
+            element.Descripcion,                       
+            element.CantidadSondeo, 
+            element.PrecioSoneo, 
             element.TipoMoneda,
-            element.ID);
+            RutaArchivo);
     }
 
     public static fromJsonList(elements: any) {
@@ -49,4 +41,6 @@ export class CondicionTecnicaServicios{
         }
         return list;
     }
+
+
 }

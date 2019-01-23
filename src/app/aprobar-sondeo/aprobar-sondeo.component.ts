@@ -24,6 +24,9 @@ export class AprobarSondeoComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   solicitante: string;
+  tipoSolicitud: string;
+  codigoAriba: string;
+  numeroOrdenEstadistico: string;
   ordenadorGasto: string;
   empresa: string;
   pais: string;
@@ -53,6 +56,7 @@ export class AprobarSondeoComponent implements OnInit {
   loading: boolean;
   paisId: any;
   ObResProceso: responsableProceso[]=[];
+  CompradorId: any;
 
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
@@ -83,7 +87,7 @@ export class AprobarSondeoComponent implements OnInit {
       else if (this.RDBsondeo === 1) {
         //Comprador
         ObjSondeo = {
-          ResponsableId: this.comprador,
+          ResponsableId: this.CompradorId,
           Estado: "Por sondear",
           ResultadoSondeo: "Sondeo adicional",
           ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSondeo
@@ -205,6 +209,9 @@ export class AprobarSondeoComponent implements OnInit {
   ObtenerSolicitudBienesServicios() {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
+        this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.codigoAriba = solicitud.CodigoAriba;
+        this.numeroOrdenEstadistico = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;
         this.historial = solicitud.ComentarioSondeo;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
@@ -215,7 +222,8 @@ export class AprobarSondeoComponent implements OnInit {
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador.ID;
+        this.comprador = solicitud.Comprador.Title;
+        this.CompradorId = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.justificacion = solicitud.Justificacion;

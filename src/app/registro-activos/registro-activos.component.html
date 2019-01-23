@@ -1,0 +1,90 @@
+<h1>{{titleActivos}}</h1>
+<hr>
+<div class="loading" *ngIf='loading'>
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+</div>
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Condiciones tecnicas bienes
+            </mat-panel-title>
+            <mat-panel-description>
+                {{panelOpenState ? 'cerrar' : 'Click para desplegar' }}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row" id="TablaVerificar">
+            <div class="col-md-12">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <ng-container matColumnDef="codigo">
+                        <th mat-header-cell *matHeaderCellDef> Código </th>
+                        <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                        <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="modelo">
+                        <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fabricante">
+                        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cantidad">
+                        <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+                        <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="valorEstimado">
+                        <th mat-header-cell *matHeaderCellDef> Valor</th>
+                        <td mat-cell *matCellDef="let element"> {{element.valorEstimado}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="moneda">
+                        <th mat-header-cell *matHeaderCellDef> Moneda</th>
+                        <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="adjunto">
+                        <th mat-header-cell *matHeaderCellDef> Adjunto</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.adjunto !== ''">
+                                <a href="{{element.adjunto}}">
+                                    <button class="btn btn-success">Ver</button>
+                                </a>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
+<br>
+<div class="col-md-12">
+    <p>De acuerdo a los materiales verificados, modifique los activos fijos cargados en el siguiente adjunto.</p>
+</div>
+<div class="form-group col-md-6">
+    <label for="adjunto"> <strong> Solicitud de activos </strong></label><span class="asterisco-obligatorio">*</span>
+    <input id="adjuntoSolicituAF" name="adjuntoSolicituAFCompleto" formControlName="adjuntoSolicituAFCompleto" type="file" class="form-control" />
+    <br>
+</div>
+<div class="row">
+    <div class="form-group col-md-12">
+        <label for="textarea" class="control-label"><b>Comentarios:</b></label>
+        <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
+        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioRegistroActivos" required></textarea>        </div>
+</div>
+
+<div class="col-md-12 row">
+    <div>
+        <input type="button" mat-raised-button color="primary" matTooltip="Info about the action" style="margin-right: 15px;" class="btn btn-primary" value="GUARDAR" (click)="GuardarActivos()" />
+    </div>
+    <div>
+        <input type="button" class="btn btn-danger" (click)="salir();" value="SALIR" />
+    </div>
+</div>

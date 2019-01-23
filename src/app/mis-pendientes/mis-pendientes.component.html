@@ -55,8 +55,24 @@
                     a registrar SOLP SAP</button>
                 <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary" (click)="RegistrarContratos(element.id)">Ir
                     a registrar contratos</button>
+                <div class="row filaBtn">
+                    <div class="col-md-12">
+                        <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-primary" (click)="ConPresupuesto(element,templateConfirmacionPresupuesto)">Enviar a registrar SOLP</button>
+                    </div>
+                </div>
+                <div class="row filaBtn">
+                    <div class="col-md-12">
+                        <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-danger" (click)="Descartar(element,templateConfirmacionDescartarSinPresupuesto)">Descartar</button>
+                    </div>
+                </div>
+                <div class="row filaBtn">
+                    <div class="col-md-12">
+                        <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-success" (click)="VerDetalle(element.id)">Ver detalle</button>
+                    </div>
+                </div>
                 <button *ngIf="element.estado =='Por registrar entregas' && element.compraBienes === true" class="btn btn-primary btnBienes" (click)="RegistrarEntregasBienes(element.id)">Registrar bienes</button>
                 <button *ngIf="element.estado =='Por registrar entregas' && element.compraServicios === true" class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Registrar servicios</button>
+
             </td>
         </ng-container>
 
@@ -72,5 +88,21 @@
         <p>¿Estás seguro que desea descartar la solicitud?</p>
         <button type="button" class="btn btn-default" (click)="confirmarDescartar()">Sí</button>
         <button type="button" class="btn btn-primary" (click)="declinarDescartar()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #templateConfirmacionDescartarSinPresupuesto>
+    <div class="modal-body text-center">
+        <p>Su solicitud se descartará permanentemente, esta acción no se puede deshacer</p>
+        <button type="button" class="btn btn-primary btnPresupuesto" (click)="confirmarDescartarPresupuesto()">Confirmar</button>
+        <button type="button" class="btn btn-danger" (click)="declinarDescartar()">Cancelar</button>
+    </div>
+</ng-template>
+
+<ng-template #templateConfirmacionPresupuesto>
+    <div class="modal-body text-center">
+        <p>Antes de enviar nuevamente usted debe haber gestionado la asignación de presupuesto.</p>
+        <button type="button" class="btn btn-primary btnPresupuesto" (click)="confirmarPresupuesto()">Confirmar</button>
+        <button type="button" class="btn btn-danger" (click)="declinarDescartar()">Cancelar</button>
     </div>
 </ng-template>

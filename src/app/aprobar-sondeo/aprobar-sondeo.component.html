@@ -164,11 +164,14 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <b>Tipo de solicitud: </b>{{tipoSolicitud}}
                                 </div>
-                                <div class="col-md-6">
-                                    <strong> Código ariba:</strong>{{codAriba}}
+                                <div class="col-md-4">
+                                    <strong> Código ariba: </strong>{{codigoAriba}}
+                                </div>
+                                <div class="col-md-4">
+                                    <strong> Número de orden estadística: </strong>{{numeroOrdenEstadistica}}
                                 </div>
                             </div>
                             <br>
@@ -263,14 +266,18 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicas">
-                                        <td>{{item.codigo}}</td>
+                                        <td>{{item.Codigo}}</td>
                                         <td>{{item.descripcion}}</td>
-                                        <td>{{item.modelo}}</td>
-                                        <td>{{item.fabricante}}</td>
-                                        <td>{{item.cantidad}}</td>
-                                        <td>{{item.valorEstimado}}</td>
-                                        <td></td>
-                                        <td>{{item.comentario}}</td>
+                                        <td>{{item.Modelo}}</td>
+                                        <td>{{item.Fabricante}}</td>
+                                        <td>{{item.Cantidad}}</td>
+                                        <td>{{item.ValorEstimado}}</td>
+                                        <td>
+                                            <a *ngIf="item.RutaArchivo !== 'false'" href="{{item.RutaArchivo}}">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
+                                        <td>{{item.Comentarios}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -296,12 +303,16 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                                        <td>{{item.codigo}}</td>
+                                        <td>{{item.Codigo}}</td>
                                         <td>{{item.descripcion}}</td>
-                                        <td>{{item.cantidad}}</td>
-                                        <td>{{item.valorEstimado}}</td>
-                                        <td></td>
-                                        <td>{{item.comentario}}</td>
+                                        <td>{{item.Cantidad}}</td>
+                                        <td>{{item.ValorEstimado}}</td>
+                                        <td>
+                                            <a *ngIf="item.RutaArchivo !== 'false'" href="{{item.RutaArchivo}}">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
+                                        <td>{{item.Comentario}}</td>
                                     </tr>
                                 </tbody>
                             </table>

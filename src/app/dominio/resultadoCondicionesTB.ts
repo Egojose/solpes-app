@@ -1,16 +1,14 @@
-export class CondicionTecnicaServicios{
-    constructor(
-        public titulo: string,
-        public idSolicitud: any,
+export class resultadoCondicionesTB {
+
+    constructor(public IdBienes: number,
         public codigo: string,
         public descripcion: string,
+        public modelo: string,
+        public fabricante: string,        
         public cantidad: number,
-        public valorEstimado: number,
-        public comentarios: string,
-        public adjunto?: any,
-        public tipoMoneda?: string,
-        public id?: number,
-        ) { }
+        public valorEstimado?: string,
+        public moneda?: string,
+        public adjunto?: any) { }
 
     public static fromJson(element: any) {
 
@@ -22,24 +20,23 @@ export class CondicionTecnicaServicios{
                let objSplit = element.FileName.split("-");
                if (objSplit.length>0) {
                    let TipoArchivo = objSplit[0]
-                   if (TipoArchivo==="sondeoServicios") {
+                   if (TipoArchivo==="sondeoBienes") {
                         RutaArchivo=element.ServerRelativeUrl;
-                   }                
+                   }
+                
                }
            });
         }        
 
-
-        return new CondicionTecnicaServicios(element.Title,
-            element.Solicitud,
-            element.Codigo,
-            element.Descripcion,
-            element.Cantidad,
-            element.ValorEstimado,
-            element.Comentario,
-            RutaArchivo,
+        return new resultadoCondicionesTB(element.Id, 
+            element.Codigo, 
+            element.Descripcion, 
+            element.Modelo, 
+            element.Fabricante,             
+            element.CantidadVerificar, 
+            element.ValorEstimado, 
             element.TipoMoneda,
-            element.ID);
+            RutaArchivo);
     }
 
     public static fromJsonList(elements: any) {
@@ -49,4 +46,5 @@ export class CondicionTecnicaServicios{
         }
         return list;
     }
+
 }
