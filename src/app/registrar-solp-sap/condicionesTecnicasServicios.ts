@@ -1,6 +1,5 @@
 export class CondicionTecnicaServicios{
     constructor(
-        public indice: number,
         public titulo: string,
         public idSolicitud: any,
         public codigo: string,
