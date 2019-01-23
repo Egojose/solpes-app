@@ -35,7 +35,11 @@
                                         <td>{{item.fabricante}}</td>
                                         <td>{{item.cantidad}}</td>
                                         <td>{{item.valorEstimado}}</td>
-                                        <td></td>
+                                        <td>
+                                            <a *ngIf="item.RutaArchivo !== 'false'" href="{{item.RutaArchivo}}">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
                                         <td>{{item.Comentario}}</td>
                                     </tr>
                                 </tbody>
@@ -107,7 +111,11 @@
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.cantidad}}</td>
                                         <td>{{item.valorEstimado}}</td>
-                                        <td></td>
+                                        <td>
+                                            <a *ngIf="item.RutaArchivo !== 'false'" href="{{item.RutaArchivo}}">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
                                         <td>{{item.comentarios}}</td>
                                     </tr>
                                 </tbody>
@@ -199,11 +207,14 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <b>Tipo de solicitud: </b>{{tipoSolicitud}}
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <strong> Código ariba:</strong>{{codAriba}}
+                                </div>
+                                <div class="col-md-4">
+                                    <strong> Número de orden estadística:</strong>{{algo}}
                                 </div>
                             </div>
                             <br>
