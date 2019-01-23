@@ -1315,8 +1315,6 @@ export class EditarSolicitudComponent implements OnInit {
     let valorPais = this.solpFormulario.controls["pais"].value;
     let categoria = this.solpFormulario.controls["categoria"].value;
     let subcategoria = this.solpFormulario.controls["subcategoria"].value;
-    console.log("subcategoria");
-    console.log(subcategoria);
     let comprador = this.solpFormulario.controls["comprador"].value;
     let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
@@ -1380,7 +1378,7 @@ export class EditarSolicitudComponent implements OnInit {
       return false;
     }
 
-    if (tipoSolicitud == 'Solp' || tipoSolicitud == 'CM') {
+    if (tipoSolicitud == 'Solp' || tipoSolicitud == 'OCM') {
       if (this.EsCampoVacio(justificacion)) {
         this.mostrarAdvertencia("El campo Justificación es requerido");
         this.loading = false;
@@ -1416,9 +1414,12 @@ export class EditarSolicitudComponent implements OnInit {
       this.compraOrdenEstadistica = true;
     }
 
+    
+
     this.servicio.obtenerResponsableProcesos(valorPais).subscribe(
       (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
+
         if (tipoSolicitud == 'Sondeo') {
           estado = 'Por sondear';
           responsable = subcategoria.comprador.ID;
