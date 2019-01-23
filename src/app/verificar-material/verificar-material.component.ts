@@ -70,13 +70,10 @@ export class VerificarMaterialComponent implements OnInit {
   paisId: any;
   IdResponsable: any;
   IdSolicitudParms: string;
-<<<<<<< HEAD
-=======
   cantidadTotalCompra: number;
   OrdenEstadistica: boolean;
   SwtichOrdenEstadistica: boolean;
 
->>>>>>> master
   constructor(
     private servicio: SPServicio,
     private formBuilder: FormBuilder,
