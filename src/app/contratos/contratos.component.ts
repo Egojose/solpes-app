@@ -4,6 +4,14 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { responsableProceso } from '../dominio/responsableProceso';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
+import { verificarMaterialCT } from '../verificar-material/verificarMaterialCT';
+import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnicaServicios';
+import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
+import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
+import { CondicionContractual } from '../dominio/condicionContractual';
+
 
 @Component({
   selector: 'app-contratos',
@@ -12,6 +20,7 @@ import { responsableProceso } from '../dominio/responsableProceso';
 })
 export class ContratosComponent implements OnInit {
   @ViewChild('customTooltip') tooltip: any;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   ContratosForm: FormGroup;
   submitted = false;
   content: string;
@@ -29,6 +38,50 @@ export class ContratosComponent implements OnInit {
   CompraServicios: any;
   paisId: any;
   ObResProceso: responsableProceso[];
+  NombreSolicitante: string;
+  displayedColumns: string[] = [
+    "codigo",
+    "descripcion",
+    "modelo",
+    "fabricante",    
+    "cantidad",
+    "valorEstimado",
+    "moneda",
+    "adjunto"
+  ];
+  displayedColumnsTS: string[] = [
+    "codigo",
+    "descripcion",        
+    "cantidad",
+    "valorEstimado",
+    "moneda",
+    "adjunto"
+  ];
+  ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
+  ObjCTVerificar: any[];
+  dataSource;
+  dataSourceTS;
+  ObjResponsableProceso: any[];
+  ObjCondicionesTecnicasServicios: CondicionTecnicaServicios[] = [];
+  CTS: boolean;
+  CTB: boolean;
+  fechaDeseada: any;
+  tipoSolicitud: any;
+  solicitante: any;
+  ordenadorGasto: any;
+  empresa: any;
+  codAriba: any;
+  categoria: any;
+  subCategoria: any;
+  comprador: any;
+  alcance: any;
+  justificacion: any;
+  ComentarioSondeo: any;
+  condicionesContractuales: CondicionContractual[] = [];
+  OrdenEstadistica: any;
+  numOrdenEstadistica: any;
+  NumSolSAP: any;
+
   constructor(private servicio: SPServicio, private router: Router, public toastr: ToastrManager,private formBuilder: FormBuilder) {
     this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
     this.Guardado=false;
@@ -68,7 +121,7 @@ export class ContratosComponent implements OnInit {
       DigitoVerificacion: ['', Validators.required],
       NombreRazonSocial: ['', Validators.required],
       EmailProveedor: ['', [Validators.required, Validators.email]],
-      Solicitante: ['', Validators.required],
+      Solicitante: [, Validators.required],
       Comprador: ['', Validators.required],
       ObervacionesAdicionales: ['', Validators.required]
     });
@@ -79,18 +132,60 @@ export class ContratosComponent implements OnInit {
         this.servicio.ObtenerSolicitudBienesServicios(this.idSolicitudParameter).subscribe(
           (respuesta)=>{
               this.ObjSolicitud = respuesta;
+              this.IdSolicitud = this.ObjSolicitud.Id;
+              this.fechaDeseada = this.ObjSolicitud.FechaDeseadaEntrega;
+              this.tipoSolicitud = this.ObjSolicitud.TipoSolicitud;
+              this.solicitante = this.ObjSolicitud.Solicitante;
+              this.ordenadorGasto = this.ObjSolicitud.OrdenadorGastos.Title;
+              this.empresa = this.ObjSolicitud.Empresa.Title;
+              this.codAriba = this.ObjSolicitud.CodigoAriba;
               this.Pais=this.ObjSolicitud.Pais.Title;
               this.paisId = this.ObjSolicitud.Pais.Id;
-              this.IdSolicitud = this.ObjSolicitud.Id;
+              this.categoria = this.ObjSolicitud.Categoria;
+              this.subCategoria = this.ObjSolicitud.subCategoria;
+              this.comprador = this.ObjSolicitud.Comprador.Title;
+              this.alcance = this.ObjSolicitud.Alcance;
+              this.justificacion = this.ObjSolicitud.Justificacion;
+              this.ComentarioSondeo = this.ObjSolicitud.ComentarioSondeo;
               this.autor = this.ObjSolicitud.AuthorId;
+              this.NumSolSAP = this.ObjSolicitud.NumSolSAP;
+              this.NombreSolicitante = this.ObjSolicitud.Author.Title;
+              this.ContratosForm.controls["Solicitante"].setValue(this.NombreSolicitante);
               this.CompraBienes = this.ObjSolicitud.CompraBienes;
               this.CompraServicios = this.ObjSolicitud.CompraServicios;
-              this.loading=false;
+              this.OrdenEstadistica = this.ObjSolicitud.OrdenEstadistica;
+              this.numOrdenEstadistica = this.ObjSolicitud.NumeroOrdenEstadistica;
+              if(this.ObjSolicitud.CondicionesContractuales != null){
+                this.condicionesContractuales = JSON.parse(this.ObjSolicitud.CondicionesContractuales).condiciones;
+              }
               this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
                 (RespuestaProcesos)=>{
+                  
                     this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
                 }
               )
+              this.servicio
+          .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
+          .subscribe(RespuestaCondiciones => {                   
+            this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
+            if (this.ObjCTVerificar.length>0) {
+              this.CTB = true;
+            }
+            this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+            this.dataSource.paginator = this.paginator;   
+            this.servicio
+          .ObtenerCondicionesTecnicasServicios(this.IdSolicitud)
+          .subscribe(RespuestaCondicionesServicios => {           
+            this.ObjCondicionesTecnicasServicios = resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
+            if (this.ObjCondicionesTecnicasServicios.length>0) {
+              this.CTS = true;
+            }
+            this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
+            this.dataSourceTS.paginator = this.paginator;
+            this.loading = false;
+          });
+          });
+        
           }
         )      
       }
