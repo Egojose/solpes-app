@@ -132,7 +132,7 @@
                             <td>{{item.valorEstimado}}</td>
                             <td>
                                 <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTB">
-                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank">Adjunto</a>
+                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"><button class="btn btn-primary"> Ver</button></a>
                                 </div>
                                 <ng-template #sinAdjuntoCTB>
                                 </ng-template>
@@ -163,7 +163,7 @@
                             <td>{{item.valorEstimado}}</td>
                             <td>
                                 <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
-                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank">Adjunto</a>
+                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"><button class="btn btn-primary"> Ver</button></a>
                                 </div>
                                 <ng-template #sinAdjuntoCTS>
                                 </ng-template>
