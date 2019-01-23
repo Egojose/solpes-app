@@ -36,7 +36,14 @@ export class verificarMaterialCT {
             numReserva = element.NumReservaVerificar;
             cantidadReserva = element.CantidadReservaVerificar;
         }
-        return new verificarMaterialCT(element.Id, nombreCodigo, nombreDescripcion, element.Modelo, element.Fabricante, element.Cantidad,"","",0,existencias, numReserva, cantidadReserva,element.MaterialVerificado);
+        let cantidad: number;
+        if (element.CantidadSondeo > 0) {
+            cantidad = element.CantidadSondeo;
+        } else {
+            cantidad = element.Cantidad;
+        }
+
+        return new verificarMaterialCT(element.Id, nombreCodigo, nombreDescripcion, element.Modelo, element.Fabricante, cantidad, "", "", 0, existencias, numReserva, cantidadReserva, element.MaterialVerificado);
     }
 
     public static fromJsonList(elements: any) {

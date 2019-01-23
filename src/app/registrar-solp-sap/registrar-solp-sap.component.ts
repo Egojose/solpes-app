@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { timeout } from 'q';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
-
+  import { from } from 'rxjs';
 @Component({
   selector: 'app-registrar-solp-sap',
   templateUrl: './registrar-solp-sap.component.html',
@@ -18,6 +18,9 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 export class RegistrarSolpSapComponent implements OnInit {
   @ViewChild('customTooltip') tooltip: any;
   @ViewChild('customTooltip1') tooltip1: any;
+  tipoSolicitud: string;
+  codigoAriba: string;
+  numeroOrdenEstadistica: string;
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
@@ -32,7 +35,10 @@ export class RegistrarSolpSapComponent implements OnInit {
   alcance: string;
   ObjCondicionesContractuales: any;
   IdSolicitud: any;
+  ObjCondicionesTecnicasBienesLectura: CondicionesTecnicasBienes[] = [];
+  ObjResultadosondeo: CondicionesTecnicasBienes[] = [];
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
+  ObjCondicionesTecnicasServiciosLectura: CondicionTecnicaServicios[] = [];
   ObjCondicionesTecnicasServicios: CondicionTecnicaServicios[] = [];
   AgregarElementoForm: FormGroup;
   RDBOrdenadorGastos: any;
@@ -138,6 +144,9 @@ export class RegistrarSolpSapComponent implements OnInit {
   ngOnInit() {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
+        this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.codigoAriba = solicitud.CodigoAriba;
+        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.solicitante = solicitud.Solicitante;
@@ -154,15 +163,18 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
+            this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            this.ObjResultadosondeo = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             console.log(this.ObjCondicionesTecnicas);
           }
         )
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
-
+            this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            console.log(this.ObjCondicionesTecnicasServicios);
+            // console.log(this.ObjCondicionesTecnicasServicios);
+            console.log(this.ObjCondicionesTecnicasServiciosLectura);
           }
         )
         this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(

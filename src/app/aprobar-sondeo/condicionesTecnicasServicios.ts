@@ -9,7 +9,11 @@ export class CondicionTecnicaServicios{
         public comentarioSondeo: string,
         public adjunto?: any,
         public id?: number,
-        public RutaArchivo?:string) { }
+        public RutaArchivo?:string,
+        public Codigo?: string,
+        public Cantidad?: number,
+        public ValorEstimado?: string,
+        public Comentario?: string) { }
 
     public static fromJson(element: any) {
         let RutaArchivo;
@@ -29,7 +33,11 @@ export class CondicionTecnicaServicios{
             element.ComentarioSondeo,
             null,
             element.Id,
-            RutaArchivo);
+            RutaArchivo,
+            element.Codigo,
+            element.Cantidad,
+            element.ValorEstimado,
+            element.Comentario);
     }
 
     public static fromJsonList(elements: any) {

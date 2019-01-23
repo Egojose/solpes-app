@@ -7,7 +7,14 @@ export class CondicionesTecnicasBienes {
         public PrecioSondeo: number,
         public ComentarioSondeo: string,
         public Estado?: any,
-        public RutaArchivo?:string            
+        public RutaArchivo?:string,
+        public Codigo?: string, 
+        public Modelo?: string,
+        public Fabricante?: string,
+        public Cantidad?: number,
+        public ValorEstimado?: string,
+        public Comentarios?: string
+
     ) {
 
     }
@@ -20,7 +27,8 @@ export class CondicionesTecnicasBienes {
         else {
             RutaArchivo = "false"
         }
-        return new CondicionesTecnicasBienes(element.Id ,element.CodigoSondeo, element.Descripcion, element.CantidadSondeo, element.PrecioSondeo, element.ComentarioSondeo, element.Estado,RutaArchivo);
+        return new CondicionesTecnicasBienes(element.Id ,element.CodigoSondeo, element.Descripcion, element.CantidadSondeo, element.PrecioSondeo, element.ComentarioSondeo, element.Estado,RutaArchivo,
+            element.Codigo, element.Modelo, element.Fabricante, element.Cantidad, element.ValorEstimado, element.Comentarios);
     }
 
 

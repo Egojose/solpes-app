@@ -18,6 +18,7 @@ export class SondeoComponent implements OnInit {
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
+  tipoSolicitud: string;
   solicitante: string;
   ordenadorGasto: string;
   empresa: string;
@@ -46,6 +47,8 @@ export class SondeoComponent implements OnInit {
   ComentarioSolicitante: string;
   PaisId: any;
   autorId: any;
+  codigoAriba: string;
+  numeroOrdenEstadistica: string;
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.loading = false;
@@ -72,6 +75,9 @@ export class SondeoComponent implements OnInit {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;
+        this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.codigoAriba = solicitud.CodigoAriba;
+        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
@@ -80,7 +86,7 @@ export class SondeoComponent implements OnInit {
         this.PaisId = solicitud.Pais.Id
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador;
+        this.comprador = solicitud.Comprador.Title;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
@@ -88,7 +94,7 @@ export class SondeoComponent implements OnInit {
         if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
-
+      
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
@@ -146,7 +152,7 @@ export class SondeoComponent implements OnInit {
       this.servicio.guardarSondeoBienes(this.ObjCondicionesTecnicasBienesGuardar[i].IdBienes, objSondeo).then(
         (resultado: ItemAddResult) => {
           if (this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto != null) {
-            let nombreArchivo = "sondeoBienes-" + this.generarllaveSoporte() + "-" + this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto.name;
+            let nombreArchivo = "sondeoBienes-" + this.generarllaveSoporte() + "_" + this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto.name;
             this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.ObjCondicionesTecnicasBienesGuardar[i].IdBienes, nombreArchivo, this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto).then(
               (respuesta) => {
                 contador++
@@ -212,7 +218,7 @@ export class SondeoComponent implements OnInit {
       this.servicio.guardarSondeoServicios(this.ObjCondicionesTecnicasServiciosGuardar[i].id, objSondeo).then(
         (resultado: ItemAddResult) => {
           if (this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto != null) {
-            let nombreArchivo = "sondeoServicios-" + this.generarllaveSoporte() + "-" + this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto.name;
+            let nombreArchivo = "sondeoServicios-" + this.generarllaveSoporte() + "_" + this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto.name;
             this.servicio.agregarAdjuntoCondicionesTecnicasServicios(this.ObjCondicionesTecnicasServiciosGuardar[i].id, nombreArchivo, this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto).then(
               (respuesta) => {
                 contador++

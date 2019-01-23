@@ -12,6 +12,7 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { verificarMaterialCT } from "./verificarMaterialCT";
 import { MatTableDataSource, MatPaginator} from '@angular/material';
+import { Subcategoria } from '../dominio/subcategoria';
 
 @Component({
   selector: "app-verificar-material",
@@ -35,6 +36,7 @@ export class VerificarMaterialComponent implements OnInit {
   ordenadorGasto: string;
   empresa: string;
   pais: string;
+  numOrdenEstadistica: string;
   categoria: string;
   subCategoria: string;
   comprador: string;
@@ -69,6 +71,9 @@ export class VerificarMaterialComponent implements OnInit {
   paisId: any;
   IdResponsable: any;
   IdSolicitudParms: string;
+  cantidadTotalCompra: number;
+  OrdenEstadistica: boolean;
+  SwtichOrdenEstadistica: boolean;
 
   constructor(
     private servicio: SPServicio,
@@ -79,6 +84,8 @@ export class VerificarMaterialComponent implements OnInit {
   ) {
     this.loading = false;
     this.emptyVerificar = true;
+    this.SwtichOrdenEstadistica=false;
+    this.cantidadTotalCompra = 0;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
   }
    
@@ -147,8 +154,10 @@ export class VerificarMaterialComponent implements OnInit {
         this.codAriba = solicitud.CodigoAriba;
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
+        this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
+        this.OrdenEstadistica = solicitud.OrdenEstadistica;
         this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.subCategoria;
+        this.subCategoria = solicitud.Subcategoria;
         this.comprador = solicitud.Comprador.Title;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
@@ -249,6 +258,15 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.controls["cantidadVerificar"].setValue(
       element.cantidad
     );
+    this.verificarMaterialFormulario.controls["existenciasVerificar"].setValue(
+      element.existenciasverificar
+    );
+    this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(
+      element.numreservaverificar
+    );
+    this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(
+      element.cantidadreservaverificar
+    );
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: "gray modal-lg" })
@@ -296,6 +314,8 @@ export class VerificarMaterialComponent implements OnInit {
     this.ObjCTVerificar[index].cantidadreservaverificar = cantidadreservaverificar;
     this.ObjCTVerificar[index].MaterialVerificado = true;
 
+    let sum = this.ObjCTVerificar.map(item => item.cantidadreservaverificar).reduce((prev, next) => prev + next);
+
     objGuardarVerificar = {
       CodigoVerificar: codigoVerificar,
       DescripcionVerificar: descripcionVerificar,
@@ -308,9 +328,20 @@ export class VerificarMaterialComponent implements OnInit {
       MaterialVerificado: true
     }
 
+    // subirAdjuntoCA(event) {
+    //   this.ObjCondicionesTecnicas = new CondicionesTecnicasBienes(null, '', null, '', '', '', '', null, null, '', event.target.files[0], '', '');
+    // }
+
     this.servicio.guardarVerificarMaterial(this.IdVerficar, objGuardarVerificar)
       .then((resultado: ItemAddResult) => {
         this.mostrarInformacion("Material verificado correctamente");
+        this.cantidadTotalCompra =  this.cantidadTotalCompra + cantidadreservaverificar;
+        if (sum > 0 && this.OrdenEstadistica === true) {
+          this.SwtichOrdenEstadistica = true;
+        }
+        else{
+          this.SwtichOrdenEstadistica = false;
+        }
       })
       .catch(error => {
         console.log(error);
@@ -320,6 +351,7 @@ export class VerificarMaterialComponent implements OnInit {
     this.limpiarControlesVerificar();    
     this.modalRef.hide();
   }
+
 
   RestaCantidadReserva() {
     let Existencia: number = this.verificarMaterialFormulario.controls[
@@ -358,7 +390,7 @@ export class VerificarMaterialComponent implements OnInit {
 
 export function ValidarMayorExistencias(valor): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    return control.value < valor ? null : {
+    return control.value <= valor ? null : {
       cantidadMenor: {
         valid: false
       }
