@@ -73,20 +73,28 @@
             </div>
             <div class="card-body">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="1">
-                    <label class="form-check-label" for="inlineRadio1">Sondeo adicional</label>
+                    <label>
+                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="1">
+                        Sondeo adicional
+                    </label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="2">
-                    <label class="form-check-label" for="inlineRadio2">Convertir en SOLP</label>
+                    <label>
+                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="2">
+                        Convertir en SOLP
+                    </label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="4">
-                    <label class="form-check-label" for="inlineRadio2">Convertir en CM</label>
+                    <label>
+                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="4">
+                        Convertir en orden a CM
+                    </label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="3">
-                    <label class="form-check-label" for="inlineRadio2">Descartar</label>
+                    <label>
+                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="3">
+                        Descartar
+                    </label>
                 </div>
             </div>
         </div>
@@ -95,9 +103,9 @@
     <ng-container *ngIf="RDBsondeo === 4">
         <div class="row">
             <div class="form-group col-md-4">
-                <label><b>Número Solp/CM:</b></label>
-                <ng-template #popTemplate2>Por favor digite el número SOLP/CM</ng-template>
-                <input type="text" class="form-control" placeholder="Ingrese el número de SOLP/CM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
+                <label><b>Número Solp/OCM:</b></label>
+                <ng-template #popTemplate2>Por favor digite el número SOLP/OCM</ng-template>
+                <input type="text" class="form-control" placeholder="Ingrese el número de SOLP/OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
             </div>
         </div>
     </ng-container>
@@ -128,8 +136,8 @@
     <div class="row text-center">
         <div class="col-md-12"></div>
         <div class="form-group col-md-12">
-            <input type="button" class="btn btn-primary" value="ACEPTAR" (click)="GuardarRevSondeo()" />
-            <input type="button" class="btn btn-danger" value="CANCELAR" (click)="salir()" />
+            <input type="button" class="btn btn-success" value="Aprobar" (click)="GuardarRevSondeo()" />
+            <input type="button" class="btn btn-danger" value="Cancelar" (click)="salir()" />
         </div>
     </div>
     <hr>
@@ -155,6 +163,15 @@
                             <strong>Información de la solicitud</strong>
                         </div>
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b>Tipo de solicitud: </b>{{tipoSolicitud}}
+                                </div>
+                                <div class="col-md-6">
+                                    <strong> Código ariba:</strong>{{codAriba}}
+                                </div>
+                            </div>
+                            <br>
                             <div class="row espacio">
                                 <div class="col-md-4">
                                     <strong>Solicitante: </strong>{{solicitante}}
@@ -238,7 +255,6 @@
                                         <th>Descripción</th>
                                         <th>Modelo</th>
                                         <th>Fabricante</th>
-                                        <th>Clase SIA</th>
                                         <th>Cantidad</th>
                                         <th>Valor Estimado</th>
                                         <th>Adjunto</th>
@@ -251,7 +267,6 @@
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.modelo}}</td>
                                         <td>{{item.fabricante}}</td>
-                                        <td>{{item.claseSIA}}</td>
                                         <td>{{item.cantidad}}</td>
                                         <td>{{item.valorEstimado}}</td>
                                         <td></td>

@@ -103,10 +103,13 @@ export class CrearSolicitudComponent implements OnInit {
   emptyasteriscoCTs: boolean;
   compraBienes: boolean;
   compraServicios: boolean;
+  compraOrdenEstadistica: boolean;
   consecutivoActual: number;
   compradorId: number;
   codigoAriba: string;
   responsableProcesoEstado: responsableProceso[] = [];
+  emptyNumeroOrdenEstadistica: boolean;
+  ordencomprasEstadistica: string[] = [];
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
@@ -130,6 +133,9 @@ export class CrearSolicitudComponent implements OnInit {
     this.correoManager = "";
     this.compraBienes = false;
     this.compraServicios = false;
+    this.compraOrdenEstadistica = false;
+    this.emptyNumeroOrdenEstadistica = false;
+    this.ordencomprasEstadistica.push("NO", "SI");
   }
 
   MostrarExitoso(mensaje: string) {
@@ -252,7 +258,9 @@ export class CrearSolicitudComponent implements OnInit {
       codigoAriba: [''],
       fechaEntregaDeseada: [''],
       alcance: [''],
-      justificacion: ['']
+      justificacion: [''],
+      compraOrdenEstadistica: ['NO'],
+      numeroOrdenEstadistica: ['']
     });
   }
 
@@ -481,6 +489,8 @@ export class CrearSolicitudComponent implements OnInit {
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
+    let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+    let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let consecutivoNuevo = this.consecutivoActual + 1;
 
     if (this.EsCampoVacio(tipoSolicitud)) {
@@ -551,6 +561,12 @@ export class CrearSolicitudComponent implements OnInit {
       return respuesta;
     }
 
+    respuesta = this.ValidarCompraOrdenEstadistica();
+    if (respuesta == false) {
+      this.loading = false;
+      return respuesta;
+    }
+
     respuesta = this.ValidarExistenciaCondicionesTecnicas();
     if (respuesta == false) {
       this.loading = false;
@@ -563,7 +579,9 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
     }
-
+    if(valorcompraOrdenEstadistica == "SI"){
+      this.compraOrdenEstadistica = true;
+    }
     this.servicio.obtenerResponsableProcesos(valorPais.id).subscribe(
       (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
@@ -601,7 +619,7 @@ export class CrearSolicitudComponent implements OnInit {
             responsable,
             this.compraBienes,
             this.compraServicios,
-            consecutivoNuevo);
+            consecutivoNuevo, this.usuarioActual.id, null, this.compraOrdenEstadistica, valornumeroOrdenEstadistica);
 
           this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
             (item: ItemAddResult) => {
@@ -642,6 +660,21 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
+  ValidarCompraOrdenEstadistica(): boolean {
+   let respuesta = true;
+   let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+   let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
+   if(valorOrdenEstadistica == "NO"){
+     respuesta = true;
+   }else{
+     if(this.EsCampoVacio(valorNumeroOrdenEstadistica)){
+       respuesta = false;
+       this.mostrarAdvertencia("El campo Número de orden estadística es requerido");
+     }
+   }
+   return respuesta;
+  }
+
   ValidarExistenciaCondicionesTecnicas(): boolean {
     let respuesta = true;
     if (this.condicionesTB.length == 0 && this.condicionesTS.length == 0) {
@@ -657,8 +690,10 @@ export class CrearSolicitudComponent implements OnInit {
       this.cadenaJsonCondicionesContractuales += ('{ "condiciones":[');
       this.condicionesContractuales.forEach(condicionContractual => {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
-        var json = textoCajon.replace(/[|&;$%@"<>()+,]/g, "");
-        this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + json + '"},');
+        if(textoCajon != null){
+          var json = textoCajon.replace(/[|&;$%@"<>()+,]/g, "");
+          this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + json + '"},');
+        }
       });
       this.cadenaJsonCondicionesContractuales = this.cadenaJsonCondicionesContractuales.substring(0, this.cadenaJsonCondicionesContractuales.length - 1);
       this.cadenaJsonCondicionesContractuales += (']}')
@@ -1255,6 +1290,8 @@ export class CrearSolicitudComponent implements OnInit {
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
+    let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+    let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let estado = "Borrador";
 
     if (this.condicionesTB.length > 0) {
@@ -1262,6 +1299,9 @@ export class CrearSolicitudComponent implements OnInit {
     }
     if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
+    }
+    if(valorcompraOrdenEstadistica == "SI"){
+      this.compraOrdenEstadistica = true;
     }
 
     this.solicitudGuardar = new Solicitud(
@@ -1283,7 +1323,13 @@ export class CrearSolicitudComponent implements OnInit {
       estado,
       this.usuarioActual.id,
       this.compraBienes,
-      this.compraServicios);
+      this.compraServicios,
+      null,
+      this.usuarioActual.id,
+       null, 
+       this.compraOrdenEstadistica, 
+       valornumeroOrdenEstadistica);
+
     this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
       (item: ItemAddResult) => {
         this.MostrarExitoso("La solicitud ha tenido un guardado parcial correcto");
@@ -1315,5 +1361,15 @@ export class CrearSolicitudComponent implements OnInit {
     var fecha = new Date();
     var valorprimitivo = fecha.valueOf().toString();
     return valorprimitivo;
+  }
+
+  mostrarNumeroOrdenEstadistica(valorOrdenEstadistica){
+    if(valorOrdenEstadistica == "SI"){
+      this.emptyNumeroOrdenEstadistica = true;
+    }else{
+      this.emptyNumeroOrdenEstadistica = false;
+      valorOrdenEstadistica = "";
+      this.solpFormulario.controls["numeroOrdenEstadistica"].setValue(valorOrdenEstadistica);
+    }
   }
 }

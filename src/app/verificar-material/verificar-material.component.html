@@ -38,11 +38,11 @@
                 <td mat-cell *matCellDef="let element"> {{element.numreservaverificar}} </td>
             </ng-container>
             <ng-container matColumnDef="cantidadreservaverificar">
-                <th mat-header-cell *matHeaderCellDef> Cantidar reserva </th>
+                <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
                 <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar}} </td>
             </ng-container>
             <ng-container matColumnDef="Accion">
-                <th mat-header-cell *matHeaderCellDef> Accion </th>
+                <th mat-header-cell *matHeaderCellDef> Acción </th>
                 <td mat-cell *matCellDef="let element">
 
                     <div *ngIf="element.MaterialVerificado == true; else botonVerificar">
@@ -169,13 +169,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-                    <p id="exampleFormControlTextarea1">{{alcance}}</p>
+                    <p class="col-sm-3" id="exampleFormControlTextarea1">{{alcance}}</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Justificación</strong></label>
-                    <p id="exampleFormControlTextarea1">{{justificacion}}</p>
+                    <p class="col-sm-3" id="exampleFormControlTextarea1">{{justificacion}}</p>
                 </div>
             </div>
         </div>
@@ -230,7 +230,13 @@
 
                                 <td>{{item.cantidad}}</td>
                                 <td>{{item.valorEstimado}}</td>
-                                <td></td>
+                                <td>
+                                    <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTB">
+                                        <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary"> Ver</button></a>
+                                    </div>
+                                    <ng-template #sinAdjuntoCTB>
+                                    </ng-template>
+                                </td>
                                 <td>{{item.comentario}}</td>
                             </tr>
                         </tbody>
@@ -262,8 +268,14 @@
                                     <td>{{item.descripcion}}</td>
                                     <td>{{item.cantidad}}</td>
                                     <td>{{item.valorEstimado}}</td>
-                                    <td></td>
-                                    <td>{{item.comentario}}</td>
+                                    <td>
+                                        <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
+                                            <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary"> Ver</button></a>
+                                        </div>
+                                        <ng-template #sinAdjuntoCTS>
+                                        </ng-template>
+                                    </td>
+                                    <td>{{item.comentarios}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -285,7 +297,7 @@
                                     <th>Cantidad</th>
                                     <th>Precio</th>
                                     <th>Comentarios</th>
-                                    <th>Adjuntos</th>
+                                    <th>Adjunto</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -295,7 +307,9 @@
                                     <td>{{item.cantidadSondeo}}</td>
                                     <td>{{item.precioSondeo}}</td>
                                     <td>{{item.comentarioSondeo}}</td>
-                                    <td></td>
+                                    <td>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -358,7 +372,7 @@
                             <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }" placeholder="Escriba las existencias"
                                 (change)="RestaCantidadReserva()" />
                             <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
-                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores a la cantidad
+                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores ni iguales a la cantidad
                                 </div>
                             </div>
                         </div>

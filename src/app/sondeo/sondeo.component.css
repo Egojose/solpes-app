@@ -2,3 +2,7 @@ textarea#textareaHistorial {
     background-color: white !important;
     border: none !important
 }
+
+.btn {
+    margin-right: 15px;
+}

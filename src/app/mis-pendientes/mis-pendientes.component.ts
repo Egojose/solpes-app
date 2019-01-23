@@ -121,8 +121,8 @@ export class MisPendientesComponent implements OnInit {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
   }
 
-  EditarSolicitud(IdSolicitud){
-    sessionStorage.setItem("IdSolicitud",IdSolicitud);
+  EditarSolicitud(solicitud){
+    sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
     this.router.navigate(['/editar-solicitud']);
   }
 

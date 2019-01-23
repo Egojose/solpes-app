@@ -4,9 +4,9 @@ export class Solicitud {
         public tipoSolicitud: string,
         public cm: string,
         public solicitante: string,
-        public empresa: number,
-        public ordenadorGastos: number,
-        public pais: number,
+        public empresa: any,
+        public ordenadorGastos: any,
+        public pais: any,
         public categoria: string,
         public subcategoria: string,
         public comprador: any,
@@ -22,6 +22,8 @@ export class Solicitud {
         public consecutivo?: number,
         public autor?: number,
         public nombreResponsable?: any,
+        public compraOrdenEstadistica?: boolean,
+        public numeroOrdenEstadistica?: string,
         public id?: number) { }
 
     public static fromJson(element: any) {
@@ -47,6 +49,8 @@ export class Solicitud {
             element.Consecutivo,
             element.AuthorId,
             element.Responsable.Title,
+            element.OrdenEstadistica,
+            element.NumeroOrdenEstadistica,
             element.ID);
     }
 
