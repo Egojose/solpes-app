@@ -27,7 +27,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4MTY2MjM4LCJuYmYiOjE1NDgxNjYyMzgsImV4cCI6MTU0ODE5NTMzOCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.iOxXd-vPuKS6Qb8o2wA--8m0b6C2TQZe71vexYpz4D7q-207qrwuV9ftb_b6EFlg1Tq9FOEZSED5QzvwL_OfeZ-xWqd0-CsVh0gma7IO_LcYDIva_nNNrcPZVfRThovcBoNKoCcCkujKAzZ1aZsxFosR4_IlUDl6Td1jh3S04OXzRV-UJMr5kc6LXsV12xEdWtUDTTYvjjlx4pTTja9RTdsNv2RIiZJ1lCHfq8lmup1S70XA17zhvYhmvis-O4_3cEjqkit-w7xHybUZxcJpiPhi_egqvZ9K3JMPYfCOb9H9WycaUplDBiJuhN9IS97FzIgXmux4_5UUq-epE7XGQg'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4MjUxNDM1LCJuYmYiOjE1NDgyNTE0MzUsImV4cCI6MTU0ODI4MDUzNSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.nTiE4LlwhtXfMlFenkvmtahRl0JN7XJAwpr7iY68IwVagfKzaHXlTYjCpFc2UCdAfxoqNXkZfN9HqT5QPaZZYpjKTZlgq7RnJxt70vrOnL9vQ0sCt-yovRvJheYvoEJhykYsofPaEtx54c2SdmPHriKaVEYPn73RIjbKTYdiXFC0iANPlHSL3ZNx0sA2mRA1XPwcXg7Ns76bYUz-0oCrGlVi6GeSfQtHBWjVP5jrj8ma-ppRQYH7dBvpYSyBiVGAG0_NTR-7GWw3a62NF0irAQTwsRvSg-N5XaEr5K-xpNmcbJScW4TpxyyJiqBGiR5g7seZ5mNrn2EJVveZQe2Blw'
             }
         }, environment.urlWeb);
 
@@ -100,7 +100,9 @@ export class SPServicio {
             AuthorId: solicitud.autor,
             CompraBienes: solicitud.compraBienes,
             CompraServicios: solicitud.compraServicios,
-            CodigoAriba: solicitud.codigoAriba
+            CodigoAriba: solicitud.codigoAriba,
+            OrdenEstadistica: solicitud.compraOrdenEstadistica,
+            NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica
         });
     }
 
@@ -129,7 +131,9 @@ export class SPServicio {
             CompraServicios: solicitud.compraServicios,
             Consecutivo: solicitud.consecutivo,
             Estado: solicitud.estado,
-            CodigoAriba: solicitud.codigoAriba
+            CodigoAriba: solicitud.codigoAriba,
+            OrdenEstadistica: solicitud.compraOrdenEstadistica,
+            NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica
         });
     }
 
@@ -230,7 +234,7 @@ export class SPServicio {
     }
 
     ObtenerSolicitudBienesServicios(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","FechaDeseadaEntrega","Solicitante","Responsable/Title","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais").get());
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","FechaDeseadaEntrega","Solicitante","Responsable/Title","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais", "Author").get());
         return respuesta;
     }
 

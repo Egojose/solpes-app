@@ -255,47 +255,6 @@
       </div>
     </div>
   <br>
-  <div class="row">
-    <div class="form-group col-md-12">
-      <label for="textarea" class="col-sm-2 control-label"><b>Condiciones técnicas bienes:</b></label>
-      
-        <table class="table table-striped table-bordered table-hover text-center">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Descripción</th>
-              <th>Modelo</th>
-              <th>Fabricante</th>
-              <th>Clase Condis</th>
-              <th>Cant</th>
-              <th>Adjunto</th>
-              <th>Existencias</th>
-              <th>#Reserva</th>
-              <th>Cant. Rsv</th>
-              <th>Entrada..</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of ObjCondicionesTecnicas">
-              <td>{{item.CodigoVerificar}}</td>
-              <td>{{item.descripcion}}</td>
-              <td>{{item.ModeloVerificar}}</td>
-              <td>{{item.FabricanteVerificar}}</td>
-              <td>{{item.ClaseSIAVerificar}}</td>
-              <td>{{item.CantidadVerificar}}</td>
-              <td><i class="material-icons">
-                  insert_drive_file
-                </i></td>
-              <td>{{item.ExistenciasVerificar}}</td>
-              <td>{{item.NumReservaVerificar}}</td>
-              <td>{{item.CantidadReservaVerificar}}</td>
-              <td>{{item.EntradaSolicitanteVerificar}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-  </div>
-  <hr />
   </accordion-group>
   </accordion>
   </div>
