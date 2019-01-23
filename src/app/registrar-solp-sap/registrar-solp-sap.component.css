@@ -7,3 +7,7 @@
     :host>>>.tooltip.top .tooltip-arrow {
     border-top-color: #ff2626;
     }
+
+    .btn {
+        margin-right: 15px;
+    }

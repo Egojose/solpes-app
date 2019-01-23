@@ -12,6 +12,7 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { verificarMaterialCT } from "./verificarMaterialCT";
 import { MatTableDataSource, MatPaginator} from '@angular/material';
+import { Subcategoria } from '../dominio/subcategoria';
 
 @Component({
   selector: "app-verificar-material",
@@ -148,7 +149,7 @@ export class VerificarMaterialComponent implements OnInit {
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.subCategoria;
+        this.subCategoria = solicitud.Subcategoria;
         this.comprador = solicitud.Comprador.Title;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
@@ -248,6 +249,15 @@ export class VerificarMaterialComponent implements OnInit {
     );
     this.verificarMaterialFormulario.controls["cantidadVerificar"].setValue(
       element.cantidad
+    );
+    this.verificarMaterialFormulario.controls["existenciasVerificar"].setValue(
+      element.existenciasverificar
+    );
+    this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(
+      element.numreservaverificar
+    );
+    this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(
+      element.cantidadreservaverificar
     );
     this.modalRef = this.modalServicio.show(
       template,
