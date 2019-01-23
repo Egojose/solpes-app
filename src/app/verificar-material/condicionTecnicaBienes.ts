@@ -22,7 +22,9 @@ export class CondicionesTecnicasBienes {
         public existenciasverificar?: number,
         public numreservaverificar?: string,
         public cantidadreservaverificar?: number,
-        public adjunto?: any) { }
+        public adjunto?: any,
+        public archivoAdjunto?: File,
+        public rutaAdjunto?: string,) { }
 
     public static fromJson(element: any) {
         return new CondicionesTecnicasBienes(element.Id, 

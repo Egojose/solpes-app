@@ -171,4 +171,8 @@ td.mat-cell,td.mat-footer-cell, th.mat-header-cell {
     padding: 20px !important;
 }
 
+.eliminar-adjunto{
+    cursor: pointer;
+}
+
 

@@ -1,19 +1,139 @@
 <div class="loading" *ngIf='loading'>
+<<<<<<< HEAD
   <img class="img-logo" src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/aplicacion/loading/loading.gif" alt="loading...">
+=======
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+    <b>PROCESANDO...</b>
+>>>>>>> master
 </div>
+<br>
+<div class="row espacio">
+    <div class="col-md-12">
+        <h4><strong>Número SOLP SAP: </strong>{{NumSolSAP}}</h4>
+</div>
+</div>
+<br>
+<accordion *ngIf="CTB === true">
+    <accordion-group heading="Condiones tecnicas bienes">
+        <div class="row" id="TablaVerificar">
+            <div class="col-md-12">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <ng-container matColumnDef="codigo">
+                        <th mat-header-cell *matHeaderCellDef> Código </th>
+                        <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                        <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="modelo">
+                        <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fabricante">
+                        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cantidad">
+                        <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+                        <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="valorEstimado">
+                        <th mat-header-cell *matHeaderCellDef> Valor</th>
+                        <td mat-cell *matCellDef="let element"> {{element.valorEstimado}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="moneda">
+                        <th mat-header-cell *matHeaderCellDef> Moneda</th>
+                        <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="adjunto">
+                        <th mat-header-cell *matHeaderCellDef> Adjunto</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.adjunto !== ''">
+                                <a href="{{element.adjunto}}">
+                                    <button class="btn btn-success">Ver</button>
+                                </a>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </accordion-group>
+</accordion>
+<br>
+<accordion *ngIf="CTS === true">
+    <accordion-group heading="Condiones tecnicas servicios">
+        <div class="row" id="TablaVerificar">
+            <div class="col-md-12">
+                <table mat-table [dataSource]="dataSourceTS" class="mat-elevation-z8">
+                    <ng-container matColumnDef="codigo">
+                        <th mat-header-cell *matHeaderCellDef> Código </th>
+                        <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                        <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="modelo">
+                        <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fabricante">
+                        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cantidad">
+                        <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+                        <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="valorEstimado">
+                        <th mat-header-cell *matHeaderCellDef> Valor</th>
+                        <td mat-cell *matCellDef="let element"> {{element.valorEstimado}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="moneda">
+                        <th mat-header-cell *matHeaderCellDef> Moneda</th>
+                        <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="adjunto">
+                        <th mat-header-cell *matHeaderCellDef> Adjunto</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.adjunto !== ''">
+                                <a href="{{element.adjunto}}">
+                                    <button class="btn btn-success">Ver</button>
+                                </a>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsTS"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsTS;"></tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </accordion-group>
+</accordion>
 <br>
 <form autocomplete="off" [formGroup]="ContratosForm" (ngSubmit)="onSubmit()">
     <div class="row">
         <div class="form-group col-md-6">
             <label for="inputEmail4">Tipo de contrato <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="TipoContrato" [ngClass]="{ 'is-invalid': submitted && f.TipoContrato.errors }">
-                        <option value="" [disabled]="Guardado === true"></option>
-                        <option value="Pedidos Directos - Contratos" [disabled]="Guardado === true">Pedidos Directos - Contratos</option>
-                        <option value="Ordenes a Marco" [disabled]="Guardado === true">Ordenes a Marco</option>
-                        <option value="Contrato" [disabled]="Guardado === true">Contrato</option>
-                        <option value="Pedidos de Emergencia" [disabled]="Guardado === true">Pedidos de Emergencia</option>
-                        <!-- <option *ngFor="let item of Tipo" [ngValue]="item">{{item.descripcion}}</option> -->
-                    </select>
+                <option value="" [disabled]="Guardado === true"></option>
+                <option value="Pedidos Directos - Contratos" [disabled]="Guardado === true">Pedidos Directos -
+                    Contratos</option>
+                <option value="Ordenes a Marco" [disabled]="Guardado === true">Ordenes a Marco</option>
+                <option value="Contrato" [disabled]="Guardado === true">Contrato</option>
+                <option value="Pedidos de Emergencia" [disabled]="Guardado === true">Pedidos de Emergencia</option>
+                <!-- <option *ngFor="let item of Tipo" [ngValue]="item">{{item.descripcion}}</option> -->
+            </select>
             <div *ngIf="submitted && f.TipoContrato.errors" class="invalid-feedback">
                 <div *ngIf="f.TipoContrato.errors.required">Es requerido</div>
             </div>
@@ -40,11 +160,11 @@
         <div class="form-group col-md-6">
             <label for="inputEmail4">Requiere N° de Orden Inicio <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="OrdenInicio" [ngClass]="{ 'is-invalid': submitted && f.OrdenInicio.errors }">
-              <option value="" [disabled]="Guardado === true"></option>
-              <option value="Si" [disabled]="Guardado === true">Si</option>
-              <option value="No" [disabled]="Guardado === true">No</option>
-              <option value="N/A" [disabled]="Guardado === true">"N/A</option>
-          </select>
+                <option value="" [disabled]="Guardado === true"></option>
+                <option value="Si" [disabled]="Guardado === true">Si</option>
+                <option value="No" [disabled]="Guardado === true">No</option>
+                <option value="N/A" [disabled]="Guardado === true">"N/A</option>
+            </select>
             <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
                 <div *ngIf="f.OrdenInicio.errors.required">Es requerido</div>
             </div>
@@ -63,10 +183,10 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Contrato de Obra o Conexo <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="ContratoObraConexo" [ngClass]="{ 'is-invalid': submitted && f.ContratoObraConexo.errors }" [disabled]="Guardado === true">
-              <option value="" [disabled]="Guardado === true"></option>
-              <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
-              <option [ngValue]="false" [disabled]="Guardado === true">No</option>
-          </select>
+                <option value="" [disabled]="Guardado === true"></option>
+                <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+                <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+            </select>
             <div *ngIf="submitted && f.ContratoObraConexo.errors" class="invalid-feedback">
                 <div *ngIf="f.ContratoObraConexo.errors.required">Es requerido</div>
             </div>
@@ -74,11 +194,11 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Moneda del contrato <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="MonedaContrato" [ngClass]="{ 'is-invalid': submitted && f.MonedaContrato.errors }">
-            <option value="" [disabled]="Guardado === true"></option>
-            <option value="COP" [disabled]="Guardado === true">COP</option>
-            <option value="USD" [disabled]="Guardado === true">USD</option>
-            <option value="EURO" [disabled]="Guardado === true">EURO</option>
-        </select>
+                <option value="" [disabled]="Guardado === true"></option>
+                <option value="COP" [disabled]="Guardado === true">COP</option>
+                <option value="USD" [disabled]="Guardado === true">USD</option>
+                <option value="EURO" [disabled]="Guardado === true">EURO</option>
+            </select>
             <div *ngIf="submitted && f.MonedaContrato.errors" class="invalid-feedback">
                 <div *ngIf="f.MonedaContrato.errors.required">Es requerido</div>
             </div>
@@ -120,15 +240,17 @@
     </div>
     <div class="row">
         <div class="form-group col-md-4">
-            <label for="inputEmail4">Descripción calculo del ahorro generado en el contrato <span class="camposRequeridos">*</span></label>
+            <label for="inputEmail4">Descripción cálculo del ahorro generado en el contrato <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="DescripcionCalculo" [ngClass]="{ 'is-invalid': submitted && f.DescripcionCalculo.errors }">
-                    <option value=""></option>
-                    <option value="Rondas de negociación" [disabled]="Guardado === true">Rondas de negociación</option>
-                    <option value="Presupuesto del área" [disabled]="Guardado === true">Presupuesto del área</option>
-                    <option value="Frente a valor que se venia pagandp en contrato anterior" [disabled]="Guardado === true">Frente a valor que se venia pagandp en contrato anterior</option>
-                    <option value="Optimización de alcance o proceso" [disabled]="Guardado === true">Optimización de alcance o proceso</option>
-                    <option value="No aplica" [disabled]="Guardado === true">No aplica</option>
-                </select>
+                <option value=""></option>
+                <option value="Rondas de negociación" [disabled]="Guardado === true">Rondas de negociación</option>
+                <option value="Presupuesto del área" [disabled]="Guardado === true">Presupuesto del área</option>
+                <option value="Frente a valor que se venia pagandp en contrato anterior" [disabled]="Guardado === true">Frente
+                    a valor que se venia pagandp en contrato anterior</option>
+                <option value="Optimización de alcance o proceso" [disabled]="Guardado === true">Optimización de
+                    alcance o proceso</option>
+                <option value="No aplica" [disabled]="Guardado === true">No aplica</option>
+            </select>
             <div *ngIf="submitted && f.DescripcionCalculo.errors" class="invalid-feedback">
                 <div *ngIf="f.DescripcionCalculo.errors.required">Es requerido</div>
             </div>
@@ -144,10 +266,10 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Requiere SST <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="RequiereSST" [ngClass]="{ 'is-invalid': submitted && f.RequiereSST.errors }">
-                        <option value=""></option>
-                        <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
-                        <option [ngValue]="false" [disabled]="Guardado === true">No</option>
-                    </select>
+                <option value=""></option>
+                <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+                <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+            </select>
             <div *ngIf="submitted && f.RequiereSST.errors" class="invalid-feedback">
                 <div *ngIf="f.RequiereSST.errors.required">Es requerido</div>
             </div>
@@ -157,10 +279,10 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Requiere póliza <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="RequierePoliza" [ngClass]="{ 'is-invalid': submitted && f.RequierePoliza.errors }">
-                    <option value=""></option>
-                    <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
-                    <option [ngValue]="false" [disabled]="Guardado === true">No</option>
-                </select>
+                <option value=""></option>
+                <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+                <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+            </select>
             <div *ngIf="submitted && f.RequierePoliza.errors" class="invalid-feedback">
                 <div *ngIf="f.RequierePoliza.errors.required">Es requerido</div>
             </div>
@@ -168,7 +290,8 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Acreedor <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.Acreedor.errors }" [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">NIT o documento de indentificación del proveedor, sin dígito de verificación</small>
+            <small id="emailHelp" class="form-text text-muted">NIT o documento de indentificación del proveedor, sin
+                dígito de verificación</small>
             <div *ngIf="submitted && f.Acreedor.errors" class="invalid-feedback">
                 <div *ngIf="f.Acreedor.errors.required">Es requerido</div>
             </div>
@@ -176,7 +299,8 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Dígito de verificación <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.DigitoVerificacion.errors }" [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">Dígito de verificación del NIT o documento de identificación del proveedor</small>
+            <small id="emailHelp" class="form-text text-muted">Dígito de verificación del NIT o documento de
+                identificación del proveedor</small>
             <div *ngIf="submitted && f.DigitoVerificacion.errors" class="invalid-feedback">
                 <div *ngIf="f.DigitoVerificacion.errors.required">Es requerido</div>
             </div>
@@ -195,12 +319,12 @@
             <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }" [readonly]="Guardado === true">
             <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
                 <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
-                <div *ngIf="f.EmailProveedor.errors.email">El E-mail no es inválido</div>
+                <div *ngIf="f.EmailProveedor.errors.email">El E-mail es inválido</div>
             </div>
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Solicitante <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="Solicitante" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Solicitante.errors }" [readonly]="Guardado === true">
+            <input type="text" formControlName="Solicitante" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Solicitante.errors }" [readonly]="true">
             <div *ngIf="submitted && f.Solicitante.errors" class="invalid-feedback">
                 <div *ngIf="f.Solicitante.errors.required">Es requerido</div>
             </div>
@@ -232,10 +356,126 @@
 
     </div>
     <div class="row">
-        <button type="submit" class="btn btn-primary" [hidden]="Guardado === true" style="margin-right: 1%;">Guardar contrato</button>
+        <button type="submit" class="btn btn-primary" [hidden]="Guardado === true" style="margin-right: 1%;">Guardar
+            contrato</button>
         <button type="button" class="btn btn-primary" (click)="Salir()">Salir</button>
     </div>
 </form>
+<br>
+<accordion>
+    <accordion-group heading="Información adicional">
+        <div class="row espacio">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Fecha deseada de entrega</strong>
+                    </div>
+                    <div class="card-body">
+                        {{fechaDeseada | date:'dd/MM/yyyy'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Información de la solicitud </strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row espacio">
+                            <div class="col-md-12">
+                                <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row espacio">
+                            <div class="col-md-4">
+                                <strong>Solicitante: </strong>{{solicitante}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Empresa: </strong>{{empresa}}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <strong>País: </strong>{{pais}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Categoría: </strong>{{categoria}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Sub-Categoría: </strong>{{subCategoria}}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <strong>Comprador: </strong>{{comprador}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Código ariba: </strong>{{codAriba}}
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{justificacion}}</textarea>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="OrdenEstadistica===true">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <h4><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h4>
+                    </div>
+                    </div>
+                    </div>
+
+                    <hr>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
+                                <div class="table-wrapper-scroll-y">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Campo</th>
+                                                <th scope="col">Descripción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of condicionesContractuales">
+                                                <td>{{item.campo}}</td>
+                                                <td>{{item.descripcion}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    </accordion-group>
+</accordion>
 <footer class="footerPagina"></footer>
 
 <!-- <div class="form-group col-md-4">

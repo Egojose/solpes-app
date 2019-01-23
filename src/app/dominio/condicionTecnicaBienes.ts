@@ -16,7 +16,9 @@ export class CondicionTecnicaBienes {
         public id?: number) { }
 
     public static fromJson(element: any) {
-        return new CondicionTecnicaBienes(element.Title,
+        return new CondicionTecnicaBienes(
+            element.ID,
+            element.Title,
             element.Solicitud,
             element.Codigo,
             element.Descripcion,
@@ -25,6 +27,8 @@ export class CondicionTecnicaBienes {
             element.Cantidad,
             element.ValorEstimado,
             element.Comentarios,
+            element.AttachmentFiles,
+            element.AttachmentFiles,
             element.TipoMoneda,
             element.ID);
     }

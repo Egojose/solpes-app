@@ -45,6 +45,7 @@ export class MisSolicitudesComponent implements OnInit {
   }
 
   ObtenerMisSolicitudes() {
+    
     let idUsuario = this.usuarioActual.id;
     this.servicio.obtenerMisSolicitudes(idUsuario).subscribe(
       (respuesta) => {

@@ -27,7 +27,8 @@ export class Solicitud {
         public id?: number) { }
 
     public static fromJson(element: any) {
-        return new Solicitud(element.Title, 
+        return new Solicitud(
+            element.Title, 
             element.TipoSolicitud, 
             element.CM, 
             element.Solicitante, 
