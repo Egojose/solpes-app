@@ -272,7 +272,11 @@
                                         <td>{{item.Fabricante}}</td>
                                         <td>{{item.Cantidad}}</td>
                                         <td>{{item.ValorEstimado}}</td>
-                                        <td></td>
+                                        <td>
+                                            <a *ngIf="item.RutaArchivo !== 'false'" href="{{item.RutaArchivo}}">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
                                         <td>{{item.Comentarios}}</td>
                                     </tr>
                                 </tbody>
@@ -303,7 +307,11 @@
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.Cantidad}}</td>
                                         <td>{{item.ValorEstimado}}</td>
-                                        <td></td>
+                                        <td>
+                                            <a *ngIf="item.RutaArchivo !== 'false'" href="{{item.RutaArchivo}}">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
                                         <td>{{item.Comentario}}</td>
                                     </tr>
                                 </tbody>

@@ -7,12 +7,13 @@ export class responsableProceso {
         public porRegistrarSolp: number,
         public porConfirmarEntregaBienes: number,
         public porRegistrarSapServicios: number,
-        public porRegistrarSapBienes: number
+        public porRegistrarSapBienes: number,
+        public porRegistrarActivos: number,
     ) {
 
     }
     public static fromJson(element: any) {
-        return new responsableProceso(element.Title, element.PaisId,element.porVerificarMaterialId, element.porRegistrarSolpSAPId, element.porConfirmarEntregaBienesId,element.porRegistrarSapServiciosId,element.porRegistrarSapBienesId );
+        return new responsableProceso(element.Title, element.PaisId,element.porVerificarMaterialId, element.porRegistrarSolpSAPId, element.porConfirmarEntregaBienesId,element.porRegistrarSapServiciosId,element.porRegistrarSapBienesId, element.porRegistrarActivosId );
     }
 
     public static fromJsonList(elements: any) {
