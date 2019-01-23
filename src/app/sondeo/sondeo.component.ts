@@ -110,6 +110,7 @@ export class SondeoComponent implements OnInit {
             this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             this.ObjCondicionesTecnicasServiciosGuardar = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             this.loading = false;
+            console.log(this.ObjCondicionesTecnicasServiciosGuardar);
           }
         )
       }
