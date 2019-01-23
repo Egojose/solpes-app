@@ -91,18 +91,25 @@ export class VerificarMaterialComponent implements OnInit {
    
   GuardarComentario() {
     let coment;
-    let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp; 
     if (this.ComentarioVerificarMaterial === undefined || this.ComentarioVerificarMaterial === null) {
       this.mostrarError("Ingrese un comentario!");
     } else {
       let comentarios = this.ComentarioVerificarMaterial;
-
+      if(this.SwtichOrdenEstadistica === true){
+        let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarActivos; 
+      coment = {
+        Estado: 'Por registrar activos',
+        ResponsableId: ResponsableProcesoId,
+        ComentarioVerificarMaterial: comentarios
+      }
+    }else{
+      let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp; 
       coment = {
         Estado: 'Por registrar solp sap',
         ResponsableId: ResponsableProcesoId,
         ComentarioVerificarMaterial: comentarios
       }
-
+    }
       let cantidad = this.ObjCTVerificar.filter(x => x.MaterialVerificado === true).length;
       let cantidadMateriales = this.ObjCTVerificar.length;
       if (cantidad === cantidadMateriales) {

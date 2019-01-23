@@ -27,6 +27,7 @@ import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap
 import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.component';
 import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.component';
 import { EditarSolicitudComponent } from './editar-solicitud/editar-solicitud.component';
+import { RegistroActivosComponent } from './registro-activos/registro-activos.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { EditarSolicitudComponent } from './editar-solicitud/editar-solicitud.co
     RegistrarEntradasSapServiciosComponent,
     MisPendientesComponent,
     VerSolicitudTabComponent,
-    EditarSolicitudComponent
+    EditarSolicitudComponent,
+    RegistroActivosComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +90,8 @@ import { EditarSolicitudComponent } from './editar-solicitud/editar-solicitud.co
       {path:'registrar-solp-sap', component:RegistrarSolpSapComponent},
       {path:'sondeo', component:SondeoComponent},
       {path:'verificar-material', component:VerificarMaterialComponent},
-      { path: 'ver-solicitud-tab', component: VerSolicitudTabComponent }
+      { path: 'ver-solicitud-tab', component: VerSolicitudTabComponent },
+      {path:'registro-activos', component:RegistroActivosComponent}
     ])
   ],
   providers: [SPServicio, BsModalService, ModalBackdropComponent],
