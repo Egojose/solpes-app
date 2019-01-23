@@ -1,6 +1,5 @@
 <div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
-        alt="loading...">
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
 </div>
 <br>
 <div>
@@ -72,11 +71,20 @@
                 </div>
             </div>
             <br>
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-            <p id="exampleFormControlTextarea1">{{alcance}}</p>
-            <br>
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Justificación</strong></label>
-            <p id="exampleFormControlTextarea1">{{justificacion}}</p>
+            <div class="row ">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
+                        <p class="col-sm-3" id="exampleFormControlTextarea1">{{alcance}}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Justificación</strong></label>
+                        <p class="col-sm-3" id="exampleFormControlTextarea1">{{justificacion}}</p>
+                    </div>
+                </div>
+            </div>
             <br>
 
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
@@ -154,12 +162,12 @@
                             <td>{{item.cantidad}}</td>
                             <td>{{item.valorEstimado}}</td>
                             <td>
-                                    <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
-                                        <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank">Adjunto</a>
-                                    </div>
-                                    <ng-template #sinAdjuntoCTS>
-                                    </ng-template>
-                                </td>
+                                <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
+                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank">Adjunto</a>
+                                </div>
+                                <ng-template #sinAdjuntoCTS>
+                                </ng-template>
+                            </td>
                             <td>{{item.comentarios}}</td>
                         </tr>
                     </tbody>
