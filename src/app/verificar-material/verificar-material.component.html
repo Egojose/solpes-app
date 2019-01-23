@@ -67,7 +67,7 @@
     </div>
 </div>
 <div class="row" *ngIf="SwtichOrdenEstadistica===true">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
         <label for="adjunto"> <strong> Adjuntar solicitud creación de activos </strong></label><span class="asterisco-obligatorio">*</span>
         <input id="" name="" formControlName="" type="file" class="form-control" />
         <br>
@@ -161,14 +161,13 @@
                                 <strong>Código ariba: </strong>{{codAriba}}
                             </div>
                             <div class="col-md-4">
-                                <strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <br>
         <div class="row ">
             <div class="col-md-6">
                 <div class="form-group">
@@ -184,6 +183,18 @@
             </div>
         </div>
         <hr>
+        <ng-container *ngIf="OrdenEstadistica === true; else mostrarOrdenEstadistica">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <h4><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h4>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #mostrarOrdenEstadistica>
+
+        </ng-template>
+
+
         <div class="form-group row">
             <div class="col-md-12">
                 <div class="form-group">
