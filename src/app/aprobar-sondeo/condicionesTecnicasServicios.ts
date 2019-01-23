@@ -16,13 +16,20 @@ export class CondicionTecnicaServicios{
         public Comentario?: string) { }
 
     public static fromJson(element: any) {
-        let RutaArchivo;
-        if (element.Attachments === true) {
-            RutaArchivo = element.AttachmentFiles.results[0].ServerRelativeUrl
-        }
-        else {
-            RutaArchivo = "false"
-        }
+        let RutaArchivo = "";
+        if (element.Attachments ===true) {
+           let ObjArchivos = element.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="sondeoServicios") {
+                        RutaArchivo=element.ServerRelativeUrl;
+                   }                
+               }
+           });
+        }       
         return new CondicionTecnicaServicios(
             element.Title,
             element.SolicitudId,
