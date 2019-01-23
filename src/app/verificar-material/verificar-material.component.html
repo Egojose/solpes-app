@@ -66,23 +66,12 @@
         <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
     </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="SwtichOrdenEstadistica===true">
     <div class="form-group col-md-4">
-        <label for="adjunto">Adjuntar solicitud creación de activos</label><span class="asterisco-obligatorio">*</span>
-        <input id="" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event)" />
+        <label for="adjunto"> <strong> Adjuntar solicitud creación de activos </strong></label><span class="asterisco-obligatorio">*</span>
+        <input id="" name="" formControlName="" type="file" class="form-control" />
         <br>
     </div>
-    <!-- <div *ngFor="let element of ObjCondicionesTecnicas">
-        <div *ngIf="element.cantidadreservaverificar > 0; else sinAdjuntoCA">
-            <div class="form-group col-md-4">
-                <label for="adjunto">Adjuntar solicitud creación de activos</label><span class="asterisco-obligatorio">*</span>
-                <input id="" name="adjuntoCA" formControlName="adjuntoCA" type="file" class="form-control" />
-                <br>
-            </div>
-        </div>
-    </div> -->
-    <ng-template #sinAdjuntoCA>
-    </ng-template>
 </div>
 <div class="row">
     <div class="form-group col-md-12">
@@ -247,7 +236,7 @@
                                 <td>{{item.valorEstimado}}</td>
                                 <td>
                                     <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTB">
-                                        <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary"> Ver</button></a>
+                                        <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary"> Ver archivo</button></a>
                                     </div>
                                     <ng-template #sinAdjuntoCTB>
                                     </ng-template>
@@ -285,7 +274,7 @@
                                     <td>{{item.valorEstimado}}</td>
                                     <td>
                                         <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
-                                            <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary"> Ver</button></a>
+                                            <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary"> Ver archivo</button></a>
                                         </div>
                                         <ng-template #sinAdjuntoCTS>
                                         </ng-template>
