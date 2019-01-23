@@ -145,6 +145,25 @@
         </div>
       </div>
     </div>
+    <hr>
+    <div class="form-group row">
+      <div class="col-md-6">
+        <label for="CompraEstadística">Compra orden de estadística</label>
+        <mat-radio-group class="example-radio-group" formControlName="compraOrdenEstadistica">
+            <mat-radio-button class="example-radio-button" *ngFor="let ordencompraEstadistica of ordencomprasEstadistica"
+              [value]="ordencompraEstadistica" (change)="mostrarNumeroOrdenEstadistica(ordencompraEstadistica)">
+              {{ordencompraEstadistica}}
+            </mat-radio-button>
+          </mat-radio-group>
+      </div>
+      <div class="col-md-6">
+        <div class="numero-orden-estadistica" [hidden]="!emptyNumeroOrdenEstadistica">
+            <label for="numeroOrdenEstadistica">Número de orden estadística</label>
+            <input id="numeroOrdenEstadistica" name="numeroOrdenEstadistica" formControlName="numeroOrdenEstadistica" class="form-control" />
+        </div>
+      </div>
+    </div>
+
     <div class="form-group row">
       <div class="col-md-12">
         <label for="condiciones-tecnicas-bienes">Condiciones técnicas bienes</label>
