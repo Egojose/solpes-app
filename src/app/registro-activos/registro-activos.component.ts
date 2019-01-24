@@ -56,14 +56,14 @@ export class RegistroActivosComponent implements OnInit {
         ResponsableId: ResponsableProcesoId,
         ComentarioVerificarMaterial: comentarios
       }
-      this.servicio.guardarRegistroActivos(this.IdSolicitud, coment)
+     /* this.servicio.guardarRegistroActivos(this.IdSolicitud, coment)
         .then((resultado: ItemAddResult) => {
           this.MostrarExitoso("Registro de activos realizado correctamente");
           this.router.navigate(["/mis-pendientes"]);
         })
         .catch(error => {
           console.log(error);
-        });
+        });*/
     }
   }
   MostrarExitoso(mensaje: string) {
