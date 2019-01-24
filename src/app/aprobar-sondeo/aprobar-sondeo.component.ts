@@ -151,7 +151,7 @@ export class AprobarSondeoComponent implements OnInit {
         }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           let Responsable = this.ObResProceso[0].porRegistrarSolp;
           ObjSondeo = {
-            TipoSolicitud: "CM",
+            TipoSolicitud: "OCM",
             ResponsableId: Responsable,
             Estado: "Por registrar solp sap",
             ResultadoSondeo: "Convertir en CM",
