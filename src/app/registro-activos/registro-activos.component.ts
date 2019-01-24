@@ -7,6 +7,7 @@ import { ItemAddResult } from "sp-pnp-js";
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { responsableProceso } from '../dominio/responsableProceso';
+import { Solicitud } from '../dominio/solicitud';
 
 @Component({
   selector: "app-registro-activos",
@@ -25,7 +26,6 @@ export class RegistroActivosComponent implements OnInit {
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
   dataSource;
   loading: boolean;
-  idSolicitudParameter: string;
   IdSolicitud: any;
   displayedColumns: string[] = [
     "codigo",
@@ -37,15 +37,31 @@ export class RegistroActivosComponent implements OnInit {
     "moneda",
     "adjunto"
   ];
+  IdSolicitudParms: string;
+  RutaArchivo: string;
+  paisId: any;
+  ArchivoAdjunto: any;
   constructor(
     public toastr: ToastrManager,
     private servicio: SPServicio,
     private router: Router
   ) {
     this.loading = false;
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
   }
+
+  adjuntarArchivoVM(event) {
+    let archivoAdjunto = event.target.files[0];
+    if (archivoAdjunto != null) {
+      this.ArchivoAdjunto = archivoAdjunto;
+    } else {
+      this.ArchivoAdjunto = null;
+    }
+  }
+
   GuardarActivos() {
     let coment;
+<<<<<<< HEAD
     if (this.ComentarioRegistroActivos === undefined || this.ComentarioRegistroActivos === null) {
       this.mostrarError("Ingrese un comentario!");
     } else {
@@ -64,7 +80,38 @@ export class RegistroActivosComponent implements OnInit {
         .catch(error => {
           console.log(error);
         });*/
+=======
+    let comentarios = this.ComentarioRegistroActivos;
+    let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
+    coment = {
+      Estado: 'Por registrar solp sap',
+      ResponsableId: ResponsableProcesoId,
+      ComentarioRegistroActivos: comentarios
+>>>>>>> 85361d21b9daeb15ba7e26fbbb4e9661c09e69d2
     }
+    this.servicio.guardarComentario(this.IdSolicitud, coment)
+      .then((resultado: ItemAddResult) => {        
+        let nombreArchivo = "RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
+        this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(
+          (respuesta) => {
+            this.MostrarExitoso("Archivo guardado correctamente");
+            this.router.navigate(["/mis-pendientes"]);
+          }
+        ).catch(
+          (error) => {
+            this.mostrarError("Error al guardar el archivo");
+          }
+        );
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  generarllaveSoporte(): string {
+    var fecha = new Date();
+    var valorprimitivo = fecha.valueOf().toString();
+    return valorprimitivo;
   }
   MostrarExitoso(mensaje: string) {
     this.toastr.successToastr(mensaje, "Confirmación!");
@@ -87,8 +134,30 @@ export class RegistroActivosComponent implements OnInit {
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
       (Usuarios) => {
         this.ObjUsuarios = Usuarios;
-        this.servicio.ObtenerSolicitudBienesServicios(this.idSolicitudParameter).subscribe(
+        this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
           (respuesta) => {
+            this.IdSolicitud = respuesta.Id;
+            this.paisId = respuesta.Pais.Id;
+            if (respuesta.Attachments === true) {
+              let ObjArchivos = respuesta.AttachmentFiles.results;
+
+              ObjArchivos.forEach(element => {
+                let objSplit = element.FileName.split("-");
+                if (objSplit.length > 0) {
+                  let TipoArchivo = objSplit[0]
+                  if (TipoArchivo === "ActivoVM") {
+                    this.RutaArchivo = element.ServerRelativeUrl;
+                  }
+                }
+              });
+            }
+            this.servicio
+              .obtenerResponsableProcesos(this.paisId)
+              .subscribe(RespuestaResponsableProceso => {
+                this.ObjResponsableProceso = responsableProceso.fromJsonList(
+                  RespuestaResponsableProceso
+                );
+              });
             this.servicio
               .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
               .subscribe(RespuestaCondiciones => {

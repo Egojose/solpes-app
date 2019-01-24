@@ -66,18 +66,23 @@
 </mat-accordion>
 <br>
 <div class="col-md-12">
-    <p>De acuerdo a los materiales verificados, modifique los activos fijos cargados en el siguiente adjunto.</p>
+    <p>De acuerdo a los materiales verificados, modifique los activos fijos cargados en el siguiente adjunto.
+        <a href="{{RutaArchivo}}">
+            <button type="button" class="btn btn-primary">Descargar aquí</button>
+        </a>
+    </p>
+
 </div>
 <div class="form-group col-md-6">
     <label for="adjunto"> <strong> Solicitud de activos </strong></label><span class="asterisco-obligatorio">*</span>
-    <input id="adjuntoSolicituAF" name="adjuntoSolicituAFCompleto" formControlName="adjuntoSolicituAFCompleto" type="file" class="form-control" />
+    <input id="adjuntoSolicituAF" name="adjuntoSolicituAFCompleto" type="file" class="form-control" (change)="adjuntarArchivoVM($event)" />
     <br>
 </div>
 <div class="row">
     <div class="form-group col-md-12">
         <label for="textarea" class="control-label"><b>Comentarios:</b></label>
-        <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
-        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioRegistroActivos" required></textarea>        </div>
+        <textarea name="" id="textarea" class="form-control" rows="2" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioRegistroActivos"></textarea>
+    </div>
 </div>
 
 <div class="col-md-12 row">
