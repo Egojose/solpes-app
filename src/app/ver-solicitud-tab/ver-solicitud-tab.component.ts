@@ -24,7 +24,9 @@ export class VerSolicitudTabComponent implements OnInit {
   tipoSolicitud: string;
   numOrdenEstadistica: string;
   solicitante: string;
+  comentarioregistroactivos: string;
   ordenadorGasto: string;
+  OrdenEstadistica: boolean;
   empresa: string;
   loading: boolean;
   pais: string;
@@ -76,6 +78,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.comentariorevisionsondeo = solicitud.ComentarioRevisionSondeo;
         this.justificacion = solicitud.Justificacion;
         this.comentariosolicitudsondeo = solicitud.ComentarioSondeo;
+        this.comentarioregistroactivos = solicitud.ComentarioRegistroActivos;
         this.comentarioverificarmaterial = solicitud.ComentarioVerificarMaterial;
         this.estadoRegistrarSAP = solicitud.EstadoRegistrarSAP;
         this.numSolSAP = solicitud.NumSolSAP;

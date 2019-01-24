@@ -34,7 +34,7 @@ export class resultadoCondicionesTB {
             element.Modelo, 
             element.Fabricante,             
             element.CantidadVerificar, 
-            element.ValorEstimado, 
+            element.PrecioSondeo, 
             element.TipoMoneda,
             RutaArchivo);
     }
