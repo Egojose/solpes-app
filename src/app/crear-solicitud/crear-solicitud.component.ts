@@ -780,7 +780,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.condicionTB.modelo = modelo;
       this.condicionTB.fabricante = fabricante;
       this.condicionTB.cantidad = cantidad;
-      this.condicionTB.valorEstimado = valorEstimado;
+      this.condicionTB.valorEstimado = valorEstimado.toString();
       this.condicionTB.tipoMoneda = tipoMoneda;
       this.condicionTB.comentarios = comentarios;
       if (adjunto != null) {
@@ -798,7 +798,8 @@ export class CrearSolicitudComponent implements OnInit {
                 this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
                 this.modalRef.hide();
                 this.condicionTB = null;
-                this.loading = false; 
+                this.loading = false;
+                this.ctbSubmitted = false;
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                 this.loading = false;
@@ -821,6 +822,7 @@ export class CrearSolicitudComponent implements OnInit {
             this.modalRef.hide();
             this.condicionTB = null;
             this.loading = false;
+            this.ctbSubmitted = false;
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');
             this.loading = false;
@@ -840,7 +842,7 @@ export class CrearSolicitudComponent implements OnInit {
       let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
       let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -860,6 +862,7 @@ export class CrearSolicitudComponent implements OnInit {
             this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
             this.modalRef.hide();
             this.loading = false;
+            this.ctbSubmitted = false;
           }, err => {
             this.mostrarError('Error en la actualización de la condición técnica de bienes');
             this.loading = false;
@@ -875,7 +878,7 @@ export class CrearSolicitudComponent implements OnInit {
         this.condicionTB.modelo = modelo;
         this.condicionTB.fabricante = fabricante;
         this.condicionTB.cantidad = cantidad;
-        this.condicionTB.valorEstimado = valorEstimado;
+        this.condicionTB.valorEstimado = valorEstimado.toString();
         this.condicionTB.comentarios = comentarios;
         this.condicionTB.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
@@ -904,6 +907,7 @@ export class CrearSolicitudComponent implements OnInit {
                   this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
                   this.modalRef.hide();
                   this.loading = false;
+                  this.ctbSubmitted = false;
                 }, err => {
                   this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                   this.loading = false;
@@ -940,6 +944,7 @@ export class CrearSolicitudComponent implements OnInit {
                       this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
                       this.modalRef.hide();
                       this.loading = false;
+                      this.ctbSubmitted = false;
                     }, err => {
                       this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                       this.loading = false;
@@ -972,7 +977,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["modeloCTB"].setValue('');
     this.ctbFormulario.controls["fabricanteCTB"].setValue('');
     this.ctbFormulario.controls["cantidadCTB"].setValue('');
-    this.ctbFormulario.controls["valorEstimadoCTB"].setValue('');
+    this.ctbFormulario.controls["valorEstimadoCTB"].setValue(0);
     this.ctbFormulario.controls["tipoMonedaCTB"].setValue('');
     this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
     this.ctbFormulario.controls["comentariosCTB"].setValue('');
@@ -998,7 +1003,7 @@ export class CrearSolicitudComponent implements OnInit {
       let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
           (item: ItemAddResult) => {
             this.condicionTS.id = item.data.Id;
@@ -1009,6 +1014,7 @@ export class CrearSolicitudComponent implements OnInit {
             this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
             this.modalRef.hide();
             this.loading = false;
+            this.ctsSubmitted = false;
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');
             this.loading = false;
@@ -1021,7 +1027,7 @@ export class CrearSolicitudComponent implements OnInit {
         this.condicionTS.codigo = codigo;
         this.condicionTS.descripcion = descripcion;
         this.condicionTS.cantidad = cantidad;
-        this.condicionTS.valorEstimado = valorEstimado;
+        this.condicionTS.valorEstimado = valorEstimado.toString();
         this.condicionTS.comentarios = comentarios;
         this.condicionTS.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
@@ -1039,6 +1045,7 @@ export class CrearSolicitudComponent implements OnInit {
                 this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
                 this.modalRef.hide();
                 this.loading = false;
+                this.ctsSubmitted = false;
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
                 this.loading = false;
@@ -1061,7 +1068,7 @@ export class CrearSolicitudComponent implements OnInit {
       let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
           (item: ItemAddResult) => {
@@ -1079,6 +1086,7 @@ export class CrearSolicitudComponent implements OnInit {
             this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
             this.modalRef.hide();
             this.loading = false;
+            this.ctsSubmitted = false;
           }, err => {
             this.mostrarError('Error en la actualización de la condición técnica de servicios');
             this.loading = false;
@@ -1092,7 +1100,7 @@ export class CrearSolicitudComponent implements OnInit {
         this.condicionTS.codigo = codigo;
         this.condicionTS.descripcion = descripcion;
         this.condicionTS.cantidad = cantidad;
-        this.condicionTS.valorEstimado = valorEstimado;
+        this.condicionTS.valorEstimado = valorEstimado.toString();
         this.condicionTS.comentarios = comentarios;
         this.condicionTS.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
@@ -1121,6 +1129,7 @@ export class CrearSolicitudComponent implements OnInit {
                       this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
                       this.modalRef.hide();
                       this.loading = false;
+                      this.ctsSubmitted = false;
                     }, err => {
                       this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
                       this.loading = false;
@@ -1158,6 +1167,7 @@ export class CrearSolicitudComponent implements OnInit {
                   this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
                   this.modalRef.hide();
                   this.loading = false;
+                  this.ctsSubmitted = false;
                 }, err => {
                   this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
                   this.loading = false;
@@ -1182,7 +1192,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["codigoCTS"].setValue('');
     this.ctsFormulario.controls["descripcionCTS"].setValue('');
     this.ctsFormulario.controls["cantidadCTS"].setValue('');
-    this.ctsFormulario.controls["valorEstimadoCTS"].setValue('');
+    this.ctsFormulario.controls["valorEstimadoCTS"].setValue(0);
     this.ctsFormulario.controls["tipoMonedaCTS"].setValue('');
     this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
     this.ctsFormulario.controls["comentariosCTS"].setValue('');

@@ -6,6 +6,7 @@ import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionMod
 import { Select2Module } from "ng-select2-component";
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ng6-toastr-notifications';
+import { NgxCurrencyModule } from "ngx-currency";
 
 import { AppComponent } from './app.component';
 import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
@@ -22,7 +23,7 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberDirective } from './directivas/numbers-only.directive';
-import { BsModalService, ModalModule, ModalDirective, ModalBackdropComponent, TooltipModule, TypeaheadModule, TabsModule, AccordionModule } from 'ngx-bootstrap';
+import { BsModalService, ModalModule, ModalBackdropComponent, TooltipModule, TypeaheadModule, TabsModule, AccordionModule } from 'ngx-bootstrap';
 import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap-servicios/registrar-entradas-sap-servicios.component';
 import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.component';
 import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.component';
@@ -65,6 +66,7 @@ import { RegistroActivosComponent } from './registro-activos/registro-activos.co
     MatOptionModule,
     MatInputModule,
     MatExpansionModule,
+    NgxCurrencyModule,
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     MatToolbarModule,
