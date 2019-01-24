@@ -183,7 +183,7 @@ export class SPServicio {
     }
 
     agregarAdjuntoActivos(IdSolicitud: number, nombreArchivo: string, archivo: File) {
-        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud);
+        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
@@ -353,7 +353,7 @@ export class SPServicio {
     }
 
     cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor,ResponsableBienes,ResponsableServicios){
-        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
             {
                 Estado: nombreEstado,
                 ResponsableId: autor,

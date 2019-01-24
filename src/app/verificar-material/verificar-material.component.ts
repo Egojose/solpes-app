@@ -99,7 +99,6 @@ export class VerificarMaterialComponent implements OnInit {
   }
    
   GuardarComentario() {
-    debugger;
     let coment;
     if (this.ComentarioVerificarMaterial === undefined || this.ComentarioVerificarMaterial === null) {
       this.mostrarError("Ingrese un comentario!");
