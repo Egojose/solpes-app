@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { SPServicio } from './servicios/sp-servicio';
 import { Usuario } from './dominio/usuario';
+import { Grupo } from './dominio/grupo';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +10,19 @@ import { Usuario } from './dominio/usuario';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
-  title = 'solpes-app';
   usuario: Usuario;
   nombreUsuario: string;
+  grupos: Grupo[] = [];
+  PermisosCreacion: boolean;
+  PermisosEdicionContratos: boolean;
+  PermisosRegistroEntradasBienes: boolean;
+  PermisosRegistroEntradasServicios: boolean;
 
   constructor(private servicio: SPServicio) {
+    /*this.PermisosCreacion = false;
+    this.PermisosEdicionContratos = false;
+    this.PermisosRegistroEntradasBienes = false;
+    this.PermisosRegistroEntradasServicios = false;*/
   }
 
   abrirCerrarMenu(){
@@ -37,14 +45,51 @@ export class AppComponent implements OnInit {
 
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
-      (Response) => {
-        this.usuario = new Usuario(Response.Title, Response.email,Response.Id);
+      (respuesta) => {
+        this.usuario = new Usuario(respuesta.Title, respuesta.email,respuesta.Id);
         this.nombreUsuario = this.usuario.nombre;
         sessionStorage.setItem('usuario',JSON.stringify(this.usuario));
+        /*this.servicio.ObtenerGruposUsuario(this.usuario.id).subscribe(
+          (respuesta) => {
+              this.grupos = Grupo.fromJsonList(respuesta);
+              this.VerificarPermisosMenu();
+          }, err => {
+            console.log('Error obteniendo grupos de usuario: ' + err);
+          }
+        )*/
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
       }
     )
+  }
+
+  VerificarPermisosMenu(): any {
+
+    const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
+    const grupoEdicionContratos = "Solpes-Edicion-Contratos";
+    const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
+    const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
+
+    let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
+    if(existeGrupoCreacion != null){
+      this.PermisosCreacion = true;
+    }
+
+    let existeGrupoEdicionContratos = this.grupos.find(x=> x.title == grupoEdicionContratos);
+    if(existeGrupoEdicionContratos != null){
+      this.PermisosEdicionContratos = true;
+    }
+
+    let existeGrupoRegistroEntradasBienes = this.grupos.find(x=> x.title == grupoRegistroEntradasBienes);
+    if(existeGrupoRegistroEntradasBienes != null){
+      this.PermisosRegistroEntradasBienes = true;
+    }
+
+    let existeGrupoRegistroEntradasServicios = this.grupos.find(x=> x.title == grupoRegistroEntradasServicios);
+    if(existeGrupoRegistroEntradasServicios != null){
+      this.PermisosRegistroEntradasServicios = true;
+    }
+
   }
 
   public ngOnInit() {

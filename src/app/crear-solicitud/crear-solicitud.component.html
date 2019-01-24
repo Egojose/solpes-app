@@ -353,8 +353,8 @@
           <div class="row">
             <div class="col-md-12">
               <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
-              <input id="cantidadCTB" name="cantidadCTB" formControlName="cantidadCTB" class="form-control" type="text"
-                numbersOnly placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cantidadCTB.errors }" />
+              <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="cantidadCTB" name="cantidadCTB" formControlName="cantidadCTB" class="form-control" type="text"
+                 placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cantidadCTB.errors }" />
               <div *ngIf="ctbSubmitted && f.cantidadCTB.errors" class="invalid-feedback">
                 <div *ngIf="f.cantidadCTB.errors.required">Este campo es requerido</div>
               </div>
@@ -365,8 +365,8 @@
           <div class="row">
             <div class="col-md-6">
               <label for="valorEstimado">Valor Estimado</label>
-              <input id="valorEstimadoCTB" name="valorEstimadoCTB" formControlName="valorEstimadoCTB" class="form-control"
-                type="text" numbersOnly placeholder="Escriba el valor estimado" />
+              <input currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTB" name="valorEstimadoCTB" formControlName="valorEstimadoCTB" class="form-control"
+                type="text" placeholder="Escriba el valor estimado" />
             </div>
             <div class="col-md-6">
               <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTB" class="asterisco-obligatorio">*</span>
@@ -429,8 +429,8 @@
         </div>
         <div class="form-group">
           <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
-          <input id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text"
-            numbersOnly placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
+          <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text"
+             placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
           <div *ngIf="ctsSubmitted && f2.cantidadCTS.errors" class="invalid-feedback">
             <div *ngIf="f2.cantidadCTS.errors.required">Este campo es requerido</div>
           </div>
@@ -439,8 +439,8 @@
           <div class="row">
             <div class="col-md-6">
               <label for="valorEstimado">Valor Estimado</label>
-              <input id="valorEstimadoCTS" name="valorEstimadoCTS" formControlName="valorEstimadoCTS" class="form-control"
-                type="text" numbersOnly placeholder="Escriba el valor estimado" />
+              <input currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTS" name="valorEstimadoCTS" formControlName="valorEstimadoCTS" class="form-control"
+                type="text" placeholder="Escriba el valor estimado" />
             </div>
             <div class="col-md-6">
               <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTS" class="asterisco-obligatorio">*</span>
