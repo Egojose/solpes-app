@@ -7,7 +7,7 @@ export class CondicionesTecnicasBienes {
         public PrecioSondeo: number,
         public ComentarioSondeo: string,
         public Estado?: any,
-        public RutaArchivo?:string,
+        public adjunto?:string,
         public Codigo?: string, 
         public Modelo?: string,
         public Fabricante?: string,
