@@ -72,7 +72,7 @@
                 </div>
                 <button *ngIf="element.estado =='Por registrar entregas' && element.compraBienes === true" class="btn btn-primary btnBienes" (click)="RegistrarEntregasBienes(element.id)">Registrar bienes</button>
                 <button *ngIf="element.estado =='Por registrar entregas' && element.compraServicios === true" class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Registrar servicios</button>
-
+                <button *ngIf="element.estado =='Por registrar activos'" class="btn btn-success" (click)="RegistrarActivos(element.id)">Ir a registrar activos</button>
             </td>
         </ng-container>
 

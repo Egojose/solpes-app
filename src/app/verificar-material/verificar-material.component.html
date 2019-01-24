@@ -69,7 +69,7 @@
 <div class="row" *ngIf="SwtichOrdenEstadistica===true">
     <div class="form-group col-md-6">
         <label for="adjunto"> <strong> Adjuntar solicitud creación de activos </strong></label><span class="asterisco-obligatorio">*</span>
-        <input id="adjuntoSolicituAF" name="adjuntoSolicituAF" formControlName="adjuntoSolicituAF" type="file" class="form-control" />
+        <input id="adjuntoSolicituAF" name="adjuntoSolicituAF" (change)="adjuntarArchivoVM($event)" type="file" class="form-control" />
         <br>
     </div>
 </div>
