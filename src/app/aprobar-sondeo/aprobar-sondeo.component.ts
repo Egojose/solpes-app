@@ -73,7 +73,7 @@ export class AprobarSondeoComponent implements OnInit {
 
     let ObjSondeo;
     if (this.RDBsondeo === undefined) {
-      alert("debe seleccionar un ordenador de gastos")
+      this.mostrarAdvertencia('Debe seleccionar una acción')
     }
     if (this.RDBsondeo !== undefined) {
       if (this.RDBsondeo === 1 && this.ComentarioSondeo === undefined) {
