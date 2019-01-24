@@ -61,33 +61,12 @@ export class RegistroActivosComponent implements OnInit {
 
   GuardarActivos() {
     let coment;
-<<<<<<< HEAD
-    if (this.ComentarioRegistroActivos === undefined || this.ComentarioRegistroActivos === null) {
-      this.mostrarError("Ingrese un comentario!");
-    } else {
-      let comentarios = this.ComentarioRegistroActivos;
-      let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
-      coment = {
-        Estado: 'Por registrar solp sap',
-        ResponsableId: ResponsableProcesoId,
-        ComentarioVerificarMaterial: comentarios
-      }
-     /* this.servicio.guardarRegistroActivos(this.IdSolicitud, coment)
-        .then((resultado: ItemAddResult) => {
-          this.MostrarExitoso("Registro de activos realizado correctamente");
-          this.router.navigate(["/mis-pendientes"]);
-        })
-        .catch(error => {
-          console.log(error);
-        });*/
-=======
     let comentarios = this.ComentarioRegistroActivos;
     let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
     coment = {
       Estado: 'Por registrar solp sap',
       ResponsableId: ResponsableProcesoId,
       ComentarioRegistroActivos: comentarios
->>>>>>> 85361d21b9daeb15ba7e26fbbb4e9661c09e69d2
     }
     this.servicio.guardarComentario(this.IdSolicitud, coment)
       .then((resultado: ItemAddResult) => {        
