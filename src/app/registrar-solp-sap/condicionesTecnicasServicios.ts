@@ -8,6 +8,7 @@ export class CondicionTecnicaServicios{
         public valorEstimado: number,
         public comentarios: string,
         public adjunto?: any,
+        public archivo?: any,
         public tipoMoneda?: string,
         public id?: number,
         ) { }
@@ -27,7 +28,22 @@ export class CondicionTecnicaServicios{
                    }                
                }
            });
-        }        
+        }
+        
+        let Archivo = "";
+        if (element.Attachments ===true) {
+           let ObjArchivos = element.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="solp") {
+                        Archivo=element.ServerRelativeUrl;
+                   }                
+               }
+           });
+        }       
 
 
         return new CondicionTecnicaServicios(element.Title,
@@ -38,6 +54,7 @@ export class CondicionTecnicaServicios{
             element.ValorEstimado,
             element.Comentario,
             RutaArchivo,
+            Archivo,
             element.TipoMoneda,
             element.ID);
     }
