@@ -390,11 +390,13 @@ export class EditarSolicitudComponent implements OnInit {
             this.solpFormulario.controls["subcategoria"].setValue(this.subcategoria.id);
             if (this.solicitudRecuperada.condicionesContractuales != '' && this.solicitudRecuperada.condicionesContractuales != '{ "condiciones":]}') {
               let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales);
-              jsonCondicionesContractuales.condiciones.forEach(element => {
-                this.condicionesContractuales.push(new CondicionContractual(element.campo, this.indexCondicionesContractuales, element.descripcion));
-                this.indexCondicionesContractuales++;
-              });
-              this.registrarControlesCondicionesContractualesCargados();
+              if(jsonCondicionesContractuales.condiciones != null){
+                jsonCondicionesContractuales.condiciones.forEach(element => {
+                  this.condicionesContractuales.push(new CondicionContractual(element.campo, this.indexCondicionesContractuales, element.descripcion));
+                  this.indexCondicionesContractuales++;
+                });
+                this.registrarControlesCondicionesContractualesCargados();
+              }
             }
           }
 
