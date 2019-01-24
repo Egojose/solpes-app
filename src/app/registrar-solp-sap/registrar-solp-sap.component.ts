@@ -73,7 +73,7 @@ export class RegistrarSolpSapComponent implements OnInit {
     let ObjSolpSap;
 
     if (this.RDBOrdenadorGastos === undefined) {
-      this.mostrarAdvertencia("Debe seleccionar un ordenador de gastos");
+      this.mostrarAdvertencia("Debe seleccionar una acción en ordenador de gastos");
     }
     if (this.RDBOrdenadorGastos !== undefined) {
       if (this.RDBOrdenadorGastos === 1 && this.numeroSolpSap === undefined) {
