@@ -551,7 +551,7 @@ export class CrearSolicitudComponent implements OnInit {
       return false;
     }
 
-    if (tipoSolicitud == 'Solp' || tipoSolicitud == 'CM') {
+    if (tipoSolicitud == 'Solp' || tipoSolicitud == 'OCM') {
       if (this.EsCampoVacio(justificacion)) {
         this.mostrarAdvertencia("El campo Justificación es requerido");
         this.loading = false;
@@ -586,6 +586,7 @@ export class CrearSolicitudComponent implements OnInit {
     if(valorcompraOrdenEstadistica == "SI"){
       this.compraOrdenEstadistica = true;
     }
+    
     this.servicio.obtenerResponsableProcesos(valorPais.id).subscribe(
       (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
