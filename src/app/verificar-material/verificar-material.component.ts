@@ -73,6 +73,7 @@ export class VerificarMaterialComponent implements OnInit {
   cantidadTotalCompra: number;
   OrdenEstadistica: boolean;
   SwtichOrdenEstadistica: boolean;
+  ArchivoAdjunto: File;
 
   constructor(
     private servicio: SPServicio,
@@ -87,20 +88,35 @@ export class VerificarMaterialComponent implements OnInit {
     this.cantidadTotalCompra = 0;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
   }
+
+  adjuntarArchivoVM(event) {
+    let archivoAdjunto = event.target.files[0];
+    if (archivoAdjunto != null) {
+      this.ArchivoAdjunto = archivoAdjunto;
+    } else {
+      this.ArchivoAdjunto = null;
+    }
+  }
    
   GuardarComentario() {
+    debugger;
     let coment;
     if (this.ComentarioVerificarMaterial === undefined || this.ComentarioVerificarMaterial === null) {
       this.mostrarError("Ingrese un comentario!");
     } else {
       let comentarios = this.ComentarioVerificarMaterial;
       if(this.SwtichOrdenEstadistica === true){
+        if (this.ArchivoAdjunto === null) {
+            this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos")
+            return false;
+        }
+            
         let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarActivos; 
-      coment = {
-        Estado: 'Por registrar activos',
-        ResponsableId: ResponsableProcesoId,
-        ComentarioVerificarMaterial: comentarios
-      }
+        coment = {
+          Estado: 'Por registrar activos',
+          ResponsableId: ResponsableProcesoId,
+          ComentarioVerificarMaterial: comentarios
+        }
     }else{
       let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp; 
       coment = {
@@ -115,7 +131,23 @@ export class VerificarMaterialComponent implements OnInit {
         this.servicio.guardarComentario(this.IdSolicitud, coment)
           .then((resultado: ItemAddResult) => {
         this.MostrarExitoso("Materiales verificados correctamente");
-        this.router.navigate(["/mis-pendientes"]);
+        if(this.SwtichOrdenEstadistica === true){
+          let nombreArchivo = "ActivoVM-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
+          this.servicio.agregarAdjuntoActivos(this.IdSolicitud,nombreArchivo,this.ArchivoAdjunto).then(
+            (respuesta)=>{
+                this.MostrarExitoso("Archivo guardado correctamente");
+                this.router.navigate(["/mis-pendientes"]);
+            }
+          ).catch(
+            (error)=>{
+                this.mostrarError("Error al guardar el archivo");
+            }
+          );
+        } 
+        else {
+          this.router.navigate(["/mis-pendientes"]);
+        }       
+        
 
           })
           .catch(error => {
@@ -141,6 +173,12 @@ export class VerificarMaterialComponent implements OnInit {
 
   mostrarInformacion(mensaje: string) {
     this.toastr.infoToastr(mensaje, "Información importante");
+  }
+
+  generarllaveSoporte(): string {
+    var fecha = new Date();
+    var valorprimitivo = fecha.valueOf().toString();
+    return valorprimitivo;
   }
 
   ngOnInit() {

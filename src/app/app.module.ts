@@ -90,7 +90,7 @@ import { RegistroActivosComponent } from './registro-activos/registro-activos.co
       {path:'registrar-solp-sap', component:RegistrarSolpSapComponent},
       {path:'sondeo', component:SondeoComponent},
       {path:'verificar-material', component:VerificarMaterialComponent},
-      { path: 'ver-solicitud-tab', component: VerSolicitudTabComponent },
+      { path:'ver-solicitud-tab', component: VerSolicitudTabComponent },
       {path:'registro-activos', component:RegistroActivosComponent}
     ])
   ],
