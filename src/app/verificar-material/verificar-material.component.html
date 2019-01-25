@@ -290,11 +290,12 @@
                                     <td>{{item.cantidad}}</td>
                                     <td>{{item.valorEstimado}}</td>
                                     <td>
-                                        <ng-container *ngIf="item.RutaArchivo !== ''; else NoHayAdjServ">
-                                            <a href="{{item.RutaArchivo}}" target=_blank><button type="button" class="btn btn-primary">Ver
-                          Archivo</button></a>
+                                        <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
+                                            <a href="{{item.adjuntoCreacion.url}}" target=_blank>
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
                                         </ng-container>
-                                        <ng-template #NoHayAdjServ>
+                                        <ng-template #nohaycreacion>
                                             Sin adjunto
                                         </ng-template>
                                     </td>
