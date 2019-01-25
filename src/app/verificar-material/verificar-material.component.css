@@ -67,3 +67,11 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-description-attribution {
     opacity: 0.5;
 }
+
+#button1 {
+    margin-right: 5px;
+}
+
+.botonSi {
+    margin-right: 5px;
+}
