@@ -9,7 +9,7 @@
 </div>
 <br>
 <accordion *ngIf="CTB === true">
-    <accordion-group heading="Condiones tecnicas bienes">
+    <accordion-group heading="Condiciones técnicas bienes">
         <div class="row" id="TablaVerificar">
             <div class="col-md-12">
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -45,7 +45,7 @@
                         <th mat-header-cell *matHeaderCellDef> Adjunto</th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element.adjunto !== ''">
-                                <a href="{{element.adjunto}}">
+                                <a href="{{element.adjunto}}" target="_blank">
                                     <button class="btn btn-success">Ver</button>
                                 </a>
                             </div>
@@ -63,7 +63,7 @@
 </accordion>
 <br>
 <accordion *ngIf="CTS === true">
-    <accordion-group heading="Condiones tecnicas servicios">
+    <accordion-group heading="Condiciones técnicas servicios">
         <div class="row" id="TablaVerificar">
             <div class="col-md-12">
                 <table mat-table [dataSource]="dataSourceTS" class="mat-elevation-z8">
@@ -99,7 +99,7 @@
                         <th mat-header-cell *matHeaderCellDef> Adjunto</th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element.adjunto !== ''">
-                                <a href="{{element.adjunto}}">
+                                <a href="{{element.adjunto}}" target="_blank">
                                     <button class="btn btn-success">Ver</button>
                                 </a>
                             </div>
@@ -136,7 +136,7 @@
         <div class="form-group col-md-6">
             <label for="inputEmail4">N° SOLP SAP -RFP <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.SolpSapRfp.errors }" [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">El numero debe estar entre 1099999980 ~ 9999999999</small>
+            <small id="emailHelp" class="form-text text-muted">El número debe estar entre 1099999980 ~ 9999999999</small>
             <div *ngIf="submitted && f.SolpSapRfp.errors" class="invalid-feedback">
                 <div *ngIf="f.SolpSapRfp.errors.required">Es requerido</div>
             </div>
@@ -147,7 +147,7 @@
         <div class="form-group col-md-6">
             <label for="inputEmail4">N° Contrato/Orden de Compra <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }" [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">El numero debe estar entre 1099999980 ~ 9999999999</small>
+            <small id="emailHelp" class="form-text text-muted">El número debe estar entre 1099999980 ~ 9999999999</small>
             <div *ngIf="submitted && f.ContratoOC.errors" class="invalid-feedback">
                 <div *ngIf="f.ContratoOC.errors.required">Es requerido</div>
             </div>
@@ -188,7 +188,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Moneda del contrato <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="MonedaContrato" [ngClass]="{ 'is-invalid': submitted && f.MonedaContrato.errors }">
+            <select name="" id="" class="form-control" formControlName="MonedaContrato" (change)="ValidarIva()" [ngClass]="{ 'is-invalid': submitted && f.MonedaContrato.errors }">
                 <option value="" [disabled]="Guardado === true"></option>
                 <option value="COP" [disabled]="Guardado === true">COP</option>
                 <option value="USD" [disabled]="Guardado === true">USD</option>
@@ -199,7 +199,7 @@
             </div>
         </div>
         <div class="form-group col-md-4">
-            <label for="inputEmail4">IVA del contrato <span class="camposRequeridos">*</span></label>
+            <label for="inputEmail4">IVA del contrato </label>
             <input type="text" formControlName="IvaContrato" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }" [readonly]="Guardado === true">
             <small id="emailHelp" class="form-text text-muted">Solo aplica para contratos con moneda USD</small>
             <div *ngIf="submitted && f.IvaContrato.errors" class="invalid-feedback">
@@ -285,7 +285,7 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Acreedor <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.Acreedor.errors }" [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">NIT o documento de indentificación del proveedor, sin
+            <small id="emailHelp" class="form-text text-muted">NIT o documento de identificación del proveedor, sin
                 dígito de verificación</small>
             <div *ngIf="submitted && f.Acreedor.errors" class="invalid-feedback">
                 <div *ngIf="f.Acreedor.errors.required">Es requerido</div>
@@ -399,7 +399,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-4">
-                                <strong>País: </strong>{{pais}}
+                                <strong>País: </strong>{{Pais}}
                             </div>
                             <div class="col-md-4">
                                 <strong>Categoría: </strong>{{categoria}}
@@ -440,7 +440,7 @@
         <div *ngIf="OrdenEstadistica===true">
             <div class="form-group row">
                 <div class="col-md-12">
-                    <h4><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h4>
+                    <h4><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h4>
                     </div>
                     </div>
                     </div>

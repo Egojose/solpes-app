@@ -29,9 +29,9 @@ export class resultadoCondicionesTB {
         }        
 
         return new resultadoCondicionesTB(element.Id, 
-            element.Codigo, 
-            element.Descripcion, 
-            element.Modelo, 
+            element.CodigoVerificar, 
+            element.DescripcionVerificar, 
+            element.ModeloVerificar, 
             element.Fabricante,             
             element.CantidadVerificar, 
             element.PrecioSondeo, 
