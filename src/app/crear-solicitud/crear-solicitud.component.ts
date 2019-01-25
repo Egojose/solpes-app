@@ -109,6 +109,7 @@ export class CrearSolicitudComponent implements OnInit {
   codigoAriba: string;
   responsableProcesoEstado: responsableProceso[] = [];
   emptyNumeroOrdenEstadistica: boolean;
+  fueSondeo: boolean;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     setTheme('bs4');
@@ -134,6 +135,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.compraServicios = false;
     this.compraOrdenEstadistica = false;
     this.emptyNumeroOrdenEstadistica = false;
+    this.fueSondeo = false;
   }
 
   MostrarExitoso(mensaje: string) {
@@ -551,7 +553,7 @@ export class CrearSolicitudComponent implements OnInit {
       return false;
     }
 
-    if (tipoSolicitud == 'Solp' || tipoSolicitud == 'OCM') {
+    if (tipoSolicitud == 'Solp' || tipoSolicitud == 'Orden a CM') {
       if (this.EsCampoVacio(justificacion)) {
         this.mostrarAdvertencia("El campo Justificación es requerido");
         this.loading = false;
@@ -591,6 +593,8 @@ export class CrearSolicitudComponent implements OnInit {
       (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
         if (tipoSolicitud == 'Sondeo') {
+          justificacion = '';
+          this.fueSondeo = true;
           estado = 'Por sondear';
           responsable = subcategoria.comprador.ID;
         } else {
@@ -624,7 +628,14 @@ export class CrearSolicitudComponent implements OnInit {
             responsable,
             this.compraBienes,
             this.compraServicios,
-            consecutivoNuevo, this.usuarioActual.id, null, this.compraOrdenEstadistica, valornumeroOrdenEstadistica);
+            consecutivoNuevo, 
+            this.usuarioActual.id, 
+            null, 
+            this.compraOrdenEstadistica, valornumeroOrdenEstadistica,
+            null, 
+            this.compraBienes,
+            this.compraServicios, 
+            this.fueSondeo);
 
           this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
             (item: ItemAddResult) => {
@@ -733,7 +744,7 @@ export class CrearSolicitudComponent implements OnInit {
   abrirModalCTB(template: TemplateRef<any>) {
     this.mostrarAdjuntoCTB = false;
     this.limpiarControlesCTB();
-    this.tituloModalCTB = "Agregar condición técnica de bienes";
+    this.tituloModalCTB = "Agregar bien";
     this.textoBotonGuardarCTB = "Guardar";
     this.modalRef = this.modalServicio.show(
       template,
@@ -744,7 +755,7 @@ export class CrearSolicitudComponent implements OnInit {
   abrirModalCTS(template: TemplateRef<any>) {
     this.mostrarAdjuntoCTS = false;
     this.limpiarControlesCTS();
-    this.tituloModalCTS = "Agregar condición técnica de servicios";
+    this.tituloModalCTS = "Agregar servicio";
     this.textoBotonGuardarCTS = "Guardar";
     this.modalRef = this.modalServicio.show(
       template,
@@ -1224,7 +1235,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["tipoMonedaCTB"].setValue(element.tipoMoneda);
     this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
     this.ctbFormulario.controls["comentariosCTB"].setValue(element.comentarios);
-    this.tituloModalCTB = "Actualizar condición técnica de bienes";
+    this.tituloModalCTB = "Actualizar bien";
     this.textoBotonGuardarCTB = "Actualizar";
     this.modalRef = this.modalServicio.show(
       template,
@@ -1251,7 +1262,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["tipoMonedaCTS"].setValue(element.tipoMoneda);
     this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
     this.ctsFormulario.controls["comentariosCTS"].setValue(element.comentarios);
-    this.tituloModalCTS = "Actualizar condición técnica de servicios";
+    this.tituloModalCTS = "Actualizar servicio";
     this.textoBotonGuardarCTS = "Actualizar";
     this.modalRef = this.modalServicio.show(
       template,

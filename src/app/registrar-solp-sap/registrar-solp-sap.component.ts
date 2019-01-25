@@ -59,9 +59,24 @@ export class RegistrarSolpSapComponent implements OnInit {
   dataSourceTS;
   CTS: boolean;
   CTB: boolean;
-
-
- 
+  displayedColumns: string[] = [
+    "codigo",
+    "descripcion",
+    "modelo",
+    "fabricante",    
+    "cantidad",
+    "valorEstimado",
+    "moneda",
+    "adjunto"
+  ]; 
+  displayedColumnsTS: string[] = [
+    "codigo",
+    "descripcion",        
+    "cantidad",
+    "valorEstimado",
+    "moneda",
+    "adjunto"
+  ];
 
  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
   this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
@@ -181,9 +196,16 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
+            debugger
             this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.ObjResultadosondeo = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
+            if (this.ObjCTVerificar.length>0) {
+              this.CTB = true;
+            }
+            this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+            this.dataSource.paginator = this.paginator;
             console.log(this.ObjCondicionesTecnicas);
           }
         )
@@ -191,7 +213,13 @@ export class RegistrarSolpSapComponent implements OnInit {
           RespuestaCondicionesServicios => {
             this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            // console.log(this.ObjCondicionesTecnicasServicios);
+            if (this.ObjCondicionesTecnicasServicios.length>0) {
+              this.CTS = true;
+            }
+            this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
+            this.dataSourceTS.paginator = this.paginator;
+            this.loading = false;
+
             console.log(this.ObjCondicionesTecnicasServiciosLectura);
           }
         )
@@ -199,28 +227,7 @@ export class RegistrarSolpSapComponent implements OnInit {
           (RespuestaProcesos)=>{
               this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
           }
-        )
-        this.servicio
-          .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
-          .subscribe(RespuestaCondiciones => {                   
-            this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
-            if (this.ObjCTVerificar.length>0) {
-              this.CTB = true;
-            }
-            this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
-            this.dataSource.paginator = this.paginator;   
-            this.servicio
-          .ObtenerCondicionesTecnicasServicios(this.IdSolicitud)
-          .subscribe(RespuestaCondicionesServicios => {           
-            this.ObjCondicionesTecnicasServicios = resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
-            if (this.ObjCondicionesTecnicasServicios.length>0) {
-              this.CTS = true;
-            }
-            this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
-            this.dataSourceTS.paginator = this.paginator;
-            this.loading = false;
-          });
-          });
+        )        
       }
     );
   }
