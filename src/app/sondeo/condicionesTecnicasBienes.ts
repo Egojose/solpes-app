@@ -10,7 +10,8 @@ export class CondicionesTecnicasBienes {
         public valorEstimado?: string,
         public Comentario?: string,        
         public archivoAdjunto?: any,
-        public ComentarioSondeo?:string  
+        public ComentarioSondeo?:string,
+        public codigoSondeo?:string  
         ) {}
 
     public static fromJson(element: any) {
@@ -40,7 +41,8 @@ export class CondicionesTecnicasBienes {
             element.ValorEstimado, 
             element.Comentarios,
             RutaArchivo,
-            element.ComentarioSondeo);
+            element.ComentarioSondeo,
+            element.CodigoSondeo);
     }
 
     public static fromJsonList(elements: any) {

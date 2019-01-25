@@ -7,6 +7,7 @@ export class verificarMaterialCT {
         public modelo: string,
         public fabricante: string,
         public cantidad: number,
+        public codigoSondeo?: string,
         public codigoverificar?: string,
         public descripcionverificar?: string,
         public cantidadverificar?: number,
@@ -34,7 +35,7 @@ export class verificarMaterialCT {
                 nombreDescripcion = element.Descripcion;
                 existencias = element.ExistenciasVerificar;
                 numReserva = element.NumReservaVerificar;
-                cantidadReserva = element.CantidadReservaVerificar;         
+                cantidadReserva = element.CantidadReservaVerificar;
         }
 
         let cantidad: number;
@@ -44,7 +45,7 @@ export class verificarMaterialCT {
             cantidad = element.Cantidad;
         }
 
-        return new verificarMaterialCT(element.Id, nombreCodigo, nombreDescripcion, element.Modelo, element.Fabricante, cantidad, "", "", 0, existencias, numReserva, cantidadReserva, element.MaterialVerificado);
+        return new verificarMaterialCT(element.Id, nombreCodigo, nombreDescripcion, element.Modelo, element.Fabricante, cantidad, element.CodigoSondeo, "", "", 0, existencias, numReserva, cantidadReserva, element.MaterialVerificado);
     }
 
     public static fromJsonList(elements: any) {

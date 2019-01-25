@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnicaServicios';
 import { Contratos } from '../dominio/contrato';
 import { Router } from '@angular/router';
+import { Solicitud } from '../dominio/solicitud';
 
 @Component({
   selector: 'app-ver-solicitud-tab',
@@ -54,13 +55,24 @@ export class VerSolicitudTabComponent implements OnInit {
   ObjContratos: Contratos[] = [];
   AgregarElementoForm: FormGroup;
   submitted = false;
+  solicitudRecuperada: Solicitud;
+
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router) { 
     this.loading = false;
-    this.IdSolicitud = sessionStorage.getItem("IdSolicitud");
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.IdSolicitud = this.solicitudRecuperada.id;
   }
 
   ngOnInit() {
     this.loading = true;
+    if(this.solicitudRecuperada.tipoSolicitud != null){
+      if(this.solicitudRecuperada.tipoSolicitud != "Sondeo"){
+        this.deshabilitarTabsSondeo();
+      }else{
+        this.habilitarTabsSondeo();
+      }
+    }
+
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;
@@ -137,9 +149,38 @@ export class VerSolicitudTabComponent implements OnInit {
     );
   }
 
-  selectTab(tabId: number) {
-    this.staticTabs.tabs[tabId].active = true;
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  habilitarTabsSondeo(){
+    this.staticTabs.tabs[1].disabled = false;
+    this.staticTabs.tabs[2].disabled = false;
+}
+
+  deshabilitarTabsSondeo(){
+      this.staticTabs.tabs[1].disabled = true;
+      this.staticTabs.tabs[2].disabled = true;
+  }
+
+  anterior(tabId: number) {
+    if(tabId == 3 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo"){
+      tabId = tabId - 3;
+      this.staticTabs.tabs[tabId].active = true;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }else{
+      tabId = tabId - 1;
+      this.staticTabs.tabs[tabId].active = true;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
+  }
+
+  siguiente(tabId: number){
+    if(tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo"){
+      tabId = tabId + 3;
+      this.staticTabs.tabs[tabId].active = true;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }else{
+      tabId = tabId + 1;
+      this.staticTabs.tabs[tabId].active = true;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
   }
 
   redireccionarContratos() {

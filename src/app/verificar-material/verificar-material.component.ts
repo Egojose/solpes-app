@@ -11,6 +11,7 @@ import { CondicionTecnicaServicios } from "../verificar-material/condicionTecnic
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { verificarMaterialCT } from "./verificarMaterialCT";
 import { MatTableDataSource, MatPaginator} from '@angular/material';
+import { parse } from 'url';
 
 
 @Component({
@@ -74,6 +75,7 @@ export class VerificarMaterialComponent implements OnInit {
   OrdenEstadistica: boolean;
   SwtichOrdenEstadistica: boolean;
   ArchivoAdjunto: File;
+  SwtichFaltaRecepcionBienes: boolean;
 
   constructor(
     private servicio: SPServicio,
@@ -114,14 +116,16 @@ export class VerificarMaterialComponent implements OnInit {
         coment = {
           Estado: 'Por registrar activos',
           ResponsableId: ResponsableProcesoId,
-          ComentarioVerificarMaterial: comentarios
+          ComentarioVerificarMaterial: comentarios,
+          FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes 
         }
-    }else{
+    }else{      
       let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp; 
       coment = {
         Estado: 'Por registrar solp sap',
         ResponsableId: ResponsableProcesoId,
-        ComentarioVerificarMaterial: comentarios
+        ComentarioVerificarMaterial: comentarios,
+        FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes 
       }
     }
       let cantidad = this.ObjCTVerificar.filter(x => x.MaterialVerificado === true).length;
@@ -215,7 +219,10 @@ export class VerificarMaterialComponent implements OnInit {
           .subscribe(RespuestaCondiciones => {
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(
               RespuestaCondiciones
-            );
+              );
+              
+          console.log(this.ObjCondicionesTecnicas);
+          
             this.ObjCTVerificar = verificarMaterialCT.fromJsonList(
               RespuestaCondiciones
             );
@@ -272,7 +279,12 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.get('existenciasVerificar').valueChanges.subscribe(
       (valor: string) => {
         if (valor != ''|| valor != undefined || valor != null ) {
-          numReservaVerificar.setValidators([Validators.required]);
+          if (parseFloat(valor) > 0) {
+            numReservaVerificar.setValidators([Validators.required]);
+          }
+          else {
+            numReservaVerificar.clearValidators();
+          }
         }
         else {
           numReservaVerificar.clearValidators();
@@ -286,9 +298,9 @@ export class VerificarMaterialComponent implements OnInit {
     console.log(element);
     this.verificarSubmitted = false;
     this.IdVerficar = element.id;
-    this.verificarMaterialFormulario.controls["codigoVerificar"].setValue(
-      element.codigo
-    );
+   
+      this.verificarMaterialFormulario.controls["codigoVerificar"].setValue(element.codigoSondeo);
+    
     this.verificarMaterialFormulario.controls["descripcionVerificar"].setValue(
       element.descripcion
     );
@@ -307,9 +319,19 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(
       element.numreservaverificar
     );
-    this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(
-      element.cantidadreservaverificar
-    );
+    
+    if(element.cantidadreservaverificar === null || element.cantidadreservaverificar === undefined ){
+      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(
+        element.cantidad
+      );
+    }else{
+      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(
+        element.cantidadreservaverificar
+      );
+    }
+    
+    
+    
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: "gray modal-lg" })
@@ -349,7 +371,7 @@ export class VerificarMaterialComponent implements OnInit {
     ].value;
 
     let index = this.ObjCTVerificar.findIndex(x => x.id === this.IdVerficar);
-    this.ObjCTVerificar[index].codigo = codigoVerificar;
+    this.ObjCTVerificar[index].codigoSondeo = codigoVerificar;
     this.ObjCTVerificar[index].descripcion = descripcionVerificar;
     this.ObjCTVerificar[index].cantidadverificar = cantidadverificar;
     this.ObjCTVerificar[index].existenciasverificar = existenciasverificar;
@@ -384,6 +406,12 @@ export class VerificarMaterialComponent implements OnInit {
         }
         else{
           this.SwtichOrdenEstadistica = false;
+        }
+        if(sum === 0){
+          this.SwtichFaltaRecepcionBienes = false;
+        }
+        else{
+          this.SwtichFaltaRecepcionBienes = true;
         }
       })
       .catch(error => {

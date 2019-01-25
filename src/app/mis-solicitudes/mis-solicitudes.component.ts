@@ -66,8 +66,8 @@ export class MisSolicitudesComponent implements OnInit {
     )
   }
 
-  VerSolicitud(id){
-    sessionStorage.setItem("IdSolicitud", id);
+  VerSolicitud(solicitud){
+    sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
     this.router.navigate(['/ver-solicitud-tab']);
   }
 
