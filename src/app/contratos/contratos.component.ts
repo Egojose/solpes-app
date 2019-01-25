@@ -102,7 +102,7 @@ export class ContratosComponent implements OnInit {
       // FechaDevolucionProvedor: [''],
       MonedaContrato: ['', Validators.required],
       // TrmSap: [''],
-      IvaContrato: ['', Validators.required],
+      IvaContrato: [''],
       ValorContractual: ['', Validators.required],
       // ValorSinIVA: [''],
       // ValorFinalIVA: [''],
@@ -142,7 +142,7 @@ export class ContratosComponent implements OnInit {
               this.Pais=this.ObjSolicitud.Pais.Title;
               this.paisId = this.ObjSolicitud.Pais.Id;
               this.categoria = this.ObjSolicitud.Categoria;
-              this.subCategoria = this.ObjSolicitud.subCategoria;
+              this.subCategoria = this.ObjSolicitud.Subcategoria;
               this.comprador = this.ObjSolicitud.Comprador.Title;
               this.alcance = this.ObjSolicitud.Alcance;
               this.justificacion = this.ObjSolicitud.Justificacion;
@@ -314,7 +314,7 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter
       }      
-    }    
+    } 
   
     this.servicio.GuardarContrato(ObjContrato).then(
       (resultado)=>{
@@ -346,6 +346,19 @@ export class ContratosComponent implements OnInit {
 
     });
     
+  }
+
+  ValidarIva(){
+    let Moneda = this.ContratosForm.controls["MonedaContrato"].value;
+    const IvaContrato = this.ContratosForm.get('IvaContrato');
+      if (Moneda!="USD") {
+        IvaContrato.clearValidators();
+      }
+      else{
+        IvaContrato.setValidators([Validators.required]);
+      }
+      IvaContrato.updateValueAndValidity();
+     
   }
 
   salir() {

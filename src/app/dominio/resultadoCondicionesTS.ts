@@ -26,7 +26,7 @@ export class resultadoCondicionesTS {
         }        
 
         return new resultadoCondicionesTS(element.Id, 
-            element.Codigo, 
+            element.CodigoSondeo, 
             element.Descripcion,                       
             element.CantidadSondeo, 
             element.PrecioSoneo, 
