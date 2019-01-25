@@ -39,8 +39,8 @@ export class CondicionesTecnicasBienes {
             adjuntosBienes.push(new Adjunto(element.Id, arrayAdjuntos[i].FileName, arrayAdjuntos[i].ServerRelativeUrl));
         }
 
-        adjuntoSondeo = CondicionesTecnicasBienes.ObtenerAdjuntoSondeo("sondeoBienes-", adjuntosBienes, adjuntoSondeo);
-        adjuntoCreacion = CondicionesTecnicasBienes.ObtenerAdjuntoSondeo("solp-", adjuntosBienes, adjuntoCreacion);
+        adjuntoSondeo = CondicionesTecnicasBienes.ObtenerAdjunto("sondeoBienes-", adjuntosBienes, adjuntoSondeo);
+        adjuntoCreacion = CondicionesTecnicasBienes.ObtenerAdjunto("solp-", adjuntosBienes, adjuntoCreacion);
 
 
         return new CondicionesTecnicasBienes(element.Id,
@@ -65,7 +65,7 @@ export class CondicionesTecnicasBienes {
             adjuntoCreacion);
     }
 
-    private static ObtenerAdjuntoSondeo(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
+    private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
         if (adjuntosBienes.length > 0) {
             let adjuntoPorBuscar = adjuntosBienes.filter(a => a.filename.startsWith(identificadorAdjunto));
             if (adjuntoPorBuscar.length > 0) {
