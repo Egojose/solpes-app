@@ -10,10 +10,40 @@ export class CondicionTecnicaServicios{
         public cantidadSondeo?: number,
         public precioSondeo?: string,
         public comentariosSondeo?: string,
-        public adjunto?: any,
+        public RutaArchivo?:string,
+        public archivo?: any,
         public id?: number) { }
 
     public static fromJson(element: any) {
+        let RutaArchivo = "";
+        if (element.Attachments ===true) {
+           let ObjArchivos = element.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="solp") {
+                        RutaArchivo=element.ServerRelativeUrl;
+                   }                
+               }
+           });
+        }       
+
+        let Archivo = "";
+        if (element.Attachments ===true) {
+           let ObjArchivos = element.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="solp") {
+                        Archivo=element.ServerRelativeUrl;
+                   }                
+               }
+           });
+        }       
         return new CondicionTecnicaServicios(element.Title,
             element.Solicitud,
             element.Codigo,
@@ -25,10 +55,12 @@ export class CondicionTecnicaServicios{
             element.CantidadSondeo,
             element.PrecioSondeo,
             element.ComentarioSondeo,
-            element.AttachmentFiles,
+            RutaArchivo,
+            Archivo,
             element.ID);
     }
 
+    
     public static fromJsonList(elements: any) {
         var list = [];
         for (var i = 0; i < elements.length; i++) {

@@ -1,3 +1,5 @@
+import { Adjunto } from "./adjunto";
+
 export class CondicionesTecnicasBienes {
 
     constructor(public IdBienes: number,
@@ -22,31 +24,64 @@ export class CondicionesTecnicasBienes {
         public existenciasverificar?: number,
         public numreservaverificar?: string,
         public cantidadreservaverificar?: number,
-        public adjunto?: any,
-        public archivoAdjunto?: File,
-        public rutaAdjunto?: string,) { }
+        public adjunto?:any,
+        public adjuntoCreacion?:any
+         ) { }
 
     public static fromJson(element: any) {
-        return new CondicionesTecnicasBienes(element.Id, 
-            element.Codigo, 
-            element.Descripcion, 
-            element.Modelo, 
-            element.Fabricante, 
+
+        let adjuntosBienes: Adjunto[] = [];
+        let adjuntoCreacion: Adjunto;
+        let adjuntoSondeo: Adjunto;
+
+        let arrayAdjuntos = element.AttachmentFiles.results;
+        for (let i = 0; i < arrayAdjuntos.length; i++) {
+            adjuntosBienes.push(new Adjunto(element.Id, arrayAdjuntos[i].FileName, arrayAdjuntos[i].ServerRelativeUrl));
+        }
+
+        adjuntoSondeo = CondicionesTecnicasBienes.ObtenerAdjuntoSondeo("sondeoBienes-", adjuntosBienes, adjuntoSondeo);
+        adjuntoCreacion = CondicionesTecnicasBienes.ObtenerAdjuntoSondeo("solp-", adjuntosBienes, adjuntoCreacion);
+
+
+        return new CondicionesTecnicasBienes(element.Id,
+            element.Codigo,
+            element.Descripcion,
+            element.Modelo,
+            element.Fabricante,
             element.ClaseSIA,
-            element.Cantidad, 
-            element.ValorEstimado, 
+            element.Cantidad,
+            element.ValorEstimado,
             element.Comentarios, element.CodigoSondeo, element.CantidadSondeo, element.PrecioSondeo, element.ComentarioSondeo,
-            element.CodigoVerificar, 
-            element.DescripcionVerificar, 
-            element.ModeloVerificar, 
-            element.FabricanteVerificar, 
-            element.ClaseSIAVerificar, 
-            element.CantidadVerificar, 
-            element.ExistenciasVerificar, 
-            element.NumReservaVerificar, 
+            element.CodigoVerificar,
+            element.DescripcionVerificar,
+            element.ModeloVerificar,
+            element.FabricanteVerificar,
+            element.ClaseSIAVerificar,
+            element.CantidadVerificar,
+            element.ExistenciasVerificar,
+            element.NumReservaVerificar,
             element.CantidadReservaVerificar,
-            element.AttachmentFiles);
+            adjuntoSondeo,
+            adjuntoCreacion);
     }
+
+    private static ObtenerAdjuntoSondeo(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
+        if (adjuntosBienes.length > 0) {
+            let adjuntoPorBuscar = adjuntosBienes.filter(a => a.filename.startsWith(identificadorAdjunto));
+            if (adjuntoPorBuscar.length > 0) {
+                let ultimaPosicion = adjuntoPorBuscar.length - 1;
+                adjuntoRetornar = adjuntoPorBuscar[ultimaPosicion];
+            }
+            else {
+                adjuntoRetornar = null;
+            }
+        }
+        else {
+            adjuntoRetornar = null;
+        }
+        return adjuntoRetornar;
+    }
+
 
     public static fromJsonList(elements: any) {
         var list = [];

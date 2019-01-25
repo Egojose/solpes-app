@@ -187,12 +187,12 @@
         <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
             <div class="form-group row">
                 <div class="col-md-12">
-                    <h5><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h5>
+                    <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
                 </div>
             </div>
         </ng-container>
         <ng-template #esteNO>
-            <h5>La solicitud no cuenta con orden estadistica</h5>
+            <h5>La solicitud no cuenta con orden estadística</h5>
             <br>
         </ng-template>
 
@@ -248,12 +248,14 @@
                                 <td>{{item.cantidad}}</td>
                                 <td>{{item.valorEstimado}}</td>
                                 <td>
-                                    <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTB">
-                                        <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary">
-                        Ver archivo</button></a>
-                                    </div>
-                                    <ng-template #sinAdjuntoCTB>
-                                        <p>Sin adjunto</p>
+
+                                    <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
+                                        <a href="{{item.adjuntoCreacion.url}}" target=_blank>
+                                            <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                        </a>
+                                    </ng-container>
+                                    <ng-template #NoHayAdjBienes>
+                                        Sin adjunto
                                     </ng-template>
                                 </td>
                                 <td>{{item.comentario}}</td>
@@ -288,11 +290,12 @@
                                     <td>{{item.cantidad}}</td>
                                     <td>{{item.valorEstimado}}</td>
                                     <td>
-                                        <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
-                                            <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"> <button class="btn btn-primary">
-                          Ver archivo</button></a>
-                                        </div>
-                                        <ng-template #sinAdjuntoCTS>
+                                        <ng-container *ngIf="item.RutaArchivo !== ''; else NoHayAdjServ">
+                                            <a href="{{item.RutaArchivo}}" target=_blank><button type="button" class="btn btn-primary">Ver
+                          Archivo</button></a>
+                                        </ng-container>
+                                        <ng-template #NoHayAdjServ>
+                                            Sin adjunto
                                         </ng-template>
                                     </td>
                                     <td>{{item.comentarios}}</td>
@@ -327,7 +330,19 @@
                                     <td>{{item.cantidadSondeo}}</td>
                                     <td>{{item.precioSondeo}}</td>
                                     <td>{{item.comentarioSondeo}}</td>
-                                    <td></td>
+                                    <td>
+
+                                        <ng-container *ngIf="item.adjunto != ''; else nohaySondeobien">
+                                            <a href="{{item.adjunto.url}}" target=_blank>
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </ng-container>
+                                        <ng-template #nohaySondeobien>
+                                            Sin adjunto
+                                        </ng-template>
+
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
