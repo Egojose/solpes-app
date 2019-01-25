@@ -1,10 +1,13 @@
+import { element } from 'protractor';
 export class RecepcionServicios {
-    constructor(public Idservicios:number ,public descripcion:string, public ubicacion:string, public cantidad:number, public mes:string, public valor:string, public comentario?:string, public IdRecepcionServicios?:number, public ultimaEntregaCTB?:boolean){
+    constructor(public Idservicios:number ,public descripcion:string, public ubicacion:string, public cantidad:number, public mes:string, public valor:string, public comentario?:string, public IdRecepcionServicios?:number, public ultimaEntregaCTB?:boolean,
+        public numrecepcion?:string, public recibidosap?:boolean){
 
     }
 
     public static fromJson(element: any) {
-        return new RecepcionServicios(element.IdCTServiciosId,element.Descripcion, element.Ubicacion,element.Cantidad,element.Mes, element.Valor, element.Comentario, element.Id);
+        return new RecepcionServicios(element.IdCTServiciosId,element.Descripcion, element.Ubicacion,
+            element.Cantidad,element.Mes, element.Valor, element.Comentario, element.Id,element.UltimaEntrega,element.NumeroRecepcion, element.recibidoSap);
     }
 
     public static fromJsonList(elements: any) {
