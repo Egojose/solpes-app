@@ -119,8 +119,7 @@ export class VerificarMaterialComponent implements OnInit {
           ComentarioVerificarMaterial: comentarios,
           FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes 
         }
-    }else{
-      
+    }else{      
       let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp; 
       coment = {
         Estado: 'Por registrar solp sap',
