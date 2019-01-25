@@ -34,7 +34,7 @@ export class verificarMaterialCT {
                 nombreDescripcion = element.Descripcion;
                 existencias = element.ExistenciasVerificar;
                 numReserva = element.NumReservaVerificar;
-                cantidadReserva = element.CantidadReservaVerificar;         
+                cantidadReserva = element.CantidadReservaVerificar;
         }
 
         let cantidad: number;
