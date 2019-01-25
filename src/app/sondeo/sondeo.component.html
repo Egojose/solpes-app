@@ -38,8 +38,18 @@
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.modelo}}</td>
                                         <td>{{item.fabricante}}</td>
-                                        <td>{{item.cantidad}}</td>
-                                        <td>{{item.valorEstimado}}</td>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.cantidad}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.CantidadSondeo}}</td>
+                                        </ng-template>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.valorEstimado}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.PrecioSondeo}}</td>
+                                        </ng-template>
                                         <td>
                                             <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
