@@ -42,20 +42,25 @@
                                             <td>{{item.cantidad}}</td>
                                         </ng-container>
                                         <ng-template #Esteotro>
-                                            <td>{{item.CantidadSondeo}}</td>
+                                            <td>{{item.cantidadSondeo}}</td>
                                         </ng-template>
                                         <ng-container *ngIf="Resondear !== true; else Esteotro">
                                             <td>{{item.valorEstimado}}</td>
                                         </ng-container>
                                         <ng-template #Esteotro>
-                                            <td>{{item.PrecioSondeo}}</td>
+                                            <td>{{item.precioSondeo}}</td>
                                         </ng-template>
                                         <td>
                                             <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>
                                         </td>
-                                        <td>{{item.Comentario}}</td>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.Comentario}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.ComentarioSondeo}}</td>
+                                        </ng-template>
                                     </tr>
                                 </tbody>
                             </table>
