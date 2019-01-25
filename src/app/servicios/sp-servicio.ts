@@ -100,7 +100,9 @@ export class SPServicio {
             AuthorId: solicitud.autor,
             CompraBienes: solicitud.compraBienes,
             CompraServicios: solicitud.compraServicios,
-            CodigoAriba: solicitud.codigoAriba
+            CodigoAriba: solicitud.codigoAriba,
+            OrdenEstadistica: solicitud.compraOrdenEstadistica,
+            NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica
         });
     }
 
@@ -129,7 +131,9 @@ export class SPServicio {
             CompraServicios: solicitud.compraServicios,
             Consecutivo: solicitud.consecutivo,
             Estado: solicitud.estado,
-            CodigoAriba: solicitud.codigoAriba
+            CodigoAriba: solicitud.codigoAriba,
+            OrdenEstadistica: solicitud.compraOrdenEstadistica,
+            NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica
         });
     }
 
@@ -427,6 +431,11 @@ export class SPServicio {
 
     agregarNotificacion(objNotificacion){
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaNotificaciones).items.add(objNotificacion);
+    }
+
+    ObtenerGruposUsuario(usuarioId: number){
+        let respuesta = from(this.obtenerConfiguracion().web.getUserById(usuarioId).groups.get());
+        return respuesta;
     }
 
 }

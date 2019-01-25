@@ -101,7 +101,7 @@ export class SondeoComponent implements OnInit {
             this.ObjCondicionesTecnicasBienesGuardar = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
 
             this.loading = false;
-            console.log(this.ObjCondicionesTecnicasBienesLectura);
+            console.log(this.ObjCondicionesTecnicasBienesGuardar);
           }
         )
 
@@ -152,7 +152,10 @@ export class SondeoComponent implements OnInit {
       }
       this.servicio.guardarSondeoBienes(this.ObjCondicionesTecnicasBienesGuardar[i].IdBienes, objSondeo).then(
         (resultado: ItemAddResult) => {
-          if (this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto != null) {
+          if(this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto === null || this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto === "" ) {
+            this.mostrarAdvertencia("Debe adjuntar el archivo del sondeo para cada bien");
+          }
+          if (this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto != null || this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto != "" ) {
             let nombreArchivo = "sondeoBienes-" + this.generarllaveSoporte() + "_" + this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto.name;
             this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.ObjCondicionesTecnicasBienesGuardar[i].IdBienes, nombreArchivo, this.ObjCondicionesTecnicasBienesGuardar[i].archivoAdjunto).then(
               (respuesta) => {
@@ -218,7 +221,10 @@ export class SondeoComponent implements OnInit {
       }
       this.servicio.guardarSondeoServicios(this.ObjCondicionesTecnicasServiciosGuardar[i].id, objSondeo).then(
         (resultado: ItemAddResult) => {
-          if (this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto != null) {
+          if(this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto === null || this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto === "") {
+            this.mostrarAdvertencia("Debe adjuntar el archivo del sondeo para cada servicio");
+          }
+          if (this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto != null || this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto != "") {
             let nombreArchivo = "sondeoServicios-" + this.generarllaveSoporte() + "_" + this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto.name;
             this.servicio.agregarAdjuntoCondicionesTecnicasServicios(this.ObjCondicionesTecnicasServiciosGuardar[i].id, nombreArchivo, this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto).then(
               (respuesta) => {

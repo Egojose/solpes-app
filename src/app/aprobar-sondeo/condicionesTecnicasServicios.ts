@@ -10,6 +10,7 @@ export class CondicionTecnicaServicios{
         public adjunto?: any,
         public id?: number,
         public RutaArchivo?:string,
+        public archivo?: any,
         public Codigo?: string,
         public Cantidad?: number,
         public ValorEstimado?: string,
@@ -30,6 +31,22 @@ export class CondicionTecnicaServicios{
                }
            });
         }       
+
+        let Archivo = "";
+        if (element.Attachments ===true) {
+           let ObjArchivos = element.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="solp") {
+                        Archivo=element.ServerRelativeUrl;
+                   }                
+               }
+           });
+        }       
+
         return new CondicionTecnicaServicios(
             element.Title,
             element.SolicitudId,
@@ -41,6 +58,7 @@ export class CondicionTecnicaServicios{
             null,
             element.Id,
             RutaArchivo,
+            Archivo,
             element.Codigo,
             element.Cantidad,
             element.ValorEstimado,

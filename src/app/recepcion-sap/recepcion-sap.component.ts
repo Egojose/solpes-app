@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { ActivatedRoute } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
 import { RecepcionServicios } from '../recepcion-sap/RecepcionServicios';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
   selector: 'app-recepcion-sap',
@@ -25,11 +26,12 @@ export class RecepcionSapComponent implements OnInit {
   IdRecepcionBienes: number;
   IdUsuario: any;
  
-constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
+constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager, private activarRoute: ActivatedRoute) {
   
  }
 
   Guardar(item) {
+    debugger
     this.IdRecepcionBienes = item.IdRecepcionBienes;
     let objRegistrar;
     objRegistrar = {
@@ -37,13 +39,13 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, priv
       recibidoSap: true
     }
     if (this.numRecepcion.value === "" || this.numRecepcion.value === null || this.numRecepcion.value === undefined) {
-      alert('Debe suministrar el numero de recpción')
+      this.mostrarAdvertencia('Debe suministrar el número de recepción')
     }
     else{
     let index = this.ObjRecepcionBienes.findIndex(x=> x.IdRecepcionBienes === item.IdRecepcionBienes);
     this.servicio.registrarRecepcionBienes(this.IdRecepcionBienes, objRegistrar).then(
       (resultado: ItemAddResult) => {
-        alert('Recibido')
+       this.MostrarExitoso('Recibido');
         this.ObjRecepcionBienes.splice(index, 1);
       }
     ).catch(
@@ -67,4 +69,12 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, priv
       }
     )    
   }  
+
+  MostrarExitoso(mensaje: string) {
+    this.toastr.successToastr(mensaje, 'Confirmación!');
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, 'Validación');
+  }
 }

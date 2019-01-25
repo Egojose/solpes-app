@@ -73,7 +73,7 @@ export class RegistrarSolpSapComponent implements OnInit {
     let ObjSolpSap;
 
     if (this.RDBOrdenadorGastos === undefined) {
-      alert("debe seleccionar un ordenador de gastos")
+      this.mostrarAdvertencia("Debe seleccionar una acción en ordenador de gastos");
     }
     if (this.RDBOrdenadorGastos !== undefined) {
       if (this.RDBOrdenadorGastos === 1 && this.numeroSolpSap === undefined) {
@@ -134,7 +134,6 @@ export class RegistrarSolpSapComponent implements OnInit {
     }
   }
 
-  
   salir() {
     this.router.navigate(["/mis-pendientes"]);
   }
@@ -149,6 +148,14 @@ export class RegistrarSolpSapComponent implements OnInit {
 
   mostrarAdvertencia(mensaje: string) {
     this.toastr.warningToastr(mensaje, 'Validación');
+  }
+
+  mostrarInformacion(mensaje: string) {
+    this.toastr.infoToastr(mensaje, 'Información importante');
+  }
+
+  mostrarPersonalizado(mensaje: string) {
+    this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
 

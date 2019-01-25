@@ -1,5 +1,6 @@
 <div class="loading" *ngIf='loading'>
     <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+    <b>PROCESANDO...</b>
 </div>
 <br>
 <div>
@@ -65,7 +66,6 @@
                                     <strong>Código ariba: </strong>{{codAriba}}
                                 </div>
                                 <div class="col-md-4">
-                                    <strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}
                                 </div>
                             </div>
                         </div>
@@ -76,14 +76,14 @@
             <div class="row ">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-                        <p id="exampleFormControlTextarea1">{{alcance}}</p>
+                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Alcance</strong></label>
+                        <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{alcance}}</textarea>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Justificación</strong></label>
-                        <p id="exampleFormControlTextarea1">{{justificacion}}</p>
+                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
+                        <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{justificacion}}</textarea>
                     </div>
                 </div>
             </div>
@@ -107,6 +107,21 @@
                 </table>
             </div>
             <br>
+            <hr>
+            <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <h5><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h5>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #esteNO>
+                <h5>La solicitud no cuenta con orden estadistica</h5>
+                <br>
+            </ng-template>
+
+
+
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones técnicas bienes</strong></label>
             <div class="table-wrapper-scroll-y">
                 <table class="table table-striped table-bordered table-hover text-center">
@@ -134,9 +149,10 @@
                             <td>{{item.valorEstimado}}</td>
                             <td>
                                 <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTB">
-                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"><button class="btn btn-primary"> Ver</button></a>
+                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"><button class="btn btn-primary">Ver archivo</button></a>
                                 </div>
                                 <ng-template #sinAdjuntoCTB>
+                                    <p>Sin adjunto</p>
                                 </ng-template>
                             </td>
                             <td>{{item.comentario}}</td>
@@ -165,7 +181,7 @@
                             <td>{{item.valorEstimado}}</td>
                             <td>
                                 <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
-                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"><button class="btn btn-primary"> Ver</button></a>
+                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"><button class="btn btn-primary">Ver archivo</button></a>
                                 </div>
                                 <ng-template #sinAdjuntoCTS>
                                 </ng-template>
@@ -184,9 +200,12 @@
 
         <tab heading="Sondeo">
             <br>
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Sondeo</strong></label>
-            <p id="exampleFormControlTextarea5">{{comentariosolicitudsondeo}}</p>
-            <br>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
+                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentariosolicitudsondeo}}</textarea>
+                </div>
+            </div>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo Bienes</strong></label>
             <div class="table-wrapper-scroll-y">
                 <table class="table table-striped table-bordered table-hover text-center">
@@ -233,7 +252,9 @@
                             <td>{{item.cantidadSondeo}}</td>
                             <td>{{item.precioSondeo}}</td>
                             <td>{{item.comentariosSondeo}}</td>
-                            <td></td>
+                            <td>
+
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -264,8 +285,7 @@
             </div>
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Revisión Sondeo</strong></label>
-            <p id="exampleFormControlTextarea5">{{comentariorevisionsondeo}}</p>
-            <br>
+            <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentariorevisionsondeo}}</textarea><br>
             <div class="col-md-12 row">
                 <div>
                     <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="selectTab(1)">Anterior</button>
@@ -279,7 +299,7 @@
         <tab heading="Verificación de material">
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Verificar Material</strong></label>
-            <p id="VerificarMaterialComentario">{{comentarioverificarmaterial}}</p>
+            <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioverificarmaterial}}</textarea><br>
             <br>
             <div class="col-md-12 row">
                 <strong>Verificar material - Condiciones técnicas bienes:</strong>
@@ -294,7 +314,8 @@
                             <th>Cantidad</th>
                             <th>Existencias</th>
                             <th>#Reserva</th>
-                            <th>Cant. Reserva</th>
+                            <th>Cantidad a comprar</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -311,12 +332,38 @@
                     </tbody>
                 </table>
             </div>
+
+            <p>Archivo solicitud de activos fijos
+                <a href="{{RutaArchivo}}">
+                    <button type="button" class="btn btn-primary">Descargar aquí</button>
+                </a>
+            </p>
+
+
             <div class="col-md-12 row">
                 <div>
                     <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="selectTab(2)">Anterior</button>
                 </div>
                 <div>
                     <button type="button" class="btn btn-primary btn-md" (click)="selectTab(4)">Siguiente</button>
+                </div>
+            </div>
+        </tab>
+
+        <tab heading="Registro de activos">
+            <div class="row">
+                <br>
+                <div class="form-group col-md-12">
+                    <label for="textarea" class="col-sm-3 control-label"><b>Comentario registro de activos:</b></label>
+                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioregistroactivos}}</textarea>
+                </div>
+                <div class="col-md-12 row">
+                    <div>
+                        <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="selectTab(3)">Anterior</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-md" (click)="selectTab(5)">Siguiente</button>
+                    </div>
                 </div>
             </div>
         </tab>
@@ -347,14 +394,14 @@
             </div>
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario</strong></label>
-            <p id="ComentarioRegistrarSolpSAP">{{comentarioRegistrarSAP}}</p>
+            <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioRegistrarSAP}}</textarea>
             <br>
             <div class="col-md-12 row">
                 <div>
-                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="selectTab(3)">Anterior</button>
+                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="selectTab(4)">Anterior</button>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="selectTab(5)">Siguiente</button>
+                    <button type="button" class="btn btn-primary btn-md" (click)="selectTab(6)">Siguiente</button>
                 </div>
             </div>
         </tab>
@@ -411,10 +458,10 @@
             <br>
             <div class="col-md-12 row">
                 <div>
-                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="selectTab(4)">Anterior</button>
+                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="selectTab(5)">Anterior</button>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="selectTab(6)">Siguiente</button>
+                    <button type="button" class="btn btn-primary btn-md" (click)="selectTab(7)">Siguiente</button>
                 </div>
             </div>
         </tab>
@@ -436,8 +483,8 @@
                                         <th>Valor</th>
                                         <th>Ultima entrega</th>
                                         <th>Comentario</th>
-                                        <th>Entrega Regist.</th>
-                                        <th>#Entrega</th>
+                                        <th>Recibido sap</th>
+                                        <th># Recepción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -454,6 +501,8 @@
                                             </div>
                                         </td>
                                         <td>{{item.comentario}}</td>
+                                        <th>{{item.recibidosap}}</th>
+                                        <th>{{item.numrecepcion}}</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -479,8 +528,8 @@
                                         <th>Mes</th>
                                         <th>Valor</th>
                                         <th>Comentario</th>
-                                        <th>Entrega Registr.</th>
-                                        <th>#Entrega</th>
+                                        <th>Recibido sap</th>
+                                        <th># Recepción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -491,6 +540,8 @@
                                         <td>{{item.mes}}</td>
                                         <td>{{item.valor}}</td>
                                         <td>{{item.comentario}}</td>
+                                        <td>{{item.recibidosap}}</td>
+                                        <td>{{item.numrecepcion}}</td>
                                     </tr>
                                 </tbody>
                             </table>

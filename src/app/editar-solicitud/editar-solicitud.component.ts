@@ -55,6 +55,7 @@ export class EditarSolicitudComponent implements OnInit {
     { value: 'Seleccione', label: 'Seleccione' }
   ];
   paises: Pais[] = [];
+  pais: Pais;
   categorias: Categoria[] = [];
   categoria: Categoria;
   diasEntregaDeseada: number;
@@ -336,59 +337,139 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   cargarSolicitud(): any {
-    this.solpFormulario.controls["tipoSolicitud"].setValue(this.solicitudRecuperada.tipoSolicitud);
-    this.solpFormulario.controls["cm"].setValue(this.solicitudRecuperada.cm);
-    if(this.solicitudRecuperada.tipoSolicitud == 'OCM'){
-      this.mostrarContratoMarco = true;
+
+    if (this.solicitudRecuperada.tipoSolicitud != null) {
+      if (this.solicitudRecuperada.tipoSolicitud === "Sondeo") {
+        this.solpFormulario.controls["justificacion"].disable();
+      } else {
+        this.solpFormulario.controls["justificacion"].enable();
+      }
+      this.solpFormulario.controls["tipoSolicitud"].setValue(this.solicitudRecuperada.tipoSolicitud);
+      if (this.solicitudRecuperada.tipoSolicitud == 'OCM') {
+        this.mostrarContratoMarco = true;
+      }
     }
-    this.solpFormulario.controls["solicitante"].setValue(this.solicitudRecuperada.solicitante);
-    this.solpFormulario.controls["empresa"].setValue(this.solicitudRecuperada.empresa.ID);
-    this.valorUsuarioPorDefecto = this.solicitudRecuperada.ordenadorGastos.ID.toString();
-    this.solpFormulario.controls["pais"].setValue(this.solicitudRecuperada.pais.ID);
-    this.categoria = this.categorias.filter(x => x.nombre === this.solicitudRecuperada.categoria)[0];
-    this.solpFormulario.controls["categoria"].setValue(this.categoria.id);
+
+    if (this.solicitudRecuperada.cm != null) {
+      this.solpFormulario.controls["cm"].setValue(this.solicitudRecuperada.cm);
+    }
+
+    if (this.solicitudRecuperada.solicitante != null) {
+      this.solpFormulario.controls["solicitante"].setValue(this.solicitudRecuperada.solicitante);
+    }
+
+    if (this.solicitudRecuperada.empresa.ID != undefined) {
+      this.solpFormulario.controls["empresa"].setValue(this.solicitudRecuperada.empresa.ID);
+    }
+
+    if (this.solicitudRecuperada.ordenadorGastos.ID != undefined) {
+      this.valorUsuarioPorDefecto = this.solicitudRecuperada.ordenadorGastos.ID.toString();
+    }
+
+    if (this.solicitudRecuperada.pais.ID != undefined) {
+      this.pais = this.paises.filter(x => x.id === this.solicitudRecuperada.pais.ID)[0];
+      this.solpFormulario.controls["pais"].setValue(this.solicitudRecuperada.pais.ID);
+    }
+
+    if (this.solicitudRecuperada.categoria != null) {
+      this.categoria = this.categorias.filter(x => x.nombre === this.solicitudRecuperada.categoria)[0];
+      this.solpFormulario.controls["categoria"].setValue(this.categoria.id);
+    }
+
     this.cargarSubcategorias();
   }
 
   cargarSubcategorias() {
-    let categoria = this.solpFormulario.controls["categoria"].value;
-    let pais = this.solpFormulario.controls["pais"].value;
-    this.servicio.ObtenerSubcategorias(categoria, pais).subscribe(
-      (respuesta) => {
-        this.subcategorias = Subcategoria.fromJsonList(respuesta);
-        this.subcategoria = this.subcategorias.filter(x => x.nombre == this.solicitudRecuperada.subcategoria)[0];
-        this.solpFormulario.controls["subcategoria"].setValue(this.subcategoria.id);
-        if (this.solicitudRecuperada.condicionesContractuales != '' && this.solicitudRecuperada.condicionesContractuales != '{ "condiciones":]}') {
-          let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales);
-          jsonCondicionesContractuales.condiciones.forEach(element => {
-            this.condicionesContractuales.push(new CondicionContractual(element.campo, this.indexCondicionesContractuales, element.descripcion));
-            this.indexCondicionesContractuales++;
-          });
-          this.registrarControlesCondicionesContractualesCargados();
-        }
-        this.solpFormulario.controls["comprador"].setValue(this.solicitudRecuperada.comprador.Title);
-        this.solpFormulario.controls["fechaEntregaDeseada"].setValue(new Date(this.solicitudRecuperada.fechaEntregaDeseada));
-        this.solpFormulario.controls["codigoAriba"].setValue(this.solicitudRecuperada.codigoAriba);
-        this.solpFormulario.controls["alcance"].setValue(this.solicitudRecuperada.alcance);
-        this.solpFormulario.controls["justificacion"].setValue(this.solicitudRecuperada.justificacion);
-        if (this.solicitudRecuperada) {
-          this.solpFormulario.controls["compraOrdenEstadistica"].setValue("SI");
-          this.solpFormulario.controls["numeroOrdenEstadistica"].setValue(this.solicitudRecuperada.numeroOrdenEstadistica);
-          this.mostrarNumeroOrdenEstadistica("SI");
-        }
-        this.consultarCondicionesTecnicasBienes();
-      }, err => {
-        console.log('Error obteniendo subcategorias: ' + err);
-      }
-    )
+    if (this.categoria != null && this.pais != null) {
+      this.servicio.ObtenerSubcategorias(this.categoria.id, this.pais.id).subscribe(
+        (respuesta) => {
+          this.subcategorias = Subcategoria.fromJsonList(respuesta);
+          if (this.solicitudRecuperada.subcategoria != null) {
+            this.subcategoria = this.subcategorias.filter(x => x.nombre == this.solicitudRecuperada.subcategoria)[0];
+            this.solpFormulario.controls["subcategoria"].setValue(this.subcategoria.id);
+            if (this.solicitudRecuperada.condicionesContractuales != '' && this.solicitudRecuperada.condicionesContractuales != '{ "condiciones":]}') {
+              let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales);
+              if(jsonCondicionesContractuales != null){
+                if(jsonCondicionesContractuales.condiciones != null){
+                  jsonCondicionesContractuales.condiciones.forEach(element => {
+                    this.condicionesContractuales.push(new CondicionContractual(element.campo, this.indexCondicionesContractuales, element.descripcion));
+                    this.indexCondicionesContractuales++;
+                  });
+                  this.registrarControlesCondicionesContractualesCargados();
+                }
+              }
+            }
+          }
 
+          if (this.solicitudRecuperada.comprador.Title != undefined) {
+            this.solpFormulario.controls["comprador"].setValue(this.solicitudRecuperada.comprador.Title);
+          }
+
+          if (this.solicitudRecuperada.fechaEntregaDeseada != null) {
+            this.solpFormulario.controls["fechaEntregaDeseada"].setValue(new Date(this.solicitudRecuperada.fechaEntregaDeseada));
+          }
+
+          if (this.solicitudRecuperada.codigoAriba != null) {
+            this.solpFormulario.controls["codigoAriba"].setValue(this.solicitudRecuperada.codigoAriba);
+          }
+
+          if (this.solicitudRecuperada.alcance != null) {
+            this.solpFormulario.controls["alcance"].setValue(this.solicitudRecuperada.alcance);
+          }
+
+          if (this.solicitudRecuperada.justificacion != null) {
+            this.solpFormulario.controls["justificacion"].setValue(this.solicitudRecuperada.justificacion);
+          }
+
+          if (this.solicitudRecuperada.compraOrdenEstadistica) {
+            this.solpFormulario.controls["compraOrdenEstadistica"].setValue("SI");
+            this.mostrarNumeroOrdenEstadistica("SI");
+            if (this.solicitudRecuperada.numeroOrdenEstadistica != null) {
+              this.solpFormulario.controls["numeroOrdenEstadistica"].setValue(this.solicitudRecuperada.numeroOrdenEstadistica);
+            }
+          }
+          this.consultarCondicionesTecnicasBienes();
+        }, err => {
+          console.log('Error obteniendo subcategorias: ' + err);
+        }
+      )
+    } else {
+      this.solpFormulario.controls["subcategoria"].setValue("");
+      this.solpFormulario.controls["comprador"].setValue("");
+      this.solpFormulario.controls["codigoAriba"].setValue("");
+
+      if (this.solicitudRecuperada.fechaEntregaDeseada != null) {
+        this.solpFormulario.controls["fechaEntregaDeseada"].setValue(new Date(this.solicitudRecuperada.fechaEntregaDeseada));
+      }
+
+      if (this.solicitudRecuperada.codigoAriba != null) {
+        this.solpFormulario.controls["codigoAriba"].setValue(this.solicitudRecuperada.codigoAriba);
+      }
+
+      if (this.solicitudRecuperada.alcance != null) {
+        this.solpFormulario.controls["alcance"].setValue(this.solicitudRecuperada.alcance);
+      }
+
+      if (this.solicitudRecuperada.justificacion != null) {
+        this.solpFormulario.controls["justificacion"].setValue(this.solicitudRecuperada.justificacion);
+      }
+
+      if (this.solicitudRecuperada.compraOrdenEstadistica) {
+        this.solpFormulario.controls["compraOrdenEstadistica"].setValue("SI");
+        this.mostrarNumeroOrdenEstadistica("SI");
+        if (this.solicitudRecuperada.numeroOrdenEstadistica != null) {
+          this.solpFormulario.controls["numeroOrdenEstadistica"].setValue(this.solicitudRecuperada.numeroOrdenEstadistica);
+        }
+      }
+
+      this.consultarCondicionesTecnicasBienes();
+    }
   }
+
   consultarCondicionesTecnicasServicios(): any {
     this.servicio.ObtenerCondicionesTecnicasServicios(this.solicitudRecuperada.id).subscribe(
       (respuesta) => {
-        console.log(respuesta);
         this.condicionesTS = CondicionTecnicaServicios.fromJsonList(respuesta);
-        console.log(this.condicionTS);
         if (this.condicionesTS.length > 0) {
           this.CargarTablaCTS();
         } else {
@@ -460,7 +541,10 @@ export class EditarSolicitudComponent implements OnInit {
         }
       } else {
         this.rutaAdjuntoCTB = element.rutaAdjunto;
+        let posfilename = this.rutaAdjuntoCTB.split('/');
+        let filename = posfilename[posfilename.length - 1];
         this.nombreAdjuntoCTB = element.archivoAdjunto.name;
+        this.adjuntoBorrarCTB = { id: element.id, nombre: filename, indice: element.indice };
       }
     } else {
       this.limpiarAdjuntosCTB();
@@ -594,7 +678,7 @@ export class EditarSolicitudComponent implements OnInit {
       this.condicionTS.codigo = codigo;
       this.condicionTS.descripcion = descripcion;
       this.condicionTS.cantidad = cantidad;
-      this.condicionTS.valorEstimado = valorEstimado;
+      this.condicionTS.valorEstimado = valorEstimado.toString();
       this.condicionTS.tipoMoneda = tipoMoneda;
       this.condicionTS.comentarios = comentarios;
       if (adjunto != null) {
@@ -654,7 +738,7 @@ export class EditarSolicitudComponent implements OnInit {
       let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas servicios" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas servicios" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
           (item: ItemAddResult) => {
@@ -686,7 +770,7 @@ export class EditarSolicitudComponent implements OnInit {
         this.condicionTS.codigo = codigo;
         this.condicionTS.descripcion = descripcion;
         this.condicionTS.cantidad = cantidad;
-        this.condicionTS.valorEstimado = valorEstimado;
+        this.condicionTS.valorEstimado = valorEstimado.toString();
         this.condicionTS.comentarios = comentarios;
         this.condicionTS.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
@@ -807,7 +891,7 @@ export class EditarSolicitudComponent implements OnInit {
       this.condicionTB.modelo = modelo;
       this.condicionTB.fabricante = fabricante;
       this.condicionTB.cantidad = cantidad;
-      this.condicionTB.valorEstimado = valorEstimado;
+      this.condicionTB.valorEstimado = valorEstimado.toString();
       this.condicionTB.tipoMoneda = tipoMoneda;
       this.condicionTB.comentarios = comentarios;
       if (adjunto != null) {
@@ -869,7 +953,7 @@ export class EditarSolicitudComponent implements OnInit {
       let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
       let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -905,7 +989,7 @@ export class EditarSolicitudComponent implements OnInit {
         this.condicionTB.modelo = modelo;
         this.condicionTB.fabricante = fabricante;
         this.condicionTB.cantidad = cantidad;
-        this.condicionTB.valorEstimado = valorEstimado;
+        this.condicionTB.valorEstimado = valorEstimado.toString();
         this.condicionTB.comentarios = comentarios;
         this.condicionTB.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
@@ -1055,9 +1139,9 @@ export class EditarSolicitudComponent implements OnInit {
     if (categoria != '' && pais != '') {
       this.servicio.ObtenerSubcategorias(categoria, pais).subscribe(
         (respuesta) => {
-          if(respuesta.length > 0){
+          if (respuesta.length > 0) {
             this.subcategorias = Subcategoria.fromJsonList(respuesta);
-          }else{
+          } else {
             this.subcategorias = [];
             this.solpFormulario.controls["subcategoria"].setValue("");
           }
@@ -1130,11 +1214,10 @@ export class EditarSolicitudComponent implements OnInit {
   limpiarControlesCTB(): any {
     this.ctbFormulario.controls["codigoCTB"].setValue('');
     this.ctbFormulario.controls["descripcionCTB"].setValue('');
-    this.ctbFormulario.controls["valorEstimadoCTB"].setValue('');
+    this.ctbFormulario.controls["valorEstimadoCTB"].setValue(0);
     this.ctbFormulario.controls["modeloCTB"].setValue('');
     this.ctbFormulario.controls["fabricanteCTB"].setValue('');
     this.ctbFormulario.controls["cantidadCTB"].setValue('');
-    this.ctbFormulario.controls["valorEstimadoCTB"].setValue('');
     this.ctbFormulario.controls["tipoMonedaCTB"].setValue('');
     this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
     this.ctbFormulario.controls["comentariosCTB"].setValue('');
@@ -1157,7 +1240,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["codigoCTS"].setValue('');
     this.ctsFormulario.controls["descripcionCTS"].setValue('');
     this.ctsFormulario.controls["cantidadCTS"].setValue('');
-    this.ctsFormulario.controls["valorEstimadoCTS"].setValue('');
+    this.ctsFormulario.controls["valorEstimadoCTS"].setValue(0);
     this.ctsFormulario.controls["tipoMonedaCTS"].setValue('');
     this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
     this.ctsFormulario.controls["comentariosCTS"].setValue('');
@@ -1242,9 +1325,13 @@ export class EditarSolicitudComponent implements OnInit {
     let valorSubcategoria;
     let comprador;
     this.subcategoria = this.subcategorias.filter(x => x.id === this.solpFormulario.controls["subcategoria"].value)[0];
-    if (this.categoria != null) {
+    if (this.subcategoria != null && this.subcategoria != undefined) {
       valorSubcategoria = this.subcategoria.nombre;
       comprador = this.subcategoria.comprador.ID;
+    }
+    else {
+      valorSubcategoria = null;
+      comprador = null;
     }
     let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
@@ -1272,8 +1359,8 @@ export class EditarSolicitudComponent implements OnInit {
       (empresa != '') ? empresa : null,
       (ordenadorGastos != 'Seleccione') ? ordenadorGastos : null,
       (valorPais != '') ? valorPais : null,
-      (valorCategoria != null) ? valorCategoria : '',
-      (valorSubcategoria != '') ? valorSubcategoria : '',
+      (valorCategoria != null) ? valorCategoria : null,
+      (valorSubcategoria != null) ? valorSubcategoria : null,
       (comprador != null) ? comprador : null,
       (codigoAriba != '') ? codigoAriba : '',
       (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
@@ -1309,6 +1396,7 @@ export class EditarSolicitudComponent implements OnInit {
     let estado;
     let responsable;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
+    let solicitante = this.solpFormulario.controls["solicitante"].value;
     let cm = this.solpFormulario.controls["cm"].value;
     let empresa = this.solpFormulario.controls["empresa"].value;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
@@ -1410,19 +1498,29 @@ export class EditarSolicitudComponent implements OnInit {
     if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
     }
-    if(valorcompraOrdenEstadistica == "SI"){
+    if (valorcompraOrdenEstadistica == "SI") {
       this.compraOrdenEstadistica = true;
     }
 
-    
+    let valorCategoria;
+    this.categoria = this.categorias.filter(x => x.id === categoria)[0];
+    if (this.categoria != null) {
+      valorCategoria = this.categoria.nombre;
+    }
+    let valorSubcategoria;
+    let valorComprador;
+    this.subcategoria = this.subcategorias.filter(x => x.id === subcategoria)[0];
+    if (this.categoria != null) {
+      valorSubcategoria = this.subcategoria.nombre;
+      valorComprador = this.subcategoria.comprador.ID;
+    }
 
     this.servicio.obtenerResponsableProcesos(valorPais).subscribe(
       (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
-
         if (tipoSolicitud == 'Sondeo') {
           estado = 'Por sondear';
-          responsable = subcategoria.comprador.ID;
+          responsable = valorComprador;
         } else {
           if (this.compraBienes) {
             estado = 'Por verificar material';
@@ -1438,13 +1536,13 @@ export class EditarSolicitudComponent implements OnInit {
             'Solicitud Solpes: ' + new Date(),
             tipoSolicitud,
             cm,
-            this.usuarioActual.nombre,
+            solicitante,
             empresa,
             ordenadorGastos,
-            valorPais.id,
-            categoria.nombre,
-            subcategoria.nombre,
-            subcategoria.comprador.ID,
+            valorPais,
+            valorCategoria,
+            valorSubcategoria,
+            valorComprador,
             codigoAriba,
             fechaEntregaDeseada,
             alcance,
@@ -1454,7 +1552,11 @@ export class EditarSolicitudComponent implements OnInit {
             responsable,
             this.compraBienes,
             this.compraServicios,
-            consecutivoNuevo, this.usuarioActual.id, null, this.compraOrdenEstadistica, valornumeroOrdenEstadistica);
+            consecutivoNuevo,
+            this.usuarioActual.id,
+            null,
+            this.compraOrdenEstadistica,
+            valornumeroOrdenEstadistica);
 
           this.servicio.actualizarSolicitud(this.solicitudRecuperada.id, this.solicitudGuardar).then(
             (item: ItemAddResult) => {
@@ -1512,18 +1614,18 @@ export class EditarSolicitudComponent implements OnInit {
     let respuesta = true;
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
-    if(valorOrdenEstadistica == "NO"){
+    if (valorOrdenEstadistica == "NO") {
       respuesta = true;
-    }else{
-      if(this.EsCampoVacio(valorNumeroOrdenEstadistica)){
+    } else {
+      if (this.EsCampoVacio(valorNumeroOrdenEstadistica)) {
         respuesta = false;
         this.mostrarAdvertencia("El campo Número de orden estadística es requerido");
       }
     }
     return respuesta;
-   }
+  }
 
-   ValidarExistenciaCondicionesTecnicas(): boolean {
+  ValidarExistenciaCondicionesTecnicas(): boolean {
     let respuesta = true;
     if (this.condicionesTB.length == 0 && this.condicionesTS.length == 0) {
       this.mostrarAdvertencia("Debe existir condiciones técnicas de bienes o condiciones técnicas de servicios");
@@ -1531,6 +1633,4 @@ export class EditarSolicitudComponent implements OnInit {
     }
     return respuesta;
   }
-
-
 }

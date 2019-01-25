@@ -84,6 +84,7 @@ export class VerificarMaterialComponent implements OnInit {
   ) {
     this.loading = false;
     this.emptyVerificar = true;
+    this.ArchivoAdjunto = null;
     this.SwtichOrdenEstadistica=false;
     this.cantidadTotalCompra = 0;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
@@ -98,8 +99,7 @@ export class VerificarMaterialComponent implements OnInit {
     }
   }
    
-  GuardarComentario() {
-    debugger;
+  GuardarComentario() {  
     let coment;
     if (this.ComentarioVerificarMaterial === undefined || this.ComentarioVerificarMaterial === null) {
       this.mostrarError("Ingrese un comentario!");
@@ -110,7 +110,6 @@ export class VerificarMaterialComponent implements OnInit {
             this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos")
             return false;
         }
-            
         let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarActivos; 
         coment = {
           Estado: 'Por registrar activos',
