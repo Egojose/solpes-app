@@ -332,7 +332,7 @@
                                     <td>{{item.comentarioSondeo}}</td>
                                     <td>
 
-                                        <ng-container *ngIf="item.adjunto != ''; else nohaySondeobien">
+                                        <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
                                             <a href="{{item.adjunto.url}}" target=_blank>
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>

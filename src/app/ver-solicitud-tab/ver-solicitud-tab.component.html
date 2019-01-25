@@ -1,6 +1,5 @@
 <div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
-        alt="loading...">
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
     <b>PROCESANDO...</b>
 </div>
 <br>
@@ -147,12 +146,12 @@
                             <td>{{item.cantidad}}</td>
                             <td>{{item.valorEstimado}}</td>
                             <td>
-                                <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTB">
-                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"><button
+                                <div *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
+                                    <a href="{{item.adjuntoCreacion.url}}" target="_blank"><button
                                             class="btn btn-primary">Ver archivo</button></a>
                                 </div>
-                                <ng-template #sinAdjuntoCTB>
-                                    <p>Sin adjunto</p>
+                                <ng-template #NoHayAdjBienes>
+                                    Sin adjunto
                                 </ng-template>
                             </td>
                             <td>{{item.comentario}}</td>
@@ -180,11 +179,13 @@
                             <td>{{item.cantidad}}</td>
                             <td>{{item.valorEstimado}}</td>
                             <td>
-                                <div *ngIf="item.adjunto.results.length > 0; else sinAdjuntoCTS">
-                                    <a href="{{item.adjunto.results[0].ServerRelativeUrl}}" target="_blank"><button
-                                            class="btn btn-primary">Ver archivo</button></a>
-                                </div>
-                                <ng-template #sinAdjuntoCTS>
+                                <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
+                                    <a href="{{item.adjuntoCreacion.url}}" target=_blank>
+                                        <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                    </a>
+                                </ng-container>
+                                <ng-template #nohaycreacion>
+                                    Sin adjunto
                                 </ng-template>
                             </td>
                             <td>{{item.comentarios}}</td>
@@ -204,8 +205,7 @@
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
-                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder=""
-                        disabled>{{comentariosolicitudsondeo}}</textarea>
+                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentariosolicitudsondeo}}</textarea>
                 </div>
             </div>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo Bienes</strong></label>
@@ -228,7 +228,16 @@
                             <td>{{item.cantidadSondeo}}</td>
                             <td>{{item.precioSondeo}}</td>
                             <td>{{item.comentarioSondeo}}</td>
-                            <td></td>
+                            <td>
+                                <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
+                                    <a href="{{item.adjunto.url}}" target=_blank>
+                                        <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                    </a>
+                                </ng-container>
+                                <ng-template #nohaySondeobien>
+                                    Sin adjunto
+                                </ng-template>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -255,6 +264,14 @@
                             <td>{{item.precioSondeo}}</td>
                             <td>{{item.comentariosSondeo}}</td>
                             <td>
+                                <ng-container *ngIf="item.adjunto != null; else nohaySondeoservicio">
+                                    <a href="{{item.adjunto.url}}" target=_blank>
+                                        <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                    </a>
+                                </ng-container>
+                                <ng-template #nohaySondeoservicio>
+                                    Sin adjunto
+                                </ng-template>
 
                             </td>
                         </tr>
@@ -357,8 +374,7 @@
                 <br>
                 <div class="form-group col-md-12">
                     <label for="textarea" class="col-sm-3 control-label"><b>Comentario registro de activos:</b></label>
-                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder=""
-                        disabled>{{comentarioregistroactivos}}</textarea>
+                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioregistroactivos}}</textarea>
                 </div>
                 <div class="col-md-12 row">
                     <div>
