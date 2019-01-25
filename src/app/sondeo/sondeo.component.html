@@ -29,7 +29,12 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicasBienesLectura">
-                                        <td>{{item.codigo}}</td>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.codigo}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.codigoSondeo}}</td>
+                                        </ng-template>
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.modelo}}</td>
                                         <td>{{item.fabricante}}</td>

@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { ActivatedRoute } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
 import { RecepcionServicios } from '../registrar-entradas-sap-servicios/RecepcionServicios';
-
+import { ToastrManager } from 'ng6-toastr-notifications';
 @Component({
   selector: 'app-registrar-entradas-sap-servicios',
   templateUrl: './registrar-entradas-sap-servicios.component.html',
@@ -18,13 +18,13 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   cantidad: any;
   valor: string;
   comentarios: string;
-  ObjRecepcionBienes: RecepcionBienes[] = [];
   IdSolicitud: number;
-  ObjRecepcionServicios: any;
-  recepcionBienes: FormGroup;
+  ObjRecepcionServicios: RecepcionServicios[] = [];
+  recepcionServicios: FormGroup;
   IdRecepcionServicios: number;
+  IdUsuario: any;
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
+  constructor(private servicio: SPServicio, private formBuilder: FormBuilder,public toastr: ToastrManager, private activarRoute: ActivatedRoute) {
    
   }
 
@@ -34,17 +34,16 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
     objRegistrar = {
       NumeroRecepcion: this.numRecepcion.value,
       recibidoSap: true,
-      Estado: 'Terminado'
     }
     if (this.numRecepcion.value === "" || this.numRecepcion.value === null || this.numRecepcion.value === undefined) {
-      alert('Debe suministrar el numero de recpción')
+      this.mostrarAdvertencia('Debe suministrar el número de recepción')
     }
     else {
       let index = this.ObjRecepcionServicios.findIndex(x=> x.IdRecepcionServicios === item.IdRecepcionServicios);
       this.servicio.registrarRecepcionServicios(this.IdRecepcionServicios, objRegistrar).then(
         (resultado: ItemAddResult) => {
+          this.MostrarExitoso('Recibido');
           this.ObjRecepcionServicios.splice(index, 1);
-          alert('Recibido')
         }
       ).catch(
         (error) => {
@@ -55,11 +54,25 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   }
   ngOnInit() {
     this.IdSolicitudParms = localStorage.getItem('IdSolicitud')
-    this.servicio.ObtenerRecepcionesServicios(this.IdSolicitudParms).subscribe(
+    this.servicio.ObtenerUsuarioActual().subscribe(
       (respuesta) => {
-        this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
-        console.log(this.ObjRecepcionServicios)
+        this.IdUsuario = respuesta.Id;
+        this.servicio.ObtenerRecepcionesServicios(this.IdUsuario).subscribe(
+          (respuesta) => {
+            this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
+            console.log(this.ObjRecepcionServicios)
+          }
+        );
       }
-    );
+    )
+  }
+
+  MostrarExitoso(mensaje: string) {
+    this.toastr.successToastr(mensaje, 'Confirmación!');
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, 'Validación');
   }
 }
+
