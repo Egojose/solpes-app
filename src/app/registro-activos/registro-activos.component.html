@@ -61,6 +61,10 @@
                 </table>
 
                 <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+                <div class="form-group col-md-12">
+                    <label for="textarea" class="col-sm-6 control-label"><b>Comentario de verificación de materiales:</b></label>
+                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="5" placeholder="" disabled>{{ComentarioVerificar}}</textarea>
+                </div>
             </div>
         </div>
     </mat-expansion-panel>
@@ -80,10 +84,7 @@
     <br>
 </div>
 
-<div class="form-group col-md-12">
-    <label for="textarea" class="col-sm-6 control-label"><b>Comentario de verificación de materiales:</b></label>
-    <textarea name="" id="textareaHistorial" class="historial form-control" rows="5" placeholder="" disabled>{{ComentarioVerificar}}</textarea>
-</div>
+
 <div class="row">
     <div class="form-group col-md-12">
         <label for="textarea" class="control-label"><b>Comentarios:</b></label>
