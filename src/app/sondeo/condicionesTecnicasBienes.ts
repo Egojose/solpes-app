@@ -7,10 +7,13 @@ export class CondicionesTecnicasBienes {
         public modelo: string,
         public fabricante: string,        
         public cantidad: number,
+        public cantidadSondeo:number,
         public valorEstimado?: string,
+        public precioSondeo?:string,
         public Comentario?: string,        
         public archivoAdjunto?: any,
-        public ComentarioSondeo?:string  
+        public ComentarioSondeo?:string,
+        public codigoSondeo?:string  
         ) {}
 
     public static fromJson(element: any) {
@@ -37,10 +40,13 @@ export class CondicionesTecnicasBienes {
             element.Modelo, 
             element.Fabricante,
             element.Cantidad,
-            element.ValorEstimado, 
+            element.CantidadSondeo,
+            element.ValorEstimado,
+            element.PrecioSondeo, 
             element.Comentarios,
             RutaArchivo,
-            element.ComentarioSondeo);
+            element.ComentarioSondeo,
+            element.CodigoSondeo);
     }
 
     public static fromJsonList(elements: any) {

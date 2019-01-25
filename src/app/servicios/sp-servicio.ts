@@ -27,7 +27,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4MzgxNjE4LCJuYmYiOjE1NDgzODE2MTgsImV4cCI6MTU0ODQxMDcxOCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.iNNRzLMtDuY9jVpQqX6g3-h4KRbmME-L0x2PeQjFt67USjohU5psPzLQbLKFANgDdU-gNmz5vaVBAzKzq6WnJdFA7KjqUbwVJdNplQMaBHBpFBQ07xVlDbz6axQ3Znj3gFO09HKhTJ0YNom_pEIayRGhAg96PaEWmPIxN1WeUGkdOWd7UK6gGN20q1VoNfuQbGOUS8Smm8FRWNOOtizxrfCrNG2vfC0B3hAuG7vB5XIRytYoUrgAr-a2d524fHsbV_IorjnRKBM-plQXlsWcFmVp2QTq2bJq1R4uasG5stDrmSUWX-eyzvS_RhleQKkeFYy5L9e2ZuMoPfxXYkYcXQ'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4NDM0NDA1LCJuYmYiOjE1NDg0MzQ0MDUsImV4cCI6MTU0ODQ2MzUwNSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.X-SrH5XCJyhC0W_NAG316w3SzfGn7AHiJpMimgmrSq-Gy_vEzu5ytqfS9zoUctwp4fRVbg9kh2zOr0VSMIwNa68_IwuxjOLvdzWSwg-Lr4Wgx1zsRJzllRnGeGyUe7S8IMNlWl82ce03nv7iShZC7rgywLZR1XUJq5GD3EW9RDuW6HE4WhBEUwVNqnaOvToZHB9qh2QYB3LX7jZ3QD3kHyICYtsyHzcKptGM73mJDjwFmVC0K6pLaVcf_-2Ko24al1AKixoKE2vdB7pq0cGeZ7hJ1LtOdRmk7WvQc4VzIz14f8Nn_CwYpB5vUg3tn-APOCp81GMj2oaJKqarKm8HaA'
             }
         }, environment.urlWeb);
 
@@ -100,6 +100,8 @@ export class SPServicio {
             AuthorId: solicitud.autor,
             CompraBienes: solicitud.compraBienes,
             CompraServicios: solicitud.compraServicios,
+            FaltaRecepcionBienes: solicitud.compraBienes,
+            FaltaRecepcionServicios: solicitud.compraServicios,
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica
@@ -129,6 +131,8 @@ export class SPServicio {
             ResponsableId: solicitud.responsable,
             CompraBienes: solicitud.compraBienes,
             CompraServicios: solicitud.compraServicios,
+            FaltaRecepcionBienes: solicitud.compraBienes,
+            FaltaRecepcionServicios: solicitud.compraServicios,
             Consecutivo: solicitud.consecutivo,
             Estado: solicitud.estado,
             CodigoAriba: solicitud.codigoAriba,
@@ -142,11 +146,14 @@ export class SPServicio {
             Title: condicionTecnicaBienes.titulo,
             SolicitudId: condicionTecnicaBienes.idSolicitud,
             Codigo: condicionTecnicaBienes.codigo,
+            CodigoSondeo: condicionTecnicaBienes.codigo,
             Descripcion: condicionTecnicaBienes.descripcion,
             Modelo: condicionTecnicaBienes.modelo,
             Fabricante: condicionTecnicaBienes.fabricante,
             Cantidad: condicionTecnicaBienes.cantidad,
+            CantidadSondeo: condicionTecnicaBienes.cantidad,
             ValorEstimado: condicionTecnicaBienes.valorEstimado,
+            PrecioSondeo: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios,
             TipoMoneda: condicionTecnicaBienes.tipoMoneda
         });
@@ -157,11 +164,14 @@ export class SPServicio {
             Title: condicionTecnicaBienes.titulo,
             SolicitudId: condicionTecnicaBienes.idSolicitud,
             Codigo: condicionTecnicaBienes.codigo,
+            CodigoSondeo: condicionTecnicaBienes.codigo,
             Descripcion: condicionTecnicaBienes.descripcion,
             Modelo: condicionTecnicaBienes.modelo,
             Fabricante: condicionTecnicaBienes.fabricante,
             Cantidad: condicionTecnicaBienes.cantidad,
+            CantidadSondeo: condicionTecnicaBienes.cantidad,
             ValorEstimado: condicionTecnicaBienes.valorEstimado,
+            PrecioSondeo: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios,
             TipoMoneda: condicionTecnicaBienes.tipoMoneda
         });
@@ -197,9 +207,12 @@ export class SPServicio {
             Title: condicionTecnicaServicios.titulo,
             SolicitudId: condicionTecnicaServicios.idSolicitud,
             Codigo: condicionTecnicaServicios.codigo,
+            CodigoSondeo: condicionTecnicaServicios.codigo,
             Descripcion: condicionTecnicaServicios.descripcion,
             Cantidad: condicionTecnicaServicios.cantidad,
+            CantidadSondeo: condicionTecnicaServicios.cantidad,
             ValorEstimado: condicionTecnicaServicios.valorEstimado,
+            PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
             Comentario: condicionTecnicaServicios.comentarios
         });
@@ -210,9 +223,12 @@ export class SPServicio {
             Title: condicionTecnicaServicios.titulo,
             SolicitudId: condicionTecnicaServicios.idSolicitud,
             Codigo: condicionTecnicaServicios.codigo,
+            CodigoSondeo: condicionTecnicaServicios.codigo,
             Descripcion: condicionTecnicaServicios.descripcion,
             Cantidad: condicionTecnicaServicios.cantidad,
+            CantidadSondeo: condicionTecnicaServicios.cantidad,
             ValorEstimado: condicionTecnicaServicios.valorEstimado,
+            PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
             Comentario: condicionTecnicaServicios.comentarios
         });

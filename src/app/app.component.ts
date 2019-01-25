@@ -3,6 +3,7 @@ import * as $ from 'jquery';
 import { SPServicio } from './servicios/sp-servicio';
 import { Usuario } from './dominio/usuario';
 import { Grupo } from './dominio/grupo';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,12 +18,14 @@ export class AppComponent implements OnInit {
   PermisosEdicionContratos: boolean;
   PermisosRegistroEntradasBienes: boolean;
   PermisosRegistroEntradasServicios: boolean;
+  linkEdicionContratos: string;
 
   constructor(private servicio: SPServicio) {
     /*this.PermisosCreacion = false;
     this.PermisosEdicionContratos = false;
     this.PermisosRegistroEntradasBienes = false;
     this.PermisosRegistroEntradasServicios = false;*/
+    this.linkEdicionContratos = environment.urlWeb + environment.linkVistaEdicionContratos;
   }
 
   abrirCerrarMenu(){
