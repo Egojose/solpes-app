@@ -24,7 +24,9 @@ export class Solicitud {
         public nombreResponsable?: any,
         public compraOrdenEstadistica?: boolean,
         public numeroOrdenEstadistica?: string,
-        public id?: number) { }
+        public id?: number,
+        public FaltaRecepcionBienes?: boolean,
+        public FaltaRecepcionServicios?: boolean) { }
 
     public static fromJson(element: any) {
         return new Solicitud(
@@ -52,7 +54,9 @@ export class Solicitud {
             element.Responsable.Title,
             element.OrdenEstadistica,
             element.NumeroOrdenEstadistica,
-            element.ID);
+            element.ID,
+            element.FaltaRecepcionBienes,
+            element.FaltaRecepcionServicios);
     }
 
     public static fromJsonList(elements: any) {

@@ -149,8 +149,8 @@ export class RegistroActivosComponent implements OnInit {
             this.servicio
               .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
               .subscribe(RespuestaCondiciones => {
-                this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
-                this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+                this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+                this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
                 this.dataSource.paginator = this.paginator;
               });
           });

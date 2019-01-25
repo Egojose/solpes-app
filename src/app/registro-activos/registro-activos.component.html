@@ -19,23 +19,23 @@
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
                     <ng-container matColumnDef="codigo">
                         <th mat-header-cell *matHeaderCellDef> Código </th>
-                        <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.codigoverificar}} </td>
                     </ng-container>
                     <ng-container matColumnDef="descripcion">
                         <th mat-header-cell *matHeaderCellDef> Descripción </th>
-                        <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.descripcionverificar}} </td>
                     </ng-container>
                     <ng-container matColumnDef="modelo">
                         <th mat-header-cell *matHeaderCellDef> Modelo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.modeloverificar}} </td>
                     </ng-container>
                     <ng-container matColumnDef="fabricante">
                         <th mat-header-cell *matHeaderCellDef> Fabricante </th>
-                        <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.fabricanteverificar}} </td>
                     </ng-container>
                     <ng-container matColumnDef="cantidad">
                         <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-                        <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar}} </td>
                     </ng-container>
                     <ng-container matColumnDef="valorEstimado">
                         <th mat-header-cell *matHeaderCellDef> Valor</th>

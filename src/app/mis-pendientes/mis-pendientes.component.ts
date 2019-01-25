@@ -84,7 +84,7 @@ export class MisPendientesComponent implements OnInit {
             .subscribe(RespuestaResponsableProceso => {
               this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
               let Responsable = this.ObjResponsableProceso[0].porRegistrarSolp;
-              this.servicio.cambioEstadoSolicitud(IdSolicitud,"Por registrar solp sap",Responsable,null,null).then(
+              this.servicio.cambioEstadoSolicitud(IdSolicitud,"Por registrar solp sap",Responsable).then(
                 (respuesta)=>{
                   this.MostrarExitoso("Registro enviado con éxito");
                   this.modalRef.hide();                  
@@ -164,7 +164,7 @@ export class MisPendientesComponent implements OnInit {
   }
 
   confirmarDescartarPresupuesto(){
-    this.servicio.cambioEstadoSolicitud(this.idSolicitud,"Solicitud descartada",null,null,null).then(
+    this.servicio.cambioEstadoSolicitud(this.idSolicitud,"Solicitud descartada",null).then(
       (respuesta)=>{
         this.MostrarExitoso("Solicitud descartada con éxito");
         this.modalRef.hide();

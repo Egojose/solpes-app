@@ -23,12 +23,12 @@
                 <td>{{item.valor}}</td>
                 <td>{{item.comentario}}</td>
                 <td>
-                    <input class="form-control" type="text" name="" id="" value=""  [formControl]="numRecepcion">
+                    <input class="form-control" type="text" name="" id="" value="" [formControl]="numRecepcion">
                 </td>
                 <td>
-                    <input type="button" class="btn btn-primary" value="OK" (click)="Guardar()" />
+                    <input type="button" class="btn btn-primary" value="OK" (click)="Guardar(item)" />
                 </td>
             </tr>
         </tbody>
-    </table> 
+    </table>
 </div>
