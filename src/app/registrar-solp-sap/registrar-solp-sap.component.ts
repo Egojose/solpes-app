@@ -124,6 +124,14 @@ export class RegistrarSolpSapComponent implements OnInit {
           ComentarioRegistrarSAP: this.ComentarioRegistrarSap
         }
       }
+      else if(this.RDBOrdenadorGastos === 3 && this.ComentarioRegistrarSap === undefined) {
+        this.tooltip1.show();
+        setTimeout(() => {
+          this.tooltip1.hide();
+        }, 3000);
+        // alert('Debe especificar el motivo en comentarios');
+        return false;
+      }
       else if (this.RDBOrdenadorGastos === 3) {
         ObjSolpSap = {
           ResponsableId: this.Autor,
