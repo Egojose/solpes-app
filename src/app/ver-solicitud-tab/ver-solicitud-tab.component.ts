@@ -108,6 +108,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            console.log(this.ObjCondicionesTecnicas);
           }
         );
         this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
