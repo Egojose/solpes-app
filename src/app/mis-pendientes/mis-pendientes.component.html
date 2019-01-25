@@ -47,8 +47,8 @@
                 <button *ngIf="element.estado =='Borrador'" class="btn btn-primary" (click)="EditarSolicitud(element)">Seguir
                     editando</button><button *ngIf="element.estado =='Borrador'" class="btn btn-danger" (click)="descartarSolicitud(element.id, templateConfirmacionDescartar)">Descartar</button>
                 <button *ngIf="element.estado =='Por sondear'" class="btn btn-primary" (click)="PorSondear(element.id)">Sondear</button>
-                <button *ngIf="element.estado =='Por aprobar sondeo'" class="btn btn-primary" (click)="AprobarSondeo(element.id)">Ir
-                    aprobar sondeo</button>
+                <button *ngIf="element.estado =='Por aprobar sondeo'" class="btn btn-primary" (click)="AprobarSondeo(element.id)">
+                    Revisar sondeo</button>
                 <button *ngIf="element.estado =='Por verificar material'" class="btn btn-primary" (click)="VerificarMaterial(element.id)">Ir
                     a verificar material</button>
                 <button *ngIf="element.estado =='Por registrar solp sap'" class="btn btn-primary" (click)="RegistrarSOLPSAP(element.id)">Ir
@@ -70,8 +70,13 @@
                         <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-success" (click)="VerDetalle(element.id)">Ver detalle</button>
                     </div>
                 </div>
-                <button *ngIf="element.estado =='Por registrar entregas' && element.compraBienes === true" class="btn btn-primary btnBienes" (click)="RegistrarEntregasBienes(element.id)">Registrar bienes</button>
-                <button *ngIf="element.estado =='Por registrar entregas' && element.compraServicios === true" class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Registrar servicios</button>
+                <div class="row filaBtn">
+                    <button *ngIf="element.estado =='Por registrar entregas' && element.FaltaRecepcionBienes === true" class="btn btn-primary" (click)="RegistrarEntregasBienes(element.id)">Recepcionar bienes</button>
+                </div>
+                <div class="row filaBtn">
+                    <button *ngIf="element.estado =='Por registrar entregas' && element.FaltaRecepcionServicios === true" class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Recepcionar servicios</button>
+                </div>
+
                 <button *ngIf="element.estado =='Por registrar activos'" class="btn btn-success" (click)="RegistrarActivos(element.id)">Ir a registrar activos</button>
             </td>
         </ng-container>

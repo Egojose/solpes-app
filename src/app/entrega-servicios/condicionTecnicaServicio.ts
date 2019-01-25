@@ -5,7 +5,7 @@ export class CondicionesTecnicasServicios{
     }
 
     public static fromJson(element: any) {
-        return new CondicionesTecnicasServicios(element.Id ,element.Codigo, element.Descripcion, element.CantidadVerificar, element.CantidadRecibida, element.CantidadVerificar-element.CantidadRecibida,element.UltimaEntrega);
+        return new CondicionesTecnicasServicios(element.Id ,element.Codigo, element.Descripcion, element.CantidadSondeo, element.CantidadRecibida, element.CantidadSondeo-element.CantidadRecibida,element.UltimaEntrega);
     }
 
     public static fromJsonList(elements: any) {

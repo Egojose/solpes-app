@@ -6,6 +6,7 @@ import { CondicionesTecnicasServicios } from '../entrega-servicios/condicionTecn
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RecepcionServicios } from '../entrega-servicios/recepcionServicios';
 import { ItemAddResult } from 'sp-pnp-js';
+import { responsableProceso } from '../dominio/responsableProceso';
 
 @Component({
   selector: 'app-entrega-servicios',
@@ -44,6 +45,12 @@ export class EntregaServiciosComponent implements OnInit {
   activarTool: boolean;
   autor: any;
   loading: boolean;
+  CompraBienes: any;
+  FaltaBienes: any;
+  ObResProceso: any;
+  ResponsableServicios: any;
+  paisId: any;
+  NumSolp: any;
 
   constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) {
     this.ItemsAgregadosReciente = 0;
@@ -55,7 +62,7 @@ export class EntregaServiciosComponent implements OnInit {
     this.loading = true;
     this.AgregarElementoForm = this.formBuilder.group({
       Descripcion: ['', Validators.required],
-      Valor: ['', Validators.required],
+      Valor: [''],
       Cantidad: ['', Validators.required],
       Mes: ['', Validators.required],
       Ubicacion: ['', Validators.required],
@@ -74,11 +81,15 @@ export class EntregaServiciosComponent implements OnInit {
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
+        this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador;
+        this.comprador = solicitud.Comprador.Title;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
+        this.CompraBienes = solicitud.CompraBienes;
+        this.FaltaBienes = solicitud.FaltaRecepcionBienes;
+        this.NumSolp = solicitud.NumSolSAP;
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         let CantidadCT = 0;
         let TotalCantidadVerificar = 0;
@@ -108,7 +119,17 @@ export class EntregaServiciosComponent implements OnInit {
                 if (CantidadCT === this.ObjCondicionesTecnicas.length && this.ItemsAgregadosReciente === 0) {
                   this.showBtnConfirmar = true;
                 }
-                this.loading = false;
+                this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+                  (RespuestaProcesos)=>{
+                    this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);                     
+                    this.ResponsableServicios = this.ObResProceso[0].porRegistrarSapServicios;
+                    this.loading = false;
+                  },
+                  (error)=>{
+
+                  }
+                )
+                
               }
             );
 
@@ -144,12 +165,13 @@ export class EntregaServiciosComponent implements OnInit {
     else {
       ultimaEntregabool = false;
     }
+
     let IdServicio = this.ObjCondicionesTecnicas.findIndex(x => x.IdServicio === Objdescripcion.IdServicio);
     this.cantidadCTS = this.ObjCondicionesTecnicas[IdServicio].totalCantidad;
     this.cantidadRecibidaCTS = this.ObjCondicionesTecnicas[IdServicio].cantidadRecibida;
-
     if (this.cantidadCTS >= cantidad) {
       let totalCantidad = this.cantidadCTS - cantidad;
+
       this.ObjCondicionesTecnicas[IdServicio]["totalCantidad"] = totalCantidad;
       this.ObjCondicionesTecnicas[IdServicio]["cantidadRecibida"] = parseFloat(cantidad);
 
@@ -157,14 +179,16 @@ export class EntregaServiciosComponent implements OnInit {
         ultimaEntregabool = true;
         this.ObjCondicionesTecnicas[IdServicio]["ultimaEntregaCTS"] = true;
         if (IdServicio > -1) {
-          this.ObjItemsDescripcion.splice(IdServicio, 1);
+          let indexDesc = this.ObjItemsDescripcion.findIndex(x => x.IdServicio === Objdescripcion.IdServicio)
+          this.ObjItemsDescripcion.splice(indexDesc, 1);
         }
       }
       else {
         if (ultimaEntrega == "Sí") {
           if (IdServicio > -1) {
             this.ObjCondicionesTecnicas[IdServicio]["ultimaEntregaCTS"] = true;
-            this.ObjItemsDescripcion.splice(IdServicio, 1);
+            let indexDesc = this.ObjItemsDescripcion.findIndex(x => x.IdServicio === Objdescripcion.IdServicio)
+            this.ObjItemsDescripcion.splice(indexDesc, 1);
           }
         }
       }
@@ -183,10 +207,10 @@ export class EntregaServiciosComponent implements OnInit {
     }
 
     this.objRecepcionAgregar = new RecepcionServicios(Objdescripcion.IdServicio, Objdescripcion.descripcion, cantidad, valor, ultimaEntregabool, comentario, ubicacion, mes);
-    this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud).then(
+    this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud,this.ResponsableServicios).then(
       (Respuesta: ItemAddResult) => {
         this.ItemsAgregadosReciente++;
-        this.objRecepcionAgregar["IdRecepcionServicios"] = 1;
+        this.objRecepcionAgregar["IdRecepcionServicios"] = Respuesta.data.Id;
         this.objRecepcionAgregar["estadoRS"] = "No confirmado";
         this.objRecepcionAgregar["fechaRecepcion"] = new Date();
         this.ObjRecepcionServicios.push(this.objRecepcionAgregar);
@@ -241,6 +265,7 @@ export class EntregaServiciosComponent implements OnInit {
       let objActualizacionCTS = {
         UltimaEntrega: true
       }
+      this.loading=true;
       this.servicio.actualizarServiciosRecibidos(RecepcionServiciosID).then(
         (resultado) => {
           this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjCTS.IdServicio, objActualizacionCTS).then(
@@ -249,9 +274,11 @@ export class EntregaServiciosComponent implements OnInit {
               let indexServicio = this.ObjRecepcionServicios.findIndex(x => x.idServicio === ObjCTS.IdServicio);
               this.ObjRecepcionServicios[indexServicio]["ultimaEntrega"] = true;
               this.ObjItemsDescripcion.splice(indexServicio, 1);
+              this.loading=false;
             }).catch(
               (error) => {
                 console.log(error);
+                this.loading=false;
               }
             );
         }
@@ -267,12 +294,20 @@ export class EntregaServiciosComponent implements OnInit {
         CantidadRecibida: 0,
         UltimaEntrega: true
       }
+      this.loading=true;
       this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjCTS.IdServicio, objActualizacionCTS).then(
         (resultado) => {
           this.objRecepcionAgregar = new RecepcionServicios(ObjCTS.IdServicio, ObjCTS.descripcion, 0, "0", true, "", "", "");
-          this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud).then(
-            (resultadoBienes) => {
-
+          this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud,null).then(
+            (resultadoBienes: ItemAddResult) => {
+              this.ItemsAgregadosReciente++;
+              this.objRecepcionAgregar["IdRecepcionServicios"] = resultadoBienes.data.Id;
+              this.objRecepcionAgregar["estadoRS"] = "No confirmado";
+              this.objRecepcionAgregar["fechaRecepcion"] = new Date();
+              this.ObjRecepcionServicios.push(this.objRecepcionAgregar);
+              let indexServicio = this.ObjRecepcionServicios.findIndex(x=> x.idServicio === ObjCTS.IdServicio)
+              this.ObjItemsDescripcion.splice(indexServicio,1);
+              this.loading = false;
             }
           )
         }).catch(
@@ -288,7 +323,7 @@ export class EntregaServiciosComponent implements OnInit {
     let IdServicio = this.ObjCondicionesTecnicas.findIndex(x => x.IdServicio === ObjRecepcionEliminar.idServicio);
     let TotalServicios = this.ObjCondicionesTecnicas[IdServicio]["totalCantidad"];
     let cantidadRecibida = this.ObjCondicionesTecnicas[IdServicio]["cantidadRecibida"];
-
+    this.loading=true;
     this.servicio.eliminarServiciosRecibidos(ObjRecepcionEliminar.IdRecepcionServicios).then(
       (resultado) => {
         this.ItemsAgregadosReciente--;
@@ -310,13 +345,16 @@ export class EntregaServiciosComponent implements OnInit {
             UltimaEntrega: false
           }
         }
-        this.servicio.actualizarCondicionesTecnicasServicios(ObjRecepcionEliminar.idServicio, objActualizacionCTS).then(
+
+        this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjRecepcionEliminar.idServicio, objActualizacionCTS).then(
           (resultado) => {
             this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdServicio]);
             this.ObjCondicionesTecnicas[IdServicio]["ultimaEntregaCTS"] = false;
+            this.loading=false;
           }).catch(
             (error) => {
               console.log(error);
+              this.loading=false;
             }
           );
       }
@@ -330,33 +368,74 @@ export class EntregaServiciosComponent implements OnInit {
   Confirmar() {
     let numeroItems = 0;
     let CantidadCT = 0;
+    let Confirmado = false;
 
     this.ObjRecepcionServicios.forEach(element => {
 
       if (element.estadoRS === "No confirmado") {
         element.estadoRS = "Confirmado";
+        Confirmado = true;
+        this.loading=true;
         this.servicio.ConfirmarEntregaServicios(element.IdRecepcionServicios).then(
           (resultado) => {
             numeroItems++;
             if (numeroItems === this.ItemsAgregadosReciente) {
               this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
-                (respuesta) => {
-                  let contadorCTTrue = 0;
+                (respuesta) => {                  
                   this.ObjCondicionesTecnicas = CondicionesTecnicasServicios.fromJsonList(respuesta);
+                  let contadorCTTrue = 0;
                   this.ObjCondicionesTecnicas.forEach(element => {
                     if (element.ultimaEntregaCTS == true) {
                       contadorCTTrue++;
                     }
                   });
                   if (contadorCTTrue === this.ObjCondicionesTecnicas.length) {
-                    this.servicio.cambioEstadoRecepcionBienesServicios(this.IdSolicitud, "Finalizado", this.autor).then(
-                      (respuesta) => {
-                        this.router.navigate(['/mis-solicitudes']);
+                    if (this.CompraBienes === true) {
+                      let objCT;
+
+
+                      if (this.FaltaBienes === false) {
+                        objCT={
+                          Estado: "Recibido",
+                          FaltaRecepcionServicios: false,
+                          ResponsableId: this.autor
+                        }
                       }
-                    ).catch(
-                      (error) => {
-                        console.log(error);
-                      })
+                      else{
+                        objCT={                          
+                          FaltaRecepcionServicios: false,
+                          ResponsableId: this.autor
+                        }
+                      }
+                      this.servicio.cambioEstadoRecepcionBienesServicios(this.IdSolicitud, objCT).then(
+                        (respuesta) => {
+                          this.router.navigate(['/mis-solicitudes']);                        
+                        }
+                      ).catch(
+                        (error) => {
+                          console.log(error);
+                          this.loading=false;
+                        })
+                    }
+                    else {
+                      let objCT={
+                        Estado: "Recibido",
+                        FaltaRecepcionServicios: false,
+                        ResponsableId: this.autor
+                      }
+                      this.servicio.cambioEstadoRecepcionBienesServicios(this.IdSolicitud, objCT).then(
+                        (respuesta) => {
+                          this.router.navigate(['/mis-solicitudes']);                        
+                        }
+                      ).catch(
+                        (error) => {
+                          console.log(error);
+                          this.loading=false;
+                        })
+                    }
+                  }
+                  else{
+                    this.router.navigate(['/mis-solicitudes']);                    
                   }
                 },
                 (error) => {
@@ -374,7 +453,7 @@ export class EntregaServiciosComponent implements OnInit {
 
     });
 
-    if (numeroItems == 0) {
+    if (numeroItems == 0 && Confirmado===false) {
       this.router.navigate(['/mis-solicitudes']);
     }
   }

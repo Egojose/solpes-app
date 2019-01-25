@@ -1,3 +1,4 @@
+import { Adjunto } from "./adjunto";
 export class CondicionesTecnicasBienes {
 
     constructor(public IdBienes: number,
@@ -24,32 +25,68 @@ export class CondicionesTecnicasBienes {
         public PrecioSondeo?: number,
         public ComentarioSondeo?: string,
         public Estado?: any,
-        public adjunto?: any
-    ) {
-
-    }
+        public adjuntoSondeo?: any,
+        public adjuntoCreacion?: any) {}
 
     public static fromJson(element: any) {
 
-        let RutaArchivo = "";
-        if (element.Attachments ===true) {
-           let ObjArchivos = element.AttachmentFiles.results;
-            
-           ObjArchivos.forEach(element => {
-               let objSplit = element.FileName.split("-");
-               if (objSplit.length>0) {
-                   let TipoArchivo = objSplit[0]
-                   if (TipoArchivo==="sondeoBienes") {
-                        RutaArchivo=element.ServerRelativeUrl;
-                   }
-                
-               }
-           });
-        }        
+        let adjuntosBienes: Adjunto [] = [];
+        let adjuntoCreacion: Adjunto;
+        let adjuntoSondeo: Adjunto;
+       
+        let arrayAdjuntos = element.AttachmentFiles.results;
+        for (let i = 0; i < arrayAdjuntos.length; i++){
+            adjuntosBienes.push(new Adjunto(element.Id, arrayAdjuntos[i].FileName, arrayAdjuntos[i].ServerRelativeUrl));
+        }
+        
 
-        return new CondicionesTecnicasBienes(element.Id ,element.Codigo, element.Descripcion, element.Modelo, element.Fabricante, element.Cantidad, element.CantidadRecibida, element.CantidadVerificar-element.CantidadRecibida,element.UltimaEntrega,element.ValorEstimado,element.Comentarios,element.CodigoVerificar,element.ModeloVerificar,element.FabricanteVerificar,
-            element.CantidadVerificar,element.ExistenciasVerificar,element.NumReservaVerificar,element.CantidadReservaVerificar,element.EntradaSolicitanteVerificar,element.CodigoSondeo,element.CantidadSondeo,element.PrecioSondeo,
-            element.ComentarioSondeo,element.Estado,RutaArchivo);
+        adjuntoSondeo = CondicionesTecnicasBienes.ObtenerAdjuntoSondeo("sondeoBienes-", adjuntosBienes, adjuntoSondeo);
+        adjuntoCreacion = CondicionesTecnicasBienes.ObtenerAdjuntoSondeo("solp-", adjuntosBienes, adjuntoCreacion);
+
+        return new CondicionesTecnicasBienes(
+            element.Id,
+            element.Codigo, 
+            element.Descripcion, 
+            element.Modelo, 
+            element.Fabricante, 
+            element.Cantidad, 
+            element.CantidadRecibida, 
+            element.CantidadVerificar-element.CantidadRecibida,
+            element.UltimaEntrega,
+            element.ValorEstimado,
+            element.Comentarios,
+            element.CodigoVerificar,
+            element.ModeloVerificar,
+            element.FabricanteVerificar,
+            element.CantidadVerificar,
+            element.ExistenciasVerificar,
+            element.NumReservaVerificar,
+            element.CantidadReservaVerificar,
+            element.EntradaSolicitanteVerificar,
+            element.CodigoSondeo,
+            element.CantidadSondeo,
+            element.PrecioSondeo,
+            element.ComentarioSondeo,
+            element.Estado,
+            adjuntoSondeo,
+            adjuntoCreacion);
+    }
+
+    private static ObtenerAdjuntoSondeo(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
+        if (adjuntosBienes.length > 0) {
+            let adjuntoPorBuscar = adjuntosBienes.filter(a => a.filename.startsWith(identificadorAdjunto));
+            if (adjuntoPorBuscar.length > 0) {
+                let ultimaPosicion = adjuntoPorBuscar.length - 1;
+                adjuntoRetornar = adjuntoPorBuscar[ultimaPosicion];
+            }
+            else {
+                adjuntoRetornar = null;
+            }
+        }
+        else{
+            adjuntoRetornar = null;
+        }
+        return adjuntoRetornar;
     }
 
 

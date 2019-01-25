@@ -2,6 +2,7 @@
 <hr>
 <div class="loading" *ngIf='loading'>
     <img class="img-logo" src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+    <b>PROCESANDO...</b>
 </div>
 <div class="row" id="TablaVerificar">
     <div class="col-md-12">
@@ -85,10 +86,10 @@
 
 <div class="col-md-12 row">
     <div>
-        <input type="button" mat-raised-button color="primary" matTooltip="Info about the action" style="margin-right: 15px;" class="btn btn-primary" value="GUARDAR" (click)="GuardarComentario()" />
+        <input type="button" mat-raised-button color="primary" matTooltip="Info about the action" style="margin-right: 15px;" class="btn btn-primary" value="Guardar" (click)="GuardarComentario()" />
     </div>
     <div>
-        <input type="button" class="btn btn-danger" (click)="salir();" value="SALIR" />
+        <input type="button" class="btn btn-danger" (click)="salir();" value="Salir" />
     </div>
 </div>
 <br>
@@ -171,27 +172,28 @@
         <div class="row ">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-                    <p id="exampleFormControlTextarea1">{{alcance}}</p>
+                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Alcance</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{alcance}}</textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Justificación</strong></label>
-                    <p id="exampleFormControlTextarea1">{{justificacion}}</p>
+                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{justificacion}}</textarea>
                 </div>
             </div>
         </div>
         <hr>
-        <ng-container *ngIf="OrdenEstadistica === true; else mostrarOrdenEstadistica">
+        <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
             <div class="form-group row">
                 <div class="col-md-12">
                     <h5><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h5>
                 </div>
             </div>
         </ng-container>
-        <ng-template #mostrarOrdenEstadistica>
-
+        <ng-template #esteNO>
+            <h5>La solicitud no cuenta con orden estadistica</h5>
+            <br>
         </ng-template>
 
 
@@ -251,6 +253,7 @@
                         Ver archivo</button></a>
                                     </div>
                                     <ng-template #sinAdjuntoCTB>
+                                        <p>Sin adjunto</p>
                                     </ng-template>
                                 </td>
                                 <td>{{item.comentario}}</td>
@@ -313,7 +316,8 @@
                                     <th>Descripción</th>
                                     <th>Cantidad</th>
                                     <th>Precio</th>
-                                    <th>Comentarios</th>
+                                    <th>Comentario</th>
+                                    <th>Adjunto</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -323,6 +327,7 @@
                                     <td>{{item.cantidadSondeo}}</td>
                                     <td>{{item.precioSondeo}}</td>
                                     <td>{{item.comentarioSondeo}}</td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>

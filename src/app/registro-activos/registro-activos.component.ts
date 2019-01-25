@@ -22,6 +22,7 @@ export class RegistroActivosComponent implements OnInit {
   ObjCTVerificar: any[];
   ObjUsuarios: [];
   ComentarioRegistroActivos: string;
+  ComentarioVerificar: string;
   ObjResponsableProceso: responsableProceso[] = [];
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
   dataSource;
@@ -48,6 +49,7 @@ export class RegistroActivosComponent implements OnInit {
   ) {
     this.loading = false;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    this.ArchivoAdjunto = null;
   }
 
   adjuntarArchivoVM(event) {
@@ -63,6 +65,11 @@ export class RegistroActivosComponent implements OnInit {
     let coment;
     let comentarios = this.ComentarioRegistroActivos;
     let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
+
+    if (this.ArchivoAdjunto === null) {
+      this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos")
+      return false;
+    } else {
     coment = {
       Estado: 'Por registrar solp sap',
       ResponsableId: ResponsableProcesoId,
@@ -71,7 +78,7 @@ export class RegistroActivosComponent implements OnInit {
     this.servicio.guardarComentario(this.IdSolicitud, coment)
       .then((resultado: ItemAddResult) => {        
         let nombreArchivo = "RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
-        this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(
+         this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(
           (respuesta) => {
             this.MostrarExitoso("Archivo guardado correctamente");
             this.router.navigate(["/mis-pendientes"]);
@@ -85,6 +92,7 @@ export class RegistroActivosComponent implements OnInit {
       .catch(error => {
         console.log(error);
       });
+    }
   }
 
   generarllaveSoporte(): string {
@@ -117,6 +125,7 @@ export class RegistroActivosComponent implements OnInit {
           (respuesta) => {
             this.IdSolicitud = respuesta.Id;
             this.paisId = respuesta.Pais.Id;
+            this.ComentarioVerificar  = respuesta.ComentarioVerificarMaterial;
             if (respuesta.Attachments === true) {
               let ObjArchivos = respuesta.AttachmentFiles.results;
 
@@ -140,8 +149,8 @@ export class RegistroActivosComponent implements OnInit {
             this.servicio
               .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
               .subscribe(RespuestaCondiciones => {
-                this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
-                this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+                this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+                this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
                 this.dataSource.paginator = this.paginator;
               });
           });

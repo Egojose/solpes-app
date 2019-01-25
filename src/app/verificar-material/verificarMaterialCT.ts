@@ -22,20 +22,21 @@ export class verificarMaterialCT {
         let nombreDescripcion;
         let existencias;
         let numReserva;
-        let cantidadReserva;
+        let cantidadReserva;   
         if (element.MaterialVerificado === true) {
             nombreCodigo = element.CodigoVerificar;
             nombreDescripcion = element.DescripcionVerificar;
             existencias = element.ExistenciasVerificar;
-            numReserva=element.NumReservaVerificar;
-            cantidadReserva= element.CantidadReservaVerificar;
-        } else {
-            nombreCodigo = element.Codigo;
-            nombreDescripcion = element.Descripcion;
-            existencias = element.ExistenciasVerificar;
             numReserva = element.NumReservaVerificar;
             cantidadReserva = element.CantidadReservaVerificar;
+        } else {
+                nombreCodigo = element.Codigo;
+                nombreDescripcion = element.Descripcion;
+                existencias = element.ExistenciasVerificar;
+                numReserva = element.NumReservaVerificar;
+                cantidadReserva = element.CantidadReservaVerificar;         
         }
+
         let cantidad: number;
         if (element.CantidadSondeo > 0) {
             cantidad = element.CantidadSondeo;

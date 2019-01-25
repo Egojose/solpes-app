@@ -328,7 +328,7 @@ export class ContratosComponent implements OnInit {
           ResponsableServicios=this.ObResProceso[0].porConfirmarEntregaBienes;
 
         }
-        this.servicio.cambioEstadoSolicitud(this.IdSolicitud,"Por registrar entregas",null,ResponsableServicios,ResponsablesBienes).then(
+        this.servicio.cambioEstadoSolicitud(this.IdSolicitud,"Por registrar entregas",this.autor).then(
           (resultado)=>{             
               this.MostrarExitoso("El contrato se ha guardado correctamente");
               setTimeout(() => {

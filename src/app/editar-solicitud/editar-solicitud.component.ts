@@ -384,18 +384,19 @@ export class EditarSolicitudComponent implements OnInit {
       this.servicio.ObtenerSubcategorias(this.categoria.id, this.pais.id).subscribe(
         (respuesta) => {
           this.subcategorias = Subcategoria.fromJsonList(respuesta);
-
           if (this.solicitudRecuperada.subcategoria != null) {
             this.subcategoria = this.subcategorias.filter(x => x.nombre == this.solicitudRecuperada.subcategoria)[0];
             this.solpFormulario.controls["subcategoria"].setValue(this.subcategoria.id);
             if (this.solicitudRecuperada.condicionesContractuales != '' && this.solicitudRecuperada.condicionesContractuales != '{ "condiciones":]}') {
               let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales);
-              if(jsonCondicionesContractuales.condiciones != null){
-                jsonCondicionesContractuales.condiciones.forEach(element => {
-                  this.condicionesContractuales.push(new CondicionContractual(element.campo, this.indexCondicionesContractuales, element.descripcion));
-                  this.indexCondicionesContractuales++;
-                });
-                this.registrarControlesCondicionesContractualesCargados();
+              if(jsonCondicionesContractuales != null){
+                if(jsonCondicionesContractuales.condiciones != null){
+                  jsonCondicionesContractuales.condiciones.forEach(element => {
+                    this.condicionesContractuales.push(new CondicionContractual(element.campo, this.indexCondicionesContractuales, element.descripcion));
+                    this.indexCondicionesContractuales++;
+                  });
+                  this.registrarControlesCondicionesContractualesCargados();
+                }
               }
             }
           }
@@ -677,7 +678,7 @@ export class EditarSolicitudComponent implements OnInit {
       this.condicionTS.codigo = codigo;
       this.condicionTS.descripcion = descripcion;
       this.condicionTS.cantidad = cantidad;
-      this.condicionTS.valorEstimado = valorEstimado;
+      this.condicionTS.valorEstimado = valorEstimado.toString();
       this.condicionTS.tipoMoneda = tipoMoneda;
       this.condicionTS.comentarios = comentarios;
       if (adjunto != null) {
@@ -737,7 +738,7 @@ export class EditarSolicitudComponent implements OnInit {
       let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas servicios" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas servicios" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
           (item: ItemAddResult) => {
@@ -769,7 +770,7 @@ export class EditarSolicitudComponent implements OnInit {
         this.condicionTS.codigo = codigo;
         this.condicionTS.descripcion = descripcion;
         this.condicionTS.cantidad = cantidad;
-        this.condicionTS.valorEstimado = valorEstimado;
+        this.condicionTS.valorEstimado = valorEstimado.toString();
         this.condicionTS.comentarios = comentarios;
         this.condicionTS.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
@@ -890,7 +891,7 @@ export class EditarSolicitudComponent implements OnInit {
       this.condicionTB.modelo = modelo;
       this.condicionTB.fabricante = fabricante;
       this.condicionTB.cantidad = cantidad;
-      this.condicionTB.valorEstimado = valorEstimado;
+      this.condicionTB.valorEstimado = valorEstimado.toString();
       this.condicionTB.tipoMoneda = tipoMoneda;
       this.condicionTB.comentarios = comentarios;
       if (adjunto != null) {
@@ -952,7 +953,7 @@ export class EditarSolicitudComponent implements OnInit {
       let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
       let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado, comentarios, null, '', tipoMoneda);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -988,7 +989,7 @@ export class EditarSolicitudComponent implements OnInit {
         this.condicionTB.modelo = modelo;
         this.condicionTB.fabricante = fabricante;
         this.condicionTB.cantidad = cantidad;
-        this.condicionTB.valorEstimado = valorEstimado;
+        this.condicionTB.valorEstimado = valorEstimado.toString();
         this.condicionTB.comentarios = comentarios;
         this.condicionTB.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
@@ -1213,11 +1214,10 @@ export class EditarSolicitudComponent implements OnInit {
   limpiarControlesCTB(): any {
     this.ctbFormulario.controls["codigoCTB"].setValue('');
     this.ctbFormulario.controls["descripcionCTB"].setValue('');
-    this.ctbFormulario.controls["valorEstimadoCTB"].setValue('');
+    this.ctbFormulario.controls["valorEstimadoCTB"].setValue(0);
     this.ctbFormulario.controls["modeloCTB"].setValue('');
     this.ctbFormulario.controls["fabricanteCTB"].setValue('');
     this.ctbFormulario.controls["cantidadCTB"].setValue('');
-    this.ctbFormulario.controls["valorEstimadoCTB"].setValue('');
     this.ctbFormulario.controls["tipoMonedaCTB"].setValue('');
     this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
     this.ctbFormulario.controls["comentariosCTB"].setValue('');
@@ -1240,7 +1240,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["codigoCTS"].setValue('');
     this.ctsFormulario.controls["descripcionCTS"].setValue('');
     this.ctsFormulario.controls["cantidadCTS"].setValue('');
-    this.ctsFormulario.controls["valorEstimadoCTS"].setValue('');
+    this.ctsFormulario.controls["valorEstimadoCTS"].setValue(0);
     this.ctsFormulario.controls["tipoMonedaCTS"].setValue('');
     this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
     this.ctsFormulario.controls["comentariosCTS"].setValue('');

@@ -21,10 +21,13 @@ export class VerSolicitudTabComponent implements OnInit {
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
+  RutaArchivo: string;
   tipoSolicitud: string;
   numOrdenEstadistica: string;
   solicitante: string;
+  comentarioregistroactivos: string;
   ordenadorGasto: string;
+  OrdenEstadistica: boolean;
   empresa: string;
   loading: boolean;
   pais: string;
@@ -75,12 +78,29 @@ export class VerSolicitudTabComponent implements OnInit {
         this.resultadosondeo = solicitud.ResultadoSondeo;
         this.comentariorevisionsondeo = solicitud.ComentarioRevisionSondeo;
         this.justificacion = solicitud.Justificacion;
+        this.OrdenEstadistica = solicitud.OrdenEstadistica;
         this.comentariosolicitudsondeo = solicitud.ComentarioSondeo;
+        this.comentarioregistroactivos = solicitud.ComentarioRegistroActivos;
         this.comentarioverificarmaterial = solicitud.ComentarioVerificarMaterial;
+        this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.estadoRegistrarSAP = solicitud.EstadoRegistrarSAP;
         this.numSolSAP = solicitud.NumSolSAP;
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
         this.tieneContrato = solicitud.TieneContrato;
+        
+        if (solicitud.Attachments === true) {
+          let ObjArchivos = solicitud.AttachmentFiles.results;
+
+          ObjArchivos.forEach(element => {
+            let objSplit = element.FileName.split("-");
+            if (objSplit.length > 0) {
+              let TipoArchivo = objSplit[0]
+              if (TipoArchivo === "ActivoVM") {
+                this.RutaArchivo = element.ServerRelativeUrl;
+              }
+            }
+          });
+        }
 
         if(solicitud.CondicionesContractuales != null){
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
