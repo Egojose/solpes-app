@@ -123,7 +123,7 @@
   
       <div class="form-group row">
         <div class="col-md-12">
-          <label for="condiciones-contractuales">Condiciones contractuales</label>
+          <label class="titulo-label" for="condiciones-contractuales">Condiciones contractuales</label>
           <div id="condiciones-contractuales" class="table-responsive">
             <table class="table">
               <thead class="thead-dark">
@@ -165,10 +165,9 @@
 
       <div class="form-group row">
         <div class="col-md-12">
-          <label for="condiciones-tecnicas-bienes">Condiciones técnicas bienes</label>
+          <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
           <div class="btn-agregar-condiciones-bienes">
-            <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar condicion
-              técnica bienes</button>
+            <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
           </div>
           <br/>
           <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
@@ -232,10 +231,9 @@
   
       <div class="form-group row">
         <div class="col-md-12">
-          <label for="condiciones-tecnicas-servicios">Condiciones técnicas servicios</label>
+          <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
           <div class="btn-agregar-condiciones-servicios">
-            <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar condicion
-              técnica servicios</button>
+            <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
           </div>
           <br/>
           <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
@@ -296,8 +294,7 @@
       <div class="form-group row">
         <div class="col-md-12">
           <div class="botonera">
-            <button (click)="salir();" class="salir-solpes-btn btn btn-default">Salir</button>
-            <button (click)="enviarSolicitud();" class="derecha-boton btn btn-success">Enviar Solicitud</button>
+            <button (click)="enviarSolicitud();" class="derecha-boton btn btn-success">Enviar</button>
             <button type="button" class="derecha-boton btn btn-primary" (click)="guardarParcialSolicitud();">Guardado parcial</button>
             <button type="button" class="derecha-boton btn btn-danger" (click)="descartarSolicitud(templateConfirmacionDescartar);">Descartar</button>
           </div>
@@ -353,7 +350,7 @@
             <div class="row">
               <div class="col-md-12">
                 <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
-                <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="cantidadCTB" name="cantidadCTB" formControlName="cantidadCTB" class="form-control" type="text"
+                <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTB" name="cantidadCTB" formControlName="cantidadCTB" class="form-control" type="text"
                    placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cantidadCTB.errors }" />
                 <div *ngIf="ctbSubmitted && f.cantidadCTB.errors" class="invalid-feedback">
                   <div *ngIf="f.cantidadCTB.errors.required">Este campo es requerido</div>
@@ -384,7 +381,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="adjunto">Adjunto</label><span class="asterisco-obligatorio">*</span>
+            <label for="adjunto">Adjunto</label>
             <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event)" />
             <br>
             <div [hidden]="!mostrarAdjuntoCTB" class="adjunto-guardado">
@@ -398,7 +395,7 @@
               type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">{{textoBotonGuardarCTB}} Condición</button>
+            <button type="submit" class="btn btn-primary">{{textoBotonGuardarCTB}} bien</button>
           </div>
         </form>
       </div>
@@ -430,7 +427,7 @@
           </div>
           <div class="form-group">
             <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
-            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text"
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text"
                placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
             <div *ngIf="ctsSubmitted && f2.cantidadCTS.errors" class="invalid-feedback">
               <div *ngIf="f2.cantidadCTS.errors.required">Este campo es requerido</div>
@@ -472,7 +469,7 @@
               type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">{{textoBotonGuardarCTS}} Condición</button>
+            <button type="submit" class="btn btn-primary">{{textoBotonGuardarCTS}} servicio</button>
           </div>
         </form>
       </div>

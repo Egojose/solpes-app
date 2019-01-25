@@ -221,7 +221,7 @@ export class SondeoComponent implements OnInit {
       }
       this.servicio.guardarSondeoServicios(this.ObjCondicionesTecnicasServiciosGuardar[i].id, objSondeo).then(
         (resultado: ItemAddResult) => {
-          if(this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto === null || this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto === "") {
+          if(this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto === null || this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto === "" || this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto === undefined) {
             this.mostrarAdvertencia("Debe adjuntar el archivo del sondeo para cada servicio");
           }
           if (this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto != null || this.ObjCondicionesTecnicasServiciosGuardar[i].archivoAdjunto != "") {

@@ -175,4 +175,14 @@ td.mat-cell,td.mat-footer-cell, th.mat-header-cell {
     cursor: pointer;
 }
 
+.titulo-label{
+    font-weight: 600;
+    font-size: x-large;
+}
+
+.mat-toolbar.mat-accent {
+    background: #ffd740 !important;
+    color: rgba(0,0,0,.87) !important;
+    font-size: medium !important;
+}
 
