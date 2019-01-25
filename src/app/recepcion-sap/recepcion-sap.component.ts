@@ -21,7 +21,6 @@ export class RecepcionSapComponent implements OnInit {
   comentarios: string;
   ObjRecepcionBienes: RecepcionBienes[]=[];
   IdSolicitud: number;
-  ObjRecepcionServicios: any;
   recepcionBienes: FormGroup;
   IdRecepcionBienes: number;
   IdUsuario: any;
@@ -31,7 +30,6 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, publ
  }
 
   Guardar(item) {
-    debugger
     this.IdRecepcionBienes = item.IdRecepcionBienes;
     let objRegistrar;
     objRegistrar = {
