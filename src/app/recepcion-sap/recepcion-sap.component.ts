@@ -23,6 +23,7 @@ export class RecepcionSapComponent implements OnInit {
   ObjRecepcionServicios: any;
   recepcionBienes: FormGroup;
   IdRecepcionBienes: number;
+  IdUsuario: any;
  
 constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private activarRoute: ActivatedRoute) {
   
@@ -33,8 +34,7 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, priv
     let objRegistrar;
     objRegistrar = {
       NumeroRecepcion: this.numRecepcion.value,
-      recibidoSap: true,
-      Estado: 'Terminado'
+      recibidoSap: true
     }
     if (this.numRecepcion.value === "" || this.numRecepcion.value === null || this.numRecepcion.value === undefined) {
       alert('Debe suministrar el numero de recpción')
@@ -54,12 +54,17 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, priv
   }
 }
   ngOnInit() {
-    this.IdSolicitudParms = localStorage.getItem('IdSolicitud')
-    this.servicio.ObtenerRecepcionesBienes(1).subscribe(
-      (respuesta) => {
-        this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
-        console.log(this.ObjRecepcionBienes)
+    this.IdSolicitudParms = localStorage.getItem('IdSolicitud');
+    this.servicio.ObtenerUsuarioActual().subscribe(
+      (respuesta)=>{        
+        this.IdUsuario = respuesta.Id;
+        this.servicio.ObtenerRecepcionesBienes(this.IdUsuario).subscribe(
+          (respuesta) => {
+            this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
+            console.log(this.ObjRecepcionBienes)
+          }
+        );
       }
-    );
+    )    
   }  
 }

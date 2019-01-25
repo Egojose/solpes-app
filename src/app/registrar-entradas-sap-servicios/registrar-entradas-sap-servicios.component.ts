@@ -41,7 +41,7 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
     }
     else {
       let index = this.ObjRecepcionServicios.findIndex(x=> x.IdRecepcionServicios === item.IdRecepcionServicios);
-      this.servicio.registrarRecepcion(this.IdRecepcionServicios, objRegistrar).then(
+      this.servicio.registrarRecepcionServicios(this.IdRecepcionServicios, objRegistrar).then(
         (resultado: ItemAddResult) => {
           this.ObjRecepcionServicios.splice(index, 1);
           alert('Recibido')
@@ -55,7 +55,7 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   }
   ngOnInit() {
     this.IdSolicitudParms = localStorage.getItem('IdSolicitud')
-    this.servicio.ObtenerRecepcionesServicios(1).subscribe(
+    this.servicio.ObtenerRecepcionesServicios(this.IdSolicitudParms).subscribe(
       (respuesta) => {
         this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
         console.log(this.ObjRecepcionServicios)
