@@ -99,20 +99,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.numSolSAP = solicitud.NumSolSAP;
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
         this.tieneContrato = solicitud.TieneContrato;
-        
-        if (solicitud.Attachments === true) {
-          let ObjArchivos = solicitud.AttachmentFiles.results;
-
-          ObjArchivos.forEach(element => {
-            let objSplit = element.FileName.split("-");
-            if (objSplit.length > 0) {
-              let TipoArchivo = objSplit[0]
-              if (TipoArchivo === "ActivoVM") {
-                this.RutaArchivo = element.ServerRelativeUrl;
-              }
-            }
-          });
-        }
+     
 
         if(solicitud.CondicionesContractuales != null){
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
