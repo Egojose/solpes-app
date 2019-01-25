@@ -1251,7 +1251,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   confirmarDescartar() {
-    this.servicio.borrarSolicitud(this.IdSolicitud).then(
+    this.servicio.borrarSolicitud(this.solicitudRecuperada.id).then(
       (respuesta) => {
         this.modalRef.hide();
         this.MostrarExitoso("La solicitud se ha borrado correctamente");
