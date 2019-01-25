@@ -75,6 +75,7 @@ export class VerificarMaterialComponent implements OnInit {
   OrdenEstadistica: boolean;
   SwtichOrdenEstadistica: boolean;
   ArchivoAdjunto: File;
+  SwtichFaltaRecepcionBienes: boolean;
 
   constructor(
     private servicio: SPServicio,
@@ -115,14 +116,16 @@ export class VerificarMaterialComponent implements OnInit {
         coment = {
           Estado: 'Por registrar activos',
           ResponsableId: ResponsableProcesoId,
-          ComentarioVerificarMaterial: comentarios
+          ComentarioVerificarMaterial: comentarios,
+          FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes 
         }
-    }else{
+    }else{      
       let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp; 
       coment = {
         Estado: 'Por registrar solp sap',
         ResponsableId: ResponsableProcesoId,
-        ComentarioVerificarMaterial: comentarios
+        ComentarioVerificarMaterial: comentarios,
+        FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes 
       }
     }
       let cantidad = this.ObjCTVerificar.filter(x => x.MaterialVerificado === true).length;
@@ -295,9 +298,9 @@ export class VerificarMaterialComponent implements OnInit {
     console.log(element);
     this.verificarSubmitted = false;
     this.IdVerficar = element.id;
-    this.verificarMaterialFormulario.controls["codigoVerificar"].setValue(
-      element.codigo
-    );
+   
+      this.verificarMaterialFormulario.controls["codigoVerificar"].setValue(element.codigoSondeo);
+    
     this.verificarMaterialFormulario.controls["descripcionVerificar"].setValue(
       element.descripcion
     );
@@ -368,7 +371,7 @@ export class VerificarMaterialComponent implements OnInit {
     ].value;
 
     let index = this.ObjCTVerificar.findIndex(x => x.id === this.IdVerficar);
-    this.ObjCTVerificar[index].codigo = codigoVerificar;
+    this.ObjCTVerificar[index].codigoSondeo = codigoVerificar;
     this.ObjCTVerificar[index].descripcion = descripcionVerificar;
     this.ObjCTVerificar[index].cantidadverificar = cantidadverificar;
     this.ObjCTVerificar[index].existenciasverificar = existenciasverificar;
@@ -403,6 +406,12 @@ export class VerificarMaterialComponent implements OnInit {
         }
         else{
           this.SwtichOrdenEstadistica = false;
+        }
+        if(sum === 0){
+          this.SwtichFaltaRecepcionBienes = false;
+        }
+        else{
+          this.SwtichFaltaRecepcionBienes = true;
         }
       })
       .catch(error => {
