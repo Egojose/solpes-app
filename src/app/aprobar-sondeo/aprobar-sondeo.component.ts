@@ -88,8 +88,9 @@ export class AprobarSondeoComponent implements OnInit {
         //Comprador
         ObjSondeo = {
           ResponsableId: this.CompradorId,
-          Estado: "Por sondear",
+          Estado: "Por resondear",
           ResultadoSondeo: "Sondeo adicional",
+          Resondear: true,
           ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSondeo
         }
       }
