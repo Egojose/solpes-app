@@ -100,13 +100,15 @@ export class VerificarMaterialComponent implements OnInit {
       this.ArchivoAdjunto = null;
     }
   }
-   
+  comfirmasalir(template: TemplateRef<any>) {
+    this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
+  }
+  declinarModal() {
+    this.modalRef.hide();
+  }
   GuardarComentario() {  
-    let coment;
-    if (this.ComentarioVerificarMaterial === undefined || this.ComentarioVerificarMaterial === null) {
-      this.mostrarError("Ingrese un comentario!");
-    } else {
-      let comentarios = this.ComentarioVerificarMaterial;
+    let coment;   
+    let comentarios = this.ComentarioVerificarMaterial;
       if(this.SwtichOrdenEstadistica === true){
         if (this.ArchivoAdjunto === null) {
             this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos")
@@ -159,7 +161,7 @@ export class VerificarMaterialComponent implements OnInit {
       }else{
         this.mostrarError("Faltan materiales por verificar");
         }
-      }
+      
   }
 
   MostrarExitoso(mensaje: string) {
@@ -253,6 +255,7 @@ export class VerificarMaterialComponent implements OnInit {
 
 
   salir() {
+    this.modalRef.hide();
     this.router.navigate(["/mis-solicitudes"]);
   }
 
@@ -319,7 +322,6 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(
       element.numreservaverificar
     );
-    
     if(element.cantidadreservaverificar === null || element.cantidadreservaverificar === undefined ){
       this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(
         element.cantidad
@@ -329,9 +331,7 @@ export class VerificarMaterialComponent implements OnInit {
         element.cantidadreservaverificar
       );
     }
-    
-    
-    
+
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: "gray modal-lg" })

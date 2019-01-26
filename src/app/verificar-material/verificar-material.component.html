@@ -78,18 +78,22 @@
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
         <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
-        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial" required></textarea>
+        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
     </div>
 </div>
 
 
 
-<div class="col-md-12 row">
-    <div>
-        <input type="button" mat-raised-button color="primary" matTooltip="Info about the action" style="margin-right: 15px;" class="btn btn-primary" value="Guardar" (click)="GuardarComentario()" />
-    </div>
-    <div>
-        <input type="button" class="btn btn-danger" (click)="salir();" value="Salir" />
+<div class="form-group row">
+    <div class="col-md-12">
+        <div class="botonera">
+            <div>
+                <input id="button1" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;" value="Enviar" (click)="GuardarComentario()" />
+            </div>
+            <div>
+                <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);" value="Salir" />
+            </div>
+        </div>
     </div>
 </div>
 <br>
@@ -184,19 +188,6 @@
             </div>
         </div>
         <hr>
-        <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
-                </div>
-            </div>
-        </ng-container>
-        <ng-template #esteNO>
-            <h5>La solicitud no cuenta con orden estadística</h5>
-            <br>
-        </ng-template>
-
-
         <div class="form-group row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -220,7 +211,17 @@
                 </div>
             </div>
         </div>
-
+        <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #esteNO>
+            <h5>La solicitud no cuenta con orden estadística</h5>
+            <br>
+        </ng-template>
         <div class="form-group row">
             <div class="col-md-12">
                 <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones técnicas bienes</strong></label>
@@ -365,7 +366,6 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="modal-body">
-        <p>Para realizar la verificación del material, ingresar los datos nuevos del material a verificar</p>
         <div class="container">
             <form [formGroup]="verificarMaterialFormulario" (ngSubmit)="VerificarOnSubmit()">
                 <div class="form-group">
@@ -428,12 +428,20 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success">Agregar</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
     </div>
     <div class="modal-footer">
 
         <div class="form-group"></div>
+    </div>
+</ng-template>
+
+<ng-template #templateConfirmacionDescartar>
+    <div class="modal-body text-center">
+        <p>¿Está seguro de que desea salir?</p>
+        <button type="button" class="botonSi btn btn-default" (click)="salir()">Sí</button>
+        <button type="button" class="btn btn-primary" (click)="declinarModal()">No</button>
     </div>
 </ng-template>

@@ -24,6 +24,7 @@ export class CondicionesTecnicasBienes {
         public existenciasverificar?: number,
         public numreservaverificar?: string,
         public cantidadreservaverificar?: number,
+        public moneda?: string,
         public adjunto?:any,
         public adjuntoCreacion?:any
          ) { }
@@ -61,6 +62,7 @@ export class CondicionesTecnicasBienes {
             element.ExistenciasVerificar,
             element.NumReservaVerificar,
             element.CantidadReservaVerificar,
+            element.TipoMoneda,
             adjuntoSondeo,
             adjuntoCreacion);
     }
