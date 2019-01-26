@@ -5,7 +5,7 @@
     <br>
     <div class="row">
         <div class="form-group col-md-12">
-            <label for="textarea" class="col-sm-3 control-label"><b>Resultado Sondeo bienes:</b></label>
+            <label for="textarea" class="col-sm-4 control-label"><b><h4>Resultado sondeo bienes:</h4></b></label>
             <table class="table table-striped table-bordered table-hover text-center">
                 <thead>
                     <tr>
@@ -36,7 +36,7 @@
     </div>
     <div class="row">
         <div class="form-group col-md-12">
-            <label for="textarea" class="col-sm-3 control-label"><b>Resultado Sondeo servicios:</b></label>
+            <label for="textarea" class="col-sm-5 control-label"><b><h4>Resultado sondeo servicios:</h4></b></label>
             <table class="table table-striped table-bordered table-hover text-center">
                 <thead>
                     <tr>
@@ -226,7 +226,7 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
+                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong><h4>Condiciones contractuales</h4></strong></label>
                         <div class="table-wrapper-scroll-y">
                             <table class="table table-striped">
                                 <thead>
@@ -249,7 +249,7 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Bienes solicitados</strong></label>
+                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong><h4>Bienes solicitados</h4></strong></label>
                         <div class="table-wrapper-scroll-y">
                             <table class="table table-striped table-bordered table-hover text-center">
                                 <thead>
@@ -266,14 +266,29 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicas">
-                                        <td>{{item.Codigo}}</td>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.Codigo}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.CodigoSondeo}}</td>
+                                        </ng-template>
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.Modelo}}</td>
                                         <td>{{item.Fabricante}}</td>
-                                        <td>{{item.Cantidad}}</td>
-                                        <td>{{item.ValorEstimado}}</td>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.Cantidad}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.CantidadSondeo}}</td>
+                                        </ng-template>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.ValorEstimado}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.PrecioSondeo}}</td>
+                                        </ng-template>
                                         <td>
-                                            <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target= _blank>
+                                            <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}" target=_blank>
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>
                                         </td>
@@ -288,7 +303,7 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Servicios solicitados</strong></label>
+                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong><h4>Servicios solicitados</h4></strong></label>
                         <div class="table-wrapper-scroll-y">
                             <table class="table table-striped table-bordered table-hover text-center">
                                 <thead>
@@ -303,12 +318,27 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                                        <td>{{item.Codigo}}</td>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.Codigo}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.codigoSondeo}}</td>
+                                        </ng-template>
                                         <td>{{item.descripcion}}</td>
-                                        <td>{{item.Cantidad}}</td>
-                                        <td>{{item.ValorEstimado}}</td>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.Cantidad}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.cantidadSondeo}}</td>
+                                        </ng-template>
+                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.ValorEstimado}}</td>
+                                        </ng-container>
+                                        <ng-template #Esteotro>
+                                            <td>{{item.precioSondeo}}</td>
+                                        </ng-template>
                                         <td>
-                                            <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target= _blank>
+                                            <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>
                                         </td>

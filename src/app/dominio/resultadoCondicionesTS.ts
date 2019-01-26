@@ -25,7 +25,8 @@ export class resultadoCondicionesTS {
            });
         }        
 
-        return new resultadoCondicionesTS(element.Id, 
+        return new resultadoCondicionesTS(
+            element.Id, 
             element.CodigoSondeo, 
             element.Descripcion,                       
             element.CantidadSondeo, 

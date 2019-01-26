@@ -26,6 +26,7 @@ export class RegistroActivosComponent implements OnInit {
   ObjResponsableProceso: responsableProceso[] = [];
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
   dataSource;
+  numOrdenEstadistica: string;
   loading: boolean;
   IdSolicitud: any;
   displayedColumns: string[] = [
@@ -125,6 +126,7 @@ export class RegistroActivosComponent implements OnInit {
           (respuesta) => {
             this.IdSolicitud = respuesta.Id;
             this.paisId = respuesta.Pais.Id;
+            this.numOrdenEstadistica = respuesta.NumeroOrdenEstadistica;
             this.ComentarioVerificar  = respuesta.ComentarioVerificarMaterial;
             if (respuesta.Attachments === true) {
               let ObjArchivos = respuesta.AttachmentFiles.results;
