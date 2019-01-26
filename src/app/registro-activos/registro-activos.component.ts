@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef,ViewChild } from '@angular/core';
 import { ToastrManager } from "ng6-toastr-notifications";
 import { Router } from "@angular/router";
 import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
@@ -6,6 +6,7 @@ import { SPServicio } from "../servicios/sp-servicio";
 import { ItemAddResult } from "sp-pnp-js";
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { responsableProceso } from '../dominio/responsableProceso';
 import { Solicitud } from '../dominio/solicitud';
 
@@ -26,6 +27,7 @@ export class RegistroActivosComponent implements OnInit {
   ObjResponsableProceso: responsableProceso[] = [];
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
   dataSource;
+  modalRef: BsModalRef;
   numOrdenEstadistica: string;
   loading: boolean;
   IdSolicitud: any;
@@ -46,6 +48,7 @@ export class RegistroActivosComponent implements OnInit {
   constructor(
     public toastr: ToastrManager,
     private servicio: SPServicio,
+    private modalServicio: BsModalService,
     private router: Router
   ) {
     this.loading = false;
@@ -60,6 +63,13 @@ export class RegistroActivosComponent implements OnInit {
     } else {
       this.ArchivoAdjunto = null;
     }
+  }
+
+  comfirmasalir(template: TemplateRef<any>) {
+    this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
+  }
+  declinarModal() {
+    this.modalRef.hide();
   }
 
   GuardarActivos() {
@@ -161,6 +171,7 @@ export class RegistroActivosComponent implements OnInit {
   }
 
   salir() {
+    this.modalRef.hide();
     this.router.navigate(["/mis-solicitudes"]);
   }
 }

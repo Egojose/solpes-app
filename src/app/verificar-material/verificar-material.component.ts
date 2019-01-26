@@ -322,7 +322,6 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(
       element.numreservaverificar
     );
-    
     if(element.cantidadreservaverificar === null || element.cantidadreservaverificar === undefined ){
       this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(
         element.cantidad
@@ -332,9 +331,7 @@ export class VerificarMaterialComponent implements OnInit {
         element.cantidadreservaverificar
       );
     }
-    
-    
-    
+
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, { class: "gray modal-lg" })
