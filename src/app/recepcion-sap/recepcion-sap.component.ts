@@ -61,7 +61,6 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, publ
         this.servicio.ObtenerRecepcionesBienes(this.IdUsuario).subscribe(
           (respuesta) => {
             this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
-            console.log(this.ObjRecepcionBienes)
           }
         );
       }

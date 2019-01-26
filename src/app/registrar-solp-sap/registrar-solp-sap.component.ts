@@ -204,7 +204,7 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-            debugger
+            
             this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.ObjResultadosondeo = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
@@ -228,7 +228,6 @@ export class RegistrarSolpSapComponent implements OnInit {
             this.dataSourceTS.paginator = this.paginator;
             this.loading = false;
 
-            console.log(this.ObjCondicionesTecnicasServiciosLectura);
           }
         )
         this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(

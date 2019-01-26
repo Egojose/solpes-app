@@ -236,13 +236,11 @@ export class AprobarSondeoComponent implements OnInit {
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-            console.log(this.ObjCondicionesTecnicas);
           }
         )
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            console.log(this.ObjCondicionesTecnicasServicios);
           }
         )
         this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(

@@ -60,7 +60,6 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
         this.servicio.ObtenerRecepcionesServicios(this.IdUsuario).subscribe(
           (respuesta) => {
             this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
-            console.log(this.ObjRecepcionServicios)
           }
         );
       }
