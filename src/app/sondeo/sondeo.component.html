@@ -31,34 +31,30 @@
                                     <tr *ngFor="let item of ObjCondicionesTecnicasBienesLectura">
                                         <ng-container *ngIf="Resondear !== true; else Codson">
                                             <td>{{item.codigo}}</td>
-                                        </ng-container>
-                                        <ng-template #Codson>
-                                            <td>{{item.codigoSondeo}}</td>
-                                        </ng-template>
-                                        <td>{{item.descripcion}}</td>
-                                        <td>{{item.modelo}}</td>
-                                        <td>{{item.fabricante}}</td>
-                                        <ng-container *ngIf="Resondear !== true; else Cantson">
+                                            <td>{{item.descripcion}}</td>
+                                            <td>{{item.modelo}}</td>
+                                            <td>{{item.fabricante}}</td>
                                             <td>{{item.cantidad}}</td>
-                                        </ng-container>
-                                        <ng-template #Cantson>
-                                            <td>{{item.cantidadSondeo}}</td>
-                                        </ng-template>
-                                        <ng-container *ngIf="Resondear !== true; else Preson">
                                             <td>{{item.valorEstimado}}</td>
-                                        </ng-container>
-                                        <ng-template #Preson>
-                                            <td>{{item.precioSondeo}}</td>
-                                        </ng-template>
-                                        <td>
-                                            <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
-                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                            </a>
-                                        </td>
-                                        <ng-container *ngIf="Resondear !== true; else Comson">
+                                            <td>
+                                                <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
+                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                </a>
+                                            </td>
                                             <td>{{item.Comentario}}</td>
                                         </ng-container>
                                         <ng-template #Comson>
+                                            <td>{{item.codigoSondeo}}</td>
+                                            <td>{{item.descripcion}}</td>
+                                            <td>{{item.modelo}}</td>
+                                            <td>{{item.fabricante}}</td>
+                                            <td>{{item.cantidadSondeo}}</td>
+                                            <td>{{item.precioSondeo}}</td>
+                                            <td>
+                                                <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
+                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                </a>
+                                            </td>
                                             <td>{{item.ComentarioSondeo}}</td>
                                         </ng-template>
                                     </tr>
