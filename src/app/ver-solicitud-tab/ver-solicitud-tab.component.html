@@ -1,5 +1,6 @@
 <div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
+        alt="loading...">
     <b>PROCESANDO...</b>
 </div>
 <br>
@@ -147,8 +148,8 @@
                             <td>{{item.valorEstimado}}</td>
                             <td>
                                 <div *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
-                                    <a href="{{item.adjuntoCreacion.url}}" target="_blank"><button
-                                            class="btn btn-primary">Ver archivo</button></a>
+                                    <a href="{{item.adjuntoCreacion.url}}" target="_blank"><button class="btn btn-primary">Ver
+                                            archivo</button></a>
                                 </div>
                                 <ng-template #NoHayAdjBienes>
                                     Sin adjunto
@@ -205,7 +206,8 @@
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
-                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentariosolicitudsondeo}}</textarea>
+                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder=""
+                        disabled>{{comentariosolicitudsondeo}}</textarea>
                 </div>
             </div>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo Bienes</strong></label>
@@ -331,7 +333,6 @@
                             <th>Existencias</th>
                             <th>#Reserva</th>
                             <th>Cantidad a comprar</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -349,17 +350,19 @@
                 </table>
             </div>
 
-            <p>Archivo solicitud de activos fijos:
-                <a href="{{RutaArchivo}}">
+            <p>Archivo solicitud de activos fijos:</p>
+            <div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
+                <a href="{{adjuntoActivo.url}}">
                     <button type="button" class="btn btn-primary">Descargar aquí</button>
                 </a>
-            </p>
-
+            </div>
+            <ng-template #NoHayAdjActivos>
+                Sin adjunto
+            </ng-template>
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Verificar Material</strong></label>
             <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioverificarmaterial}}</textarea><br>
             <br>
-
 
             <div class="col-md-12 row">
                 <div>
@@ -376,7 +379,8 @@
                 <br>
                 <div class="form-group col-md-12">
                     <label for="textarea" class="col-sm-3 control-label"><b>Comentario registro de activos:</b></label>
-                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioregistroactivos}}</textarea>
+                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder=""
+                        disabled>{{comentarioregistroactivos}}</textarea>
                 </div>
                 <div class="col-md-12 row">
                     <div>

@@ -1,14 +1,12 @@
 import { Component, OnInit, TemplateRef,ViewChild } from '@angular/core';
 import { ToastrManager } from "ng6-toastr-notifications";
 import { Router } from "@angular/router";
-import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
 import { SPServicio } from "../servicios/sp-servicio";
 import { ItemAddResult } from "sp-pnp-js";
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { responsableProceso } from '../dominio/responsableProceso';
-import { Solicitud } from '../dominio/solicitud';
 
 @Component({
   selector: "app-registro-activos",
@@ -45,12 +43,7 @@ export class RegistroActivosComponent implements OnInit {
   RutaArchivo: string;
   paisId: any;
   ArchivoAdjunto: any;
-  constructor(
-    public toastr: ToastrManager,
-    private servicio: SPServicio,
-    private modalServicio: BsModalService,
-    private router: Router
-  ) {
+  constructor(public toastr: ToastrManager, private servicio: SPServicio, private modalServicio: BsModalService, private router: Router) {
     this.loading = false;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.ArchivoAdjunto = null;
@@ -73,12 +66,13 @@ export class RegistroActivosComponent implements OnInit {
   }
 
   GuardarActivos() {
+    this.loading = true;
     let coment;
     let comentarios = this.ComentarioRegistroActivos;
     let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
-
     if (this.ArchivoAdjunto === null) {
-      this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos")
+      this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
+      this.loading = false;
       return false;
     } else {
     coment = {
@@ -86,22 +80,24 @@ export class RegistroActivosComponent implements OnInit {
       ResponsableId: ResponsableProcesoId,
       ComentarioRegistroActivos: comentarios
     }
-    this.servicio.guardarComentario(this.IdSolicitud, coment)
-      .then((resultado: ItemAddResult) => {        
+    this.servicio.guardarComentario(this.IdSolicitud, coment).then((resultado: ItemAddResult) => {        
         let nombreArchivo = "RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
          this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(
           (respuesta) => {
             this.MostrarExitoso("Archivo guardado correctamente");
             this.router.navigate(["/mis-pendientes"]);
+            this.loading = false;
           }
         ).catch(
           (error) => {
             this.mostrarError("Error al guardar el archivo");
+            this.loading = false;
           }
         );
       })
       .catch(error => {
         console.log(error);
+        this.loading = false;
       });
     }
   }
@@ -111,6 +107,7 @@ export class RegistroActivosComponent implements OnInit {
     var valorprimitivo = fecha.valueOf().toString();
     return valorprimitivo;
   }
+
   MostrarExitoso(mensaje: string) {
     this.toastr.successToastr(mensaje, "Confirmación!");
   }
@@ -140,7 +137,6 @@ export class RegistroActivosComponent implements OnInit {
             this.ComentarioVerificar  = respuesta.ComentarioVerificarMaterial;
             if (respuesta.Attachments === true) {
               let ObjArchivos = respuesta.AttachmentFiles.results;
-
               ObjArchivos.forEach(element => {
                 let objSplit = element.FileName.split("-");
                 if (objSplit.length > 0) {
@@ -151,16 +147,10 @@ export class RegistroActivosComponent implements OnInit {
                 }
               });
             }
-            this.servicio
-              .obtenerResponsableProcesos(this.paisId)
-              .subscribe(RespuestaResponsableProceso => {
-                this.ObjResponsableProceso = responsableProceso.fromJsonList(
-                  RespuestaResponsableProceso
-                );
+            this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
+                this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
               });
-            this.servicio
-              .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
-              .subscribe(RespuestaCondiciones => {
+            this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
                 this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
                 this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
                 this.dataSource.paginator = this.paginator;
