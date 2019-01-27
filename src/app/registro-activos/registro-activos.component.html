@@ -39,7 +39,7 @@
                     </ng-container>
                     <ng-container matColumnDef="valorEstimado">
                         <th mat-header-cell *matHeaderCellDef> Valor</th>
-                        <td mat-cell *matCellDef="let element"> {{element.valorEstimado}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.valorEstimado | currency}} </td>
                     </ng-container>
                     <ng-container matColumnDef="moneda">
                         <th mat-header-cell *matHeaderCellDef> Moneda</th>
@@ -55,7 +55,7 @@
                                 </a>
                             </ng-container>
                             <ng-template #elseTemplate>
-                                Sin adjunto
+                                Sin adjunto de sondeo
                             </ng-template>
                         </td>
                     </ng-container>
