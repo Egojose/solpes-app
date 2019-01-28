@@ -223,6 +223,7 @@ export class RegistrarSolpSapComponent implements OnInit {
           });
         }
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             
@@ -235,9 +236,10 @@ export class RegistrarSolpSapComponent implements OnInit {
             }
             this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
             this.dataSource.paginator = this.paginator;
-            console.log(this.ObjCondicionesTecnicas);
+            // console.log(this.ObjCondicionesTecnicas);
           }
         )
+
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
             this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);

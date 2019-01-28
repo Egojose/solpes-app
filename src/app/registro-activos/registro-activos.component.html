@@ -8,7 +8,7 @@
     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Condiciones técnicas bienes
+                <strong>Condiciones técnicas bienes</strong>
             </mat-panel-title>
             <mat-panel-description>
                 {{panelOpenState ? 'cerrar' : 'Click para desplegar' }}
@@ -121,7 +121,7 @@
                 <input id="button1" type="button" class="derecha-boton btn  btn-success" value="Enviar" (click)="GuardarActivos()" />
             </div>
             <div>
-                <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);" value="Salir" />
+                <input id="button1" type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);" value="Salir" />
             </div>
         </div>
     </div>

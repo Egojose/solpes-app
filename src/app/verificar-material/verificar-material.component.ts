@@ -53,17 +53,7 @@ export class VerificarMaterialComponent implements OnInit {
   submitted = false;
   dataSource;
   labelPosition = "after";
-  displayedColumns: string[] = [
-    "codigo",
-    "descripcion",
-    "modelo",
-    "fabricante",
-    "cantidad",
-    "existenciasverificar",
-    "numreservaverificar",
-    "cantidadreservaverificar",
-    "Accion"
-  ];
+  displayedColumns: string[] = ["codigo","descripcion","modelo","fabricante","cantidad","existenciasverificar","numreservaverificar","cantidadreservaverificar","Accion"];
   modalRef: BsModalRef;
   IdVerficar: any;
   paisId: any;
@@ -76,8 +66,7 @@ export class VerificarMaterialComponent implements OnInit {
   SwtichFaltaRecepcionBienes: boolean;
   verificar : string;
 
-  constructor(
-    private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
+  constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     this.loading = false;
     this.emptyVerificar = true;
     this.ArchivoAdjunto = null;
@@ -88,11 +77,11 @@ export class VerificarMaterialComponent implements OnInit {
 
   adjuntarArchivoVM(event) {
     let archivoAdjunto = event.target.files[0];
-    if (archivoAdjunto != null) {
-      this.ArchivoAdjunto = archivoAdjunto;
-    } else {
-      this.ArchivoAdjunto = null;
-    }
+      if (archivoAdjunto != null) {
+        this.ArchivoAdjunto = archivoAdjunto;
+      } else {
+        this.ArchivoAdjunto = null;
+      }
   }
   comfirmasalir(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
@@ -135,14 +124,12 @@ export class VerificarMaterialComponent implements OnInit {
           this.MostrarExitoso("Materiales verificados correctamente");
           if (this.SwtichOrdenEstadistica === true) {
             let nombreArchivo = "ActivoVM-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
-            this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(
-              (respuesta) => {
+            this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then((respuesta) => {
                 this.MostrarExitoso("Archivo guardado correctamente");
                 this.router.navigate(["/mis-pendientes"]);
                 this.loading = false;
               }
-            ).catch(
-              (error) => {
+            ).catch((error) => {
                 this.mostrarError("Error al guardar el archivo");
                 this.loading = false;
               }
@@ -189,7 +176,6 @@ export class VerificarMaterialComponent implements OnInit {
     this.loading = true;
     this.RegistrarFormularioVerificar();
     this.ValidarNumReservaSiHayExistencias();
-    
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(solicitud => {
       this.IdSolicitud = solicitud.Id;
       this.fechaDeseada = solicitud.FechaDeseadaEntrega;
@@ -208,11 +194,9 @@ export class VerificarMaterialComponent implements OnInit {
       this.alcance = solicitud.Alcance;
       this.justificacion = solicitud.Justificacion;
       this.ComentarioSondeo = solicitud.ComentarioSondeo;
-
       if (solicitud.CondicionesContractuales != null) {
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
       }
-
       this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
         this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
         console.log(this.ObjCondicionesTecnicas);
@@ -267,8 +251,7 @@ export class VerificarMaterialComponent implements OnInit {
 
   ValidarNumReservaSiHayExistencias() {
     const numReservaVerificar = this.verificarMaterialFormulario.get('numReservaVerificar');
-    this.verificarMaterialFormulario.get('existenciasVerificar').valueChanges.subscribe(
-      (valor: string) => {
+    this.verificarMaterialFormulario.get('existenciasVerificar').valueChanges.subscribe((valor: string) => {
         if (valor != '' || valor != undefined || valor != null) {
           if (parseFloat(valor) > 0) {
             numReservaVerificar.setValidators([Validators.required]);
@@ -302,11 +285,7 @@ export class VerificarMaterialComponent implements OnInit {
     } else {
       this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(element.cantidadreservaverificar);
     }
-
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: "gray modal-lg" })
-    );
+    this.modalRef = this.modalServicio.show(template, Object.assign({}, { class: "gray modal-lg" }));
     this.verificarMaterialFormulario.get('existenciasVerificar').setValidators([ValidarMayorExistencias(element.cantidad)]);
   }
 
@@ -360,8 +339,7 @@ export class VerificarMaterialComponent implements OnInit {
       else {
         this.SwtichFaltaRecepcionBienes = true;
       }
-    })
-      .catch(error => {
+      }).catch(error => {
         console.log(error);
       });
     this.dataSource = this.ObjCTVerificar;
@@ -372,22 +350,14 @@ export class VerificarMaterialComponent implements OnInit {
 
 
   RestaCantidadReserva() {
-    let Existencia: number = this.verificarMaterialFormulario.controls[
-      "existenciasVerificar"
-    ].value;
-    let Cantidad: number = this.verificarMaterialFormulario.controls[
-      "cantidadVerificar"
-    ].value;
+    let Existencia: number = this.verificarMaterialFormulario.controls["existenciasVerificar"].value;
+    let Cantidad: number = this.verificarMaterialFormulario.controls["cantidadVerificar"].value;
 
     if (Existencia > Cantidad) {
-      this.verificarMaterialFormulario.controls[
-        "cantidadReservaVerificar"
-      ].setValue(0);
+      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(0);
     } else {
       let operacion: number = Cantidad - Existencia;
-      this.verificarMaterialFormulario.controls[
-        "cantidadReservaVerificar"
-      ].setValue(operacion);
+      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(operacion);
     }
   }
 
