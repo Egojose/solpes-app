@@ -27,6 +27,7 @@ export class RecepcionSapComponent implements OnInit {
   recepcionBienes: FormGroup;
   IdRecepcionBienes: number;
   IdUsuario: any;
+  
  
 constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager, private activarRoute: ActivatedRoute) {
   
@@ -64,12 +65,10 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, publ
         this.servicio.ObtenerRecepcionesBienes(this.IdUsuario).subscribe(
           (respuesta) => {
             this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
-
             this.servicio.ObtenerContratos(this.IdUsuario).subscribe(
               (respuesta) => {
                 this.objContratos = Contratos.fromJsonList(respuesta);
-                console.log(this.objContratos)
-
+                // console.log(this.objContratos)
               }
             );
           }

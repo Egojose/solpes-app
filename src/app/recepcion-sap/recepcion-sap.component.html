@@ -13,13 +13,12 @@
                 <th>Comentarios</th>
                 <th>Adjunto Activos</th>
                 <th># Recepción SIA</th>
-                
                 <th>Guardar</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of ObjRecepcionBienes">
-                <td></td>
+                <td>{{item.contratoMarco}}</td>
                 <td>{{item.Author}}</td>
                 <td>{{item.cantidad}}</td>
                 <td>{{item.valor}}</td>

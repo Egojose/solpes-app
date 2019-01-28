@@ -1,5 +1,8 @@
 export class Contratos {
-    constructor(public idContratos: string, public tipoContrato: string, public contratoMarco: string){
+    constructor(
+        public idContratos: string, 
+        public tipoContrato: string, 
+        public contratoMarco: string){
 
     }
 
