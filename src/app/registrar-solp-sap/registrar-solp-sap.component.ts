@@ -140,7 +140,7 @@ export class RegistrarSolpSapComponent implements OnInit {
       }
       else if (this.RDBOrdenadorGastos === 3) {
         ObjSolpSap = {
-          ResponsableId: this.Autor,
+          ResponsableId: this.comprador,
           Estado: "Sin presupuesto",
           EstadoRegistrarSAP: "No tiene presupuesto disponible",
           ComentarioRegistrarSAP: this.ComentarioRegistrarSap
