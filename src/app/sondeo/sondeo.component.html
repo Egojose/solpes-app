@@ -23,8 +23,8 @@
                                         <th>Fabricante</th>
                                         <th>Cantidad</th>
                                         <th>Valor Estimado</th>
-                                        <th>Adjunto</th>
                                         <th>Comentario</th>
+                                        <th>Adjunto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -36,12 +36,12 @@
                                             <td>{{item.fabricante}}</td>
                                             <td>{{item.cantidad}}</td>
                                             <td>{{item.valorEstimado}}</td>
+                                            <td>{{item.Comentario}}</td>
                                             <td>
                                                 <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
                                                     <button type="button" class="btn btn-primary">Ver Archivo</button>
                                                 </a>
                                             </td>
-                                            <td>{{item.Comentario}}</td>
                                         </ng-container>
                                         <ng-template #Comson>
                                             <td>{{item.codigoSondeo}}</td>
@@ -117,8 +117,8 @@
                                         <th>Descripción</th>
                                         <th>Cantidad</th>
                                         <th>Valor Estimado</th>
-                                        <th>Adjunto</th>
                                         <th>Comentario</th>
+                                        <th>Adjunto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -127,12 +127,12 @@
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.cantidad}}</td>
                                         <td>{{item.valorEstimado}}</td>
+                                        <td>{{item.comentarios}}</td>
                                         <td>
                                             <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>
                                         </td>
-                                        <td>{{item.comentarios}}</td>
                                     </tr>
                                 </tbody>
                             </table>
