@@ -45,9 +45,10 @@ export class CondicionTecnicaServicios{
             element.TipoMoneda,
             element.PrecioSondeo,
             element.ID,
-            adjuntoSondeo,
+            null, //adjuntoSondeo,
             adjuntoCreacion,
-            element.ComentarioSondeo);
+            '' //element.ComentarioSondeo
+            );
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
