@@ -1,3 +1,5 @@
+import { Adjunto } from "./adjunto";
+
 export class CondicionTecnicaServicios{
   IdServicios: any;
  
@@ -14,25 +16,23 @@ export class CondicionTecnicaServicios{
         public tipoMoneda?: string,
         public PrecioSondeo?: number,
         public id?: number,
-        public archivoAdjunto?: any,
+        public adjunto?:any,
+        public adjuntoCreacion?:any,
         public ComentarioSondeo?: string) { }
 
     public static fromJson(element: any) {
 
-        let RutaArchivo = "";
-        if (element.Attachments ===true) {
-           let ObjArchivos = element.AttachmentFiles.results;
-            
-           ObjArchivos.forEach(element => {
-               let objSplit = element.FileName.split("-");
-               if (objSplit.length>0) {
-                   let TipoArchivo = objSplit[0]
-                   if (TipoArchivo==="solp") {
-                        RutaArchivo=element.ServerRelativeUrl;
-                   }                
-               }
-           });
-        }        
+        let adjuntosServicios: Adjunto [] = [];
+        let adjuntoCreacion: Adjunto;
+        let adjuntoSondeo: Adjunto;
+       
+        let arrayAdjuntos = element.AttachmentFiles.results;
+        for (let i = 0; i < arrayAdjuntos.length; i++){
+            adjuntosServicios.push(new Adjunto(element.Id, arrayAdjuntos[i].FileName, arrayAdjuntos[i].ServerRelativeUrl));
+        }
+        
+        adjuntoSondeo = CondicionTecnicaServicios.ObtenerAdjunto("sondeoServicios-", adjuntosServicios, adjuntoSondeo);
+        adjuntoCreacion = CondicionTecnicaServicios.ObtenerAdjunto("solp-", adjuntosServicios, adjuntoCreacion);
 
         return new CondicionTecnicaServicios(element.Title,
             element.Solicitud,
@@ -45,8 +45,26 @@ export class CondicionTecnicaServicios{
             element.TipoMoneda,
             element.PrecioSondeo,
             element.ID,
-            RutaArchivo,
+            adjuntoSondeo,
+            adjuntoCreacion,
             element.ComentarioSondeo);
+    }
+
+    private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
+        if (adjuntosBienes.length > 0) {
+            let adjuntoPorBuscar = adjuntosBienes.filter(a => a.filename.startsWith(identificadorAdjunto));
+            if (adjuntoPorBuscar.length > 0) {
+                let ultimaPosicion = adjuntoPorBuscar.length - 1;
+                adjuntoRetornar = adjuntoPorBuscar[ultimaPosicion];
+            }
+            else {
+                adjuntoRetornar = null;
+            }
+        }
+        else{
+            adjuntoRetornar = null;
+        }
+        return adjuntoRetornar;
     }
 
     public static fromJsonList(elements: any) {

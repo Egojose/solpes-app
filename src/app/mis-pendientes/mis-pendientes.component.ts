@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { SPServicio } from '../servicios/sp-servicio';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
