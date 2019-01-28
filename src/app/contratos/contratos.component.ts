@@ -60,7 +60,11 @@ export class ContratosComponent implements OnInit {
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
   ObjCTVerificar: any[];
   dataSource;
+  title: 'Contratos';
   dataSourceTS;
+  panelOpenState = false;
+  panelOpenState1 = false;
+  panelOpenState2 = false;
   ObjResponsableProceso: any[];
   ObjCondicionesTecnicasServicios: CondicionTecnicaServicios[] = [];
   CTS: boolean;
@@ -328,7 +332,7 @@ export class ContratosComponent implements OnInit {
           ResponsableServicios=this.ObResProceso[0].porConfirmarEntregaBienes;
 
         }
-        this.servicio.cambioEstadoSolicitud(this.IdSolicitud,"Por registrar entregas",this.autor).then(
+        this.servicio.cambioEstadoSolicitud(this.IdSolicitud,"Por recepcionar",this.autor).then(
           (resultado)=>{             
               this.MostrarExitoso("El contrato se ha guardado correctamente");
               setTimeout(() => {
