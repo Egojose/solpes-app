@@ -42,9 +42,9 @@ export class CondicionesTecnicasBienes {
             element.ValorEstimado,
             element.PrecioSondeo,
             element.Comentarios,
-            adjuntoSondeo, 
+            null, //adjunto
             adjuntoCreacion,
-            element.ComentarioSondeo,
+            '', //comentario sondeo
             element.CodigoSondeo);
     }
 

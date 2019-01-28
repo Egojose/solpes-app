@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef,ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ToastrManager } from "ng6-toastr-notifications";
 import { Router } from "@angular/router";
 import { SPServicio } from "../servicios/sp-servicio";
@@ -7,6 +7,7 @@ import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnic
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { responsableProceso } from '../dominio/responsableProceso';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: "app-registro-activos",
@@ -29,13 +30,13 @@ export class RegistroActivosComponent implements OnInit {
   numOrdenEstadistica: string;
   loading: boolean;
   IdSolicitud: any;
-  displayedColumns: string[] = ["codigo","descripcion","modelo","fabricante","cantidad","valorEstimado","moneda","adjunto"];
+  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
   IdSolicitudParms: string;
   RutaArchivo: string;
   paisId: any;
   ArchivoAdjunto: any;
-  constructor(public toastr: ToastrManager, private servicio: SPServicio, private modalServicio: BsModalService, private router: Router) {
-    this.loading = false;
+  constructor(public toastr: ToastrManager, private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, private spinner: NgxSpinnerService) {
+    this.spinner.hide();
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.ArchivoAdjunto = null;
   }
@@ -58,13 +59,13 @@ export class RegistroActivosComponent implements OnInit {
   }
 
   GuardarActivos() {
-    this.loading = true;
+    this.spinner.show();
     let coment;
     let comentarios = this.ComentarioRegistroActivos;
     let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
     if (this.ArchivoAdjunto === null) {
       this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     } else {
       coment = {
@@ -73,20 +74,20 @@ export class RegistroActivosComponent implements OnInit {
         ComentarioRegistroActivos: comentarios
       };
       this.servicio.guardarComentario(this.IdSolicitud, coment).then((resultado: ItemAddResult) => {
-          let nombreArchivo ="RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
-          this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(respuesta => {
-              this.MostrarExitoso("Archivo guardado correctamente");
-              this.router.navigate(["/mis-pendientes"]);
-              this.loading = false;
-            })
-            .catch(error => {
-              this.mostrarError("Error al guardar el archivo");
-              this.loading = false;
-            });
+        let nombreArchivo = "RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
+        this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(respuesta => {
+          this.MostrarExitoso("Archivo guardado correctamente");
+          this.router.navigate(["/mis-pendientes"]);
+          this.spinner.hide();
         })
+          .catch(error => {
+            this.mostrarError("Error al guardar el archivo");
+            this.spinner.hide();
+          });
+      })
         .catch(error => {
           console.log(error);
-          this.loading = false;
+          this.spinner.hide();
         });
     }
   }
@@ -114,37 +115,37 @@ export class RegistroActivosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = true;
+    this.spinner.show();
     this.servicio.ObtenerTodosLosUsuarios().subscribe(Usuarios => {
       this.ObjUsuarios = Usuarios;
       this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(respuesta => {
-          this.IdSolicitud = respuesta.Id;
-          this.paisId = respuesta.Pais.Id;
-          this.numOrdenEstadistica = respuesta.NumeroOrdenEstadistica;
-          this.ComentarioVerificar = respuesta.ComentarioVerificarMaterial;
-          if (respuesta.Attachments === true) {
-            let ObjArchivos = respuesta.AttachmentFiles.results;
-            ObjArchivos.forEach(element => {
-              let objSplit = element.FileName.split("-");
-              if (objSplit.length > 0) {
-                let TipoArchivo = objSplit[0];
-                if (TipoArchivo === "ActivoVM") {
-                  this.RutaArchivo = element.ServerRelativeUrl;
-                }
+        this.IdSolicitud = respuesta.Id;
+        this.paisId = respuesta.Pais.Id;
+        this.numOrdenEstadistica = respuesta.NumeroOrdenEstadistica;
+        this.ComentarioVerificar = respuesta.ComentarioVerificarMaterial;
+        if (respuesta.Attachments === true) {
+          let ObjArchivos = respuesta.AttachmentFiles.results;
+          ObjArchivos.forEach(element => {
+            let objSplit = element.FileName.split("-");
+            if (objSplit.length > 0) {
+              let TipoArchivo = objSplit[0];
+              if (TipoArchivo === "ActivoVM") {
+                this.RutaArchivo = element.ServerRelativeUrl;
               }
-            });
-          }
-          this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
-              this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
-            });
-          this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
-              this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-              this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
-              this.dataSource.paginator = this.paginator;
-            });
+            }
+          });
+        }
+        this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
+          this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
         });
+        this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
+          this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+          this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
+          this.dataSource.paginator = this.paginator;
+        });
+      });
     });
-    this.loading = false;
+    this.spinner.hide();
   }
 
   salir() {
