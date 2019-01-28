@@ -77,26 +77,6 @@
   </div>
 </div>
 <div class="row">
-<<<<<<< HEAD
-  <div class="form-group col-md-12">
-    <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
-    <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
-    <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top"
-      [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
-  </div>
-</div>
-<div class="form-group row">
-  <div class="col-md-12">
-    <div class="botonera">
-      <div>
-        <input id="button1" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;" value="Enviar"
-          (click)="GuardarComentario()" />
-      </div>
-      <div>
-        <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);"
-          value="Salir" />
-      </div>
-=======
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
         <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
@@ -113,7 +93,6 @@
                 <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);" value="Salir" />
             </div>
         </div>
->>>>>>> 58566a98b9d7d849138a3aea91351b6e07b491d8
     </div>
   </div>
 </div>
@@ -326,45 +305,6 @@
       </div>
     </div>
 
-<<<<<<< HEAD
-    <div class="form-group row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo bienes</strong></label>
-          <div class="table-wrapper-scroll-y">
-            <table class="table table-striped table-bordered table-hover text-center">
-              <thead>
-                <tr>
-                  <th>Código</th>
-                  <th>Descripción</th>
-                  <th>Cantidad</th>
-                  <th>Precio</th>
-                  <th>Comentario</th>
-                  <th>Adjunto</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of ObjCondicionesTecnicas">
-                  <td>{{item.codigoSondeo}}</td>
-                  <td>{{item.descripcion}}</td>
-                  <td>{{item.cantidadSondeo | number}}</td>
-                  <td>{{item.precioSondeo | currency}}</td>
-                  <td>{{item.comentarioSondeo}}</td>
-                  <td>
-                    <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
-                      <a href="{{item.adjunto.url}}" target=_blank>
-                        <button type="button" class="btn btn-primary">Ver Archivo</button>
-                      </a>
-                    </ng-container>
-                    <ng-template #nohaySondeobien>
-                      Sin adjunto
-                    </ng-template>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-=======
         <div class="form-group row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -404,67 +344,12 @@
                     </div>
                 </div>
             </div>
->>>>>>> 58566a98b9d7d849138a3aea91351b6e07b491d8
         </div>
       </div>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
 <ng-template #templateVerificarMaterial>
-<<<<<<< HEAD
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Realizar verificación del material</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()"><span aria-hidden="true">&times;</span></button>
-  </div>
-  <div class="modal-body">
-    <div class="container">
-      <form [formGroup]="verificarMaterialFormulario" (ngSubmit)="VerificarOnSubmit()">
-        <div class="form-group">
-          <label for="codigo">Código</label><span class="asterisco-obligatorio">*</span>
-          <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar" class="form-control"
-            [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }" type="text" placeholder="Escriba el código si lo conoce"
-            required="true" />
-          <div *ngIf="verificarSubmitted && f.codigoVerificar.errors" class="invalid-feedback">
-            <div *ngIf="f.codigoVerificar.errors.required">Este campo es requerido</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="descripcion">Descripción</label><span class="asterisco-obligatorio">*</span>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar"
-            [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
-          <div *ngIf="verificarSubmitted && f.descripcionVerificar.errors" class="invalid-feedback">
-            <div *ngIf="f.descripcionVerificar.errors.required">Este campo es requerido</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-4">
-              <label for="modelo">Modelo</label>
-              <input class="form-control" id="modeloVerificar" rows="2" formControlName="modeloVerificar" readonly />
-            </div>
-            <div class="col-md-4">
-              <label for="fabricante">Fabricante</label>
-              <input class="form-control" id="fabricanteVerificar" rows="2" formControlName="fabricanteVerificar"
-                readonly />
-            </div>
-            <div class="col-md-4">
-              <label for="cantidad">Cantidad</label>
-              <input type="text" id="cantidadVerificar" formControlName="cantidadVerificar" class="form-control" type="text"
-                readonly />
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-6">
-              <label for="existencias">Existencias</label>
-              <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar"
-                class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }"
-                placeholder="Escriba las existencias" (change)="RestaCantidadReserva()" />
-              <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
-                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser
-                  mayores a la cantidad
-=======
     <div class="modal-header">
         <h4 class="modal-title pull-left">Realizar verificación del material</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()"><span aria-hidden="true">&times;</span></button>
@@ -531,7 +416,6 @@
                             <input type="text" formControlName="cantidadReservaVerificar" class="form-control" readonly />
                         </div>
                     </div>
->>>>>>> 58566a98b9d7d849138a3aea91351b6e07b491d8
                 </div>
               </div>
             </div>
