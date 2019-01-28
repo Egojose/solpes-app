@@ -1,5 +1,5 @@
 import { environment } from "src/environments/environment";
-import { default as pnp, Web } from 'sp-pnp-js';
+import { default as pnp } from 'sp-pnp-js';
 import { Injectable } from "@angular/core";
 import { from } from 'rxjs';
 import { Solicitud } from "../dominio/solicitud";
@@ -7,7 +7,6 @@ import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
 import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 import { RecepcionBienes } from "../entrega-bienes/recepcionBienes";
 import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
-import { Contratos } from "../dominio/contrato";
 
 @Injectable()
 export class SPServicio {
@@ -201,12 +200,12 @@ export class SPServicio {
     }
 
     agregarAdjuntoActivosBienes(IdSolicitud: number, nombreArchivo: string, archivo: File) {
-        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdSolicitud);
+        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdSolicitud);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     agregarAdjuntoActivosServicios(IdSolicitud: number, nombreArchivo: string, archivo: File) {
-        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdSolicitud);
+        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdSolicitud);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
