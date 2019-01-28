@@ -67,8 +67,7 @@ export class VerSolicitudTabComponent implements OnInit {
     "fabricante",
     "cantidad",
     "valorEstimado",
-    "moneda",
-    "adjunto"
+    "moneda"
   ];
 
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router) { 

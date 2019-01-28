@@ -43,7 +43,7 @@ export class CondicionesTecnicasBienes {
 
         adjuntoSondeo = CondicionesTecnicasBienes.ObtenerAdjunto("sondeoBienes-", adjuntosBienes, adjuntoSondeo);
         adjuntoCreacion = CondicionesTecnicasBienes.ObtenerAdjunto("solp-", adjuntosBienes, adjuntoCreacion);
-        adjuntoActivo = CondicionesTecnicasBienes.ObtenerAdjunto("ActivoVM-", adjuntosBienes, adjuntoActivo);
+        //adjuntoActivo = CondicionesTecnicasBienes.ObtenerAdjunto("ActivoVM-", adjuntosBienes, adjuntoActivo);
 
         return new CondicionesTecnicasBienes(element.Id,
             element.Codigo,
@@ -65,8 +65,7 @@ export class CondicionesTecnicasBienes {
             element.CantidadReservaVerificar,
             element.TipoMoneda,
             adjuntoSondeo,
-            adjuntoCreacion, 
-            adjuntoActivo);
+            adjuntoCreacion);
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
