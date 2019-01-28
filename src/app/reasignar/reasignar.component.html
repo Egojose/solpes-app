@@ -1,0 +1,39 @@
+<div class="loading" *ngIf='loading'>
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
+        alt="loading...">
+    <b>PROCESANDO...</b>
+</div>
+<h2 mat-dialog-title>Reasignar - Consecutivo: {{consecutivoSolicitud}}</h2>
+<hr>
+
+<mat-dialog-content class="mat-typography">
+  <div class="row">
+    <div class="col-md-12">
+      <label for="reasignar-a">Reasignar a</label>
+      <select2 [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" required>
+      </select2>
+      <mat-error *ngIf="ReasignarControl.hasError('required')">
+          Este campo es requerido
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="alertas">
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="botonera">
+        <button class="btn btn-default" (click)="salir()">Salir</button>
+        <button class="btn btn-success" (click)="reasignar()">Reasignar</button>
+      </div>
+    </div>
+  </div>
+
+
+</mat-dialog-content>
+
+<ngx-spinner></ngx-spinner>

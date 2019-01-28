@@ -2,11 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule, MatPaginatorModule, MatExpansionModule } from '@angular/material';
+import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule, MatPaginatorModule, MatExpansionModule, MatDialogModule, MatSelectModule } from '@angular/material';
 import { Select2Module } from "ng-select2-component";
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ng6-toastr-notifications';
 import { NgxCurrencyModule } from "ngx-currency";
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppComponent } from './app.component';
 import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
@@ -23,12 +24,13 @@ import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-s
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberDirective } from './directivas/numbers-only.directive';
-import { BsModalService, ModalModule, ModalBackdropComponent, TooltipModule, TypeaheadModule, TabsModule, AccordionModule } from 'ngx-bootstrap';
+import { BsModalService, ModalModule, ModalBackdropComponent, TooltipModule, TypeaheadModule, TabsModule, AccordionModule, AlertModule } from 'ngx-bootstrap';
 import { RegistrarEntradasSapServiciosComponent } from './registrar-entradas-sap-servicios/registrar-entradas-sap-servicios.component';
 import { MisPendientesComponent } from './mis-pendientes/mis-pendientes.component';
 import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.component';
 import { EditarSolicitudComponent } from './editar-solicitud/editar-solicitud.component';
 import { RegistroActivosComponent } from './registro-activos/registro-activos.component';
+import { ReasignarComponent } from './reasignar/reasignar.component';
 
 @NgModule({
   declarations: [
@@ -49,8 +51,10 @@ import { RegistroActivosComponent } from './registro-activos/registro-activos.co
     MisPendientesComponent,
     VerSolicitudTabComponent,
     EditarSolicitudComponent,
-    RegistroActivosComponent
+    RegistroActivosComponent,
+    ReasignarComponent
   ],
+  entryComponents: [ReasignarComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -63,9 +67,13 @@ import { RegistroActivosComponent } from './registro-activos/registro-activos.co
     MatAutocompleteModule,
     MatTableModule,
     MatListModule,
+    MatFormFieldModule,
+    MatSelectModule,
     MatOptionModule,
     MatInputModule,
+    MatDialogModule,
     MatExpansionModule,
+    AlertModule.forRoot(),
     NgxCurrencyModule,
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
@@ -76,6 +84,7 @@ import { RegistroActivosComponent } from './registro-activos/registro-activos.co
     ToastrModule.forRoot(),
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
+    NgxSpinnerModule,
     RouterModule.forRoot([
       {path:'',redirectTo:'/mis-solicitudes',pathMatch:'full'},
       {path:'aprobar-sondeo', component:AprobarSondeoComponent},

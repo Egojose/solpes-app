@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Router } from '@angular/router';
 import { SPServicio } from '../servicios/sp-servicio';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { responsableProceso } from '../dominio/responsableProceso';
+import { ReasignarComponent } from '../reasignar/reasignar.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-mis-pendientes',
@@ -27,15 +29,15 @@ export class MisPendientesComponent implements OnInit {
   ObjResponsableProceso: any;
   IdPais: any;
 
-  constructor( private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager) {
+  constructor( private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService) {
     this.dataSource = new MatTableDataSource();
     this.dataSource.data = this.misSolicitudes;
-    this.loading = false;
+    this.spinner.hide();
     
    }
 
   ngOnInit() {
-    this.loading = true;
+    this.spinner.show();
     this.ObtenerUsuarioActual();
   }
 
@@ -48,7 +50,7 @@ export class MisPendientesComponent implements OnInit {
         this.ObtenerMisSolicitudes();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
-        this.loading = false;
+        this.spinner.hide();
       }
     )
   }
@@ -70,10 +72,10 @@ export class MisPendientesComponent implements OnInit {
         else{
           this.empty = true;
         }
-        this.loading = false;
+        this.spinner.hide();
       }, error => {
         console.log('Error obteniendo mis solicitudes: ' + error);
-        this.loading = false;
+        this.spinner.hide();
       }
     )
   }
@@ -195,7 +197,7 @@ export class MisPendientesComponent implements OnInit {
   }
 
   confirmarDescartar() {
-    this.loading = true;
+    this.spinner.show();
     this.servicio.borrarSolicitud(this.idSolicitud).then(
       (respuesta) => {
         this.modalRef.hide();
@@ -203,7 +205,7 @@ export class MisPendientesComponent implements OnInit {
         this.ObtenerMisSolicitudes();
       }, err => {
         console.log('Error al borrar la solicitud: ' + err);
-        this.loading = false;
+        this.spinner.hide();
       }
     )
   }
@@ -235,6 +237,15 @@ export class MisPendientesComponent implements OnInit {
   RegistrarActivos(id){
     sessionStorage.setItem("IdSolicitud", id);
     this.router.navigate(['/registro-activos']); 
+  }
+
+  reasignar(solicitud) {
+    sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
+    window.scroll(0,0);
+    this.dialog.open(ReasignarComponent, {
+      height: '360px',
+      width: '600px',
+    });
   }
 
 }

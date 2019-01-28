@@ -1,9 +1,3 @@
-<div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
-        alt="loading...">
-    <b>PROCESANDO...</b>
-</div>
-
 <h2>Mis Solicitudes</h2>
 
 <mat-form-field>
@@ -60,4 +54,8 @@
     </table>
     <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
 </div>
+
+<ngx-spinner>
+        <p style="font-size: 20px; color: white">PROCESANDO...</p>
+    </ngx-spinner>
 
