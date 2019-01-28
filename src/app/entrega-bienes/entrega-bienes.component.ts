@@ -64,13 +64,17 @@ export class EntregaBienesComponent implements OnInit {
   NumSolp: any;
   ArchivoAdjunto: any;
   OrdenEstadistica: any;
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private modalService: BsModalService, private activarRoute: ActivatedRoute, private router: Router,public toastr: ToastrManager,) {
+  tieneArchivo: any;
+  RutaArchivo: any;
+  modolectura: boolean;
+  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private modalService: BsModalService, private activarRoute: ActivatedRoute, private router: Router, public toastr: ToastrManager) {
     this.ErrorCantidad = false;
     this.activarTool = true;
     this.EstadoSolicitud = true;
     this.showBtnConfirmar = false;
     this.ItemsAgregadosReciente = 0;
     this.ArchivoAdjunto = null;
+    this.modolectura = false;
 
     // this.activarRoute.params.subscribe((parametro) => {
     //   this.IdSolicitudParms = parametro.idSolicitud;
@@ -87,7 +91,7 @@ export class EntregaBienesComponent implements OnInit {
       UltimaEntrega: ['', Validators.required],
       Comentario: ['']
     });
-    
+
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
@@ -108,6 +112,22 @@ export class EntregaBienesComponent implements OnInit {
         this.CompraServicios = solicitud.CompraServicios;
         this.NumSolp = solicitud.NumSolSAP;
         this.OrdenEstadistica = solicitud.OrdenEstadistica;
+        this.tieneArchivo = solicitud.Attachments;
+        this.RutaArchivo = null;
+        if (solicitud.Attachments ===true) {
+           let ObjArchivos = solicitud.AttachmentFiles.results;
+            
+           ObjArchivos.forEach(element => {
+               let objSplit = element.FileName.split("-");
+               if (objSplit.length>0) {
+                   let TipoArchivo = objSplit[0]
+                   if (TipoArchivo==="RegistroActivo") {
+                        this.RutaArchivo=element.ServerRelativeUrl;
+                   }
+                
+               }
+           });
+        }
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         let CantidadCT = 0;
         let CantidadConfirmada = 0;
@@ -138,36 +158,39 @@ export class EntregaBienesComponent implements OnInit {
                   this.showBtnConfirmar = true;
                 }
                 this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
-                  (RespuestaProcesos)=>{
-                    this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);  
-                    this.ResponsableBienes = this.ObResProceso[0].porRegistrarSapBienes;                    
+                  (RespuestaProcesos) => {
+                    this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
+                    this.ResponsableBienes = this.ObResProceso[0].porRegistrarSapBienes;
                     this.loading = false;
                   },
-                  (error)=>{
+                  (error) => {
 
                   }
                 )
-                
+
               }
             );
           }
         )
-
       }
     );
   }
 
   get f() { return this.AgregarElementoForm.controls; }
 
-  ValidacionCero(){
+  ValidacionCero() {
     let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
-    
+
     if (cantidad === "0") {
       this.AgregarElementoForm.controls['UltimaEntrega'].setValue("Sí");
+      this.modolectura=true;
+    }
+    else{
+      this.modolectura=false;
     }
   }
 
-  adjuntarArchivoBienes(event){
+  adjuntarArchivoBienes(event) {
     let archivoAdjunto = event.target.files[0];
     if (archivoAdjunto != null) {
       this.ArchivoAdjunto = archivoAdjunto;
@@ -183,23 +206,25 @@ export class EntregaBienesComponent implements OnInit {
       return;
     }
 
-    
-
     let Objdescripcion = this.AgregarElementoForm.controls['Descripcion'].value;
     let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
     let valor = this.AgregarElementoForm.controls['Valor'].value;
     let ultimaEntrega = this.AgregarElementoForm.controls['UltimaEntrega'].value;
-    let comentario = this.AgregarElementoForm.controls['Comentario'].value;    
+    let comentario = this.AgregarElementoForm.controls['Comentario'].value;
 
     let ultimaEntregabool: boolean;
     if (ultimaEntrega == "Sí") {
       ultimaEntregabool = true;
+      if (cantidad === "0" && comentario === "") {
+        this.mostrarAdvertencia("Por favor ingrese un comentario");
+        return false;
+      }
     }
     else {
       ultimaEntregabool = false;
-    }    
+    }
 
-    if (this.ArchivoAdjunto===null && this.OrdenEstadistica===true && cantidad !=="0") {
+    if (this.ArchivoAdjunto === null && this.OrdenEstadistica === true && cantidad !== "0") {
       this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
       return false;
     }
@@ -213,7 +238,7 @@ export class EntregaBienesComponent implements OnInit {
       this.ObjCondicionesTecnicas[IdBienes]["totalCantidad"] = totalCantidad;
       this.ObjCondicionesTecnicas[IdBienes]["cantidadRecibida"] = parseFloat(cantidad);
 
-      if (totalCantidad === 0 || cantidad==="0") {
+      if (totalCantidad === 0 || cantidad === "0") {
         ultimaEntregabool = true;
         this.ObjCondicionesTecnicas[IdBienes]["UltimaEntregaCTB"] = true;
         if (IdBienes > -1) {
@@ -243,43 +268,79 @@ export class EntregaBienesComponent implements OnInit {
 
       return;
     }
-    this.loading=true;
+    this.loading = true;
     this.objRecepcionAgregar = new RecepcionBienes(Objdescripcion.IdBienes, Objdescripcion.descripcion, cantidad, valor, ultimaEntregabool, comentario);
 
-    this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud,this.ResponsableBienes).then(
+    this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, this.ResponsableBienes).then(
       (Respuesta: ItemAddResult) => {
         let IdRecepcionBienes = Respuesta.data.Id;
-        if (ultimaEntregabool===false) {
+        if (ultimaEntregabool === false) {
           let nombreArchivo = "EntregaBienes-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
-          this.servicio.agregarAdjuntoActivosBienes(IdRecepcionBienes,nombreArchivo,this.ArchivoAdjunto).then(
-            (Respuesta)=>{
-              (<HTMLInputElement>document.getElementById("Adjunto")).value = null; 
-              this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
-                (respuesta) => {
-                  this.ItemsAgregadosReciente = 0;
-                  this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
-                  this.ObjRecepcionBienes.forEach(element => {
-                    let RptUltimaEntrega = this.ObjCondicionesTecnicas.find(x => x.IdBienes === element.Idbienes).UltimaEntregaCTB;
-                    element.ultimaEntregaCTB = RptUltimaEntrega;
-                    if (element.estadoRB === "No confirmado") {
-                      this.ItemsAgregadosReciente++;
+
+          this.servicio.agregarAdjuntoActivosBienes(IdRecepcionBienes, nombreArchivo, this.ArchivoAdjunto).then(
+            (Respuesta) => {
+              (<HTMLInputElement>document.getElementById("Adjunto")).value = null;
+              let CantidadCT = 0;
+              let CantidadConfirmada = 0;
+              let TotalCantidadVerificar = 0;
+              this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
+                RespuestaCondiciones => {
+                  this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+                  this.ObjCondicionesTecnicas.forEach(element => {
+                    if (element.totalCantidad > 0 && element.UltimaEntregaCTB === false) {
+                      this.ObjItemsDescripcion.push(element);
                     }
-                  });  
+                    TotalCantidadVerificar = TotalCantidadVerificar + element.cantidad;
+                    if (element.UltimaEntregaCTB === true) {
+                      CantidadCT++;
+                    }
+                  });
+                  this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
+                    (respuesta) => {
+                      this.ItemsAgregadosReciente=0;
+                      this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
+                      this.ObjRecepcionBienes.forEach(element => {
+                        let RptUltimaEntrega = this.ObjCondicionesTecnicas.find(x => x.IdBienes === element.Idbienes).UltimaEntregaCTB;
+                        element.ultimaEntregaCTB = RptUltimaEntrega;
+                        if (element.estadoRB === "No confirmado") {
+                          this.ItemsAgregadosReciente++;
+                        }
+                      });
+                      if (CantidadCT === this.ObjCondicionesTecnicas.length && this.ItemsAgregadosReciente === 0) {
+                        this.showBtnConfirmar = true;
+                      }
+                      this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+                        (RespuestaProcesos) => {
+                          this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
+                          this.ResponsableBienes = this.ObResProceso[0].porRegistrarSapBienes;
+                          this.loading = false;
+                        },
+                        (error) => {
+
+                        }
+                      )
+                    }
+                  );
                 }
-              );
+              )
             }
           ).catch(
-            (error)=>{
+            (error) => {
               this.mostrarError("Error al guardar el archivo");
             }
           );
-        }        
+        }
+        else{
+          this.objRecepcionAgregar["adjunto"]= null;
+        }
+       
 
         this.ItemsAgregadosReciente++;
         this.objRecepcionAgregar["IdRecepcionBienes"] = IdRecepcionBienes;
         //this.objRecepcionAgregar["eliminar"]=true;    
         this.objRecepcionAgregar["estadoRB"] = "No confirmado";
         this.objRecepcionAgregar["fechaRecepcion"] = new Date();
+        
         this.ObjRecepcionBienes.push(this.objRecepcionAgregar);
         // this.ObjRecepcionBienes.sort();
         this.AgregarElementoForm.reset({
@@ -303,11 +364,11 @@ export class EntregaBienesComponent implements OnInit {
         }
         this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(Objdescripcion.IdBienes, objActualizacionCTB).then(
           (resultado) => {
-            this.loading=false;
+            this.loading = false;
           }).catch(
             (error) => {
               console.log(error);
-              this.loading=false;
+              this.loading = false;
             }
           );
       }, err => {
@@ -332,7 +393,7 @@ export class EntregaBienesComponent implements OnInit {
       let objActualizacionCTB = {
         UltimaEntrega: true
       }
-      this.loading=true;
+      this.loading = true;
       this.servicio.actualizarBienesRecibidos(RecepcionBieesID).then(
         (resultado) => {
           this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(ObjCTB.IdBienes, objActualizacionCTB).then(
@@ -341,11 +402,11 @@ export class EntregaBienesComponent implements OnInit {
               let indexBienes = this.ObjRecepcionBienes.findIndex(x => x.Idbienes === ObjCTB.IdBienes);
               this.ObjRecepcionBienes[indexBienes]["ultimaEntrega"] = true;
               this.ObjItemsDescripcion.splice(indexBienes, 1);
-              this.loading=false;
+              this.loading = false;
             }).catch(
               (error) => {
                 console.log(error);
-                this.loading=false;
+                this.loading = false;
               }
             );
         }
@@ -361,11 +422,11 @@ export class EntregaBienesComponent implements OnInit {
         CantidadRecibida: 0,
         UltimaEntrega: true
       }
-      this.loading=true;
+      this.loading = true;
       this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(ObjCTB.IdBienes, objActualizacionCTB).then(
         (resultado) => {
           this.objRecepcionAgregar = new RecepcionBienes(ObjCTB.IdBienes, ObjCTB.descripcion, 0, "0", true, "");
-          this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud,null).then(
+          this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, null).then(
             (resultadoBienes: ItemAddResult) => {
               this.ItemsAgregadosReciente++;
               this.objRecepcionAgregar["IdRecepcionBienes"] = resultadoBienes.data.Id;
@@ -373,15 +434,15 @@ export class EntregaBienesComponent implements OnInit {
               this.objRecepcionAgregar["estadoRB"] = "No confirmado";
               this.objRecepcionAgregar["fechaRecepcion"] = new Date();
               this.ObjRecepcionBienes.push(this.objRecepcionAgregar);
-              let indexBienes = this.ObjRecepcionBienes.findIndex(x => x.Idbienes === ObjCTB.IdBienes);              
+              let indexBienes = this.ObjRecepcionBienes.findIndex(x => x.Idbienes === ObjCTB.IdBienes);
               this.ObjItemsDescripcion.splice(indexBienes, 1);
-              this.loading=false;
+              this.loading = false;
             }
           )
         }).catch(
           (error) => {
             console.log(error);
-            this.loading=false;
+            this.loading = false;
           }
         );
     }
@@ -392,7 +453,7 @@ export class EntregaBienesComponent implements OnInit {
     let IdBienes = this.ObjCondicionesTecnicas.findIndex(x => x.IdBienes === ObjRecepcionEliminar.Idbienes);
     let TotalBienes = this.ObjCondicionesTecnicas[IdBienes]["totalCantidad"];
     let cantidadRecibida = this.ObjCondicionesTecnicas[IdBienes]["cantidadRecibida"];
-    this.loading=true;
+    this.loading = true;
     this.servicio.eliminarBienesRecibidos(ObjRecepcionEliminar.IdRecepcionBienes).then(
       (resultado) => {
         this.ItemsAgregadosReciente--;
@@ -419,11 +480,11 @@ export class EntregaBienesComponent implements OnInit {
           (resultado) => {
             this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdBienes]);
             this.ObjCondicionesTecnicas[IdBienes]["UltimaEntregaCTB"] = false;
-            this.loading=false;
+            this.loading = false;
           }).catch(
             (error) => {
               console.log(error);
-              this.loading=false;
+              this.loading = false;
             }
           );
 
@@ -441,11 +502,11 @@ export class EntregaBienesComponent implements OnInit {
     let Confirmado = false;
 
     this.ObjRecepcionBienes.forEach(element => {
-      
+
       if (element.estadoRB === "No confirmado") {
         element.estadoRB = "Confirmado";
         Confirmado = true;
-        this.loading=true;
+        this.loading = true;
         this.servicio.ConfirmarEntregaBienes(element.IdRecepcionBienes).then(
           (resultado) => {
             numeroItems++;
@@ -459,58 +520,58 @@ export class EntregaBienesComponent implements OnInit {
                       contadorCTTrue++;
                     }
                   });
-                  if (contadorCTTrue === this.ObjCondicionesTecnicas.length ) {
+                  if (contadorCTTrue === this.ObjCondicionesTecnicas.length) {
                     if (this.CompraServicios === true) {
                       let objCT;
                       //pregunta si el campo faltarecepcionservicios de la lista de solicitudes esta en si para cambiar el estado 
                       // de la solicitud a recibido si se cumple que los bienes y los servicios se recibieron.
                       if (this.FaltaServicios === false) {
-                        objCT={
+                        objCT = {
                           Estado: "Recibido",
                           FaltaRecepcionBienes: false,
                           ResponsableId: this.autor
                         }
                       }
-                      else{
-                        objCT={                          
+                      else {
+                        objCT = {
                           FaltaRecepcionBienes: false,
                           ResponsableId: this.autor
                         }
                       }
                       this.servicio.cambioEstadoRecepcionBienesServicios(this.IdSolicitud, objCT).then(
                         (respuesta) => {
-                          this.router.navigate(['/mis-solicitudes']);                        
+                          this.router.navigate(['/mis-solicitudes']);
                         }
                       ).catch(
                         (error) => {
                           console.log(error);
-                          this.loading=false;
+                          this.loading = false;
                         })
                     }
-                    else{
-                     let objCT={
+                    else {
+                      let objCT = {
                         Estado: "Recibido",
                         FaltaRecepcionBienes: false,
                         ResponsableId: this.autor
                       }
                       this.servicio.cambioEstadoRecepcionBienesServicios(this.IdSolicitud, objCT).then(
                         (respuesta) => {
-                          this.router.navigate(['/mis-solicitudes']);                        
+                          this.router.navigate(['/mis-solicitudes']);
                         }
                       ).catch(
                         (error) => {
                           console.log(error);
-                          this.loading=false;
+                          this.loading = false;
                         })
                     }
-                    
+
                   }
-                  else{
-                    this.router.navigate(['/mis-solicitudes']);                    
+                  else {
+                    this.router.navigate(['/mis-solicitudes']);
                   }
                 },
                 (error) => {
-                  this.loading=false;
+                  this.loading = false;
                 }
               )
 
@@ -519,14 +580,14 @@ export class EntregaBienesComponent implements OnInit {
         ).catch(
           (error) => {
             console.log(error);
-            this.loading=false;
+            this.loading = false;
           }
         )
-      }      
+      }
 
     });
 
-    if (numeroItems == 0 && Confirmado===false) {
+    if (numeroItems == 0 && Confirmado === false) {
       this.router.navigate(['/mis-solicitudes']);
     }
   }
