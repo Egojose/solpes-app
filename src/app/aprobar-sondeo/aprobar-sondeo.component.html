@@ -103,9 +103,9 @@
     <ng-container *ngIf="RDBsondeo === 4">
         <div class="row">
             <div class="form-group col-md-4">
-                <label><b>Número Solp/OCM:</b></label>
-                <ng-template #popTemplate2>Por favor digite el número SOLP/OCM</ng-template>
-                <input type="text" class="form-control" placeholder="Ingrese el número de SOLP/OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
+                <label><b>Número Contrato Marco:</b></label>
+                <ng-template #popTemplate2>Por favor digite el número OCM</ng-template>
+                <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
             </div>
         </div>
     </ng-container>
@@ -171,39 +171,34 @@
                                     <strong> Código ariba: </strong>{{codigoAriba}}
                                 </div>
                                 <div class="col-md-4">
-                                    <strong> Número de orden estadística: </strong>{{numeroOrdenEstadistico}}
+                                    <strong>Solicitante: </strong>{{solicitante}}
                                 </div>
                             </div>
                             <br>
                             <div class="row espacio">
-                                <div class="col-md-4">
-                                    <strong>Solicitante: </strong>{{solicitante}}
-                                </div>
                                 <div class="col-md-4">
                                     <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Empresa: </strong>{{empresa}}
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
                                 <div class="col-md-4">
                                     <strong>País: </strong>{{pais}}
                                 </div>
+                            </div>
+                            <br>
+                            <div class="row">
                                 <div class="col-md-4">
                                     <strong>Categoría: </strong>{{categoria}}
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Sub-Categoría: </strong>{{subCategoria}}
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <strong>Comprador: </strong>{{comprador}}
                                 </div>
                             </div>
+                            <br>
                         </div>
                     </div>
                 </div>
@@ -223,7 +218,8 @@
                 </div>
             </div>
             <hr>
-            <div class="form-group row">
+            <div class="form-group">
+                <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="colFormLabel" class="col-sm-4 col-form-label"><strong><h4>Condiciones contractuales</h4></strong></label>
@@ -246,6 +242,14 @@
                     </div>
                 </div>
             </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong> Número de orden estadística: </strong>{{numeroOrdenEstadistico}}
+                </div>
+            </div>
+            </div>
+            <hr>
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -260,39 +264,42 @@
                                         <th>Fabricante</th>
                                         <th>Cantidad</th>
                                         <th>Valor Estimado</th>
-                                        <th>Adjunto</th>
                                         <th>Comentario</th>
+                                        <th>Adjunto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicas">
-                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                        <ng-container *ngIf="Resondear !== true; else Codson">
                                             <td>{{item.Codigo}}</td>
-                                        </ng-container>
-                                        <ng-template #Esteotro>
-                                            <td>{{item.CodigoSondeo}}</td>
-                                        </ng-template>
-                                        <td>{{item.descripcion}}</td>
-                                        <td>{{item.Modelo}}</td>
-                                        <td>{{item.Fabricante}}</td>
-                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.descripcion}}</td>
+                                            <td>{{item.Modelo}}</td>
+                                            <td>{{item.Fabricante}}</td>
                                             <td>{{item.Cantidad}}</td>
-                                        </ng-container>
-                                        <ng-template #Esteotro>
-                                            <td>{{item.CantidadSondeo}}</td>
-                                        </ng-template>
-                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
                                             <td>{{item.ValorEstimado}}</td>
+                                            <td>{{item.Comentarios}}</td>
+                                            <td>
+                                                <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}"
+                                                    target=_blank>
+                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                </a>
+                                            </td>
                                         </ng-container>
-                                        <ng-template #Esteotro>
+                                        <ng-template #Codson>
+                                            <td>{{item.CodigoSondeo}}</td>
+                                            <td>{{item.descripcion}}</td>
+                                            <td>{{item.Modelo}}</td>
+                                            <td>{{item.Fabricante}}</td>
+                                            <td>{{item.CantidadSondeo}}</td>
                                             <td>{{item.PrecioSondeo}}</td>
+                                            <td>{{item.ComentarioSondeo}}</td>
+                                            <td>
+                                                <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}"
+                                                    target=_blank>
+                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                </a>
+                                            </td>
                                         </ng-template>
-                                        <td>
-                                            <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}" target=_blank>
-                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                            </a>
-                                        </td>
-                                        <td>{{item.Comentarios}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -312,37 +319,36 @@
                                         <th>Descripción</th>
                                         <th>Cantidad</th>
                                         <th>Valor Estimado</th>
-                                        <th>Adjunto</th>
                                         <th>Comentario</th>
+                                        <th>Adjunto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                        <ng-container *ngIf="Resondear !== true; else Codson">
                                             <td>{{item.Codigo}}</td>
-                                        </ng-container>
-                                        <ng-template #Esteotro>
-                                            <td>{{item.codigoSondeo}}</td>
-                                        </ng-template>
-                                        <td>{{item.descripcion}}</td>
-                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
+                                            <td>{{item.descripcion}}</td>
                                             <td>{{item.Cantidad}}</td>
-                                        </ng-container>
-                                        <ng-template #Esteotro>
-                                            <td>{{item.cantidadSondeo}}</td>
-                                        </ng-template>
-                                        <ng-container *ngIf="Resondear !== true; else Esteotro">
                                             <td>{{item.ValorEstimado}}</td>
+                                            <td>{{item.Comentario}}</td>
+                                            <td>
+                                                <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
+                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                </a>
+                                            </td>
                                         </ng-container>
-                                        <ng-template #Esteotro>
+                                        <ng-template #Codson>
+                                            <td>{{item.codigoSondeo}}</td>
+                                            <td>{{item.descripcion}}</td>
+                                            <td>{{item.cantidadSondeo}}</td>
                                             <td>{{item.precioSondeo}}</td>
+                                            <td>{{item.comentarioSondeo}}</td>
+                                            <td>
+                                                <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
+                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                </a>
+                                            </td>
                                         </ng-template>
-                                        <td>
-                                            <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
-                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                            </a>
-                                        </td>
-                                        <td>{{item.Comentario}}</td>
                                     </tr>
                                 </tbody>
                             </table>

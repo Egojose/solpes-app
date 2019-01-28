@@ -22,6 +22,7 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { responsableProceso } from '../dominio/responsableProceso';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -111,10 +112,10 @@ export class CrearSolicitudComponent implements OnInit {
   emptyNumeroOrdenEstadistica: boolean;
   fueSondeo: boolean;
 
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
     this.mostrarContratoMarco = false;
-    this.loading = false;
+    this.spinner.hide();
     this.emptyCTB = true;
     this.emptyCTS = true;
     this.emptyManager = true;
@@ -159,7 +160,8 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = true;
+    //this.spinner.show();
+    this.spinner.show();
     this.aplicarTemaCalendario();
     this.RecuperarUsuario();
     this.RegistrarFormularioSolp();
@@ -408,7 +410,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicio.agregarSolicitud(this.solicitudGuardar).then(
       (item: ItemAddResult) => {
         this.idSolicitudGuardada = item.data.Id;
-        this.loading = false;
+        this.spinner.hide();
       }, err => {
         this.mostrarError('Error en la creación de la solicitud');
       }
@@ -416,7 +418,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   filtrarSubcategorias() {
-    this.loading = true;
+    this.spinner.show();
     let categoria = this.solpFormulario.controls["categoria"].value;
     let pais = this.solpFormulario.controls["pais"].value;
     this.limpiarCondicionesContractuales();
@@ -429,18 +431,18 @@ export class CrearSolicitudComponent implements OnInit {
             this.subcategorias = [];
             this.solpFormulario.controls["subcategoria"].setValue("");
           }
-          this.loading = false;
+          this.spinner.hide();
         }, err => {
           console.log('Error obteniendo subcategorias: ' + err);
         }
       )
     } else {
-      this.loading = false;
+      this.spinner.hide();
     }
   }
 
   cargarCondicionesContractuales() {
-    this.loading = true;
+    this.spinner.show();
     let Subcategoria = this.solpFormulario.controls["subcategoria"].value;
     if(Subcategoria){
       this.limpiarCondicionesContractuales();
@@ -450,13 +452,12 @@ export class CrearSolicitudComponent implements OnInit {
       });
       this.registrarControlesCondicionesContractuales();
       this.cargarDatosSubcategoria(this.subcategoriaSeleccionada);
-      this.loading = false;
+      this.spinner.hide();
     }else{
       this.solpFormulario.controls["comprador"].setValue('');
       this.solpFormulario.controls['codigoAriba'].setValue('');
-      this.loading = false;
+      this.spinner.hide();
     }
-
   }
 
   cargarDatosSubcategoria(subcategoriaSeleccionada: Subcategoria): any {
@@ -478,7 +479,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   enviarSolicitud() {
-    this.loading = true;
+    this.spinner.show();
     let respuesta;
     let estado;
     let responsable;
@@ -501,81 +502,81 @@ export class CrearSolicitudComponent implements OnInit {
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (this.EsCampoVacio(empresa)) {
       this.mostrarAdvertencia("El campo Empresa es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (this.EsCampoVacio(ordenadorGastos)) {
       this.mostrarAdvertencia("El campo Ordenador de gastos es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (this.EsCampoVacio(pais)) {
       this.mostrarAdvertencia("El campo País es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (this.EsCampoVacio(categoria)) {
       this.mostrarAdvertencia("El campo Categoría es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (this.EsCampoVacio(subcategoria)) {
       this.mostrarAdvertencia("El campo Subcategoría es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (this.EsCampoVacio(comprador)) {
       this.mostrarAdvertencia("El campo Comprador es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (this.EsCampoVacio(fechaEntregaDeseada)) {
       this.mostrarAdvertencia("El campo Fecha entrega deseada es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (this.EsCampoVacio(alcance)) {
       this.mostrarAdvertencia("El campo Alcance es requerido");
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
 
     if (tipoSolicitud == 'Solp' || tipoSolicitud == 'Orden a CM') {
       if (this.EsCampoVacio(justificacion)) {
         this.mostrarAdvertencia("El campo Justificación es requerido");
-        this.loading = false;
+        this.spinner.hide();
         return false;
       }
     }
 
     respuesta = this.ValidarCondicionesContractuales();
     if (respuesta == false) {
-      this.loading = false;
+      this.spinner.hide();
       return respuesta;
     }
 
     respuesta = this.ValidarCompraOrdenEstadistica();
     if (respuesta == false) {
-      this.loading = false;
+      this.spinner.hide();
       return respuesta;
     }
 
     respuesta = this.ValidarExistenciaCondicionesTecnicas();
     if (respuesta == false) {
-      this.loading = false;
+      this.spinner.hide();
       return respuesta;
     }
 
@@ -650,28 +651,28 @@ export class CrearSolicitudComponent implements OnInit {
 
                   this.servicio.agregarNotificacion(notificacion).then(
                     (item: ItemAddResult) => {
-                      this.loading = false;
+                      this.spinner.hide();
                       this.MostrarExitoso("La solicitud se ha guardado correctamente");
                       this.router.navigate(['/mis-solicitudes']);
                     }, err => {
                       this.mostrarError('Error agregando la notificación');
-                      this.loading = false;
+                      this.spinner.hide();
                     }
                   )
                 }, err => {
                   this.mostrarError('Error en la actualización del consecutivo');
-                  this.loading = false;
+                  this.spinner.hide();
                 }
               )
             }, err => {
               this.mostrarError('Error en el envío de la solicitud');
-              this.loading = false;
+              this.spinner.hide();
             }
           )
         }
       }, err => {
         this.mostrarError('Error obteniendo responsable procesos: ' + err);
-        this.loading = false;
+        this.spinner.hide();
       }
     )
   }
@@ -769,7 +770,7 @@ export class CrearSolicitudComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.spinner.show();
     if (this.textoBotonGuardarCTB == "Guardar") {
       let codigo = this.ctbFormulario.controls["codigoCTB"].value;
       let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
@@ -809,16 +810,16 @@ export class CrearSolicitudComponent implements OnInit {
                 this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
                 this.modalRef.hide();
                 this.condicionTB = null;
-                this.loading = false;
+                this.spinner.hide();
                 this.ctbSubmitted = false;
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
-                this.loading = false;
+                this.spinner.hide();
               }
             )
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');
-            this.loading = false;
+            this.spinner.hide();
           }
         )
       } else {
@@ -832,11 +833,11 @@ export class CrearSolicitudComponent implements OnInit {
             this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
             this.modalRef.hide();
             this.condicionTB = null;
-            this.loading = false;
+            this.spinner.hide();
             this.ctbSubmitted = false;
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');
-            this.loading = false;
+            this.spinner.hide();
           }
         )
       }
@@ -872,11 +873,11 @@ export class CrearSolicitudComponent implements OnInit {
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
             this.modalRef.hide();
-            this.loading = false;
+            this.spinner.hide();
             this.ctbSubmitted = false;
           }, err => {
             this.mostrarError('Error en la actualización de la condición técnica de bienes');
-            this.loading = false;
+            this.spinner.hide();
           }
         )
       } else {
@@ -917,16 +918,16 @@ export class CrearSolicitudComponent implements OnInit {
                   this.limpiarControlesCTB();
                   this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
                   this.modalRef.hide();
-                  this.loading = false;
+                  this.spinner.hide();
                   this.ctbSubmitted = false;
                 }, err => {
                   this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
-                  this.loading = false;
+                  this.spinner.hide();
                 }
               )
             }, err => {
               this.mostrarError('Error en la actualización de la condición técnica de bienes');
-              this.loading = false;
+              this.spinner.hide();
             }
           )
         } else {
@@ -954,21 +955,21 @@ export class CrearSolicitudComponent implements OnInit {
                       this.limpiarControlesCTB();
                       this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
                       this.modalRef.hide();
-                      this.loading = false;
+                      this.spinner.hide();
                       this.ctbSubmitted = false;
                     }, err => {
                       this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
-                      this.loading = false;
+                      this.spinner.hide();
                     }
                   )
                 }, err => {
                   this.mostrarError('Error borrando el archivo en las condiciones técnicas de bienes');
-                  this.loading = false;
+                  this.spinner.hide();
                 }
               )
             }, err => {
               this.mostrarError('Error en la actualización de la condición técnica de bienes');
-              this.loading = false;
+              this.spinner.hide();
             }
           )
         }
@@ -1004,7 +1005,7 @@ export class CrearSolicitudComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.spinner.show();
     if (this.textoBotonGuardarCTS == "Guardar") {
       let codigo = this.ctsFormulario.controls["codigoCTS"].value;
       let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
@@ -1024,11 +1025,11 @@ export class CrearSolicitudComponent implements OnInit {
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
             this.modalRef.hide();
-            this.loading = false;
+            this.spinner.hide();
             this.ctsSubmitted = false;
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');
-            this.loading = false;
+            this.spinner.hide();
           }
         )
       } else {
@@ -1055,16 +1056,16 @@ export class CrearSolicitudComponent implements OnInit {
                 this.limpiarControlesCTS();
                 this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
                 this.modalRef.hide();
-                this.loading = false;
+                this.spinner.hide();
                 this.ctsSubmitted = false;
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
-                this.loading = false;
+                this.spinner.hide();
               }
             )
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de servicios');
-            this.loading = false;
+            this.spinner.hide();
           }
         )
       }
@@ -1096,11 +1097,11 @@ export class CrearSolicitudComponent implements OnInit {
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
             this.modalRef.hide();
-            this.loading = false;
+            this.spinner.hide();
             this.ctsSubmitted = false;
           }, err => {
             this.mostrarError('Error en la actualización de la condición técnica de servicios');
-            this.loading = false;
+            this.spinner.hide();
           }
         )
       } else {
@@ -1139,21 +1140,21 @@ export class CrearSolicitudComponent implements OnInit {
                       this.limpiarControlesCTS();
                       this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
                       this.modalRef.hide();
-                      this.loading = false;
+                      this.spinner.hide();
                       this.ctsSubmitted = false;
                     }, err => {
                       this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
-                      this.loading = false;
+                      this.spinner.hide();
                     }
                   )
                 }, err => {
                   this.mostrarError('Error borrando el archivo en las condiciones técnicas de servicios');
-                  this.loading = false;
+                  this.spinner.hide();
                 }
               )
             }, err => {
               this.mostrarError('Error en la actualización de la condición técnica de servicios');
-              this.loading = false;
+              this.spinner.hide();
             }
           )
         } else {
@@ -1177,16 +1178,16 @@ export class CrearSolicitudComponent implements OnInit {
                   this.limpiarControlesCTS();
                   this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
                   this.modalRef.hide();
-                  this.loading = false;
+                  this.spinner.hide();
                   this.ctsSubmitted = false;
                 }, err => {
                   this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
-                  this.loading = false;
+                  this.spinner.hide();
                 }
               )
             }, err => {
               this.mostrarError('Error en la actualización de la condición técnica de servicios');
-              this.loading = false;
+              this.spinner.hide();
             }
           )
         }
@@ -1303,7 +1304,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   guardarParcialSolicitud() {
-    this.loading = true;
+    this.spinner.show();
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
     let empresa = this.solpFormulario.controls["empresa"].value;
@@ -1359,10 +1360,10 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
       (item: ItemAddResult) => {
         this.MostrarExitoso("La solicitud ha tenido un guardado parcial correcto");
-        this.loading = false;
+        this.spinner.hide();
       }, err => {
         this.mostrarError('Error en guardado parcial de la solicitud');
-        this.loading = false;
+        this.spinner.hide();
       }
     )
   }
