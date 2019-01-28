@@ -1,4 +1,5 @@
 import { Adjunto } from "./adjunto";
+
 export class CondicionesTecnicasBienes {
 
     constructor(public IdBienes: number,
@@ -13,19 +14,20 @@ export class CondicionesTecnicasBienes {
         public valorEstimado?: string,
         public comentario?: string,
         public CodigoVerificar?: string,
+        public DescripcionVerificar?: string,
         public ModeloVerificar?: string,
         public FabricanteVerificar?: string,
         public CantidadVerificar?: number,
         public ExistenciasVerificar?: number,
         public NumReservaVerificar?: string,
         public CantidadReservaVerificar?: number,
-        public EntradaSolicitanteVerificar?: string,
         public CodigoSondeo?: string,
         public CantidadSondeo?: number,
         public PrecioSondeo?: number,
         public ComentarioSondeo?: string,
         public Estado?: any,
-        public adjuntoSondeo?: any,
+        public moneda?: string,
+        public adjunto?:any,
         public adjuntoCreacion?: any) {}
 
     public static fromJson(element: any) {
@@ -56,18 +58,19 @@ export class CondicionesTecnicasBienes {
             element.ValorEstimado,
             element.Comentarios,
             element.CodigoVerificar,
+            element.DescripcionVerificar,
             element.ModeloVerificar,
             element.FabricanteVerificar,
             element.CantidadVerificar,
             element.ExistenciasVerificar,
             element.NumReservaVerificar,
             element.CantidadReservaVerificar,
-            element.EntradaSolicitanteVerificar,
             element.CodigoSondeo,
             element.CantidadSondeo,
             element.PrecioSondeo,
             element.ComentarioSondeo,
             element.Estado,
+            element.TipoMoneda,
             adjuntoSondeo,
             adjuntoCreacion);
     }
