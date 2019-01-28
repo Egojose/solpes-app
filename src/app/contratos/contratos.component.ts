@@ -6,7 +6,6 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
-import { verificarMaterialCT } from '../verificar-material/verificarMaterialCT';
 import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnicaServicios';
 import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
 import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
@@ -345,7 +344,7 @@ export class ContratosComponent implements OnInit {
           (resultado)=>{             
               this.MostrarExitoso("El contrato se ha guardado correctamente");
               setTimeout(() => {
-                this.salir();
+                this.router.navigate(["/mis-pendientes"]);
               }, 1000);
           }
         ).catch(
