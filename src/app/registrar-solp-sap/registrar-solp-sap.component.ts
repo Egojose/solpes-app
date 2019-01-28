@@ -131,9 +131,11 @@ export class RegistrarSolpSapComponent implements OnInit {
           ComentarioRegistrarSAP: this.ComentarioRegistrarSap
         }
       }
-      else if(this.RDBOrdenadorGastos === 3 && this.ComentarioRegistrarSap === undefined) {
-        this.mostrarAdvertencia("Por favor ingrese un comentario");
-        // alert('Debe especificar el motivo en comentarios');
+      else if (this.RDBOrdenadorGastos === 3 && this.ComentarioRegistrarSap === undefined) {
+        this.tooltip1.show();
+        setTimeout(() => {
+          this.tooltip1.hide();
+        }, 3000);
         return false;
       }
       else if (this.RDBOrdenadorGastos === 3) {
