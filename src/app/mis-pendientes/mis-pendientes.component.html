@@ -92,19 +92,10 @@
                     </div>
                 </div>
                 <div class="row filaBtn">
-<<<<<<< HEAD
                     <button *ngIf="element.estado =='Por recepcionar' && element.FaltaRecepcionBienes === true" class="btn btn-primary" (click)="RegistrarEntregasBienes(element.id)">Recepcionar bienes</button>
                 </div>
                 <div class="row filaBtn">
                     <button *ngIf="element.estado =='Por recepcionar' && element.FaltaRecepcionServicios === true" class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Recepcionar servicios</button>
-=======
-                    <button *ngIf="element.estado =='Por registrar entregas' && element.FaltaRecepcionBienes === true"
-                        class="btn btn-primary" (click)="RegistrarEntregasBienes(element.id)">Recepcionar bienes</button>
-                </div>
-                <div class="row filaBtn">
-                    <button *ngIf="element.estado =='Por registrar entregas' && element.FaltaRecepcionServicios === true"
-                        class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Recepcionar servicios</button>
->>>>>>> 15cdceea6c959938e49b75d1e1d8bd86abecd41a
                 </div>
 
                 <button *ngIf="element.estado =='Por registrar activos'" class="btn btn-success" (click)="RegistrarActivos(element.id)">Ir
