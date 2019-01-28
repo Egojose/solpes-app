@@ -286,20 +286,20 @@
                                             </td>
                                         </ng-container>
                                         <ng-template #Codson>
-                                                <td>{{item.CodigoSondeo}}</td>
-                                                <td>{{item.descripcion}}</td>
-                                                <td>{{item.Modelo}}</td>
-                                                <td>{{item.Fabricante}}</td>
-                                                <td>{{item.CantidadSondeo}}</td>
-                                                <td>{{item.PrecioSondeo}}</td>
-                                                <td>{{item.ComentarioSondeo}}</td>
-                                                <td>
-                                                    <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}"
-                                                        target=_blank>
-                                                        <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                    </a>
-                                                </td>
-                                        </ng-template>       
+                                            <td>{{item.CodigoSondeo}}</td>
+                                            <td>{{item.descripcion}}</td>
+                                            <td>{{item.Modelo}}</td>
+                                            <td>{{item.Fabricante}}</td>
+                                            <td>{{item.CantidadSondeo}}</td>
+                                            <td>{{item.PrecioSondeo}}</td>
+                                            <td>{{item.ComentarioSondeo}}</td>
+                                            <td>
+                                                <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}"
+                                                    target=_blank>
+                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                </a>
+                                            </td>
+                                        </ng-template>
                                     </tr>
                                 </tbody>
                             </table>
@@ -319,8 +319,8 @@
                                         <th>Descripción</th>
                                         <th>Cantidad</th>
                                         <th>Valor Estimado</th>
-                                        <th>Adjunto</th>
                                         <th>Comentario</th>
+                                        <th>Adjunto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -338,16 +338,16 @@
                                             </td>
                                         </ng-container>
                                         <ng-template #Codson>
-                                                <td>{{item.codigoSondeo}}</td> 
-                                                <td>{{item.descripcion}}</td>
-                                                <td>{{item.cantidadSondeo}}</td>
-                                                <td>{{item.precioSondeo}}</td>
-                                                <td>{{item.comentarioSondeo}}</td>
-                                                <td>
-                                                    <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
-                                                        <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                    </a>
-                                                </td>
+                                            <td>{{item.codigoSondeo}}</td>
+                                            <td>{{item.descripcion}}</td>
+                                            <td>{{item.cantidadSondeo}}</td>
+                                            <td>{{item.precioSondeo}}</td>
+                                            <td>{{item.comentarioSondeo}}</td>
+                                            <td>
+                                                <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
+                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                </a>
+                                            </td>
                                         </ng-template>
                                     </tr>
                                 </tbody>
