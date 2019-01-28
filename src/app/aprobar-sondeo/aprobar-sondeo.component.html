@@ -105,7 +105,7 @@
             <div class="form-group col-md-4">
                 <label><b>Número Contrato Marco:</b></label>
                 <ng-template #popTemplate2>Por favor digite el número OCM</ng-template>
-                <input type="text" class="form-control" placeholder="Ingrese el número de SOLP/OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
+                <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
             </div>
         </div>
     </ng-container>
@@ -171,39 +171,34 @@
                                     <strong> Código ariba: </strong>{{codigoAriba}}
                                 </div>
                                 <div class="col-md-4">
-                                    <strong> Número de orden estadística: </strong>{{numeroOrdenEstadistico}}
+                                    <strong>Solicitante: </strong>{{solicitante}}
                                 </div>
                             </div>
                             <br>
                             <div class="row espacio">
-                                <div class="col-md-4">
-                                    <strong>Solicitante: </strong>{{solicitante}}
-                                </div>
                                 <div class="col-md-4">
                                     <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Empresa: </strong>{{empresa}}
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
                                 <div class="col-md-4">
                                     <strong>País: </strong>{{pais}}
                                 </div>
+                            </div>
+                            <br>
+                            <div class="row">
                                 <div class="col-md-4">
                                     <strong>Categoría: </strong>{{categoria}}
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Sub-Categoría: </strong>{{subCategoria}}
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <strong>Comprador: </strong>{{comprador}}
                                 </div>
                             </div>
+                            <br>
                         </div>
                     </div>
                 </div>
@@ -223,7 +218,8 @@
                 </div>
             </div>
             <hr>
-            <div class="form-group row">
+            <div class="form-group">
+                <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="colFormLabel" class="col-sm-4 col-form-label"><strong><h4>Condiciones contractuales</h4></strong></label>
@@ -246,6 +242,14 @@
                     </div>
                 </div>
             </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong> Número de orden estadística: </strong>{{numeroOrdenEstadistico}}
+                </div>
+            </div>
+            </div>
+            <hr>
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-group">
