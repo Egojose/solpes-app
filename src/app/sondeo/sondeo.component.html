@@ -35,7 +35,7 @@
                                             <td>{{item.modelo}}</td>
                                             <td>{{item.fabricante}}</td>
                                             <td>{{item.cantidad}}</td>
-                                            <td>{{item.valorEstimado}}</td>
+                                            <td>{{item.valorEstimado | currency}}</td>
                                             <td>{{item.Comentario}}</td>
                                             <td>
                                                 <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
@@ -49,13 +49,13 @@
                                             <td>{{item.modelo}}</td>
                                             <td>{{item.fabricante}}</td>
                                             <td>{{item.cantidadSondeo}}</td>
-                                            <td>{{item.precioSondeo}}</td>
+                                            <td>{{item.precioSondeo | currency}}</td>
+                                            <td>{{item.ComentarioSondeo}}</td>
                                             <td>
                                                 <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
                                                     <button type="button" class="btn btn-primary">Ver Archivo</button>
                                                 </a>
                                             </td>
-                                            <td>{{item.ComentarioSondeo}}</td>
                                         </ng-template>
                                     </tr>
                                 </tbody>
@@ -87,10 +87,10 @@
                             <input type="text"  class="form-control text-center"  [(ngModel)]="item.codigo"></td>
                         <td>{{item.descripcion}}</td>
                         <td>
-                            <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.cantidad">
+                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" class="form-control text-center"  [(ngModel)]="item.cantidad">
                         </td>
                         <td>
-                            <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.valorEstimado">
+                            <input type="text" currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" class="form-control text-center"  [(ngModel)]="item.valorEstimado">
                         </td>
                         <td>
                             <textarea type="text"  class="form-control text-center"  [(ngModel)]="item.ComentarioSondeo"></textarea>
@@ -126,7 +126,7 @@
                                         <td>{{item.codigo}}</td>
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.cantidad}}</td>
-                                        <td>{{item.valorEstimado}}</td>
+                                        <td>{{item.valorEstimado | currency}}</td>
                                         <td>{{item.comentarios}}</td>
                                         <td>
                                             <a *ngIf="item.archivoAdjunto !== ''" href="{{item.archivoAdjunto}}" target="_blank">
