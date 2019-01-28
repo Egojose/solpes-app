@@ -65,6 +65,7 @@ export class VerificarMaterialComponent implements OnInit {
   ArchivoAdjunto: File;
   SwtichFaltaRecepcionBienes: boolean;
   verificar : string;
+  
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
     this.loading = false;
@@ -75,6 +76,7 @@ export class VerificarMaterialComponent implements OnInit {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
   }
 
+  
   adjuntarArchivoVM(event) {
     let archivoAdjunto = event.target.files[0];
       if (archivoAdjunto != null) {
