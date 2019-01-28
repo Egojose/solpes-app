@@ -230,39 +230,34 @@
                                     <strong> Código ariba: </strong>{{codigoAriba}}
                                 </div>
                                 <div class="col-md-4">
-                                    <strong> Número de orden estadística: </strong>{{numeroOrdenEstadistica}}
-                                </div>
+                                        <strong>Solicitante: </strong>{{solicitante}}
+                                    </div>
                             </div>
                             <br>
                             <div class="row espacio">
-                                <div class="col-md-4">
-                                    <strong>Solicitante: </strong>{{solicitante}}
-                                </div>
                                 <div class="col-md-4">
                                     <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Empresa: </strong>{{empresa}}
                                 </div>
+                                <div class="col-md-4">
+                                        <strong>País: </strong>{{pais}}
+                                    </div>
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <strong>País: </strong>{{pais}}
-                                </div>
                                 <div class="col-md-4">
                                     <strong>Categoría: </strong>{{categoria}}
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Sub-Categoría: </strong>{{subCategoria}}
                                 </div>
+                                <div class="col-md-4">
+                                        <strong>Comprador: </strong>{{comprador}}
+                                    </div>
                             </div>
                             <br>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <strong>Comprador: </strong>{{comprador}}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -282,26 +277,35 @@
                 </div>
             </div>
             <br>
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong><h4>Condiciones contractuales</h4></strong></label>
-                        <div class="table-wrapper-scroll-y">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Campo</th>
-                                        <th scope="col">Descripción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of condicionesContractuales">
-                                        <td>{{item.campo}}</td>
-                                        <td>{{item.descripcion}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>
+                                    <h4>Condiciones contractuales</h4>
+                                </strong></label>
+                            <div class="table-wrapper-scroll-y">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Campo</th>
+                                            <th scope="col">Descripción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of condicionesContractuales">
+                                            <td>{{item.campo}}</td>
+                                            <td>{{item.descripcion}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong> Número de orden estadística: </strong>{{numeroOrdenEstadistica}}
                     </div>
                 </div>
             </div>
