@@ -68,7 +68,8 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, publ
             this.servicio.ObtenerContratos(this.IdUsuario).subscribe(
               (respuesta) => {
                 this.objContratos = Contratos.fromJsonList(respuesta);
-                // console.log(this.objContratos)
+                console.log(this.ObjRecepcionBienes)
+                console.log(this.objContratos)
               }
             );
           }
