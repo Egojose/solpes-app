@@ -7,6 +7,7 @@ import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
 import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 import { RecepcionBienes } from "../entrega-bienes/recepcionBienes";
 import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
+import { Contratos } from "../dominio/contrato";
 
 @Injectable()
 export class SPServicio {
@@ -27,7 +28,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4NjIxNDY3LCJuYmYiOjE1NDg2MjE0NjcsImV4cCI6MTU0ODY1MDU2NywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.BdATMZ61q2LjqLgqyQlb9dlUCm56iw_H3iWYxH8WOFsi-1Fud7Mjn9pQx41iMRUYB0NoOBLAUed6UHl4Ay1T6CWiNZH4CvyRApjakdKa2Sbm49OGe3KgToqGJTAHUFyIjeQ2fsWtvoScAESKeTL9p53pzk-kJ3OkRo-rYuCkxelHcDmRpwAcH3ecXtX8nUYDyuBlHeMdYA-_GqIO5_rLnxbMhSJdJ7ilyNGsuyclCXVR4jVD9nyVX1xgMNBzxdKK4Hi4ryZ1ZnMitrfMLHKI6OjP2oIqV4GZgl6M-7AbQjiAagmP8vWZsgDMpyuESJZ-uEvAHCob06A6SYTqptydUw'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4NjgzNjk2LCJuYmYiOjE1NDg2ODM2OTYsImV4cCI6MTU0ODcxMjc5NiwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.W5izZZym57RDKQWUdRQ2MbknLRT97qMGMJPKOem7pGGs9dUIXdTEG1ad5UlqJosaESUFUmk-VEmU9eFWRCWef6jxQrPggIBdrgVTncXqpgVEOTWyN-LDAycijtEk1NhFLvsy7-ytwUZ7yddv3ipafz1KrxfTVKiB_zj3SYaAVrDqesGBqcbC_xKhyEVjkw57Rx9mPVoVlCaKaEXlkJ1KXHhl8CFw3EYG0ftRVL_fzn3wCgf6sfVBtuF8Hrt6TeIKmre36vfeXrlpEu0p7u2-JV_Dl8jLoKU37QqzsprotrX6XNOitJ_SECr4Ieh_5KX8hy9V5KMeCHFG0JsD_iOK0Q'
             }
         }, environment.urlWeb);
 
@@ -271,7 +272,7 @@ export class SPServicio {
     }
 
     ObtenerRecepcionesBienes(IdResponsable){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and ResponsableSAPId eq '"+IdResponsable+"'").get());
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and ResponsableSAPId eq '"+IdResponsable+"'").get());
         return respuesta;
     }
 
@@ -454,6 +455,10 @@ export class SPServicio {
     ObtenerGruposUsuario(usuarioId: number){
         let respuesta = from(this.obtenerConfiguracion().web.getUserById(usuarioId).groups.get());
         return respuesta;
+    }
+
+    actualizarResponsableCompradorSolicitud(idSolicitud: number, objetoActualizar){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(objetoActualizar);
     }
 
 }

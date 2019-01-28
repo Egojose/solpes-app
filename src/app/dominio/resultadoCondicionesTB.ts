@@ -8,7 +8,7 @@ export class resultadoCondicionesTB {
         public cantidad: number,
         public valorEstimado?: string,
         public moneda?: string,
-        public adjunto?: any) { }
+        public adjunto?: string) { console.log(this.adjunto) }
 
     public static fromJson(element: any) {
 
@@ -22,6 +22,9 @@ export class resultadoCondicionesTB {
                    let TipoArchivo = objSplit[0]
                    if (TipoArchivo==="sondeoBienes") {
                         RutaArchivo=element.ServerRelativeUrl;
+                   }
+                   else {
+                    RutaArchivo == null; 
                    }
                 
                }

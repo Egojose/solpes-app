@@ -31,11 +31,11 @@
             </ng-container>
             <ng-container matColumnDef="cantidad">
                 <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-                <td mat-cell *matCellDef="let element"> {{element.CantidadReservaVerificar}} </td>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.CantidadReservaVerificar}} </td>
             </ng-container>
             <ng-container matColumnDef="valorEstimado">
                 <th mat-header-cell *matHeaderCellDef> Valor</th>
-                <td mat-cell *matCellDef="let element"> {{element.valorEstimado | currency}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.PrecioSondeo | currency}} </td>
             </ng-container>
             <ng-container matColumnDef="moneda">
                 <th mat-header-cell *matHeaderCellDef> Moneda</th>
@@ -45,14 +45,15 @@
             <ng-container matColumnDef="adjunto">
                 <th mat-header-cell *matHeaderCellDef> Adjunto</th>
                 <td mat-cell *matCellDef="let item">
-                    <ng-container *ngIf="item.adjunto !== null; else elseTemplate">
+                    <!-- <ng-container *ngIf="item.adjunto !== null || item.adjunto !== undefined || item.adjunto !== ''; else elseTemplate"> -->
+                       
                         <a href="{{item.adjunto}}" target="_blank">
                             <button class="btn btn-success">Ver</button>
                         </a>
-                    </ng-container>
+                    <!-- </ng-container>
                     <ng-template #elseTemplate>
                         Sin adjunto de sondeo
-                    </ng-template>
+                    </ng-template> -->
                 </td>
             </ng-container>
 

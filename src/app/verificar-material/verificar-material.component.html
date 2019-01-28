@@ -1,7 +1,8 @@
 <h1>{{titleVerificar}}</h1>
 <hr>
 <div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
+        alt="loading...">
     <b>PROCESANDO...</b>
 </div>
 <div class="row" id="TablaVerificar">
@@ -71,17 +72,20 @@
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
         <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
-        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
+        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers=""
+            placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
     </div>
 </div>
 <div class="form-group row">
     <div class="col-md-12">
         <div class="botonera">
             <div>
-                <input id="button1" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;" value="Enviar" (click)="GuardarComentario()" />
+                <input id="button1" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;"
+                    value="Enviar" (click)="GuardarComentario()" />
             </div>
             <div>
-                <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);" value="Salir" />
+                <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);"
+                    value="Salir" />
             </div>
         </div>
     </div>
@@ -345,15 +349,17 @@
             <form [formGroup]="verificarMaterialFormulario" (ngSubmit)="VerificarOnSubmit()">
                 <div class="form-group">
                     <label for="codigo">Código</label><span class="asterisco-obligatorio">*</span>
-                    <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }" type="text" placeholder="Escriba el código si lo conoce"
-                        required="true" />
+                    <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar"
+                        class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }"
+                        type="text" placeholder="Escriba el código si lo conoce" required="true" />
                     <div *ngIf="verificarSubmitted && f.codigoVerificar.errors" class="invalid-feedback">
                         <div *ngIf="f.codigoVerificar.errors.required">Este campo es requerido</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción</label><span class="asterisco-obligatorio">*</span>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar" [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar"
+                        [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
                     <div *ngIf="verificarSubmitted && f.descripcionVerificar.errors" class="invalid-feedback">
                         <div *ngIf="f.descripcionVerificar.errors.required">Este campo es requerido</div>
                     </div>
@@ -362,15 +368,18 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="modelo">Modelo</label>
-                            <input class="form-control" id="modeloVerificar" rows="2" formControlName="modeloVerificar" readonly />
+                            <input class="form-control" id="modeloVerificar" rows="2" formControlName="modeloVerificar"
+                                readonly />
                         </div>
                         <div class="col-md-4">
                             <label for="fabricante">Fabricante</label>
-                            <input class="form-control" id="fabricanteVerificar" rows="2" formControlName="fabricanteVerificar" readonly />
+                            <input class="form-control" id="fabricanteVerificar" rows="2" formControlName="fabricanteVerificar"
+                                readonly />
                         </div>
                         <div class="col-md-4">
                             <label for="cantidad">Cantidad</label>
-                            <input type="text" id="cantidadVerificar" formControlName="cantidadVerificar" class="form-control" type="text" readonly />
+                            <input type="text" id="cantidadVerificar" formControlName="cantidadVerificar" class="form-control"
+                                type="text" readonly />
                         </div>
                     </div>
                 </div>
@@ -378,17 +387,20 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="existencias">Existencias</label>
-                            <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }" placeholder="Escriba las existencias"
-                                (change)="RestaCantidadReserva()" />
+                            <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly
+                                formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }"
+                                placeholder="Escriba las existencias" (change)="RestaCantidadReserva()" />
                             <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
-                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores a la cantidad
+                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser
+                                    mayores a la cantidad
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="numReserva">Número de reserva</label>
-                            <input id="numReservaVerificar" name="numReservaVerificar" numbersOnly formControlName="numReservaVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }" type="text" placeholder="Escriba el número de la reserva"
-                            />
+                            <input id="numReservaVerificar" name="numReservaVerificar" numbersOnly formControlName="numReservaVerificar"
+                                class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }"
+                                type="text" placeholder="Escriba el número de la reserva" />
                             <div *ngIf="verificarSubmitted && f.numReservaVerificar.errors" class="invalid-feedback">
                                 <div *ngIf="f.numReservaVerificar.errors.required">Este campo es requerido</div>
                             </div>

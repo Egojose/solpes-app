@@ -4,6 +4,7 @@ import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-mis-solicitudes',
@@ -20,15 +21,15 @@ export class MisSolicitudesComponent implements OnInit {
   loading: boolean;
   empty: boolean;
   
-  constructor( private servicio: SPServicio, private router: Router) { 
-    this.loading = false;
+  constructor( private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService) { 
+    this.spinner.hide();
   }
 
 
   displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Responsable', 'VerSolicitud']; 
 
   ngOnInit() {
-    this.loading = true;
+    this.spinner.show();
     this.ObtenerUsuarioActual();
   }
 
@@ -39,7 +40,7 @@ export class MisSolicitudesComponent implements OnInit {
         this.ObtenerMisSolicitudes();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
-        this.loading = false;
+        this.spinner.hide();
       }
     )
   }
@@ -58,10 +59,10 @@ export class MisSolicitudesComponent implements OnInit {
         }else{
           this.empty = true;
         }
-        this.loading = false;
+        this.spinner.hide();
       }, error => {
         console.log('Error obteniendo mis solicitudes: ' + error);
-        this.loading = false;
+        this.spinner.hide();
       }
     )
   }
