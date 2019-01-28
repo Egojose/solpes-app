@@ -29,16 +29,7 @@ export class RegistroActivosComponent implements OnInit {
   numOrdenEstadistica: string;
   loading: boolean;
   IdSolicitud: any;
-  displayedColumns: string[] = [
-    "codigo",
-    "descripcion",
-    "modelo",
-    "fabricante",
-    "cantidad",
-    "valorEstimado",
-    "moneda",
-    "adjunto"
-  ];
+  displayedColumns: string[] = ["codigo","descripcion","modelo","fabricante","cantidad","valorEstimado","moneda","adjunto"];
   IdSolicitudParms: string;
   RutaArchivo: string;
   paisId: any;
@@ -59,8 +50,9 @@ export class RegistroActivosComponent implements OnInit {
   }
 
   comfirmasalir(template: TemplateRef<any>) {
-    this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
+    this.modalRef = this.modalServicio.show(template, { class: "modal-lg" });
   }
+
   declinarModal() {
     this.modalRef.hide();
   }
@@ -75,30 +67,27 @@ export class RegistroActivosComponent implements OnInit {
       this.loading = false;
       return false;
     } else {
-    coment = {
-      Estado: 'Por registrar solp sap',
-      ResponsableId: ResponsableProcesoId,
-      ComentarioRegistroActivos: comentarios
-    }
-    this.servicio.guardarComentario(this.IdSolicitud, coment).then((resultado: ItemAddResult) => {        
-        let nombreArchivo = "RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
-         this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(
-          (respuesta) => {
-            this.MostrarExitoso("Archivo guardado correctamente");
-            this.router.navigate(["/mis-pendientes"]);
-            this.loading = false;
-          }
-        ).catch(
-          (error) => {
-            this.mostrarError("Error al guardar el archivo");
-            this.loading = false;
-          }
-        );
-      })
-      .catch(error => {
-        console.log(error);
-        this.loading = false;
-      });
+      coment = {
+        Estado: "Por registrar solp sap",
+        ResponsableId: ResponsableProcesoId,
+        ComentarioRegistroActivos: comentarios
+      };
+      this.servicio.guardarComentario(this.IdSolicitud, coment).then((resultado: ItemAddResult) => {
+          let nombreArchivo ="RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
+          this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(respuesta => {
+              this.MostrarExitoso("Archivo guardado correctamente");
+              this.router.navigate(["/mis-pendientes"]);
+              this.loading = false;
+            })
+            .catch(error => {
+              this.mostrarError("Error al guardar el archivo");
+              this.loading = false;
+            });
+        })
+        .catch(error => {
+          console.log(error);
+          this.loading = false;
+        });
     }
   }
 
@@ -126,37 +115,35 @@ export class RegistroActivosComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.servicio.ObtenerTodosLosUsuarios().subscribe(
-      (Usuarios) => {
-        this.ObjUsuarios = Usuarios;
-        this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
-          (respuesta) => {
-            this.IdSolicitud = respuesta.Id;
-            this.paisId = respuesta.Pais.Id;
-            this.numOrdenEstadistica = respuesta.NumeroOrdenEstadistica;
-            this.ComentarioVerificar  = respuesta.ComentarioVerificarMaterial;
-            if (respuesta.Attachments === true) {
-              let ObjArchivos = respuesta.AttachmentFiles.results;
-              ObjArchivos.forEach(element => {
-                let objSplit = element.FileName.split("-");
-                if (objSplit.length > 0) {
-                  let TipoArchivo = objSplit[0]
-                  if (TipoArchivo === "ActivoVM") {
-                    this.RutaArchivo = element.ServerRelativeUrl;
-                  }
+    this.servicio.ObtenerTodosLosUsuarios().subscribe(Usuarios => {
+      this.ObjUsuarios = Usuarios;
+      this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(respuesta => {
+          this.IdSolicitud = respuesta.Id;
+          this.paisId = respuesta.Pais.Id;
+          this.numOrdenEstadistica = respuesta.NumeroOrdenEstadistica;
+          this.ComentarioVerificar = respuesta.ComentarioVerificarMaterial;
+          if (respuesta.Attachments === true) {
+            let ObjArchivos = respuesta.AttachmentFiles.results;
+            ObjArchivos.forEach(element => {
+              let objSplit = element.FileName.split("-");
+              if (objSplit.length > 0) {
+                let TipoArchivo = objSplit[0];
+                if (TipoArchivo === "ActivoVM") {
+                  this.RutaArchivo = element.ServerRelativeUrl;
                 }
-              });
-            }
-            this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
-                this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
-              });
-            this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
-                this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-                this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
-                this.dataSource.paginator = this.paginator;
-              });
-          });
-      });
+              }
+            });
+          }
+          this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
+              this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
+            });
+          this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
+              this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+              this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
+              this.dataSource.paginator = this.paginator;
+            });
+        });
+    });
     this.loading = false;
   }
 
