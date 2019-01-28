@@ -111,12 +111,12 @@
             <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
                 <div class="form-group row">
                     <div class="col-md-12">
-                        <h5><strong>Número orden estadistica: </strong>{{numOrdenEstadistica}}</h5>
+                        <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
                     </div>
                 </div>
             </ng-container>
             <ng-template #esteNO>
-                <h5>La solicitud no cuenta con orden estadistica</h5>
+                <h5>La solicitud no cuenta con orden estadística</h5>
                 <br>
             </ng-template>
 
@@ -147,8 +147,8 @@
                             <td>{{item.valorEstimado}}</td>
                             <td>
                                 <div *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
-                                    <a href="{{item.adjuntoCreacion.url}}" target="_blank"><button
-                                            class="btn btn-primary">Ver archivo</button></a>
+                                    <a href="{{item.adjuntoCreacion.url}}" target="_blank"><button class="btn btn-primary">Ver
+                                            archivo</button></a>
                                 </div>
                                 <ng-template #NoHayAdjBienes>
                                     Sin adjunto
@@ -316,7 +316,7 @@
         </tab>
 
         <tab heading="Verificación de material">
-
+            <br>
             <div class="col-md-12 row">
                 <strong>Verificar material - Condiciones técnicas bienes:</strong>
                 <br>
@@ -331,7 +331,6 @@
                             <th>Existencias</th>
                             <th>#Reserva</th>
                             <th>Cantidad a comprar</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -349,17 +348,19 @@
                 </table>
             </div>
 
-            <p>Archivo solicitud de activos fijos
-                <a href="{{RutaArchivo}}">
+            <p>Archivo solicitud de activos fijos:</p>
+            <div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
+                <a href="{{adjuntoActivo.url}}">
                     <button type="button" class="btn btn-primary">Descargar aquí</button>
                 </a>
-            </p>
-
+            </div>
+            <ng-template #NoHayAdjActivos>
+                Sin adjunto
+            </ng-template>
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Verificar Material</strong></label>
             <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioverificarmaterial}}</textarea><br>
             <br>
-
 
             <div class="col-md-12 row">
                 <div>
@@ -372,7 +373,67 @@
         </tab>
 
         <tab heading="Registro de activos">
+            <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Condiciones técnicas bienes
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            {{panelOpenState ? 'cerrar' : 'Click para desplegar' }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="row" id="TablaVerificar">
+                        <div class="col-md-12">
+                            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                                <ng-container matColumnDef="codigo">
+                                    <th mat-header-cell *matHeaderCellDef> Código </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.codigoverificar}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="descripcion">
+                                    <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.descripcionverificar}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="modelo">
+                                    <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.modeloverificar}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="fabricante">
+                                    <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.fabricanteverificar}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="cantidad">
+                                    <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="valorEstimado">
+                                    <th mat-header-cell *matHeaderCellDef> Valor</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.valorEstimado | currency}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="moneda">
+                                    <th mat-header-cell *matHeaderCellDef> Moneda</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+
+                            <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
             <div class="row">
+                <p>Archivo solicitud de activos fijos:</p>
+                <div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
+                    <a href="{{adjuntoActivo.url}}">
+                        <button type="button" class="btn btn-primary">Descargar aquí</button>
+                    </a>
+                </div>
+                <ng-template #NoHayAdjActivos>
+                    Sin adjunto
+                </ng-template>
+                <br>
                 <br>
                 <div class="form-group col-md-12">
                     <label for="textarea" class="col-sm-3 control-label"><b>Comentario registro de activos:</b></label>

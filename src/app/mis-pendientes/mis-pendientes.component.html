@@ -1,8 +1,3 @@
-<div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
-    <b>PROCESANDO...</b>
-</div>
-
 <h2>Mis Pendientes</h2>
 
 <mat-form-field>
@@ -46,18 +41,43 @@
             <td mat-cell *matCellDef="let element">
                 <button *ngIf="element.estado =='Borrador'" class="btn btn-primary" (click)="EditarSolicitud(element)">Seguir
                     editando</button><button *ngIf="element.estado =='Borrador'" class="btn btn-danger" (click)="descartarSolicitud(element.id, templateConfirmacionDescartar)">Descartar</button>
-                <button *ngIf="element.estado =='Por sondear'" class="btn btn-primary" (click)="PorSondear(element.id)">Sondear</button>
+
+                <div class="filaBtn">
+                    <div class="col-md-12">
+                        <button *ngIf="element.estado =='Por sondear'" class="btn btn-primary" (click)="PorSondear(element.id)">Sondear</button>
+                    </div>
+                </div>
+
+                <div class="filaBtn">
+                    <div class="col-md-12">
+                        <button *ngIf="element.estado =='Por sondear'" class="btn btn-primary" (click)="reasignar(element)">Reasignar</button>
+                    </div>
+                </div>
+
                 <button *ngIf="element.estado =='Por aprobar sondeo'" class="btn btn-primary" (click)="AprobarSondeo(element.id)">
                     Revisar sondeo</button>
                 <button *ngIf="element.estado =='Por verificar material'" class="btn btn-primary" (click)="VerificarMaterial(element.id)">Ir
                     a verificar material</button>
                 <button *ngIf="element.estado =='Por registrar solp sap'" class="btn btn-primary" (click)="RegistrarSOLPSAP(element.id)">Ir
                     a registrar SOLP SAP</button>
-                <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary" (click)="RegistrarContratos(element.id)">Ir
-                    a registrar contratos</button>
+
+                <div class="filaBtn">
+                    <div class="col-md-12">
+                        <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary" (click)="RegistrarContratos(element.id)">Ir
+                            a registrar contratos</button>
+                    </div>
+                </div>
+
+                <div class="filaBtn">
+                    <div class="col-md-12">
+                        <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary" (click)="reasignar(element)">Reasignar</button>
+                    </div>
+                </div>
+
                 <div class="row filaBtn">
                     <div class="col-md-12">
-                        <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-primary" (click)="ConPresupuesto(element,templateConfirmacionPresupuesto)">Enviar a registrar SOLP</button>
+                        <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-primary" (click)="ConPresupuesto(element,templateConfirmacionPresupuesto)">Enviar
+                            a registrar SOLP</button>
                     </div>
                 </div>
                 <div class="row filaBtn">
@@ -67,17 +87,21 @@
                 </div>
                 <div class="row filaBtn">
                     <div class="col-md-12">
-                        <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-success" (click)="VerDetalle(element.id)">Ver detalle</button>
+                        <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-success" (click)="VerDetalle(element.id)">Ver
+                            detalle</button>
                     </div>
                 </div>
                 <div class="row filaBtn">
-                    <button *ngIf="element.estado =='Por registrar entregas' && element.FaltaRecepcionBienes === true" class="btn btn-primary" (click)="RegistrarEntregasBienes(element.id)">Recepcionar bienes</button>
+                    <button *ngIf="element.estado =='Por registrar entregas' && element.FaltaRecepcionBienes === true"
+                        class="btn btn-primary" (click)="RegistrarEntregasBienes(element.id)">Recepcionar bienes</button>
                 </div>
                 <div class="row filaBtn">
-                    <button *ngIf="element.estado =='Por registrar entregas' && element.FaltaRecepcionServicios === true" class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Recepcionar servicios</button>
+                    <button *ngIf="element.estado =='Por registrar entregas' && element.FaltaRecepcionServicios === true"
+                        class="btn btn-success" (click)="RegistrarEntregasServicios(element.id)">Recepcionar servicios</button>
                 </div>
 
-                <button *ngIf="element.estado =='Por registrar activos'" class="btn btn-success" (click)="RegistrarActivos(element.id)">Ir a registrar activos</button>
+                <button *ngIf="element.estado =='Por registrar activos'" class="btn btn-success" (click)="RegistrarActivos(element.id)">Ir
+                    a registrar activos</button>
             </td>
         </ng-container>
 
@@ -111,3 +135,7 @@
         <button type="button" class="btn btn-danger" (click)="declinarDescartar()">Cancelar</button>
     </div>
 </ng-template>
+
+<ngx-spinner>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>

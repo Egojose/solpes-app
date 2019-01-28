@@ -9,6 +9,7 @@ import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnic
 import { Contratos } from '../dominio/contrato';
 import { Router } from '@angular/router';
 import { Solicitud } from '../dominio/solicitud';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-ver-solicitud-tab',
@@ -22,6 +23,7 @@ export class VerSolicitudTabComponent implements OnInit {
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
+  dataSource;
   RutaArchivo: string;
   tipoSolicitud: string;
   numOrdenEstadistica: string;
@@ -56,6 +58,18 @@ export class VerSolicitudTabComponent implements OnInit {
   AgregarElementoForm: FormGroup;
   submitted = false;
   solicitudRecuperada: Solicitud;
+  fueSondeo : boolean;
+  paginator: any;
+  displayedColumns: string[] = [
+    "codigo",
+    "descripcion",
+    "modelo",
+    "fabricante",
+    "cantidad",
+    "valorEstimado",
+    "moneda",
+    "adjunto"
+  ];
 
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router) { 
     this.loading = false;
@@ -65,11 +79,11 @@ export class VerSolicitudTabComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    if(this.solicitudRecuperada.tipoSolicitud != null){
-      if(this.solicitudRecuperada.tipoSolicitud != "Sondeo"){
-        this.deshabilitarTabsSondeo();
-      }else{
+    if(this.solicitudRecuperada.FueSondeo != null){
+      if(this.solicitudRecuperada.FueSondeo){
         this.habilitarTabsSondeo();
+      }else{
+        this.deshabilitarTabsSondeo();
       }
     }
 
@@ -100,7 +114,6 @@ export class VerSolicitudTabComponent implements OnInit {
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
         this.tieneContrato = solicitud.TieneContrato;
      
-
         if(solicitud.CondicionesContractuales != null){
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
@@ -108,7 +121,8 @@ export class VerSolicitudTabComponent implements OnInit {
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-            console.log(this.ObjCondicionesTecnicas);
+            this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
+                this.dataSource.paginator = this.paginator;
           }
         );
         this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
@@ -118,7 +132,6 @@ export class VerSolicitudTabComponent implements OnInit {
         );
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
-
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
           }
         );
