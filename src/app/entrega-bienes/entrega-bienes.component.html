@@ -3,7 +3,7 @@
   <b>PROCESANDO...</b>
 </div>
 <br>
-<div class="row espacio">
+<!-- <div class="row espacio">
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
@@ -88,7 +88,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="row">
     <div class="col-md-6">
         <div class="form-group ">
@@ -122,9 +122,9 @@
                             <!-- <td>{{item.claseSIA}}</td> -->
                             <td>{{item.totalCantidad}}</td>
                             <td *ngIf="EstadoSolicitud==true">
-                                <div *ngIf="item.totalCantidad !== 0 && item.UltimaEntregaCTB !== true">
+                                <!-- <div *ngIf="item.totalCantidad !== 0 && item.UltimaEntregaCTB !== true">
                                     <button class="btn btn-warning btnAcciones" (click)="UltimaEntrega(item)">No hay mas entregas</button>
-                                </div>
+                                </div> -->
                                 <div *ngIf="item.totalCantidad === 0 || item.UltimaEntregaCTB === true">
                                     Ultima entrega realizada
                                 </div>
@@ -167,7 +167,7 @@
                         <div class="form-group col-md-2">
                             <label for="inputEmail4">Cantidad</label>
                             <ng-template #tolTemplate>{{content}}</ng-template>
-                            <input type="text" class="form-control" [tooltip]="tolTemplate" triggers="" #customTooltip="bs-tooltip" placement="bottom" id="Cantidad" numbersOnly formControlName="Cantidad" [ngClass]="{ 'is-invalid': submitted && f.Cantidad.errors }">
+                            <input type="text" class="form-control" [tooltip]="tolTemplate" triggers="" (change)="ValidacionCero()" #customTooltip="bs-tooltip" placement="bottom" id="Cantidad" numbersOnly formControlName="Cantidad" [ngClass]="{ 'is-invalid': submitted && f.Cantidad.errors }">
                             <div *ngIf="submitted && f.Cantidad.errors" class="invalid-feedback">
                                 <div *ngIf="f.Cantidad.errors.required">Es requerido</div>
                             </div>
@@ -195,6 +195,11 @@
                             <textarea class="form-control" rows="1" formControlName="Comentario"></textarea>
                         </div>
                     </div>
+                    <div class="row" *ngIf="OrdenEstadistica === true">
+                        <div class="col-md-6">
+                            <input type="file" name="" id="Adjunto" (change)="adjuntarArchivoBienes($event)">
+                        </div>
+                    </div>
                     <div class="row espacioRowPedido" *ngIf="ObjItemsDescripcion.length > 0">
                         <div class="col-md-6 offset-md-9">
                             <button class="btn btn-primary">Agregar elemento</button>
@@ -213,6 +218,7 @@
                                         <th scope="col">Ultima entrega</th>
                                         <th scope="col">Fecha recepción</th>
                                         <th scope="col">Comentario</th>
+                                        <th scope="col">Adjunto</th>
                                         <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
@@ -231,6 +237,9 @@
                                         </td>
                                         <td>{{item.fechaRecepcion | date:'dd/MM/yyyy'}}</td>
                                         <td>{{item.comentario}}</td>
+                                        <td>
+                                            <a *ngIf="item.adjunto !== null" href="{{item.adjunto}}">Ver adjunto</a>
+                                        </td>
                                         <td>
                                             <button class="btn btn-danger btnAcciones" *ngIf="item.estadoRB === 'No confirmado'" (click)="Eliminar(item)">Eliminar</button>
                                         </td>

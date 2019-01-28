@@ -28,7 +28,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4NjgzNjk2LCJuYmYiOjE1NDg2ODM2OTYsImV4cCI6MTU0ODcxMjc5NiwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.W5izZZym57RDKQWUdRQ2MbknLRT97qMGMJPKOem7pGGs9dUIXdTEG1ad5UlqJosaESUFUmk-VEmU9eFWRCWef6jxQrPggIBdrgVTncXqpgVEOTWyN-LDAycijtEk1NhFLvsy7-ytwUZ7yddv3ipafz1KrxfTVKiB_zj3SYaAVrDqesGBqcbC_xKhyEVjkw57Rx9mPVoVlCaKaEXlkJ1KXHhl8CFw3EYG0ftRVL_fzn3wCgf6sfVBtuF8Hrt6TeIKmre36vfeXrlpEu0p7u2-JV_Dl8jLoKU37QqzsprotrX6XNOitJ_SECr4Ieh_5KX8hy9V5KMeCHFG0JsD_iOK0Q'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSIsImtpZCI6Im5iQ3dXMTF3M1hrQi14VWFYd0tSU0xqTUhHUSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4Njg0NzQ1LCJuYmYiOjE1NDg2ODQ3NDUsImV4cCI6MTU0ODcxMzg0NSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.oWcIq2gVIAHXAlyi1YiTMl8pe6jKKjuIRy2qQyLQ-g7zNi3uuL7BPJtc7ORAVq04jidg1UaGOZg1RnA9DvUo6dNqGCQ1QY3fRkjnAHnVeOA8n0QLhknCL96uRwu_8jxTOABSt9Iq0aWobf2FlBfdaEMIiP9NACnfMaGqsprbP3lHZAxZ1ZGnnrInuhBDIQyhlQLzaD_MIstaV60yOW-B8L_ghExkDkAcYUqPTA4nofa17WngqN_hjQ5XZzB9O__4lzSVA65s3F4cQ419_MRj02XkRAuPgxmWg1FbrC5lGoEJNxGlK3yDRhY91fQDHf1s8vLi38b0CGgGL4icuFqAQA'
             }
         }, environment.urlWeb);
 
@@ -200,6 +200,16 @@ export class SPServicio {
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
+    agregarAdjuntoActivosBienes(IdSolicitud: number, nombreArchivo: string, archivo: File) {
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdSolicitud);
+        return item.attachmentFiles.add(nombreArchivo, archivo);
+    }
+
+    agregarAdjuntoActivosServicios(IdSolicitud: number, nombreArchivo: string, archivo: File) {
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdSolicitud);
+        return item.attachmentFiles.add(nombreArchivo, archivo);
+    }
+
     borrarAdjuntoCondicionesTecnicasBienes(idCondicion: number, nombreArchivo: string){
         let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
         return item.attachmentFiles.getByName(nombreArchivo).delete();
@@ -273,6 +283,11 @@ export class SPServicio {
 
     ObtenerRecepcionesBienes(IdResponsable){
         let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and ResponsableSAPId eq '"+IdResponsable+"'").get());
+        return respuesta;
+    }
+
+    ObtenerRecepcionesBienesEntregaBienes(IdSolicitud){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("IdSolicitud eq '"+IdSolicitud+"' and recibidoSap eq '0'").select("*","AttachmentFiles").expand("AttachmentFiles").get());
         return respuesta;
     }
 

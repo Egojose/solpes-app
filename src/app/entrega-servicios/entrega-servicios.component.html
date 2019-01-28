@@ -3,7 +3,7 @@
     <b>PROCESANDO...</b>
 </div>
 <br>
-<div class="row espacio">
+<!-- <div class="row espacio">
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
@@ -88,7 +88,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="row">
     <div class="col-md-6">
         <div class="form-group ">
@@ -119,9 +119,9 @@
                             <td>{{item.totalCantidad}}</td>
                             <td>{{item.comentario}}</td>
                             <td>
-                                <div *ngIf="item.totalCantidad !== 0 && item.ultimaEntregaCTS !== true">
+                                <!-- <div *ngIf="item.totalCantidad !== 0 && item.ultimaEntregaCTS !== true">
                                     <button class="btn btn-warning btnAcciones" (click)="UltimaEntrega(item)">No hay mas entregas</button>
-                                </div>
+                                </div> -->
                                 <div *ngIf="item.totalCantidad === 0 || item.ultimaEntregaCTS === true">
                                     Ultima entrega realizada
                                 </div>
