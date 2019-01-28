@@ -24,7 +24,10 @@ export class RegistrarSolpSapComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   tipoSolicitud: string;
   codigoAriba: string;
-  numeroOrdenEstadistica: string;
+  numOrdenEstadistica: string;
+  compradorNombre: string;
+  panelOpenState1 = false;
+  panelOpenState2 = false;
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
@@ -37,8 +40,10 @@ export class RegistrarSolpSapComponent implements OnInit {
   comprador: string;
   justificacion: string;
   alcance: string;
+  OrdenEstadistica: boolean;
   ObjCondicionesContractuales: any;
   IdSolicitud: any;
+  panelOpenState = false;
   ObjCondicionesTecnicasBienesLectura: CondicionesTecnicasBienes[] = [];
   ObjResultadosondeo: CondicionesTecnicasBienes[] = [];
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
@@ -75,8 +80,10 @@ export class RegistrarSolpSapComponent implements OnInit {
     "cantidad",
     "valorEstimado",
     "moneda",
-    "adjunto"
+    "comentarioSondeo",
+    "adjunto",
   ];
+  RutaArchivo: string;
 
  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
   this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
@@ -125,20 +132,19 @@ export class RegistrarSolpSapComponent implements OnInit {
         }
       }
       else if(this.RDBOrdenadorGastos === 3 && this.ComentarioRegistrarSap === undefined) {
-        this.tooltip1.show();
-        setTimeout(() => {
-          this.tooltip1.hide();
-        }, 3000);
+        this.mostrarAdvertencia("Por favor ingrese un comentario");
         // alert('Debe especificar el motivo en comentarios');
         return false;
       }
       else if (this.RDBOrdenadorGastos === 3) {
+       let comentario = this.ComentarioRegistrarSap;
         ObjSolpSap = {
           ResponsableId: this.Autor,
           Estado: "Sin presupuesto",
           EstadoRegistrarSAP: "No tiene presupuesto disponible",
           ComentarioRegistrarSAP: this.ComentarioRegistrarSap
         }
+     
       }
         this.servicio.guardarSOLPSAP(this.IdSolicitud, ObjSolpSap).then(
         (resultado: ItemAddResult) => {
@@ -187,8 +193,9 @@ export class RegistrarSolpSapComponent implements OnInit {
       solicitud => {
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.codigoAriba = solicitud.CodigoAriba;
-        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
+        this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;
+        this.OrdenEstadistica = solicitud.OrdenEstadistica;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
@@ -197,10 +204,23 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Categoria;
+        this.compradorNombre = solicitud.Comprador.Title;
         this.comprador = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
         this.Autor = solicitud.AuthorId;
+        if (solicitud.Attachments === true) {
+          let ObjArchivos = solicitud.AttachmentFiles.results;
+          ObjArchivos.forEach(element => {
+            let objSplit = element.FileName.split("-");
+            if (objSplit.length > 0) {
+              let TipoArchivo = objSplit[0]
+              if (TipoArchivo === "RegistroActivo") {
+                this.RutaArchivo = element.ServerRelativeUrl;
+              }
+            }
+          });
+        }
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
@@ -212,7 +232,7 @@ export class RegistrarSolpSapComponent implements OnInit {
             if (this.ObjCTVerificar.length>0) {
               this.CTB = true;
             }
-            this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+            this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
             this.dataSource.paginator = this.paginator;
             console.log(this.ObjCondicionesTecnicas);
           }
@@ -221,9 +241,9 @@ export class RegistrarSolpSapComponent implements OnInit {
           RespuestaCondicionesServicios => {
             this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            if (this.ObjCondicionesTecnicasServicios.length>0) {
-              this.CTS = true;
-            }
+            // if (this.ObjCondicionesTecnicasServicios.length>0) {
+            //   this.CTS = true;
+            // }
             this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
             this.dataSourceTS.paginator = this.paginator;
             this.loading = false;

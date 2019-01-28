@@ -85,7 +85,6 @@
                     <tr *ngFor="let item of ObjCondicionesTecnicasBienesGuardar let i=index"  [attr.data-index]="i">
                         <td>
                             <input type="text"  class="form-control text-center"  [(ngModel)]="item.codigo"></td>
-                        <td>
                         <td>{{item.descripcion}}</td>
                         <td>
                             <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.cantidad">
@@ -93,6 +92,7 @@
                         <td>
                             <input type="text" numbersOnly class="form-control text-center"  [(ngModel)]="item.valorEstimado">
                         </td>
+                        <td>
                             <textarea type="text"  class="form-control text-center"  [(ngModel)]="item.ComentarioSondeo"></textarea>
                         </td>
                         <td>
