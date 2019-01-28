@@ -21,7 +21,7 @@ export class RecepcionSapComponent implements OnInit {
   cantidad: any;
   valor: string;
   comentarios: string;
-  ObjRecepcionBienes: RecepcionBienes[]=[];
+  ObjRecepcionBienes: any[]=[];
   objContratos: Contratos []=[];
   IdSolicitud: number;
   recepcionBienes: FormGroup;
@@ -70,7 +70,9 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, publ
                 this.objContratos = Contratos.fromJsonList(respuesta);
                 console.log(this.ObjRecepcionBienes)
                 console.log(this.objContratos)
-              }
+                let fulldatos = this.ObjRecepcionBienes.concat(this.objContratos)
+                console.log(fulldatos);
+              }  
             );
           }
         );
