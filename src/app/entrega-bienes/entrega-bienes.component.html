@@ -190,7 +190,7 @@
                         <div class="form-group col-md-2">
                             <label for="inputEmail4">Última entrega</label>
                             <select name="" id="" class="form-control" formControlName="UltimaEntrega" [ngClass]="{ 'is-invalid': submitted && f.UltimaEntrega.errors }">
-                              <option value=""></option>
+                              <option value=""  [disabled]="modolectura"></option>
                               <option value="Sí" [disabled]="modolectura">Sí</option>
                               <option value="No"[disabled]="modolectura" >No</option>
                           </select>

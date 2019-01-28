@@ -186,7 +186,7 @@ export class EntregaBienesComponent implements OnInit {
       this.modolectura=true;
     }
     else{
-      this.modolectura=true;
+      this.modolectura=false;
     }
   }
 
