@@ -11,6 +11,7 @@ import { CondicionTecnicaServicios } from "../verificar-material/condicionTecnic
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { verificarMaterialCT } from "./verificarMaterialCT";
 import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: "app-verificar-material",
@@ -62,19 +63,23 @@ export class VerificarMaterialComponent implements OnInit {
   cantidadTotalCompra: number;
   OrdenEstadistica: boolean;
   SwtichOrdenEstadistica: boolean;
+  SwtichEsOrdenEstadistica: boolean;
   ArchivoAdjunto: File;
   SwtichFaltaRecepcionBienes: boolean;
   verificar : string;
+  
 
-  constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router) {
-    this.loading = false;
+  constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
+    this.spinner.hide();
     this.emptyVerificar = true;
     this.ArchivoAdjunto = null;
     this.SwtichOrdenEstadistica = false;
+    this.SwtichEsOrdenEstadistica = false;
     this.cantidadTotalCompra = 0;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
   }
 
+  
   adjuntarArchivoVM(event) {
     let archivoAdjunto = event.target.files[0];
       if (archivoAdjunto != null) {
@@ -92,13 +97,13 @@ export class VerificarMaterialComponent implements OnInit {
   }
 
   GuardarComentario() {
-    this.loading = true;
+    this.spinner.show();
     let coment;
     let comentarios = this.ComentarioVerificarMaterial;
     if (this.SwtichOrdenEstadistica === true) {
       if (this.ArchivoAdjunto === null) {
         this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
-        this.loading = false;
+        this.spinner.hide();
         return false;
       }
       let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarActivos;
@@ -127,26 +132,26 @@ export class VerificarMaterialComponent implements OnInit {
             this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then((respuesta) => {
                 this.MostrarExitoso("Archivo guardado correctamente");
                 this.router.navigate(["/mis-pendientes"]);
-                this.loading = false;
+                this.spinner.hide();
               }
             ).catch((error) => {
                 this.mostrarError("Error al guardar el archivo");
-                this.loading = false;
+                this.spinner.hide();
               }
             );
           }
           else {
             this.router.navigate(["/mis-pendientes"]);
-            this.loading = false;
+            this.spinner.hide();
           }
         })
         .catch(error => {
           console.log(error);
-          this.loading = false;
+          this.spinner.hide();
         });
     } else {
       this.mostrarAdvertencia("Faltan materiales por verificar");
-      this.loading = false;
+      this.spinner.hide();
     }
   }
 
@@ -173,7 +178,7 @@ export class VerificarMaterialComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = true;
+    this.spinner.show();
     this.RegistrarFormularioVerificar();
     this.ValidarNumReservaSiHayExistencias();
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(solicitud => {
@@ -194,6 +199,9 @@ export class VerificarMaterialComponent implements OnInit {
       this.alcance = solicitud.Alcance;
       this.justificacion = solicitud.Justificacion;
       this.ComentarioSondeo = solicitud.ComentarioSondeo;
+
+      this.MostrarNumeroEstadistica();
+
       if (solicitud.CondicionesContractuales != null) {
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
       }
@@ -211,9 +219,15 @@ export class VerificarMaterialComponent implements OnInit {
       this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
         this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
         console.log(this.ObjCondicionesTecnicasServicios);
-        this.loading = false;
+        this.spinner.hide();
       });
     });
+  }
+
+  private MostrarNumeroEstadistica() {
+    if (this.OrdenEstadistica) {
+      this.SwtichEsOrdenEstadistica = true;
+    }
   }
 
   private MostrarAdjuntosActivos() {

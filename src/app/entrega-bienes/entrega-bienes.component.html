@@ -91,15 +91,20 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group ">
-            <label for="colFormLabel"><strong>N° Contrato/Orden de Compra</strong></label>
+            <label for="colFormLabel"><strong>Número de pedido</strong></label>
             <input type="text" class="form-control" [(ngModel)]="NumSolp" readonly>
         </div>
+    </div>
+    <div class="col-md-4 offset-md-2">
+        <a href="/ver-solicitud-tab" target="_blank">
+            <button class="btn btn-primary">Ver solicitud</button>
+        </a>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            <label for="colFormLabel" class="col-form-label"><strong>Condiciones técnicas</strong></label>
+            <label for="colFormLabel" class="col-form-label"><strong>Bienes solicitados</strong></label>
             <div class="table-wrapper-scroll-y">
                 <table class="table table-striped">
                     <thead>
@@ -120,12 +125,12 @@
                             <td>{{item.fabricante}}</td>
                             <!-- <td>{{item.claseSIA}}</td> -->
                             <td>{{item.totalCantidad}}</td>
-                            <td *ngIf="EstadoSolicitud==true">
+                            <td>
                                 <!-- <div *ngIf="item.totalCantidad !== 0 && item.UltimaEntregaCTB !== true">
                                     <button class="btn btn-warning btnAcciones" (click)="UltimaEntrega(item)">No hay mas entregas</button>
                                 </div> -->
                                 <div *ngIf="item.totalCantidad === 0 || item.UltimaEntregaCTB === true">
-                                    Ultima entrega realizada
+                                    Última entrega realizada
                                 </div>
                             </td>
                         </tr>
@@ -135,7 +140,11 @@
         </div>
     </div>
 </div>
-
+<div class="row" *ngIf="tieneArchivo === true">
+    <div class="col-md-12">
+        <a href="{{RutaArchivo}}" target="_blank">Descargar archivo de activos fijos</a>
+    </div>
+</div>
 <!-- <div class="form-group row">
   <label for="colFormLabel" class="col-sm-2 col-form-label"><strong>Condiciones técnicas</strong></label>
   <div class="col-sm-10">
@@ -179,11 +188,11 @@
                             </div>
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputEmail4">Ultima entrega</label>
+                            <label for="inputEmail4">Última entrega</label>
                             <select name="" id="" class="form-control" formControlName="UltimaEntrega" [ngClass]="{ 'is-invalid': submitted && f.UltimaEntrega.errors }">
-                              <option value=""></option>
-                              <option value="Sí">Sí</option>
-                              <option value="No">No</option>
+                              <option value=""  [disabled]="modolectura"></option>
+                              <option value="Sí" [disabled]="modolectura">Sí</option>
+                              <option value="No"[disabled]="modolectura" >No</option>
                           </select>
                             <div *ngIf="submitted && f.UltimaEntrega.errors" class="invalid-feedback">
                                 <div *ngIf="f.UltimaEntrega.errors.required">Es requerido</div>
@@ -237,7 +246,7 @@
                                         <td>{{item.fechaRecepcion | date:'dd/MM/yyyy'}}</td>
                                         <td>{{item.comentario}}</td>
                                         <td>
-                                            <a *ngIf="item.adjunto !== null" href="{{item.adjunto}}">Ver adjunto</a>
+                                            <a *ngIf="item.adjunto !== null" href="{{item.adjunto}}" target="_blank">Ver adjunto</a>
                                         </td>
                                         <td>
                                             <button class="btn btn-danger btnAcciones" *ngIf="item.estadoRB === 'No confirmado'" (click)="Eliminar(item)">Eliminar</button>
@@ -254,7 +263,7 @@
 </div>
 <div class="row espacioBotones">
     <!-- <button type="button" class="btn btn-primary btn-lg botonera">Guardar</button> -->
-    <button type="button" class="btn btn-primary btn-lg botonera" *ngIf="showBtnConfirmar === false" (click)="Confirmar()">Confirmar y salir</button>
+    <button type="button" class="btn btn-success btn-lg botonera" *ngIf="showBtnConfirmar === false" (click)="Confirmar()">Confirmar y salir</button>
     <button type="button" class="btn btn-primary btn-lg botonera" (click)="Salir()">Salir</button>
 </div>
 <div class="row footerPagina"></div>

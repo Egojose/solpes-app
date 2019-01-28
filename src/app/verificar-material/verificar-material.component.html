@@ -1,302 +1,370 @@
 <h1>{{titleVerificar}}</h1>
 <hr>
-<div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif"
-        alt="loading...">
-    <b>PROCESANDO...</b>
-</div>
 <div class="row" id="TablaVerificar">
-    <div class="col-md-12">
-        <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-        </mat-form-field>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <ng-container matColumnDef="codigo">
-                <th mat-header-cell *matHeaderCellDef> Código </th>
-                <td mat-cell *matCellDef="let element"> {{element.codigoSondeo}} </td>
-            </ng-container>
-            <ng-container matColumnDef="descripcion">
-                <th mat-header-cell *matHeaderCellDef> Descripción </th>
-                <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
-            </ng-container>
-            <ng-container matColumnDef="modelo">
-                <th mat-header-cell *matHeaderCellDef> Modelo </th>
-                <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
-            </ng-container>
-            <ng-container matColumnDef="fabricante">
-                <th mat-header-cell *matHeaderCellDef> Fabricante </th>
-                <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
-            </ng-container>
-            <ng-container matColumnDef="cantidad">
-                <th mat-header-cell *matHeaderCellDef> Cantidad </th>
-                <td mat-cell *matCellDef="let element"> {{element.cantidad | number}} </td>
-            </ng-container>
-            <ng-container matColumnDef="existenciasverificar">
-                <th mat-header-cell *matHeaderCellDef> Existencia </th>
-                <td mat-cell *matCellDef="let element"> {{element.existenciasverificar}} </td>
-            </ng-container>
-            <ng-container matColumnDef="numreservaverificar">
-                <th mat-header-cell *matHeaderCellDef> # Reserva </th>
-                <td mat-cell *matCellDef="let element"> {{element.numreservaverificar}} </td>
-            </ng-container>
-            <ng-container matColumnDef="cantidadreservaverificar">
-                <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-                <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar | number}} </td>
-            </ng-container>
-            <ng-container matColumnDef="Accion">
-                <th mat-header-cell *matHeaderCellDef> Acción </th>
-                <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element.MaterialVerificado == true; else botonVerificar">
-                        <button class="btn btn-success" (click)="abrirModalVerificarMaterial(templateVerificarMaterial, element)">Verificado</button>
-                    </div>
-                    <ng-template #botonVerificar>
-                        <button mat-raised-button class="btn btn-warning" (click)="abrirModalVerificarMaterial(templateVerificarMaterial, element)">Verificar</button>
-                    </ng-template>
-                </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+  <div class="col-md-12">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+    </mat-form-field>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef> Código </th>
+        <td mat-cell *matCellDef="let element"> {{element.codigoSondeo}} </td>
+      </ng-container>
+      <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+        <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+      </ng-container>
+      <ng-container matColumnDef="modelo">
+        <th mat-header-cell *matHeaderCellDef> Modelo </th>
+        <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+      </ng-container>
+      <ng-container matColumnDef="fabricante">
+        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+        <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
+      </ng-container>
+      <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+        <td mat-cell *matCellDef="let element"> {{element.cantidad | number}} </td>
+      </ng-container>
+      <ng-container matColumnDef="existenciasverificar">
+        <th mat-header-cell *matHeaderCellDef> Existencia </th>
+        <td mat-cell *matCellDef="let element"> {{element.existenciasverificar}} </td>
+      </ng-container>
+      <ng-container matColumnDef="numreservaverificar">
+        <th mat-header-cell *matHeaderCellDef> # Reserva </th>
+        <td mat-cell *matCellDef="let element"> {{element.numreservaverificar}} </td>
+      </ng-container>
+      <ng-container matColumnDef="cantidadreservaverificar">
+        <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+        <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar | number}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Accion">
+        <th mat-header-cell *matHeaderCellDef> Acción </th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="element.MaterialVerificado == true; else botonVerificar">
+            <button class="btn btn-success" (click)="abrirModalVerificarMaterial(templateVerificarMaterial, element)">Verificado</button>
+          </div>
+          <ng-template #botonVerificar>
+            <button mat-raised-button class="btn btn-warning" (click)="abrirModalVerificarMaterial(templateVerificarMaterial, element)">Verificar</button>
+          </ng-template>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+  </div>
 
-        <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
-    </div>
+
+
+
+
+
 </div>
+<div class="row" *ngIf="SwtichEsOrdenEstadistica===true">
+  <div class="form-group col-md-12">
+    <strong>Número de orden de estadística: </strong>
+    <label id="ordenEst">{{numOrdenEstadistica}}</label>
+    <br>
+  </div>
+</div>
+
 <div class="row" *ngIf="SwtichOrdenEstadistica===true">
-    <div class="form-group col-md-6">
-        <label for="adjunto"> <strong> Adjuntar solicitud creación de activos </strong></label><span class="asterisco-obligatorio">*</span>
-        <input id="adjuntoSolicituAF" name="adjuntoSolicituAF" (change)="adjuntarArchivoVM($event)" type="file" class="form-control" />
-        <br>
-    </div>
+  <div class="form-group col-md-6">
+    <label for="adjunto"> <strong> Adjuntar solicitud creación de activos </strong></label><span class="asterisco-obligatorio">*</span>
+    <input id="adjuntoSolicituAF" name="adjuntoSolicituAF" (change)="adjuntarArchivoVM($event)" type="file" class="form-control" />
+    <br>
+  </div>
 </div>
 <div class="row">
+<<<<<<< HEAD
+  <div class="form-group col-md-12">
+    <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
+    <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
+    <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top"
+      [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-md-12">
+    <div class="botonera">
+      <div>
+        <input id="button1" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;" value="Enviar"
+          (click)="GuardarComentario()" />
+      </div>
+      <div>
+        <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);"
+          value="Salir" />
+      </div>
+=======
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
         <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
-        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers=""
-            placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
+        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
     </div>
 </div>
 <div class="form-group row">
     <div class="col-md-12">
         <div class="botonera">
             <div>
-                <input id="button1" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;"
-                    value="Enviar" (click)="GuardarComentario()" />
+                <input id="button1" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;" value="Enviar" (click)="GuardarComentario()" />
             </div>
             <div>
-                <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);"
-                    value="Salir" />
+                <input id="button1" type="button" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);" value="Salir" />
             </div>
         </div>
+>>>>>>> 58566a98b9d7d849138a3aea91351b6e07b491d8
     </div>
+  </div>
 </div>
 <br>
 <hr>
 <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-            <mat-panel-title><strong>Información adicional solicitud</strong></mat-panel-title>
-            <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <strong>Fecha deseada de entrega</strong>
-                    </div>
-                    <div class="card-body">
-                        {{fechaDeseada | date:'dd/MM/yyyy'}}
-                    </div>
-                </div>
-            </div>
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title><strong>Información adicional solicitud</strong></mat-panel-title>
+      <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <strong>Fecha deseada de entrega</strong>
+          </div>
+          <div class="card-body">
+            {{fechaDeseada | date:'dd/MM/yyyy'}}
+          </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <strong>Información de la solicitud </strong>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <strong>Solicitante: </strong>{{solicitante}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Empresa: </strong>{{empresa}}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <strong>País: </strong>{{pais}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Categoría: </strong>{{categoria}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Sub-Categoría: </strong>{{subCategoria}}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <strong>Comprador: </strong>{{comprador}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Código ariba: </strong>{{codAriba}}
-                            </div>
-                            <div class="col-md-4">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>Información de la solicitud </strong>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
+              </div>
             </div>
-        </div>
-        <br>
-        <div class="row ">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Alcance</strong></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{alcance}}</textarea>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{justificacion}}</textarea>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="form-group row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-5 col-form-label"><strong><h4>Condiciones contractuales</h4></strong></label>
-                    <div class="table-wrapper-scroll-y">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Campo</th>
-                                    <th scope="col">Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of condicionesContractuales">
-                                    <td>{{item.campo}}</td>
-                                    <td>{{item.descripcion}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
-                </div>
-            </div>
-        </ng-container>
-        <ng-template #esteNO>
-            <h5>La solicitud no cuenta con orden estadística</h5>
             <br>
-        </ng-template>
-        <div class="form-group row">
-            <div class="col-md-12">
-                <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>Condiciones técnicas bienes</strong></label>
-                <div class="table-wrapper-scroll-y">
-                    <table class="table table-striped table-bordered table-hover text-center">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Descripción</th>
-                                <th>Modelo</th>
-                                <th>Fabricante</th>
-                                <th>Cantidad</th>
-                                <th>Valor Estimado</th>
-                                <th>Adjunto</th>
-                                <th>Comentario</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of ObjCondicionesTecnicas">
-                                <td>{{item.codigo}}</td>
-                                <td>{{item.descripcion}}</td>
-                                <td>{{item.modelo}}</td>
-                                <td>{{item.fabricante}}</td>
-                                <td>{{item.cantidad | number}}</td>
-                                <td>{{item.valorEstimado | currency}}</td>
-                                <td>
-                                    <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
-                                        <a href="{{item.adjuntoCreacion.url}}" target=_blank>
-                                            <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                        </a>
-                                    </ng-container>
-                                    <ng-template #NoHayAdjBienes>
-                                        Sin adjunto
-                                    </ng-template>
-                                </td>
-                                <td>{{item.comentario}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
+            <div class="row">
+              <div class="col-md-4">
+                <strong>Solicitante: </strong>{{solicitante}}
+              </div>
+              <div class="col-md-4">
+                <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
+              </div>
+              <div class="col-md-4">
+                <strong>Empresa: </strong>{{empresa}}
+              </div>
             </div>
+            <br>
+            <div class="row">
+              <div class="col-md-4">
+                <strong>País: </strong>{{pais}}
+              </div>
+              <div class="col-md-4">
+                <strong>Categoría: </strong>{{categoria}}
+              </div>
+              <div class="col-md-4">
+                <strong>Sub-Categoría: </strong>{{subCategoria}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-4">
+                <strong>Comprador: </strong>{{comprador}}
+              </div>
+              <div class="col-md-4">
+                <strong>Código ariba: </strong>{{codAriba}}
+              </div>
+              <div class="col-md-4">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row ">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Alcance</strong></label>
+          <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{alcance}}</textarea>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
+          <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{justificacion}}</textarea>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="form-group row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>
+              <h4>Condiciones contractuales</h4>
+            </strong></label>
+          <div class="table-wrapper-scroll-y">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Campo</th>
+                  <th scope="col">Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of condicionesContractuales">
+                  <td>{{item.campo}}</td>
+                  <td>{{item.descripcion}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
+      <div class="form-group row">
+        <div class="col-md-12">
+          <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #esteNO>
+      <h5>La solicitud no cuenta con orden estadística</h5>
+      <br>
+    </ng-template>
+    <div class="form-group row">
+      <div class="col-md-12">
+        <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>Condiciones técnicas bienes</strong></label>
+        <div class="table-wrapper-scroll-y">
+          <table class="table table-striped table-bordered table-hover text-center">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Modelo</th>
+                <th>Fabricante</th>
+                <th>Cantidad</th>
+                <th>Valor Estimado</th>
+                <th>Adjunto</th>
+                <th>Comentario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of ObjCondicionesTecnicas">
+                <td>{{item.codigo}}</td>
+                <td>{{item.descripcion}}</td>
+                <td>{{item.modelo}}</td>
+                <td>{{item.fabricante}}</td>
+                <td>{{item.cantidad | number}}</td>
+                <td>{{item.valorEstimado | currency}}</td>
+                <td>
+                  <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
+                    <a href="{{item.adjuntoCreacion.url}}" target=_blank>
+                      <button type="button" class="btn btn-primary">Ver Archivo</button>
+                    </a>
+                  </ng-container>
+                  <ng-template #NoHayAdjBienes>
+                    Sin adjunto
+                  </ng-template>
+                </td>
+                <td>{{item.comentario}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="form-group row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>Condiciones técnicas servicios</strong></label>
-                    <div class="table-wrapper-scroll-y">
-                        <table class="table table-striped table-bordered table-hover text-center">
-                            <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Descripción</th>
-                                    <th>Cantidad</th>
-                                    <th>Valor Estimado</th>
-                                    <th>Adjunto</th>
-                                    <th>Comentario</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                                    <td>{{item.codigo}}</td>
-                                    <td>{{item.descripcion}}</td>
-                                    <td>{{item.cantidad}}</td>
-                                    <td>{{item.valorEstimado | currency}}</td>
-                                    <td>
-                                        <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
-                                            <a href="{{item.adjuntoCreacion.url}}" target=_blank>
-                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                            </a>
-                                        </ng-container>
-                                        <ng-template #nohaycreacion>
-                                            Sin adjunto
-                                        </ng-template>
-                                    </td>
-                                    <td>{{item.comentarios}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
+    </div>
 
+    <div class="form-group row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>Condiciones técnicas servicios</strong></label>
+          <div class="table-wrapper-scroll-y">
+            <table class="table table-striped table-bordered table-hover text-center">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Descripción</th>
+                  <th>Cantidad</th>
+                  <th>Valor Estimado</th>
+                  <th>Adjunto</th>
+                  <th>Comentario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
+                  <td>{{item.codigo}}</td>
+                  <td>{{item.descripcion}}</td>
+                  <td>{{item.cantidad}}</td>
+                  <td>{{item.valorEstimado | currency}}</td>
+                  <td>
+                    <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
+                      <a href="{{item.adjuntoCreacion.url}}" target=_blank>
+                        <button type="button" class="btn btn-primary">Ver Archivo</button>
+                      </a>
+                    </ng-container>
+                    <ng-template #nohaycreacion>
+                      Sin adjunto
+                    </ng-template>
+                  </td>
+                  <td>{{item.comentarios}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<<<<<<< HEAD
+    <div class="form-group row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo bienes</strong></label>
+          <div class="table-wrapper-scroll-y">
+            <table class="table table-striped table-bordered table-hover text-center">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Descripción</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Comentario</th>
+                  <th>Adjunto</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of ObjCondicionesTecnicas">
+                  <td>{{item.codigoSondeo}}</td>
+                  <td>{{item.descripcion}}</td>
+                  <td>{{item.cantidadSondeo | number}}</td>
+                  <td>{{item.precioSondeo | currency}}</td>
+                  <td>{{item.comentarioSondeo}}</td>
+                  <td>
+                    <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
+                      <a href="{{item.adjunto.url}}" target=_blank>
+                        <button type="button" class="btn btn-primary">Ver Archivo</button>
+                      </a>
+                    </ng-container>
+                    <ng-template #nohaySondeobien>
+                      Sin adjunto
+                    </ng-template>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+=======
         <div class="form-group row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -322,7 +390,7 @@
                                     <td>{{item.comentarioSondeo}}</td>
                                     <td>
                                         <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
-                                            <a href="{{item.adjunto.url}}" target=_blank>
+                                            <a href="{{item.adjunto.url}}" target="_blank">
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>
                                         </ng-container>
@@ -336,10 +404,67 @@
                     </div>
                 </div>
             </div>
+>>>>>>> 58566a98b9d7d849138a3aea91351b6e07b491d8
         </div>
-    </mat-expansion-panel>
+      </div>
+    </div>
+  </mat-expansion-panel>
 </mat-accordion>
 <ng-template #templateVerificarMaterial>
+<<<<<<< HEAD
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Realizar verificación del material</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()"><span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="verificarMaterialFormulario" (ngSubmit)="VerificarOnSubmit()">
+        <div class="form-group">
+          <label for="codigo">Código</label><span class="asterisco-obligatorio">*</span>
+          <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar" class="form-control"
+            [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }" type="text" placeholder="Escriba el código si lo conoce"
+            required="true" />
+          <div *ngIf="verificarSubmitted && f.codigoVerificar.errors" class="invalid-feedback">
+            <div *ngIf="f.codigoVerificar.errors.required">Este campo es requerido</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="descripcion">Descripción</label><span class="asterisco-obligatorio">*</span>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar"
+            [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
+          <div *ngIf="verificarSubmitted && f.descripcionVerificar.errors" class="invalid-feedback">
+            <div *ngIf="f.descripcionVerificar.errors.required">Este campo es requerido</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-4">
+              <label for="modelo">Modelo</label>
+              <input class="form-control" id="modeloVerificar" rows="2" formControlName="modeloVerificar" readonly />
+            </div>
+            <div class="col-md-4">
+              <label for="fabricante">Fabricante</label>
+              <input class="form-control" id="fabricanteVerificar" rows="2" formControlName="fabricanteVerificar"
+                readonly />
+            </div>
+            <div class="col-md-4">
+              <label for="cantidad">Cantidad</label>
+              <input type="text" id="cantidadVerificar" formControlName="cantidadVerificar" class="form-control" type="text"
+                readonly />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="existencias">Existencias</label>
+              <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar"
+                class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }"
+                placeholder="Escriba las existencias" (change)="RestaCantidadReserva()" />
+              <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
+                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser
+                  mayores a la cantidad
+=======
     <div class="modal-header">
         <h4 class="modal-title pull-left">Realizar verificación del material</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()"><span aria-hidden="true">&times;</span></button>
@@ -349,17 +474,15 @@
             <form [formGroup]="verificarMaterialFormulario" (ngSubmit)="VerificarOnSubmit()">
                 <div class="form-group">
                     <label for="codigo">Código</label><span class="asterisco-obligatorio">*</span>
-                    <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar"
-                        class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }"
-                        type="text" placeholder="Escriba el código si lo conoce" required="true" />
+                    <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }" type="text" placeholder="Escriba el código si lo conoce"
+                        required="true" />
                     <div *ngIf="verificarSubmitted && f.codigoVerificar.errors" class="invalid-feedback">
                         <div *ngIf="f.codigoVerificar.errors.required">Este campo es requerido</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción</label><span class="asterisco-obligatorio">*</span>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar"
-                        [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar" [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
                     <div *ngIf="verificarSubmitted && f.descripcionVerificar.errors" class="invalid-feedback">
                         <div *ngIf="f.descripcionVerificar.errors.required">Este campo es requerido</div>
                     </div>
@@ -368,18 +491,15 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="modelo">Modelo</label>
-                            <input class="form-control" id="modeloVerificar" rows="2" formControlName="modeloVerificar"
-                                readonly />
+                            <input class="form-control" id="modeloVerificar" rows="2" formControlName="modeloVerificar" readonly />
                         </div>
                         <div class="col-md-4">
                             <label for="fabricante">Fabricante</label>
-                            <input class="form-control" id="fabricanteVerificar" rows="2" formControlName="fabricanteVerificar"
-                                readonly />
+                            <input class="form-control" id="fabricanteVerificar" rows="2" formControlName="fabricanteVerificar" readonly />
                         </div>
                         <div class="col-md-4">
                             <label for="cantidad">Cantidad</label>
-                            <input type="text" id="cantidadVerificar" formControlName="cantidadVerificar" class="form-control"
-                                type="text" readonly />
+                            <input type="text" id="cantidadVerificar" formControlName="cantidadVerificar" class="form-control" type="text" readonly />
                         </div>
                     </div>
                 </div>
@@ -387,20 +507,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="existencias">Existencias</label>
-                            <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly
-                                formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }"
-                                placeholder="Escriba las existencias" (change)="RestaCantidadReserva()" />
+                            <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }" placeholder="Escriba las existencias"
+                                (change)="RestaCantidadReserva()" />
                             <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
-                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser
-                                    mayores a la cantidad
+                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores a la cantidad
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="numReserva">Número de reserva</label>
-                            <input id="numReservaVerificar" name="numReservaVerificar" numbersOnly formControlName="numReservaVerificar"
-                                class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }"
-                                type="text" placeholder="Escriba el número de la reserva" />
+                            <input id="numReservaVerificar" name="numReservaVerificar" numbersOnly formControlName="numReservaVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }" type="text" placeholder="Escriba el número de la reserva"
+                            />
                             <div *ngIf="verificarSubmitted && f.numReservaVerificar.errors" class="invalid-feedback">
                                 <div *ngIf="f.numReservaVerificar.errors.required">Este campo es requerido</div>
                             </div>
@@ -414,21 +531,47 @@
                             <input type="text" formControlName="cantidadReservaVerificar" class="form-control" readonly />
                         </div>
                     </div>
+>>>>>>> 58566a98b9d7d849138a3aea91351b6e07b491d8
                 </div>
-                <button type="submit" class="btn btn-success">Guardar</button>
-            </form>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="numReserva">Número de reserva</label>
+              <input id="numReservaVerificar" name="numReservaVerificar" numbersOnly formControlName="numReservaVerificar"
+                class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }"
+                type="text" placeholder="Escriba el número de la reserva" />
+              <div *ngIf="verificarSubmitted && f.numReservaVerificar.errors" class="invalid-feedback">
+                <div *ngIf="f.numReservaVerificar.errors.required">Este campo es requerido</div>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="cantidadReserva">Cantidad a comprar</label>
+              <input type="text" formControlName="cantidadReservaVerificar" class="form-control" readonly />
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+      </form>
     </div>
-    <div class="modal-footer">
+  </div>
+  <div class="modal-footer">
 
-        <div class="form-group"></div>
-    </div>
+    <div class="form-group"></div>
+  </div>
 </ng-template>
 
 <ng-template #templateConfirmacionDescartar>
-    <div class="modal-body text-center">
-        <p>¿Está seguro que desea salir?</p>
-        <button type="button" class="botonSi btn btn-default" (click)="salir()">Sí</button>
-        <button type="button" class="btn btn-primary" (click)="declinarModal()">No</button>
-    </div>
+  <div class="modal-body text-center">
+    <p>¿Está seguro que desea salir?</p>
+    <button type="button" class="botonSi btn btn-default" (click)="salir()">Sí</button>
+    <button type="button" class="btn btn-primary" (click)="declinarModal()">No</button>
+  </div>
 </ng-template>
+
+<ngx-spinner>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>
