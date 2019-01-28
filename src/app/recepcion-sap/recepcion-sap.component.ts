@@ -27,6 +27,7 @@ export class RecepcionSapComponent implements OnInit {
   recepcionBienes: FormGroup;
   IdRecepcionBienes: number;
   IdUsuario: any;
+  fulldatos: any;
   
  
 constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager, private activarRoute: ActivatedRoute) {
