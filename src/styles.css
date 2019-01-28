@@ -186,3 +186,16 @@ td.mat-cell,td.mat-footer-cell, th.mat-header-cell {
     font-size: medium !important;
 }
 
+.mat-dialog-container {
+    display: block;
+    padding: 24px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: inherit !important;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    max-height: inherit;
+}
+
