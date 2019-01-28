@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,11 +6,11 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
-import { verificarMaterialCT } from '../verificar-material/verificarMaterialCT';
 import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnicaServicios';
 import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
 import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
 import { CondicionContractual } from '../dominio/condicionContractual';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 
 
 @Component({
@@ -70,6 +70,7 @@ export class ContratosComponent implements OnInit {
   CTS: boolean;
   CTB: boolean;
   fechaDeseada: any;
+  modalRef: BsModalRef;
   tipoSolicitud: any;
   solicitante: any;
   ordenadorGasto: any;
@@ -86,11 +87,18 @@ export class ContratosComponent implements OnInit {
   numOrdenEstadistica: any;
   NumSolSAP: any;
 
-  constructor(private servicio: SPServicio, private router: Router, public toastr: ToastrManager,private formBuilder: FormBuilder) {
+  constructor(private servicio: SPServicio,  private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager,private formBuilder: FormBuilder) {
     this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
     this.Guardado=false;
    }
-   
+   comfirmasalir(template: TemplateRef<any>) {
+    this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
+  }
+
+  declinarModal() {
+    this.modalRef.hide();
+  }
+
   ngOnInit() {
     this.loading = true;
     this.ContratosForm = this.formBuilder.group({
@@ -336,7 +344,7 @@ export class ContratosComponent implements OnInit {
           (resultado)=>{             
               this.MostrarExitoso("El contrato se ha guardado correctamente");
               setTimeout(() => {
-                this.salir();
+                this.router.navigate(["/mis-pendientes"]);
               }, 1000);
           }
         ).catch(
@@ -366,6 +374,7 @@ export class ContratosComponent implements OnInit {
   }
 
   salir() {
+    this.modalRef.hide();
     this.router.navigate(["/mis-pendientes"]);
   }
  

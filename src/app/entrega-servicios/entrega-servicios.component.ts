@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RecepcionServicios } from '../entrega-servicios/recepcionServicios';
 import { ItemAddResult } from 'sp-pnp-js';
 import { responsableProceso } from '../dominio/responsableProceso';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
   selector: 'app-entrega-servicios',
@@ -51,20 +52,25 @@ export class EntregaServiciosComponent implements OnInit {
   ResponsableServicios: any;
   paisId: any;
   NumSolp: any;
+  modolectura: boolean;
 
-  constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) {
+  constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager) {
     this.ItemsAgregadosReciente = 0;
     this.showBtnConfirmar = false;
     this.ErrorCantidad = false;
+    //this.modolectura = true; 
   }
 
   ngOnInit() {
     this.loading = true;
+    let fecha = new Date();
+    let year = fecha.getFullYear();
     this.AgregarElementoForm = this.formBuilder.group({
       Descripcion: ['', Validators.required],
       Valor: [''],
       Cantidad: ['', Validators.required],
       Mes: ['', Validators.required],
+      Ano: [year, Validators.required],
       Ubicacion: ['', Validators.required],
       UltimaEntrega: ['', Validators.required],
       Comentario: ['']
@@ -144,6 +150,18 @@ export class EntregaServiciosComponent implements OnInit {
 
   get f() { return this.AgregarElementoForm.controls; }
 
+  ValidacionCero() {
+    let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
+
+    if (cantidad === "0") {
+      this.AgregarElementoForm.controls['UltimaEntrega'].setValue("Sí");
+      this.modolectura=true;
+    }
+    else{
+      this.modolectura=false;
+    }
+  }
+
   onSubmit() {
     this.submitted = true;
     if (this.AgregarElementoForm.invalid) {
@@ -154,6 +172,7 @@ export class EntregaServiciosComponent implements OnInit {
     let valor = this.AgregarElementoForm.controls['Valor'].value;
     let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
     let mes = this.AgregarElementoForm.controls['Mes'].value;
+    let ano = this.AgregarElementoForm.controls['Ano'].value;
     let ubicacion = this.AgregarElementoForm.controls['Ubicacion'].value;
     let ultimaEntrega = this.AgregarElementoForm.controls['UltimaEntrega'].value;
     let comentario = this.AgregarElementoForm.controls['Comentario'].value;
@@ -161,6 +180,10 @@ export class EntregaServiciosComponent implements OnInit {
     let ultimaEntregabool: boolean;
     if (ultimaEntrega == "Sí") {
       ultimaEntregabool = true;
+      if (cantidad === "0" && comentario === "") {
+        this.mostrarAdvertencia("Por favor ingrese un comentario");
+        return false;
+      }
     }
     else {
       ultimaEntregabool = false;
@@ -207,6 +230,7 @@ export class EntregaServiciosComponent implements OnInit {
     }
 
     this.objRecepcionAgregar = new RecepcionServicios(Objdescripcion.IdServicio, Objdescripcion.descripcion, cantidad, valor, ultimaEntregabool, comentario, ubicacion, mes);
+    this.objRecepcionAgregar["ano"]=ano;
     this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud,this.ResponsableServicios).then(
       (Respuesta: ItemAddResult) => {
         this.ItemsAgregadosReciente++;
@@ -460,6 +484,14 @@ export class EntregaServiciosComponent implements OnInit {
 
   Salir() {
     this.router.navigate(['/mis-solicitudes']);
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, "Validación");
+  }
+
+  mostrarError(mensaje: string) {
+    this.toastr.errorToastr(mensaje, "Oops!");
   }
 
 }

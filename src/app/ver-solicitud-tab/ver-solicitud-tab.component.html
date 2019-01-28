@@ -349,14 +349,14 @@
             </div>
 
             <p>Archivo solicitud de activos fijos:</p>
-            <div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
+            <!--<div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
                 <a href="{{adjuntoActivo.url}}">
                     <button type="button" class="btn btn-primary">Descargar aquí</button>
                 </a>
             </div>
             <ng-template #NoHayAdjActivos>
                 Sin adjunto
-            </ng-template>
+            </ng-template>-->
             <br>
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Verificar Material</strong></label>
             <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioverificarmaterial}}</textarea><br>
@@ -425,14 +425,14 @@
             </mat-accordion>
             <div class="row">
                 <p>Archivo solicitud de activos fijos:</p>
-                <div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
+                <!--<div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
                     <a href="{{adjuntoActivo.url}}">
                         <button type="button" class="btn btn-primary">Descargar aquí</button>
                     </a>
                 </div>
                 <ng-template #NoHayAdjActivos>
                     Sin adjunto
-                </ng-template>
+                </ng-template>-->
                 <br>
                 <br>
                 <div class="form-group col-md-12">

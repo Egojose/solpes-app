@@ -10,10 +10,10 @@
 </div>
 </div>
 <br>
-<mat-accordion>
+<mat-accordion *ngIf="CTB === true">
     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
-            <mat-panel-title><strong>Condiciones técnicas bienes</strong></mat-panel-title>
+            <mat-panel-title><strong>Ver bienes solicitados</strong></mat-panel-title>
             <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
         </mat-expansion-panel-header>
         <div class="row" id="TablaVerificar">
@@ -37,7 +37,7 @@
                     </ng-container>
                     <ng-container matColumnDef="cantidad">
                         <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-                        <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.cantidadComprar}} </td>
                     </ng-container>
                     <ng-container matColumnDef="valorEstimado">
                         <th mat-header-cell *matHeaderCellDef> Valor</th>
@@ -57,7 +57,6 @@
                             </div>
                         </td>
                     </ng-container>
-
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
@@ -382,7 +381,7 @@
                     <button type="submit" class="derecha-boton btn btn-success" [hidden]="Guardado === true">Guardar contrato</button>
                 </div>
                 <div>
-                    <button type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="Salir()">Salir</button>
+                    <button type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);">Salir</button>
                 </div>
             </div>
         </div>
@@ -506,6 +505,13 @@
                     </div>
     </mat-expansion-panel>
 </mat-accordion>
+<ng-template #templateConfirmacionDescartar>
+    <div class="modal-body text-center">
+        <p>¿Está seguro que desea salir?</p>
+        <button type="button" class="botonSi btn btn-default" (click)="salir()">Sí</button>
+        <button type="button" class="btn btn-primary" (click)="declinarModal()">No</button>
+    </div>
+</ng-template>
 <!-- 
 <accordion>
 <accordion-group heading="Información adicional">

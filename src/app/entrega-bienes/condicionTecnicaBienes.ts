@@ -15,7 +15,7 @@ export class CondicionesTecnicasBienes {
     }
 
     public static fromJson(element: any) {
-        return new CondicionesTecnicasBienes(element.Id ,element.CodigoVerificar, element.DescripcionVerificar, element.Modelo, element.FabricanteVerificar, element.ClaseSIAVerificar, element.CantidadVerificar, element.CantidadRecibida, element.CantidadVerificar-element.CantidadRecibida,element.UltimaEntrega);
+        return new CondicionesTecnicasBienes(element.Id ,element.CodigoVerificar, element.DescripcionVerificar, element.Modelo, element.FabricanteVerificar, element.ClaseSIAVerificar, element.CantidadReservaVerificar, element.CantidadRecibida, element.CantidadReservaVerificar-element.CantidadRecibida,element.UltimaEntrega);
     }
 
     public static fromJsonList(elements: any) {
