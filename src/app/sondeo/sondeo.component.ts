@@ -50,9 +50,14 @@ export class SondeoComponent implements OnInit {
   autorId: any;
   codigoAriba: string;
   numeroOrdenEstadistica: string;
+  existeCondicionesTecnicasBienes: boolean;
+  existeCondicionesTecnicasServicios: boolean;
+
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.spinner.hide();
+    this.existeCondicionesTecnicasBienes = false;
+    this.existeCondicionesTecnicasServicios = false;
   }
 
   ngOnInit() {
@@ -98,16 +103,23 @@ export class SondeoComponent implements OnInit {
 
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-            this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-            this.ObjCondicionesTecnicasBienesGuardar = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            if (RespuestaCondiciones.length > 0) {
+              this.existeCondicionesTecnicasBienes = true;
+              this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+              this.ObjCondicionesTecnicasBienesGuardar = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            }
             this.spinner.hide();
           }
         )
 
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
-            this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            this.ObjCondicionesTecnicasServiciosGuardar = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            if (RespuestaCondicionesServicios.length > 0) {
+              this.existeCondicionesTecnicasServicios = true;
+              this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+              this.ObjCondicionesTecnicasServiciosGuardar = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            }
+
             this.spinner.hide();
           }
         )
@@ -359,28 +371,44 @@ export class SondeoComponent implements OnInit {
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
+    let estado = "Por aprobar sondeo";
+
     if (this.ComentarioSolicitante != undefined) {
       if (this.comentarioSondeo === null) {
         this.comentarioSondeo = "Comentarios:"
       }
       ObjSondeo = {
         ResponsableId: this.autorId,
-        Estado: "Por aprobar sondeo",
+        Estado: estado,
         ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
       }
     }
     else {
       ObjSondeo = {
         ResponsableId: this.autorId,
-        Estado: "Por aprobar sondeo"
+        Estado: estado
       }
     }
 
     this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
       (respuesta) => {
-        this.spinner.hide();
-        sessionStorage.removeItem("IdSolicitud");
-        this.salir();
+
+        let notificacion = {
+          IdSolicitud: this.IdSolicitud.toString(),
+          ResponsableId: this.autorId,
+          Estado: estado
+        };
+
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.spinner.hide();
+            this.salir();
+            sessionStorage.removeItem("IdSolicitud");
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        )
       }
     ).catch(
       (error) => {
@@ -389,6 +417,8 @@ export class SondeoComponent implements OnInit {
       }
     )
   }
+
+
 
   adjuntarArchivoCTB(event, item) {
     let archivoAdjunto = event.target.files[0];

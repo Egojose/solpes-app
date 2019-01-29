@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../aprobar-sondeo/condicionesTecnicasBienes';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../aprobar-sondeo/condicionesTecnicasServicios';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
 import { Usuario } from '../dominio/usuario';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-aprobar-sondeo',
@@ -55,16 +55,22 @@ export class AprobarSondeoComponent implements OnInit {
   usuario: Usuario;
   loading: boolean;
   paisId: any;
-  ObResProceso: responsableProceso[]=[];
+  ObResProceso: responsableProceso[] = [];
   CompradorId: any;
+  existeCondicionesTecnicasBienes: boolean;
+  existeCondicionesTecnicasServicios: boolean;
+  ResponsableProceso: number;
+  estadoSolicitud: string;
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
+  constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.loading = false;
+    this.existeCondicionesTecnicasBienes = false;
+    this.existeCondicionesTecnicasServicios = false;
   }
 
-
   GuardarRevSondeo() {
+    this.spinner.show();
     let fecha = new Date();
     let dia = ("0" + fecha.getDate()).slice(-2);
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
@@ -73,7 +79,8 @@ export class AprobarSondeoComponent implements OnInit {
 
     let ObjSondeo;
     if (this.RDBsondeo === undefined) {
-      this.mostrarAdvertencia('Debe seleccionar una acción')
+      this.mostrarAdvertencia('Debe seleccionar una acción');
+      this.spinner.hide();
     }
     if (this.RDBsondeo !== undefined) {
       if (this.RDBsondeo === 1 && this.ComentarioSondeo === undefined) {
@@ -81,14 +88,16 @@ export class AprobarSondeoComponent implements OnInit {
         setTimeout(() => {
           this.tooltip.hide();
         }, 3000);
-
+        this.spinner.hide();
         return false;
       }
       else if (this.RDBsondeo === 1) {
         //Comprador
+        this.ResponsableProceso = this.CompradorId;
+        this.estadoSolicitud = 'Por sondear';
         ObjSondeo = {
-          ResponsableId: this.CompradorId,
-          Estado: "Por sondear",
+          ResponsableId: this.ResponsableProceso,
+          Estado: this.estadoSolicitud,
           ResultadoSondeo: "Sondeo adicional",
           Resondear: true,
           ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSondeo
@@ -96,38 +105,38 @@ export class AprobarSondeoComponent implements OnInit {
       }
       else if (this.RDBsondeo === 2 && this.justificacionSondeo === undefined) {
         this.tooltip1.show();
-
         setTimeout(() => {
           this.tooltip1.hide();
         }, 3000);
-
+        this.spinner.hide();
         return false;
       }
       else if (this.RDBsondeo === 2) {
-
         if (this.ObjCondicionesTecnicas.length > 0) {
-          let Responsable = this.ObResProceso[0].porverificarMaterial;
+          this.ResponsableProceso = this.ObResProceso[0].porverificarMaterial;
+          this.estadoSolicitud = 'Por verificar material';
           ObjSondeo = {
             TipoSolicitud: "Solp",
-            ResponsableId: Responsable,
-            Estado: "Por verificar material",
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en SOLP",
             Justificacion: this.justificacionSondeo
           }
-        }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
-          let Responsable = this.ObResProceso[0].porRegistrarSolp;
+        } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
+          this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
+          this.estadoSolicitud = 'Por registrar solp sap';
           ObjSondeo = {
             TipoSolicitud: "Solp",
-            ResponsableId: Responsable,
-            Estado: "Por registrar solp sap",
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en SOLP",
             Justificacion: this.justificacionSondeo
           }
-        }        
+        }
       }
       else if (this.RDBsondeo === 3) {
         ObjSondeo = {
-          ResponsableId: -1,
+          ResponsableId: null,
           ResultadoSondeo: "Descartar",
         }
       }
@@ -136,47 +145,67 @@ export class AprobarSondeoComponent implements OnInit {
         setTimeout(() => {
           this.tooltip1.hide();
         }, 3000);
-
+        this.spinner.hide();
         return false;
       }
       else if (this.RDBsondeo === 4) {
         if (this.ObjCondicionesTecnicas.length > 0) {
-          let Responsable = this.ObResProceso[0].porverificarMaterial;
+          this.ResponsableProceso = this.ObResProceso[0].porverificarMaterial;
+          this.estadoSolicitud = 'Por verificar material';
           ObjSondeo = {
-            TipoSolicitud: "CM",
-            ResponsableId: Responsable,
-            Estado: "Por verificar material",
+            TipoSolicitud: "Orden a CM",
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en CM",
             Justificacion: this.justificacionSondeo
           }
-        }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
-          let Responsable = this.ObResProceso[0].porRegistrarSolp;
+        } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
+          this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
+          this.estadoSolicitud = 'Por registrar solp sap';
           ObjSondeo = {
-            TipoSolicitud: "CM",
-            ResponsableId: Responsable,
-            Estado: "Por registrar solp sap",
+            TipoSolicitud: "Orden a CM",
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en CM",
             Justificacion: this.justificacionSondeo
           }
-        } 
+        }
       }
+
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
-          this.MostrarExitoso("La acción se ha guardado con éxito");
-          sessionStorage.removeItem("IdSolicitud");
-          setTimeout(() => {
-            this.salir();
-          }, 1000);         
+
+          let notificacion = {
+            IdSolicitud: this.IdSolicitud.toString(),
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud
+          };
+
+          this.servicio.agregarNotificacion(notificacion).then(
+            (item: ItemAddResult) => {
+              this.MostrarExitoso("La acción se ha guardado con éxito");
+              sessionStorage.removeItem("IdSolicitud");
+              this.spinner.hide();
+              setTimeout(() => {
+                this.salir();
+              }, 1000);
+            }, err => {
+              this.mostrarError('Error agregando la notificación');
+              this.spinner.hide();
+            }
+          )
         }
       ).catch(
         (error) => {
           console.log(error);
+          this.spinner.hide();
         }
       )
     }
   }
 
   ngOnInit() {
+    this.spinner.show();
     this.ObtenerUsuarioActual();
   }
 
@@ -187,6 +216,7 @@ export class AprobarSondeoComponent implements OnInit {
         this.ObtenerSolicitudBienesServicios();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
+        this.spinner.hide();
       }
     )
   }
@@ -229,23 +259,32 @@ export class AprobarSondeoComponent implements OnInit {
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.justificacion = solicitud.Justificacion;
 
-        if(solicitud.CondicionesContractuales != null){
+        if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
 
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-            this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            if (RespuestaCondiciones.length > 0) {
+              this.existeCondicionesTecnicasBienes = true;
+              this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            }
+            this.spinner.hide();
           }
         )
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
-            this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            if (RespuestaCondicionesServicios.length > 0) {
+              this.existeCondicionesTecnicasServicios = true;
+              this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            }
+            this.spinner.hide();
           }
         )
         this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
-          (RespuestaProcesos)=>{
-              this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
+          (RespuestaProcesos) => {
+            this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
+            this.spinner.hide();
           }
         )
       }

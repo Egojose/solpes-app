@@ -160,7 +160,6 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.spinner.show();
     this.spinner.show();
     this.aplicarTemaCalendario();
     this.RecuperarUsuario();
@@ -264,7 +263,7 @@ export class CrearSolicitudComponent implements OnInit {
       compraOrdenEstadistica: ['NO'],
       numeroOrdenEstadistica: ['']
     });
-    
+
   }
 
   RecuperarUsuario() {
@@ -278,6 +277,8 @@ export class CrearSolicitudComponent implements OnInit {
         this.tiposSolicitud = TipoSolicitud.fromJsonList(respuesta);
         this.obtenerEmpresas();
       }, err => {
+        this.mostrarError('Error obteniendo tipos de solicitud');
+        this.spinner.hide();
         console.log('Error obteniendo tipos de solicitud: ' + err);
       }
     )
@@ -315,6 +316,8 @@ export class CrearSolicitudComponent implements OnInit {
         this.empresas = Empresa.fromJsonList(respuesta);
         this.obtenerUsuariosSitio();
       }, err => {
+        this.mostrarError('Error obteniendo empresas');
+        this.spinner.hide();
         console.log('Error obteniendo empresas: ' + err);
       }
     )
@@ -327,6 +330,8 @@ export class CrearSolicitudComponent implements OnInit {
         this.DataSourceUsuariosSelect2();
         this.obtenerPaises();
       }, err => {
+        this.mostrarError('Error obteniendo usuarios');
+        this.spinner.hide();
         console.log('Error obteniendo usuarios: ' + err);
       }
     )
@@ -344,6 +349,8 @@ export class CrearSolicitudComponent implements OnInit {
         this.paises = Pais.fromJsonList(respuesta);
         this.obtenerCategorias();
       }, err => {
+        this.mostrarError('Error obteniendo paises');
+        this.spinner.hide();
         console.log('Error obteniendo paises: ' + err);
       }
     )
@@ -355,6 +362,8 @@ export class CrearSolicitudComponent implements OnInit {
         this.categorias = Categoria.fromJsonList(respuesta);
         this.obtenerParametrosConfiguracion();
       }, err => {
+        this.mostrarError('Error obteniendo categorías');
+        this.spinner.hide();
         console.log('Error obteniendo categorías: ' + err);
       }
     )
@@ -364,12 +373,13 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicio.obtenerParametrosConfiguracion().subscribe(
       (respuesta) => {
         this.diasEntregaDeseada = respuesta[0].ParametroDiasEntregaDeseada;
-        this.consecutivoActual = respuesta[0].ConsecutivoSolicitudes;
         this.minDate = new Date();
         this.minDate.setDate(this.minDate.getDate() + this.diasEntregaDeseada);
         this.obtenerProfile();
       }, err => {
-        console.log('Error obteniendo categorías: ' + err);
+        this.mostrarError('Error obteniendo parametros de configuración');
+        this.spinner.hide();
+        console.log('Error obteniendo parametros de configuración: ' + err);
       }
     )
   }
@@ -388,6 +398,8 @@ export class CrearSolicitudComponent implements OnInit {
           this.agregarSolicitudInicial();
         }
       }, err => {
+        this.mostrarError('Error obteniendo profile');
+        this.spinner.hide();
         console.log('Error obteniendo profile: ' + err);
       }
     )
@@ -400,19 +412,23 @@ export class CrearSolicitudComponent implements OnInit {
         this.valorUsuarioPorDefecto = respuesta.Id.toString();
         this.agregarSolicitudInicial();
       }, err => {
+        this.mostrarError('Error obteniendo jefe inmediato');
+        this.spinner.hide();
         console.log('Error obteniendo jefe inmediato: ' + err);
       }
     )
   }
 
   agregarSolicitudInicial(): any {
-    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null,null,'','',null,'',null, '','','','Inicial', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
+    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null, null, '', '', null, '', null, '', '', '', 'Inicial', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
     this.servicio.agregarSolicitud(this.solicitudGuardar).then(
       (item: ItemAddResult) => {
         this.idSolicitudGuardada = item.data.Id;
         this.spinner.hide();
       }, err => {
-        this.mostrarError('Error en la creación de la solicitud');
+        this.mostrarError('Error en la creación de la solicitud en estado inicial');
+        this.spinner.hide();
+        console.log('Error en la creación de la solicitud en estado inicial: ' + err);
       }
     )
   }
@@ -425,14 +441,16 @@ export class CrearSolicitudComponent implements OnInit {
     if (categoria != '' && pais != '') {
       this.servicio.ObtenerSubcategorias(categoria.id, pais.id).subscribe(
         (respuesta) => {
-          if(respuesta.length > 0){
+          if (respuesta.length > 0) {
             this.subcategorias = Subcategoria.fromJsonList(respuesta);
-          }else{
+          } else {
             this.subcategorias = [];
             this.solpFormulario.controls["subcategoria"].setValue("");
           }
           this.spinner.hide();
         }, err => {
+          this.mostrarError('Error obteniendo subcategorias');
+          this.spinner.hide();
           console.log('Error obteniendo subcategorias: ' + err);
         }
       )
@@ -444,7 +462,7 @@ export class CrearSolicitudComponent implements OnInit {
   cargarCondicionesContractuales() {
     this.spinner.show();
     let Subcategoria = this.solpFormulario.controls["subcategoria"].value;
-    if(Subcategoria){
+    if (Subcategoria) {
       this.limpiarCondicionesContractuales();
       this.subcategoriaSeleccionada = this.subcategorias.find(s => s.id == Subcategoria.id);
       this.subcategoriaSeleccionada.condicionesContractuales.forEach(element => {
@@ -453,7 +471,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.registrarControlesCondicionesContractuales();
       this.cargarDatosSubcategoria(this.subcategoriaSeleccionada);
       this.spinner.hide();
-    }else{
+    } else {
       this.solpFormulario.controls["comprador"].setValue('');
       this.solpFormulario.controls['codigoAriba'].setValue('');
       this.spinner.hide();
@@ -498,7 +516,6 @@ export class CrearSolicitudComponent implements OnInit {
     let justificacion = this.solpFormulario.controls["justificacion"].value;
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
-    let consecutivoNuevo = this.consecutivoActual + 1;
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
@@ -586,10 +603,10 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
     }
-    if(valorcompraOrdenEstadistica == "SI"){
+    if (valorcompraOrdenEstadistica == "SI") {
       this.compraOrdenEstadistica = true;
     }
-    
+
     this.servicio.obtenerResponsableProcesos(valorPais.id).subscribe(
       (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
@@ -608,68 +625,75 @@ export class CrearSolicitudComponent implements OnInit {
           }
         }
 
-        if (respuesta == true) {
-          this.solicitudGuardar = new Solicitud(
-            'Solicitud Solpes: ' + new Date(),
-            tipoSolicitud,
-            cm,
-            this.usuarioActual.nombre,
-            empresa,
-            ordenadorGastos,
-            valorPais.id,
-            categoria.nombre,
-            subcategoria.nombre,
-            subcategoria.comprador.ID,
-            codigoAriba,
-            fechaEntregaDeseada,
-            alcance,
-            justificacion,
-            this.construirJsonCondicionesContractuales(),
-            estado,
-            responsable,
-            this.compraBienes,
-            this.compraServicios,
-            consecutivoNuevo, 
-            this.usuarioActual.id, 
-            null, 
-            this.compraOrdenEstadistica, valornumeroOrdenEstadistica,
-            null, 
-            this.compraBienes,
-            this.compraServicios, 
-            this.fueSondeo);
+        this.servicio.obtenerParametrosConfiguracion().subscribe(
+          (respuestaConfiguracion) => {
+            this.consecutivoActual = respuestaConfiguracion[0].ConsecutivoSolicitudes;
+            let consecutivoNuevo = this.consecutivoActual + 1;
+            if (respuesta == true) {
+              this.solicitudGuardar = new Solicitud(
+                'Solicitud Solpes: ' + new Date(),
+                tipoSolicitud,
+                cm,
+                this.usuarioActual.nombre,
+                empresa,
+                ordenadorGastos,
+                valorPais.id,
+                categoria.nombre,
+                subcategoria.nombre,
+                subcategoria.comprador.ID,
+                codigoAriba,
+                fechaEntregaDeseada,
+                alcance,
+                justificacion,
+                this.construirJsonCondicionesContractuales(),
+                estado,
+                responsable,
+                this.compraBienes,
+                this.compraServicios,
+                consecutivoNuevo,
+                this.usuarioActual.id,
+                null,
+                this.compraOrdenEstadistica, valornumeroOrdenEstadistica,
+                null,
+                this.compraBienes,
+                this.compraServicios,
+                this.fueSondeo);
 
-          this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
-            (item: ItemAddResult) => {
-              this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
+              this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {
-
-                  let notificacion = {
-                    IdSolicitud: this.idSolicitudGuardada.toString(),
-                    ResponsableId: responsable,
-                    Estado: estado
-                  };
-
-                  this.servicio.agregarNotificacion(notificacion).then(
+                  this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
                     (item: ItemAddResult) => {
-                      this.spinner.hide();
-                      this.MostrarExitoso("La solicitud se ha guardado correctamente");
-                      this.router.navigate(['/mis-solicitudes']);
+                      let notificacion = {
+                        IdSolicitud: this.idSolicitudGuardada.toString(),
+                        ResponsableId: responsable,
+                        Estado: estado
+                      };
+                      this.servicio.agregarNotificacion(notificacion).then(
+                        (item: ItemAddResult) => {
+                          this.MostrarExitoso("La solicitud se ha guardado y enviado correctamente");
+                          this.spinner.hide();
+                          this.router.navigate(['/mis-solicitudes']);
+                        }, err => {
+                          this.mostrarError('Error agregando la notificación');
+                          this.spinner.hide();
+                        }
+                      )
                     }, err => {
-                      this.mostrarError('Error agregando la notificación');
+                      this.mostrarError('Error en la actualización del consecutivo');
                       this.spinner.hide();
                     }
                   )
                 }, err => {
-                  this.mostrarError('Error en la actualización del consecutivo');
+                  this.mostrarError('Error en el envío de la solicitud');
                   this.spinner.hide();
                 }
               )
-            }, err => {
-              this.mostrarError('Error en el envío de la solicitud');
-              this.spinner.hide();
             }
-          )
-        }
+          }, err => {
+            this.mostrarError('Error en obtener parámetros de configuración');
+            this.spinner.hide();
+          }
+        )
       }, err => {
         this.mostrarError('Error obteniendo responsable procesos: ' + err);
         this.spinner.hide();
@@ -678,18 +702,18 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   ValidarCompraOrdenEstadistica(): boolean {
-   let respuesta = true;
-   let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
-   let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
-   if(valorOrdenEstadistica == "NO"){
-     respuesta = true;
-   }else{
-     if(this.EsCampoVacio(valorNumeroOrdenEstadistica)){
-       respuesta = false;
-       this.mostrarAdvertencia("El campo Número de orden estadística es requerido");
-     }
-   }
-   return respuesta;
+    let respuesta = true;
+    let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+    let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
+    if (valorOrdenEstadistica == "NO") {
+      respuesta = true;
+    } else {
+      if (this.EsCampoVacio(valorNumeroOrdenEstadistica)) {
+        respuesta = false;
+        this.mostrarAdvertencia("El campo Número de orden estadística es requerido");
+      }
+    }
+    return respuesta;
   }
 
   ValidarExistenciaCondicionesTecnicas(): boolean {
@@ -707,7 +731,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.cadenaJsonCondicionesContractuales += ('{ "condiciones":[');
       this.condicionesContractuales.forEach(condicionContractual => {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
-        if(textoCajon != null){
+        if (textoCajon != null) {
           var json = textoCajon.replace(/[|&;$%@"<>()+,]/g, "");
           this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + json + '"},');
         }
@@ -1327,7 +1351,7 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
     }
-    if(valorcompraOrdenEstadistica == "SI"){
+    if (valorcompraOrdenEstadistica == "SI") {
       this.compraOrdenEstadistica = true;
     }
 
@@ -1353,9 +1377,9 @@ export class CrearSolicitudComponent implements OnInit {
       this.compraServicios,
       null,
       this.usuarioActual.id,
-       null, 
-       this.compraOrdenEstadistica, 
-       valornumeroOrdenEstadistica);
+      null,
+      this.compraOrdenEstadistica,
+      valornumeroOrdenEstadistica);
 
     this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
       (item: ItemAddResult) => {
@@ -1390,10 +1414,10 @@ export class CrearSolicitudComponent implements OnInit {
     return valorprimitivo;
   }
 
-  mostrarNumeroOrdenEstadistica(valorOrdenEstadistica){
-    if(valorOrdenEstadistica == "SI"){
+  mostrarNumeroOrdenEstadistica(valorOrdenEstadistica) {
+    if (valorOrdenEstadistica == "SI") {
       this.emptyNumeroOrdenEstadistica = true;
-    }else{
+    } else {
       this.emptyNumeroOrdenEstadistica = false;
       this.solpFormulario.controls["numeroOrdenEstadistica"].setValue("");
     }
