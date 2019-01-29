@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../entrega-bienes/condicionTecnicaBienes';
@@ -8,9 +8,9 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ItemAddResult } from 'sp-pnp-js';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forEach } from '@angular/router/src/utils/collection';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { Contratos } from '../dominio/contrato';
 
 @Component({
   selector: 'app-entrega-bienes',
@@ -63,10 +63,14 @@ export class EntregaBienesComponent implements OnInit {
   ResponsableServicios: any;
   NumSolp: any;
   ArchivoAdjunto: any;
-  OrdenEstadistica: any;
+  OrdenEstadistica: boolean;
+  numOrdenEstadistica: string;
   tieneArchivo: any;
   RutaArchivo: any;
   modolectura: boolean;
+  contrato: Contratos[] = [];
+  SwtichEsOrdenEstadistica: boolean;
+
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private modalService: BsModalService, private activarRoute: ActivatedRoute, private router: Router, public toastr: ToastrManager) {
     this.ErrorCantidad = false;
     this.activarTool = true;
@@ -75,10 +79,7 @@ export class EntregaBienesComponent implements OnInit {
     this.ItemsAgregadosReciente = 0;
     this.ArchivoAdjunto = null;
     this.modolectura = false;
-
-    // this.activarRoute.params.subscribe((parametro) => {
-    //   this.IdSolicitudParms = parametro.idSolicitud;
-    // });
+    this.SwtichEsOrdenEstadistica = false;
   }
 
 
@@ -92,42 +93,23 @@ export class EntregaBienesComponent implements OnInit {
       Comentario: ['']
     });
 
+    this.RutaArchivo = null;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
-        this.IdSolicitud = solicitud.Id;
-        this.fechaDeseada = solicitud.FechaDeseadaEntrega;
-        this.solicitante = solicitud.Solicitante;
-        this.autor = solicitud.AuthorId;
-        this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
-        this.empresa = solicitud.Empresa.Title;
-        this.pais = solicitud.Pais.Title;
-        this.paisId = solicitud.Pais.Id;
-        this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Categoria;
-        this.comprador = solicitud.Comprador.Title;
-        this.alcance = solicitud.Alcance;
-        this.justificacion = solicitud.Justificacion;
-        this.FaltaServicios = solicitud.FaltaRecepcionServicios;
-        this.CompraServicios = solicitud.CompraServicios;
-        this.NumSolp = solicitud.NumSolSAP;
-        this.OrdenEstadistica = solicitud.OrdenEstadistica;
-        this.tieneArchivo = solicitud.Attachments;
-        this.RutaArchivo = null;
-        if (solicitud.Attachments ===true) {
-           let ObjArchivos = solicitud.AttachmentFiles.results;
-            
-           ObjArchivos.forEach(element => {
-               let objSplit = element.FileName.split("-");
-               if (objSplit.length>0) {
-                   let TipoArchivo = objSplit[0]
-                   if (TipoArchivo==="RegistroActivo") {
-                        this.RutaArchivo=element.ServerRelativeUrl;
-                   }
-                
-               }
-           });
-        }
+        this.ObtenerPropiedadesSolicitud(solicitud);
+        this.servicio.obtenerContratoPorSolicitud(this.IdSolicitud).subscribe(
+          (respuesta) => {
+            this.contrato = Contratos.fromJsonList(respuesta);
+            this.NumSolp = this.contrato[0].numeroContrato;
+            this.ObtenerAdjuntoRegistroActivo(solicitud);
+          },
+          (error) => {
+            this.mostrarError("error consultando el contrato");
+            console.log(error);
+          }
+        )
+
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         let CantidadCT = 0;
         let CantidadConfirmada = 0;
@@ -164,16 +146,55 @@ export class EntregaBienesComponent implements OnInit {
                     this.loading = false;
                   },
                   (error) => {
-
+                    this.mostrarError("Error obteniendo el responsable del proceso");
+                    console.log(error);
                   }
                 )
-
               }
             );
           }
         )
       }
     );
+  }
+
+  private ObtenerPropiedadesSolicitud(solicitud: any) {
+    this.IdSolicitud = solicitud.Id;
+    this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+    this.solicitante = solicitud.Solicitante;
+    this.autor = solicitud.AuthorId;
+    this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
+    this.empresa = solicitud.Empresa.Title;
+    this.pais = solicitud.Pais.Title;
+    this.paisId = solicitud.Pais.Id;
+    this.categoria = solicitud.Categoria;
+    this.subCategoria = solicitud.Categoria;
+    this.comprador = solicitud.Comprador.Title;
+    this.alcance = solicitud.Alcance;
+    this.justificacion = solicitud.Justificacion;
+    this.FaltaServicios = solicitud.FaltaRecepcionServicios;
+    this.CompraServicios = solicitud.CompraServicios;
+    this.OrdenEstadistica = solicitud.OrdenEstadistica;
+    this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
+    this.tieneArchivo = solicitud.Attachments;
+    if(this.OrdenEstadistica){
+      this.SwtichEsOrdenEstadistica = true;
+    }
+  }
+
+  private ObtenerAdjuntoRegistroActivo(solicitud: any) {
+    if (solicitud.Attachments === true) {
+      let ObjArchivos = solicitud.AttachmentFiles.results;
+      ObjArchivos.forEach(element => {
+        let objSplit = element.FileName.split("-");
+        if (objSplit.length > 0) {
+          let TipoArchivo = objSplit[0];
+          if (TipoArchivo === "RegistroActivo") {
+            this.RutaArchivo = element.ServerRelativeUrl;
+          }
+        }
+      });
+    }
   }
 
   get f() { return this.AgregarElementoForm.controls; }
@@ -183,10 +204,10 @@ export class EntregaBienesComponent implements OnInit {
 
     if (cantidad === "0") {
       this.AgregarElementoForm.controls['UltimaEntrega'].setValue("Sí");
-      this.modolectura=true;
+      this.modolectura = true;
     }
-    else{
-      this.modolectura=false;
+    else {
+      this.modolectura = false;
     }
   }
 
@@ -208,7 +229,7 @@ export class EntregaBienesComponent implements OnInit {
 
     let Objdescripcion = this.AgregarElementoForm.controls['Descripcion'].value;
     let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
-    let valor = this.AgregarElementoForm.controls['Valor'].value;
+    let valor = this.AgregarElementoForm.controls['Valor'].value.toString();
     let ultimaEntrega = this.AgregarElementoForm.controls['UltimaEntrega'].value;
     let comentario = this.AgregarElementoForm.controls['Comentario'].value;
 
@@ -276,7 +297,6 @@ export class EntregaBienesComponent implements OnInit {
         let IdRecepcionBienes = Respuesta.data.Id;
         if (ultimaEntregabool === false) {
           let nombreArchivo = "EntregaBienes-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
-
           this.servicio.agregarAdjuntoActivosBienes(IdRecepcionBienes, nombreArchivo, this.ArchivoAdjunto).then(
             (Respuesta) => {
               (<HTMLInputElement>document.getElementById("Adjunto")).value = null;
@@ -297,7 +317,7 @@ export class EntregaBienesComponent implements OnInit {
                   });
                   this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
                     (respuesta) => {
-                      this.ItemsAgregadosReciente=0;
+                      this.ItemsAgregadosReciente = 0;
                       this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
                       this.ObjRecepcionBienes.forEach(element => {
                         let RptUltimaEntrega = this.ObjCondicionesTecnicas.find(x => x.IdBienes === element.Idbienes).UltimaEntregaCTB;
@@ -316,7 +336,8 @@ export class EntregaBienesComponent implements OnInit {
                           this.loading = false;
                         },
                         (error) => {
-
+                          this.mostrarError("Error obteniendo responsables del proceso");
+                          console.log(error);
                         }
                       )
                     }
@@ -330,17 +351,16 @@ export class EntregaBienesComponent implements OnInit {
             }
           );
         }
-        else{
-          this.objRecepcionAgregar["adjunto"]= null;
+        else {
+          this.objRecepcionAgregar["adjunto"] = null;
         }
-       
 
         this.ItemsAgregadosReciente++;
         this.objRecepcionAgregar["IdRecepcionBienes"] = IdRecepcionBienes;
         //this.objRecepcionAgregar["eliminar"]=true;    
         this.objRecepcionAgregar["estadoRB"] = "No confirmado";
         this.objRecepcionAgregar["fechaRecepcion"] = new Date();
-        
+
         this.ObjRecepcionBienes.push(this.objRecepcionAgregar);
         // this.ObjRecepcionBienes.sort();
         this.AgregarElementoForm.reset({
@@ -371,11 +391,15 @@ export class EntregaBienesComponent implements OnInit {
               this.loading = false;
             }
           );
-      }, err => {
-        alert("Error al realizar la recepción");
+      }, error => {
+        this.mostrarError("Error al realizar la recepción de bienes");
+        console.log(error);
+        this.loading = false;
       }
     );
   }
+
+
 
   UltimaEntrega(ObjCTB) {
 
