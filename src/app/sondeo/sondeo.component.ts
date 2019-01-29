@@ -128,7 +128,7 @@ export class SondeoComponent implements OnInit {
     let contador = 0;
 
     let respuesta = this.validarCamposBienesYServicios();
-    if(!respuesta){
+    if (!respuesta) {
       return false;
     }
 
@@ -137,7 +137,7 @@ export class SondeoComponent implements OnInit {
       objSondeo = {
         CodigoSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].cantidad,
-        PrecioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado,
+        PrecioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado.toString(),
         ComentarioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].ComentarioSondeo
       }
 
@@ -183,7 +183,7 @@ export class SondeoComponent implements OnInit {
           this.spinner.hide();
           respuesta = false;
           return respuesta;
-          
+
         }
 
         if (this.EsCampoVacio(this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado)) {
@@ -191,7 +191,7 @@ export class SondeoComponent implements OnInit {
           this.spinner.hide();
           respuesta = false;
           return respuesta;
-          
+
         }
 
         if (this.EsCampoVacio(this.ObjCondicionesTecnicasBienesGuardar[i].codigo)) {
@@ -199,7 +199,7 @@ export class SondeoComponent implements OnInit {
           this.spinner.hide();
           respuesta = false;
           return respuesta;
-          
+
         }
 
         if (this.ObjCondicionesTecnicasBienesGuardar[i].adjunto === null) {
@@ -207,7 +207,7 @@ export class SondeoComponent implements OnInit {
           this.spinner.hide();
           respuesta = false;
           return respuesta;
-         
+
         }
       }
 
@@ -321,7 +321,7 @@ export class SondeoComponent implements OnInit {
       objSondeo = {
         CodigoSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].cantidad,
-        PrecioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].valorEstimado,
+        PrecioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].valorEstimado.toString(),
         ComentarioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].ComentarioSondeo
       }
 
