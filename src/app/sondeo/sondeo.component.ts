@@ -372,28 +372,44 @@ export class SondeoComponent implements OnInit {
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
+    let estado = "Por aprobar sondeo";
+
     if (this.ComentarioSolicitante != undefined) {
       if (this.comentarioSondeo === null) {
         this.comentarioSondeo = "Comentarios:"
       }
       ObjSondeo = {
         ResponsableId: this.autorId,
-        Estado: "Por aprobar sondeo",
+        Estado: estado,
         ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
       }
     }
     else {
       ObjSondeo = {
         ResponsableId: this.autorId,
-        Estado: "Por aprobar sondeo"
+        Estado: estado
       }
     }
 
     this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
       (respuesta) => {
-        this.spinner.hide();
-        sessionStorage.removeItem("IdSolicitud");
-        this.salir();
+
+        let notificacion = {
+          IdSolicitud: this.IdSolicitud.toString(),
+          ResponsableId: this.autorId,
+          Estado: estado
+        };
+
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.spinner.hide();
+            this.salir();
+            sessionStorage.removeItem("IdSolicitud");
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        )
       }
     ).catch(
       (error) => {
@@ -402,6 +418,8 @@ export class SondeoComponent implements OnInit {
       }
     )
   }
+
+
 
   adjuntarArchivoCTB(event, item) {
     let archivoAdjunto = event.target.files[0];
