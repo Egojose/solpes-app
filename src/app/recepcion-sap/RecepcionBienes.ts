@@ -1,5 +1,6 @@
 export class RecepcionBienes {
     constructor(
+        public IdSolicitud: number,
         public Idbienes:number ,
         public descripcion:string, 
         public cantidad:number, 
@@ -32,14 +33,17 @@ export class RecepcionBienes {
         }
 
         return new RecepcionBienes(
+            element.IdSolicitud,
             element.IdCTBienesId,
             element.Descripcion, 
             element.Cantidad, 
             element.Valor, 
             element.UltimaEntrega, 
             element.Comentario, 
-            element.Id, 
-            element.Editor, 
+            element.Id,
+            null,
+            element.Author, 
+            element.Editor.Title, 
             element.NumeroRecepcion, 
             element.recibidoSap,
             RutaArchivo);

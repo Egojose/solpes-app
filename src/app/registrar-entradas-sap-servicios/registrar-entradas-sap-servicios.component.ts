@@ -69,8 +69,8 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
                 // for(let i = 0; i < this.objContratos.length; i++ ) {
                 //   this.ObjRecepcionBienes.push(this.objContratos[i]);
                 // }
-                this.ObjRecepcionServicios.push.apply(this.ObjRecepcionServicios, this.objContratos);
-                console.log(this.ObjRecepcionServicios);
+                // this.ObjRecepcionServicios.push.apply(this.ObjRecepcionServicios, this.objContratos);
+                // console.log(this.ObjRecepcionServicios);
               }  
             );
             
