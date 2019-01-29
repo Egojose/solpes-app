@@ -30,7 +30,7 @@ export class RegistroActivosComponent implements OnInit {
   numOrdenEstadistica: string;
   loading: boolean;
   IdSolicitud: any;
-  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
+  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "precioSondeo", "moneda", "adjunto"];
   IdSolicitudParms: string;
   RutaArchivo: string;
   paisId: any;
