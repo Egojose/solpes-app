@@ -43,7 +43,7 @@ export class RecepcionBienes {
             element.Id,
             null,
             element.Author, 
-            element.Editor.Title, 
+            element.Editor, 
             element.NumeroRecepcion, 
             element.recibidoSap,
             RutaArchivo);
