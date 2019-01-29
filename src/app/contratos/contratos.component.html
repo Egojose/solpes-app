@@ -218,12 +218,8 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">Valor Contractual <span class="camposRequeridos">*</span></label>
-<<<<<<< HEAD
-            <input  type="text" formControlName="ValorContractual" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }" [readonly]="Guardado === true">
-=======
             <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="ValorContractual" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }"
                 [readonly]="Guardado === true">
->>>>>>> origin/devDaniel
             <div *ngIf="submitted && f.ValorContractual.errors" class="invalid-feedback">
                 <div *ngIf="f.ValorContractual.errors.required">Es requerido</div>
             </div>
