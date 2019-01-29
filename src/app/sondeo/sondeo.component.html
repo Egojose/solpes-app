@@ -4,19 +4,11 @@
   <b>PROCESANDO...</b>
 </div>
 <div class="container">
-<<<<<<< HEAD
   <br>
   <h3>SONDEAR</h3>
   <hr>
   <br>
   <div *ngIf="existeCondicionesTecnicasBienes == true" class="condiciones-tecnicas-bienes">
-=======
-    <br>
-    <h3>SONDEAR</h3>
-    <hr>
-    <br>
-    <ng-container *ngIf="ObjCondicionesTecnicasBienesLectura.length > 0">
->>>>>>> origin/devJose
     <accordion>
       <accordion-group heading="Bienes solicitados">
         <div class="form-group row">
@@ -70,57 +62,9 @@
                         </td>
                       </ng-template>
                     </tr>
-<<<<<<< HEAD
                   </tbody>
                 </table>
               </div>
-=======
-                </tbody>
-            </table>
-        </div>
-    </div>
-</ng-container>
-<ng-container *ngIf="ObjCondicionesTecnicasServiciosLectura.length > 0">
-    <accordion>
-        <accordion-group heading="Servicios solicitados">
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>
-                                <h4>Servicios solicitados</h4>
-                            </strong></label>
-                        <div class="table-wrapper-scroll-y">
-                            <table class="table table-striped table-bordered table-hover text-center">
-                                <thead>
-                                    <tr>
-                                        <th>Código</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Valor Estimado</th>
-                                        <th>Comentario</th>
-                                        <th>Adjunto</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of ObjCondicionesTecnicasServiciosLectura">
-                                        <td>{{item.codigo}}</td>
-                                        <td>{{item.descripcion}}</td>
-                                        <td>{{item.cantidad}}</td>
-                                        <td>{{item.valorEstimado | currency}}</td>
-                                        <td>{{item.comentarios}}</td>
-                                        <td>
-                                            <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
-                                                target=_blank>
-                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
->>>>>>> origin/devJose
             </div>
           </div>
         </div>
@@ -293,7 +237,6 @@
       </div>
     </div>
     <hr>
-<<<<<<< HEAD
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -313,11 +256,6 @@
               </div>
             </div>
             <br>
-=======
-</ng-container>
-    <accordion>
-        <accordion-group heading="Ver Información adicional">
->>>>>>> origin/devJose
             <div class="row espacio">
               <div class="col-md-4">
                 <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
