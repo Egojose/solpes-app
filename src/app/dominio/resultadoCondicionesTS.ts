@@ -30,7 +30,7 @@ export class resultadoCondicionesTS {
             element.CodigoSondeo, 
             element.Descripcion,                       
             element.CantidadSondeo, 
-            element.PrecioSoneo, 
+            element.PrecioSondeo, 
             element.TipoMoneda,
             RutaArchivo);
     }

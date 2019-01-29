@@ -42,7 +42,7 @@
                     </ng-container>
                     <ng-container matColumnDef="valorEstimado">
                         <th mat-header-cell *matHeaderCellDef> Valor</th>
-                        <td mat-cell *matCellDef="let element"> {{element.valorEstimado | currency}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.precioSondeo | currency}} </td>
                     </ng-container>
                     <ng-container matColumnDef="moneda">
                         <th mat-header-cell *matHeaderCellDef> Moneda</th>
@@ -66,20 +66,11 @@
         </div>
     </mat-expansion-panel>
 </mat-accordion>
-
-<!-- <accordion *ngIf="CTB === true">
-    <accordion-group heading="Condiciones técnicas bienes">
-        <div class="row" id="TablaVerificar">
-            <div class="col-md-12">
-               </div>
-        </div>
-    </accordion-group>
-</accordion> -->
 <br>
-<mat-accordion>
+<mat-accordion *ngIf="CTS === true">
     <mat-expansion-panel (opened)="panelOpenState1 = true" (closed)="panelOpenState1 = false">
         <mat-expansion-panel-header>
-            <mat-panel-title><strong>Condiciones técnicas servicios</strong></mat-panel-title>
+            <mat-panel-title><strong>Ver servicios solicitados</strong></mat-panel-title>
             <mat-panel-description>{{panelOpenState1 ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
         </mat-expansion-panel-header>
         <div class="row" id="TablaVerificar">
@@ -132,14 +123,6 @@
 
     </mat-expansion-panel>
 </mat-accordion>
-<!-- <accordion *ngIf="CTS === true">
-    <accordion-group heading="Condiciones técnicas servicios">
-        <div class="row" id="TablaVerificar">
-            <div class="col-md-12">
-                  </div>
-        </div>
-    </accordion-group>
-</accordion> -->
 <br>
 <form autocomplete="off" [formGroup]="ContratosForm" (ngSubmit)="onSubmit()">
     <div class="row">
@@ -183,7 +166,7 @@
         <option value="" [disabled]="Guardado === true"></option>
         <option value="Si" [disabled]="Guardado === true">Si</option>
         <option value="No" [disabled]="Guardado === true">No</option>
-        <option value="N/A" [disabled]="Guardado === true">"N/A</option>
+        <option value="N/A" [disabled]="Guardado === true">N/A</option>
       </select>
             <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
                 <div *ngIf="f.OrdenInicio.errors.required">Es requerido</div>
@@ -628,7 +611,6 @@
   </div>
 </accordion-group>
 </accordion> -->
-
 <!-- <div class="form-group col-md-4">
           <label for="inputEmail4">Fecha Firma de Contrato</label>
           <input type="text" formControlName="FechaFirmaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.FechaFirmaContrato.errors }" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY'}" [isDisabled]="Guardado === true" [readonly]="Guardado === true">
