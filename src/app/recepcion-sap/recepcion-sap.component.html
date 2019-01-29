@@ -17,13 +17,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of fulldatos">
+            <tr *ngFor="let item of ObjRecepcionBienes">
                 <td>{{item.contratoMarco}}</td>
                 <td>{{item.Author}}</td>
                 <td>{{item.cantidad}}</td>
                 <td>{{item.valor}}</td>
                 <td>{{item.comentario}}</td>
-                <td>{{item.adjunto}}</td>
+                <td>
+                    <a *ngIf="item.adjunto != null || item.adjunto != undefined" href="{{item.adjunto}}"
+                        target=_blank>
+                        <button type="button" class="btn btn-primary">Ver Archivo</button>
+                    </a>
+                </td>
                 <td>
                     <input class="form-control" type="text" name="" id="" value="" [formControl]="numRecepcion">
                 </td>

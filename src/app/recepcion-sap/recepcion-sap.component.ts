@@ -4,7 +4,6 @@ import { SPServicio } from '../servicios/sp-servicio';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
-import { RecepcionServicios } from '../recepcion-sap/RecepcionServicios';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Contratos } from '../recepcion-sap/contratos';
@@ -69,8 +68,14 @@ constructor(private servicio: SPServicio, private formBuilder: FormBuilder, publ
             this.servicio.ObtenerContratos(this.IdUsuario).subscribe(
               (respuesta) => {
                 this.objContratos = Contratos.fromJsonList(respuesta);
-                let fulldatos = this.ObjRecepcionBienes.concat(this.objContratos)
-                console.log(fulldatos);
+                // let fulldatos = this.ObjRecepcionBienes.concat(this.objContratos)
+                // console.log(fulldatos);
+                // for(let i = 0; i < this.objContratos.length; i++ ) {
+                //   this.ObjRecepcionBienes.push(this.objContratos[i]);
+                // }
+                
+                this.ObjRecepcionBienes.push.apply(this.ObjRecepcionBienes, this.objContratos);
+                console.log(this.ObjRecepcionBienes);
               }  
             );
           }
