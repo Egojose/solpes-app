@@ -4,7 +4,6 @@ import { SPServicio } from '../servicios/sp-servicio';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
-import { RecepcionServicios } from '../recepcion-sap/RecepcionServicios';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Contratos } from '../recepcion-sap/contratos';

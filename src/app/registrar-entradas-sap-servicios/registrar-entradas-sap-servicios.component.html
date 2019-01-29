@@ -6,8 +6,8 @@
       <table class="table table-striped table-bordered table-hover text-center">
           <thead>
               <tr>
-                  <!-- <th>Numero Pedido</th> -->
-                  <th>Responsable</th>
+                  <th>Número Pedido</th>
+                  <th>Recepcionado por</th>
                   <th>Ubicación</th>
                   <th>Cantidad</th>
                   <th>Mes</th>
@@ -19,13 +19,13 @@
           </thead>
           <tbody>
               <tr *ngFor="let item of ObjRecepcionServicios">
-                  <!-- <td></td> -->
+                  <td>{{item.contratoMarco}}</td>
                   <td>{{item.Editor}}</td>
                   <td>{{item.ubicacion}}</td>
                   <td>{{item.cantidad}}</td>
                   <td>{{item.mes}}</td>
                   <td>{{item.valor}}</td>
-                  <td>{{item.comentario}}</td>
+                  <td>{{item.comentarioSondeo}}</td>
                   <td>
                       <input class="form-control" type="text" name="" id="" value="" [formControl]="numRecepcion">
                   </td>
