@@ -11,9 +11,7 @@ export class RecepcionServicios {
         public IdRecepcionServicios?: number, 
         public ultimaEntregaCTB?: boolean,
         public NumeroRecepcion?: string, 
-        public recibidoSap?: boolean) {
-
-    }
+        public recibidoSap?: boolean) {}
 
     public static fromJson(element: any) {
         return new RecepcionServicios(
