@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { RecepcionBienes } from '../registrar-entradas-sap-servicios/RecepcionBienes'
 import { SPServicio } from '../servicios/sp-servicio';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
 import { RecepcionServicios } from '../registrar-entradas-sap-servicios/RecepcionServicios';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { Contratos } from '../recepcion-sap/contratos';
 @Component({
   selector: 'app-registrar-entradas-sap-servicios',
   templateUrl: './registrar-entradas-sap-servicios.component.html',
@@ -21,6 +21,7 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   IdSolicitud: number;
   ObjRecepcionServicios: RecepcionServicios[] = [];
   recepcionServicios: FormGroup;
+  objContratos: Contratos []=[];
   IdRecepcionServicios: number;
   IdUsuario: any;
 
@@ -60,6 +61,19 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
         this.servicio.ObtenerRecepcionesServicios(this.IdUsuario).subscribe(
           (respuesta) => {
             this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
+            this.servicio.ObtenerContratos(this.IdUsuario).subscribe(
+              (respuesta) => {
+                this.objContratos = Contratos.fromJsonList(respuesta);
+                // let fulldatos = this.ObjRecepcionBienes.concat(this.objContratos)
+                // console.log(fulldatos);
+                // for(let i = 0; i < this.objContratos.length; i++ ) {
+                //   this.ObjRecepcionBienes.push(this.objContratos[i]);
+                // }
+                // this.ObjRecepcionServicios.push.apply(this.ObjRecepcionServicios, this.objContratos);
+                // console.log(this.ObjRecepcionServicios);
+              }  
+            );
+            
           }
         );
       }

@@ -26,13 +26,13 @@ export class ContratosComponent implements OnInit {
   content: string;
   selectedValue: string;
   selectedOption: any;
-  ObjUsuarios:[];
+  ObjUsuarios: [];
   ObjSolicitud: any;
   Pais: any;
   Guardado: boolean
   IdSolicitud: any;
   autor: any;
-  loading:boolean;
+  loading: boolean;
   idSolicitudParameter: string;
   CompraBienes: any;
   CompraServicios: any;
@@ -43,7 +43,7 @@ export class ContratosComponent implements OnInit {
     "codigo",
     "descripcion",
     "modelo",
-    "fabricante",    
+    "fabricante",
     "cantidad",
     "valorEstimado",
     "moneda",
@@ -51,7 +51,7 @@ export class ContratosComponent implements OnInit {
   ];
   displayedColumnsTS: string[] = [
     "codigo",
-    "descripcion",        
+    "descripcion",
     "cantidad",
     "valorEstimado",
     "moneda",
@@ -59,8 +59,7 @@ export class ContratosComponent implements OnInit {
   ];
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
   ObjCTVerificar: any[];
-  dataSource;
-  title: 'Contratos';
+  dataSource;  
   dataSourceTS;
   panelOpenState = false;
   panelOpenState1 = false;
@@ -87,11 +86,12 @@ export class ContratosComponent implements OnInit {
   numOrdenEstadistica: any;
   NumSolSAP: any;
 
-  constructor(private servicio: SPServicio,  private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager,private formBuilder: FormBuilder) {
+  constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder) {
     this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
-    this.Guardado=false;
-   }
-   comfirmasalir(template: TemplateRef<any>) {
+    this.Guardado = false;
+  }
+
+  comfirmasalir(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
   }
 
@@ -139,67 +139,61 @@ export class ContratosComponent implements OnInit {
     });
 
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
-      (Usuarios)=>{
-        this.ObjUsuarios = Usuarios;  
+      (Usuarios) => {
+        this.ObjUsuarios = Usuarios;
         this.servicio.ObtenerSolicitudBienesServicios(this.idSolicitudParameter).subscribe(
-          (respuesta)=>{
-              this.ObjSolicitud = respuesta;
-              this.IdSolicitud = this.ObjSolicitud.Id;
-              this.fechaDeseada = this.ObjSolicitud.FechaDeseadaEntrega;
-              this.tipoSolicitud = this.ObjSolicitud.TipoSolicitud;
-              this.solicitante = this.ObjSolicitud.Solicitante;
-              this.ordenadorGasto = this.ObjSolicitud.OrdenadorGastos.Title;
-              this.empresa = this.ObjSolicitud.Empresa.Title;
-              this.codAriba = this.ObjSolicitud.CodigoAriba;
-              this.Pais=this.ObjSolicitud.Pais.Title;
-              this.paisId = this.ObjSolicitud.Pais.Id;
-              this.categoria = this.ObjSolicitud.Categoria;
-              this.subCategoria = this.ObjSolicitud.Subcategoria;
-              this.comprador = this.ObjSolicitud.Comprador.Title;
-              this.alcance = this.ObjSolicitud.Alcance;
-              this.justificacion = this.ObjSolicitud.Justificacion;
-              this.ComentarioSondeo = this.ObjSolicitud.ComentarioSondeo;
-              this.autor = this.ObjSolicitud.AuthorId;
-              this.NumSolSAP = this.ObjSolicitud.NumSolSAP;
-              this.NombreSolicitante = this.ObjSolicitud.Author.Title;
-              this.ContratosForm.controls["Solicitante"].setValue(this.NombreSolicitante);
-              this.CompraBienes = this.ObjSolicitud.CompraBienes;
-              this.CompraServicios = this.ObjSolicitud.CompraServicios;
-              this.OrdenEstadistica = this.ObjSolicitud.OrdenEstadistica;
-              this.numOrdenEstadistica = this.ObjSolicitud.NumeroOrdenEstadistica;
-              if(this.ObjSolicitud.CondicionesContractuales != null){
-                this.condicionesContractuales = JSON.parse(this.ObjSolicitud.CondicionesContractuales).condiciones;
+          (respuesta) => {
+            this.ObjSolicitud = respuesta;
+            this.IdSolicitud = this.ObjSolicitud.Id;
+            this.fechaDeseada = this.ObjSolicitud.FechaDeseadaEntrega;
+            this.tipoSolicitud = this.ObjSolicitud.TipoSolicitud;
+            this.solicitante = this.ObjSolicitud.Solicitante;
+            this.ordenadorGasto = this.ObjSolicitud.OrdenadorGastos.Title;
+            this.empresa = this.ObjSolicitud.Empresa.Title;
+            this.codAriba = this.ObjSolicitud.CodigoAriba;
+            this.Pais = this.ObjSolicitud.Pais.Title;
+            this.paisId = this.ObjSolicitud.Pais.Id;
+            this.categoria = this.ObjSolicitud.Categoria;
+            this.subCategoria = this.ObjSolicitud.Subcategoria;
+            this.comprador = this.ObjSolicitud.Comprador.Title;
+            this.alcance = this.ObjSolicitud.Alcance;
+            this.justificacion = this.ObjSolicitud.Justificacion;
+            this.ComentarioSondeo = this.ObjSolicitud.ComentarioSondeo;
+            this.autor = this.ObjSolicitud.AuthorId;
+            this.NumSolSAP = this.ObjSolicitud.NumSolSAP;
+            this.NombreSolicitante = this.ObjSolicitud.Author.Title;
+            this.ContratosForm.controls["Solicitante"].setValue(this.NombreSolicitante);
+            this.CompraBienes = this.ObjSolicitud.CompraBienes;
+            this.CompraServicios = this.ObjSolicitud.CompraServicios;
+            this.OrdenEstadistica = this.ObjSolicitud.OrdenEstadistica;
+            this.numOrdenEstadistica = this.ObjSolicitud.NumeroOrdenEstadistica;
+            if (this.ObjSolicitud.CondicionesContractuales != null) {
+              this.condicionesContractuales = JSON.parse(this.ObjSolicitud.CondicionesContractuales).condiciones;
+            }
+            this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+              (RespuestaProcesos) => {
+                this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
               }
-              this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
-                (RespuestaProcesos)=>{
-                  
-                    this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
+            )
+            this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
+                this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
+                if (this.ObjCTVerificar.length > 0) {
+                  this.CTB = true;
                 }
-              )
-              this.servicio
-          .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
-          .subscribe(RespuestaCondiciones => {                   
-            this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
-            if (this.ObjCTVerificar.length>0) {
-              this.CTB = true;
-            }
-            this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
-            this.dataSource.paginator = this.paginator;   
-            this.servicio
-          .ObtenerCondicionesTecnicasServicios(this.IdSolicitud)
-          .subscribe(RespuestaCondicionesServicios => {           
-            this.ObjCondicionesTecnicasServicios = resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
-            if (this.ObjCondicionesTecnicasServicios.length>0) {
-              this.CTS = true;
-            }
-            this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
-            this.dataSourceTS.paginator = this.paginator;
-            this.loading = false;
-          });
-          });
-        
+                this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+                this.dataSource.paginator = this.paginator;
+                this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
+                this.ObjCondicionesTecnicasServicios = resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
+                  if (this.ObjCondicionesTecnicasServicios.length > 0) {
+                    this.CTS = true;
+                  }
+                  this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
+                  this.dataSourceTS.paginator = this.paginator;
+                  this.loading = false;
+                });
+              });
           }
-        )      
+        )
       }
     )
   }
@@ -207,16 +201,14 @@ export class ContratosComponent implements OnInit {
   get f() { return this.ContratosForm.controls; }
 
   onSubmit() {
-
-    this.submitted = true;
-    if (this.ContratosForm.invalid) {   
+    this.submitted = true;    
+    if (this.ContratosForm.invalid) {
       return;
-    } 
-    
+    }
     let TipoContrato = this.ContratosForm.controls["TipoContrato"].value;
     let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
     let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
-    let OrdenInicio = this.ContratosForm.controls["OrdenInicio"].value; 
+    let OrdenInicio = this.ContratosForm.controls["OrdenInicio"].value;
     let ObjetoContrato = this.ContratosForm.controls["ObjetoContrato"].value;
     // let FechaFirmaContrato = this.ContratosForm.controls["FechaFirmaContrato"].value;
     let ContratoObraConexo = this.ContratosForm.controls["ContratoObraConexo"].value;
@@ -246,10 +238,10 @@ export class ContratosComponent implements OnInit {
     let EmailProveedor = this.ContratosForm.controls["EmailProveedor"].value;
     let Solicitante = this.ContratosForm.controls["Solicitante"].value;
     let Comprador = this.ContratosForm.controls["Comprador"].value;
-    let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value; 
-
+    let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value;
     let ObjContrato;
-    if (this.Pais==="Colombia") {
+
+    if (this.Pais === "Colombia") {
       ObjContrato = {
         TipoContrato: TipoContrato,
         NumSolpSAP: SolpSapRfp,
@@ -287,10 +279,7 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter
       }
-
-
-    }
-    else{
+    }else {
       ObjContrato = {
         TipoContrato: TipoContrato,
         NumSolpSAP: SolpSapRfp,
@@ -325,59 +314,55 @@ export class ContratosComponent implements OnInit {
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter
-      }      
-    } 
-  
+      }
+    }
+
     this.servicio.GuardarContrato(ObjContrato).then(
-      (resultado)=>{
-        this.Guardado=true;
-        let ResponsableServicios=null;
-        let ResponsablesBienes=null;
+      (resultado) => {
+        this.Guardado = true;
+        let ResponsableServicios = null;
+        let ResponsablesBienes = null;
         if (this.CompraServicios) {
-            ResponsableServicios=this.autor;
+          ResponsableServicios = this.autor;
         }
         if (this.CompraBienes) {
-          ResponsableServicios=this.ObResProceso[0].porConfirmarEntregaBienes;
-
+          ResponsableServicios = this.ObResProceso[0].porConfirmarEntregaBienes;
         }
-        this.servicio.cambioEstadoSolicitud(this.IdSolicitud,"Por recepcionar",this.autor).then(
-          (resultado)=>{             
-              this.MostrarExitoso("El contrato se ha guardado correctamente");
-              setTimeout(() => {
-                this.router.navigate(["/mis-pendientes"]);
-              }, 1000);
+        this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+          (resultado) => {
+            this.MostrarExitoso("El contrato se ha guardado correctamente");
+            setTimeout(() => {
+              this.router.navigate(["/mis-pendientes"]);
+            }, 1000);
           }
         ).catch(
-          (error)=>{
-            console.log(error); 
+          (error) => {
+            console.log(error);
           }
         );
-      }      
-      ).catch(
-      (error)=>{
-
-    });
-    
+      }
+    ).catch(
+      (error) => {
+      });
   }
 
-  ValidarIva(){
+  ValidarIva() {
     let Moneda = this.ContratosForm.controls["MonedaContrato"].value;
     const IvaContrato = this.ContratosForm.get('IvaContrato');
-      if (Moneda!="USD") {
-        IvaContrato.clearValidators();
-      }
-      else{
-        IvaContrato.setValidators([Validators.required]);
-      }
-      IvaContrato.updateValueAndValidity();
-     
+    if (Moneda != "USD") {
+      IvaContrato.clearValidators();
+    }
+    else {
+      IvaContrato.setValidators([Validators.required]);
+    }
+    IvaContrato.updateValueAndValidity();
   }
 
   salir() {
     this.modalRef.hide();
     this.router.navigate(["/mis-pendientes"]);
   }
- 
+
   onSelect(event: any): void {
     console.log("Sfs");
     this.selectedOption = event.item;
@@ -395,23 +380,21 @@ export class ContratosComponent implements OnInit {
     this.toastr.warningToastr(mensaje, 'Validación');
   }
 
-  ValidarUsuario(){
-    
+  ValidarUsuario() {
     let comprador = this.ContratosForm.controls["Comprador"].value;
     if (comprador.length > 0) {
-      if (this.selectedOption===undefined) {      
+      if (this.selectedOption === undefined) {
         this.tooltip.show();
-        setTimeout(()=>{   
+        setTimeout(() => {
           this.tooltip.hide();
-         }, 3000);
-      }
-      else {
+        }, 3000);
+      }else {
         this.tooltip.hide();
       }
-    }    
-  } 
+    }
+  }
 
-  Salir(){
+  Salir() {
     this.router.navigate(['/mis-solicitudes']);
   }
 

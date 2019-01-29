@@ -1,15 +1,13 @@
 export class Contratos {
     constructor(
-        public idContratos: string, 
-        public tipoContrato: string, 
+        public idSolicitud: number, 
         public contratoMarco: string){
 
     }
 
     public static fromJson(element: any) {
         return new Contratos(
-            element.Title,
-            element.TipoContrato,
+            element.Solicitud,
             element.CM);            
     }
 
