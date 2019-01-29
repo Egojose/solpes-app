@@ -60,6 +60,14 @@
         <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
     </div>
 </div>
+
+<div class="row" *ngIf="SwtichEsOrdenEstadistica===true">
+    <label><strong>Número de orden de estadística: </strong></label> 
+    {{numOrdenEstadistica}}
+</div>
+
+<hr>
+
 <div class="row" *ngIf="SwtichOrdenEstadistica===true">
     <div class="form-group col-md-6">
         <label for="adjunto"> <strong> Adjuntar solicitud creación de activos </strong></label><span class="asterisco-obligatorio">*</span>
