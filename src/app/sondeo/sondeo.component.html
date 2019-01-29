@@ -8,6 +8,7 @@
     <h3>SONDEAR</h3>
     <hr>
     <br>
+    <ng-container *ngIf="ObjCondicionesTecnicasBienesLectura.length > 0">
     <accordion>
         <accordion-group heading="Bienes solicitados">
             <div class="form-group row">
@@ -112,6 +113,8 @@
             </table>
         </div>
     </div>
+</ng-container>
+<ng-container *ngIf="ObjCondicionesTecnicasServiciosLectura.length > 0">
     <accordion>
         <accordion-group heading="Servicios solicitados">
             <div class="form-group row">
@@ -219,6 +222,7 @@
             <input type="button" class="btn btn-danger" value="Salir" (click)="salir()" /> </div>
     </div>
     <hr>
+</ng-container>
     <accordion>
         <accordion-group heading="Ver Información adicional">
             <div class="row espacio">
