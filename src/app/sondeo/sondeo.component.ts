@@ -51,13 +51,13 @@ export class SondeoComponent implements OnInit {
   codigoAriba: string;
   numeroOrdenEstadistica: string;
   existeCondicionesTecnicasBienes: boolean;
-  existeCondicionesTecnicasServicio: boolean;
+  existeCondicionesTecnicasServicios: boolean;
 
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.spinner.hide();
     this.existeCondicionesTecnicasBienes = false;
-    this.existeCondicionesTecnicasServicio = false;
+    this.existeCondicionesTecnicasServicios = false;
   }
 
   ngOnInit() {
@@ -103,7 +103,7 @@ export class SondeoComponent implements OnInit {
 
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-            if(RespuestaCondiciones.length > 0){
+            if (RespuestaCondiciones.length > 0) {
               this.existeCondicionesTecnicasBienes = true;
               this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
               this.ObjCondicionesTecnicasBienesGuardar = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
@@ -114,13 +114,12 @@ export class SondeoComponent implements OnInit {
 
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
-            if(RespuestaCondicionesServicios.length > 0)
-            {
-              this.existeCondicionesTecnicasServicio = true;
+            if (RespuestaCondicionesServicios.length > 0) {
+              this.existeCondicionesTecnicasServicios = true;
               this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
               this.ObjCondicionesTecnicasServiciosGuardar = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             }
-            
+
             this.spinner.hide();
           }
         )

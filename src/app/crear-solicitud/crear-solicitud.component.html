@@ -201,8 +201,8 @@
                             <tr>
                               <td>{{element.modelo}}</td>
                               <td>{{element.fabricante}}</td>
-                              <td>{{element.cantidad}}</td>
-                              <td>{{element.valorEstimado}}</td>
+                              <td>{{element.cantidad | number}}</td>
+                              <td>{{element.valorEstimado | currency}}</td>
                               <td>{{element.tipoMoneda}}</td>
                               <td>{{element.comentarios}}</td>
                             </tr>

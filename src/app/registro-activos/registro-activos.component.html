@@ -31,7 +31,7 @@
           </ng-container>
           <ng-container matColumnDef="cantidad">
             <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-            <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar | number}} </td>
           </ng-container>
           <ng-container matColumnDef="precioSondeo">
             <th mat-header-cell *matHeaderCellDef> Precio</th>
@@ -73,7 +73,6 @@
 <br>
 
 <div class="row">
-
   <div class="col-md-12">
     <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
   </div>
@@ -114,10 +113,10 @@
   <div class="col-md-12">
     <div class="botonera">
       <div>
-        <input id="button1" type="button" class="derecha-boton btn  btn-success" value="Enviar" (click)="GuardarActivos()" />
+        <input id="btnEnviar" type="button" class="derecha-boton btn  btn-success" value="Enviar" (click)="GuardarActivos()" />
       </div>
       <div>
-        <input id="button1" type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);"
+        <input id="btnSalir" type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);"
           value="Salir" />
       </div>
     </div>
