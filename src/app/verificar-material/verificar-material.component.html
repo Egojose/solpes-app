@@ -244,7 +244,7 @@
                                 <td>{{item.modelo}}</td>
                                 <td>{{item.fabricante}}</td>
                                 <td>{{item.cantidad | number}}</td>
-                                <td>{{item.valorEstimado | currency}}</td>
+                                <td>{{item.valorEstimado | number}}</td>
                                 <td>
                                     <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                         <a href="{{item.adjuntoCreacion.url}}" target=_blank>
@@ -285,7 +285,7 @@
                                     <td>{{item.codigo}}</td>
                                     <td>{{item.descripcion}}</td>
                                     <td>{{item.cantidad}}</td>
-                                    <td>{{item.valorEstimado | currency}}</td>
+                                    <td>{{item.valorEstimado | number}}</td>
                                     <td>
                                         <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
                                             <a href="{{item.adjuntoCreacion.url}}" target=_blank>
@@ -326,7 +326,7 @@
                                     <td>{{item.codigoSondeo}}</td>
                                     <td>{{item.descripcion}}</td>
                                     <td>{{item.cantidadSondeo | number}}</td>
-                                    <td>{{item.precioSondeo | currency}}</td>
+                                    <td>{{item.precioSondeo | number}}</td>
                                     <td>{{item.comentarioSondeo}}</td>
                                     <td>
                                         <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">

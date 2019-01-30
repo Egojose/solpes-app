@@ -1,8 +1,7 @@
 import { Adjunto } from "./adjunto";
 
 export class CondicionesTecnicasBienes {
-
-
+    
     constructor(public IdBienes: number,
         public codigo: string,
         public descripcion: string,
@@ -11,6 +10,7 @@ export class CondicionesTecnicasBienes {
         public cantidad: number,
         public cantidadSondeo: number,
         public valorEstimado?: string,
+        public tipoMoneda?: string,
         public precioSondeo?: string,
         public Comentario?: string,
         public adjunto?:any,
@@ -40,6 +40,7 @@ export class CondicionesTecnicasBienes {
             element.Cantidad,
             element.CantidadSondeo,
             element.ValorEstimado,
+            element.TipoMoneda,
             element.PrecioSondeo,
             element.Comentarios,
             null, //adjunto
