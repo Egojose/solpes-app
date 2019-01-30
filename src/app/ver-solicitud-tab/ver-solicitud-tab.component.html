@@ -137,7 +137,7 @@
                             <td>{{item.fabricante}}</td>
 
                             <td>{{item.cantidad | number}}</td>
-                            <td>{{item.valorEstimado | currency}}</td>
+                            <td>{{item.valorEstimado | number}}</td>
                             <td>
                                 <div *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                     <a href="{{item.adjuntoCreacion.url}}" target="_blank"><button class="btn btn-primary">Ver
@@ -224,7 +224,7 @@
                             <td>{{item.codigoSondeo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidadSondeo | number}}</td>
-                            <td>{{item.precioSondeo | currency}}</td>
+                            <td>{{item.precioSondeo | number}}</td>
                             <td>{{item.comentarioSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
@@ -261,7 +261,7 @@
                             <td>{{item.codigoSondeo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidadSondeo | number}}</td>
-                            <td>{{item.precioSondeo | currency}}</td>
+                            <td>{{item.precioSondeo | number}}</td>
                             <td>{{item.comentariosSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeoservicio">
@@ -431,7 +431,7 @@
                             </ng-container>
                             <ng-container matColumnDef="valorEstimado">
                                 <th mat-header-cell *matHeaderCellDef> Valor</th>
-                                <td mat-cell *matCellDef="let element"> {{element.valorEstimado | currency}} </td>
+                                <td mat-cell *matCellDef="let element"> {{element.valorEstimado | number}} </td>
                             </ng-container>
                             <ng-container matColumnDef="moneda">
                                 <th mat-header-cell *matHeaderCellDef> Moneda</th>
