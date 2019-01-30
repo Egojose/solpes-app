@@ -27,6 +27,7 @@
                       <th>Fabricante</th>
                       <th>Cantidad</th>
                       <th>Valor Estimado</th>
+                      <th>Tipo de moneda</th>
                       <th>Comentario</th>
                       <th>Adjunto</th>
                     </tr>
@@ -40,6 +41,7 @@
                         <td>{{item.fabricante}}</td>
                         <td>{{item.cantidad}}</td>
                         <td>{{item.valorEstimado | number}}</td>
+                        <td>{{item.tipoMoneda}}</td>
                         <td>{{item.Comentario}}</td>
                         <td>
                           <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target=_blank>
@@ -83,6 +85,7 @@
               <th>Descripción</th>
               <th>Cantidad</th>
               <th>Precio</th>
+              <th>Tipo de moneda</th>
               <th>Comentarios</th>
               <th>Adjuntos</th>
             </tr>
@@ -100,6 +103,7 @@
                 <input type="text" currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
                    class="form-control text-center"  [(ngModel)]="item.valorEstimado">
               </td>
+              <td>{{item.tipoMoneda}}</td>
               <td>
                 <textarea type="text"  class="form-control text-center"  [(ngModel)]="item.ComentarioSondeo"></textarea>
               </td>
@@ -130,6 +134,7 @@
                       <th>Descripción</th>
                       <th>Cantidad</th>
                       <th>Valor Estimado</th>
+                      <th>Tipo de moneda</th>
                       <th>Comentario</th>
                       <th>Adjunto</th>
                     </tr>
@@ -140,6 +145,7 @@
                       <td>{{item.descripcion}}</td>
                       <td>{{item.cantidad}}</td>
                       <td>{{item.valorEstimado | number}}</td>
+                      <td>{{item.tipoMoneda}}</td>
                       <td>{{item.comentarios}}</td>
                       <td>
                         <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target=_blank>

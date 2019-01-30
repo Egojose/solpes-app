@@ -80,7 +80,6 @@ export class RegistrarSolpSapComponent implements OnInit {
   }
 
   GuardarSolSAP() {
-    console.log(this.numeroSolpSap);
     this.spinner.show();
     let ObjSolpSap;
     if (this.RDBOrdenadorGastos === undefined) {
@@ -120,7 +119,7 @@ export class RegistrarSolpSapComponent implements OnInit {
         return this.MostrarValidacionComentarios();
       }
       else if (this.RDBOrdenadorGastos === 3) {
-        this.ResponsableProceso = this.comprador;
+        this.ResponsableProceso = this.Autor;
         this.estadoSolicitud = 'Sin presupuesto';
         ObjSolpSap = {
           ResponsableId: this.ResponsableProceso,
