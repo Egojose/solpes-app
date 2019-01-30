@@ -8,6 +8,7 @@ import { RecepcionServicios } from '../entrega-servicios/recepcionServicios';
 import { ItemAddResult } from 'sp-pnp-js';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-entrega-servicios',
@@ -54,7 +55,7 @@ export class EntregaServiciosComponent implements OnInit {
   NumSolp: any;
   modolectura: boolean;
 
-  constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager) {
+  constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager,private spinner: NgxSpinnerService) {
     this.ItemsAgregadosReciente = 0;
     this.showBtnConfirmar = false;
     this.ErrorCantidad = false;
@@ -289,7 +290,7 @@ export class EntregaServiciosComponent implements OnInit {
       let objActualizacionCTS = {
         UltimaEntrega: true
       }
-      this.loading=true;
+      this.spinner.show();
       this.servicio.actualizarServiciosRecibidos(RecepcionServiciosID).then(
         (resultado) => {
           this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjCTS.IdServicio, objActualizacionCTS).then(
@@ -298,11 +299,11 @@ export class EntregaServiciosComponent implements OnInit {
               let indexServicio = this.ObjRecepcionServicios.findIndex(x => x.idServicio === ObjCTS.IdServicio);
               this.ObjRecepcionServicios[indexServicio]["ultimaEntrega"] = true;
               this.ObjItemsDescripcion.splice(indexServicio, 1);
-              this.loading=false;
+              this.spinner.hide();
             }).catch(
               (error) => {
                 console.log(error);
-                this.loading=false;
+                this.spinner.hide();
               }
             );
         }
@@ -318,7 +319,7 @@ export class EntregaServiciosComponent implements OnInit {
         CantidadRecibida: 0,
         UltimaEntrega: true
       }
-      this.loading=true;
+      this.spinner.show();
       this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjCTS.IdServicio, objActualizacionCTS).then(
         (resultado) => {
           this.objRecepcionAgregar = new RecepcionServicios(ObjCTS.IdServicio, ObjCTS.descripcion, 0, "0", true, "", "", "");
@@ -347,7 +348,7 @@ export class EntregaServiciosComponent implements OnInit {
     let IdServicio = this.ObjCondicionesTecnicas.findIndex(x => x.IdServicio === ObjRecepcionEliminar.idServicio);
     let TotalServicios = this.ObjCondicionesTecnicas[IdServicio]["totalCantidad"];
     let cantidadRecibida = this.ObjCondicionesTecnicas[IdServicio]["cantidadRecibida"];
-    this.loading=true;
+    this.spinner.show();
     this.servicio.eliminarServiciosRecibidos(ObjRecepcionEliminar.IdRecepcionServicios).then(
       (resultado) => {
         this.ItemsAgregadosReciente--;
@@ -372,13 +373,15 @@ export class EntregaServiciosComponent implements OnInit {
 
         this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjRecepcionEliminar.idServicio, objActualizacionCTS).then(
           (resultado) => {
-            this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdServicio]);
-            this.ObjCondicionesTecnicas[IdServicio]["ultimaEntregaCTS"] = false;
-            this.loading=false;
+            if (ObjRecepcionEliminar.ultimaEntrega === true) {
+              this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdServicio]);
+              this.ObjCondicionesTecnicas[IdServicio]["ultimaEntregaCTS"] = false;
+            }            
+            this.spinner.hide();
           }).catch(
             (error) => {
               console.log(error);
-              this.loading=false;
+              this.spinner.hide();
             }
           );
       }
@@ -399,7 +402,7 @@ export class EntregaServiciosComponent implements OnInit {
       if (element.estadoRS === "No confirmado") {
         element.estadoRS = "Confirmado";
         Confirmado = true;
-        this.loading=true;
+        this.spinner.show();
         this.servicio.ConfirmarEntregaServicios(element.IdRecepcionServicios).then(
           (resultado) => {
             numeroItems++;
@@ -438,7 +441,7 @@ export class EntregaServiciosComponent implements OnInit {
                       ).catch(
                         (error) => {
                           console.log(error);
-                          this.loading=false;
+                          this.spinner.hide();
                         })
                     }
                     else {
@@ -454,7 +457,7 @@ export class EntregaServiciosComponent implements OnInit {
                       ).catch(
                         (error) => {
                           console.log(error);
-                          this.loading=false;
+                          this.spinner.hide();
                         })
                     }
                   }
@@ -492,6 +495,12 @@ export class EntregaServiciosComponent implements OnInit {
 
   mostrarError(mensaje: string) {
     this.toastr.errorToastr(mensaje, "Oops!");
+  }
+
+  VerSolicitud(){
+    sessionStorage.setItem('solicitud', JSON.stringify(this.IdSolicitud));
+    window.open("/ver-solicitud-tab", '_blank');
+    // this.router.navigate(['/ver-solicitud-tab']);
   }
 
 }
