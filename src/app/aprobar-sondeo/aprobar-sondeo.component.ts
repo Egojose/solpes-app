@@ -87,7 +87,6 @@ export class AprobarSondeoComponent implements OnInit {
         return this.ValidarComentarios();
       }
       else if (this.RDBsondeo === 1) {
-        //Comprador
         this.ResponsableProceso = this.CompradorId;
         this.estadoSolicitud = 'Por sondear';
         ObjSondeo = {
@@ -99,6 +98,7 @@ export class AprobarSondeoComponent implements OnInit {
         }
       }
       else if (this.RDBsondeo === 2 && this.justificacionSondeo === undefined) {
+        this.numeroSolpCm = '';
         return this.validarJustificacion();
       }
       else if (this.RDBsondeo === 2) {
@@ -131,12 +131,7 @@ export class AprobarSondeoComponent implements OnInit {
         }
       }
       if (this.RDBsondeo === 4 && this.justificacionSondeo === undefined) {
-        this.tooltip1.show();
-        setTimeout(() => {
-          this.tooltip1.hide();
-        }, 3000);
-        this.spinner.hide();
-        return false;
+        return this.validarJustificacion();
       }
       else if (this.RDBsondeo === 4) {
         if (this.ObjCondicionesTecnicas.length > 0) {

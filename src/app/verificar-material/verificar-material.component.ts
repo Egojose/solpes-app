@@ -322,11 +322,11 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.controls["existenciasVerificar"].setValue(element.existenciasverificar);
     this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(element.numreservaverificar);
 
-    if (element.cantidadreservaverificar === null || element.cantidadreservaverificar === undefined || element.cantidadreservaverificar == 0) {
-      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(element.cantidad);
-    } else {
-      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(element.cantidadreservaverificar);
-    }
+    let cantidad = (this.verificarMaterialFormulario.controls["cantidadVerificar"].value != '') ? this.verificarMaterialFormulario.controls["cantidadVerificar"].value : 0;
+    let existencias = (this.verificarMaterialFormulario.controls["existenciasVerificar"].value) ? this.verificarMaterialFormulario.controls["existenciasVerificar"].value : 0;
+    let restaCantidadComprar = cantidad - existencias;
+    this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(restaCantidadComprar);
+
     this.modalRef = this.modalServicio.show(template, Object.assign({}, { class: "gray modal-lg" }));
     this.verificarMaterialFormulario.get('existenciasVerificar').setValidators([ValidarMayorExistencias(element.cantidad)]);
   }
