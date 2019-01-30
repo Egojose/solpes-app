@@ -290,7 +290,7 @@ export class SPServicio {
         return respuesta;
     }
 
-    GuardarBienesRecibidos(ObjRecepcionBienes: RecepcionBienes,IdSolicitud,Responsable){
+    GuardarBienesRecibidos(ObjRecepcionBienes: RecepcionBienes,IdSolicitud,Responsable,NumeroPedido){
         let RecepcionBienesObj = {
             IdSolicitudId: IdSolicitud,
             IdCTBienesId: ObjRecepcionBienes.Idbienes,
@@ -300,7 +300,8 @@ export class SPServicio {
             UltimaEntrega: ObjRecepcionBienes.ultimaEntrega,
             Comentario: ObjRecepcionBienes.comentario,
             FechaRecepcion: new Date(),
-            ResponsableSAPId: Responsable
+            ResponsableSAPId: Responsable,
+            NumeroPedido: NumeroPedido
         };
         let elemento = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.add(RecepcionBienesObj);
         return elemento;
@@ -338,7 +339,7 @@ export class SPServicio {
         return respuesta;
         }
 
-    GuardarServiciosRecibidos(ObjRecepcionServicios: RecepcionServicios,IdSolicitud,Responsable){
+    GuardarServiciosRecibidos(ObjRecepcionServicios: RecepcionServicios,IdSolicitud,Responsable, NumeroPedido){
         let RecepcionBienesObj = {
             IdSolicitudId: IdSolicitud,
             IdCTServiciosId: ObjRecepcionServicios.idServicio,
@@ -352,7 +353,8 @@ export class SPServicio {
             Ubicacion: ObjRecepcionServicios.ubicacion,
             Mes: ObjRecepcionServicios.mes,
             Ano: ObjRecepcionServicios.ano,
-            ResponsableSAPId: Responsable
+            ResponsableSAPId: Responsable,
+            NumeroPedido: NumeroPedido
         };
         let elemento = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.add(RecepcionBienesObj);
         return elemento;

@@ -135,7 +135,7 @@
                         </div>
                     </div>
                     <div class="row" *ngIf="OrdenEstadistica === true">
-                        <div class="col-md-6">
+                        <div class="col-md-6" *ngIf="ObjItemsDescripcion.length > 0">
                             <input type="file" name="" id="Adjunto" (change)="adjuntarArchivoBienes($event)">
                         </div>
                     </div>
