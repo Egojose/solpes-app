@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
 import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { NgxSpinnerService } from 'ngx-spinner';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-editar-solicitud',
@@ -350,7 +351,18 @@ export class EditarSolicitudComponent implements OnInit {
     )
   }
 
+  cambiarNombresColumnas(): any {
+    $(document).ready(function () {
+        $(".columnaBienes")[0].innerText = "Código";
+        $(".columnaBienes")[1].innerText = "Descripción";
+        $(".columnaServicios")[0].innerText = "Código";
+        $(".columnaServicios")[1].innerText = "Descripción";
+    });
+  }
+
   cargarSolicitud(): any {
+
+    this.cambiarNombresColumnas();
 
     if (this.solicitudRecuperada.tipoSolicitud != null) {
       if (this.solicitudRecuperada.tipoSolicitud === "Sondeo") {

@@ -135,14 +135,8 @@ export class SondeoComponent implements OnInit {
   }
 
   GuardarSondeoBienes() {
-    this.spinner.show();
     let objSondeo;
     let contador = 0;
-
-    let respuesta = this.validarCamposBienesYServicios();
-    if (!respuesta) {
-      return false;
-    }
 
     for (let i = 0; i < this.ObjCondicionesTecnicasBienesGuardar.length; i++) {
 
@@ -324,7 +318,6 @@ export class SondeoComponent implements OnInit {
     return respuesta;
   }
 
-
   GuardarSondeoServicios() {
     let objSondeo;
     let contador = 0;
@@ -418,8 +411,6 @@ export class SondeoComponent implements OnInit {
     )
   }
 
-
-
   adjuntarArchivoCTB(event, item) {
     let archivoAdjunto = event.target.files[0];
     if (archivoAdjunto != null) {
@@ -440,11 +431,19 @@ export class SondeoComponent implements OnInit {
   }
 
   guardarEnviar() {
-    if (this.ObjCondicionesTecnicasBienesGuardar.length > 0) {
-      this.GuardarSondeoBienes();
-    } else if (this.ObjCondicionesTecnicasServiciosGuardar.length > 0) {
-      this.GuardarSondeoServicios();
+    this.spinner.show();
+    let respuesta = this.validarCamposBienesYServicios();
+    if (!respuesta) {
+      return false;
     }
+    else {
+      if (this.ObjCondicionesTecnicasBienesGuardar.length > 0) {
+        this.GuardarSondeoBienes();
+      } else if (this.ObjCondicionesTecnicasServiciosGuardar.length > 0) {
+        this.GuardarSondeoServicios();
+      }
+    }
+
   }
 
   MostrarExitoso(mensaje: string) {
