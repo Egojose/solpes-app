@@ -80,6 +80,7 @@ export class RegistrarSolpSapComponent implements OnInit {
   }
 
   GuardarSolSAP() {
+    console.log(this.numeroSolpSap);
     this.spinner.show();
     let ObjSolpSap;
     if (this.RDBOrdenadorGastos === undefined) {
@@ -88,7 +89,7 @@ export class RegistrarSolpSapComponent implements OnInit {
       return false;
     }
     if (this.RDBOrdenadorGastos !== undefined) {
-      if (this.RDBOrdenadorGastos === 1 && this.numeroSolpSap === undefined) {
+      if (this.RDBOrdenadorGastos === 1 && (this.numeroSolpSap === undefined || this.numeroSolpSap == '')) {
         this.MostrarValidacionNumeroSAP();
         return false;
       }
