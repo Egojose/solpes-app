@@ -87,7 +87,7 @@ export class EntregaBienesComponent implements OnInit {
     this.spinner.show();
     this.AgregarElementoForm = this.formBuilder.group({
       Descripcion: ['', Validators.required],
-      Cantidad: ['', Validators.required],
+      Cantidad: [0, Validators.required],
       Valor: [''],
       UltimaEntrega: ['', Validators.required],
       Comentario: ['']
@@ -101,8 +101,10 @@ export class EntregaBienesComponent implements OnInit {
         this.servicio.obtenerContratoPorSolicitud(this.IdSolicitud).subscribe(
           (respuesta) => {
             this.contrato = Contratos.fromJsonList(respuesta);
-            this.NumSolp = this.contrato[0].numeroContrato;
-            this.ObtenerAdjuntoRegistroActivo(solicitud);
+            if (this.contrato.length>0) {
+              this.NumSolp = this.contrato[0].numeroContrato;              
+            }   
+            this.ObtenerAdjuntoRegistroActivo(solicitud);         
             this.spinner.hide();
           },
           (error) => {
@@ -244,9 +246,9 @@ export class EntregaBienesComponent implements OnInit {
     let comentario = this.AgregarElementoForm.controls['Comentario'].value;
 
     let ultimaEntregabool: boolean;
-    if (ultimaEntrega == "Sí") {
+    if (ultimaEntrega == "Sí" || cantidad === 0) {
       ultimaEntregabool = true;
-      if (cantidad === "0" && comentario === "") {
+      if (comentario === "") {
         this.mostrarAdvertencia("Por favor ingrese un comentario");
         return false;
       }
@@ -255,7 +257,7 @@ export class EntregaBienesComponent implements OnInit {
       ultimaEntregabool = false;
     }
 
-    if (this.ArchivoAdjunto === null && this.OrdenEstadistica === true && cantidad !== "0") {
+    if (this.ArchivoAdjunto === null && this.OrdenEstadistica === true && cantidad !== 0) {
       this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
       return false;
     }
@@ -269,7 +271,8 @@ export class EntregaBienesComponent implements OnInit {
       this.ObjCondicionesTecnicas[IdBienes]["totalCantidad"] = totalCantidad;
       this.ObjCondicionesTecnicas[IdBienes]["cantidadRecibida"] = parseFloat(cantidad);
 
-      if (totalCantidad === 0 || cantidad === "0") {
+      if (totalCantidad === 0 || cantidad === 0) {
+        
         ultimaEntregabool = true;
         this.ObjCondicionesTecnicas[IdBienes]["UltimaEntregaCTB"] = true;
         if (IdBienes > -1) {
@@ -302,14 +305,15 @@ export class EntregaBienesComponent implements OnInit {
     this.spinner.show();
     this.objRecepcionAgregar = new RecepcionBienes(Objdescripcion.IdBienes, Objdescripcion.descripcion, cantidad, valor, ultimaEntregabool, comentario);
 
-    this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, this.ResponsableBienes).then(
+    this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, this.ResponsableBienes,this.NumSolp).then(
       (Respuesta: ItemAddResult) => {
         let IdRecepcionBienes = Respuesta.data.Id;
-        if (ultimaEntregabool === false) {
+         if (this.ArchivoAdjunto !== null) {
           let nombreArchivo = "EntregaBienes-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
           this.servicio.agregarAdjuntoActivosBienes(IdRecepcionBienes, nombreArchivo, this.ArchivoAdjunto).then(
             (Respuesta) => {
               (<HTMLInputElement>document.getElementById("Adjunto")).value = null;
+              this.ArchivoAdjunto = null;
               let CantidadCT = 0;
               let CantidadConfirmada = 0;
               let TotalCantidadVerificar = 0;
@@ -367,6 +371,53 @@ export class EntregaBienesComponent implements OnInit {
         }
         else {
           this.objRecepcionAgregar["adjunto"] = null;
+          let CantidadCT = 0;
+              let CantidadConfirmada = 0;
+              let TotalCantidadVerificar = 0;
+              this.ObjItemsDescripcion = [];
+              this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
+                RespuestaCondiciones => {
+                  this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+                  this.ObjCondicionesTecnicas.forEach(element => {
+                    if (element.totalCantidad > 0 && element.UltimaEntregaCTB === false) {
+                      this.ObjItemsDescripcion.push(element);
+                    }
+                    TotalCantidadVerificar = TotalCantidadVerificar + element.cantidad;
+                    if (element.UltimaEntregaCTB === true) {
+                      CantidadCT++;
+                    }
+                    this.spinner.hide();
+                  });
+                  this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
+                    (respuesta) => {
+                      this.ItemsAgregadosReciente = 0;
+                      this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
+                      this.ObjRecepcionBienes.forEach(element => {
+                        let RptUltimaEntrega = this.ObjCondicionesTecnicas.find(x => x.IdBienes === element.Idbienes).UltimaEntregaCTB;
+                        element.ultimaEntregaCTB = RptUltimaEntrega;
+                        if (element.estadoRB === "No confirmado") {
+                          this.ItemsAgregadosReciente++;
+                        }
+                      });
+                      if (CantidadCT === this.ObjCondicionesTecnicas.length && this.ItemsAgregadosReciente === 0) {
+                        this.showBtnConfirmar = true;
+                      }
+                      this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+                        (RespuestaProcesos) => {
+                          this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
+                          this.ResponsableBienes = this.ObResProceso[0].porRegistrarSapBienes;
+                          this.spinner.hide();
+                        },
+                        (error) => {
+                          this.mostrarError("Error obteniendo responsables del proceso");
+                          console.log(error);
+                          this.spinner.hide();
+                        }
+                      )
+                    }
+                  );
+                }
+              )
         }
 
         this.ItemsAgregadosReciente++;
@@ -458,7 +509,7 @@ export class EntregaBienesComponent implements OnInit {
       this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(ObjCTB.IdBienes, objActualizacionCTB).then(
         (resultado) => {
           this.objRecepcionAgregar = new RecepcionBienes(ObjCTB.IdBienes, ObjCTB.descripcion, 0, "0", true, "");
-          this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, null).then(
+          this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, null,this.NumSolp).then(
             (resultadoBienes: ItemAddResult) => {
               this.ItemsAgregadosReciente++;
               this.objRecepcionAgregar["IdRecepcionBienes"] = resultadoBienes.data.Id;
@@ -506,11 +557,14 @@ export class EntregaBienesComponent implements OnInit {
           }
         }
 
-        this.ObjItemsDescripcion = [];
+        // this.ObjItemsDescripcion = [];
         this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(ObjRecepcionEliminar.Idbienes, objActualizacionCTB).then(
           (resultado) => {
-            this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdBienes]);
-            this.ObjCondicionesTecnicas[IdBienes]["UltimaEntregaCTB"] = false;
+            if (ObjRecepcionEliminar.ultimaEntrega === true) {
+              this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdBienes]);
+              this.ObjCondicionesTecnicas[IdBienes]["UltimaEntregaCTB"] = false;
+            }
+                        
             this.spinner.hide();
           }).catch(
             (error) => {
@@ -638,6 +692,12 @@ export class EntregaBienesComponent implements OnInit {
 
   mostrarError(mensaje: string) {
     this.toastr.errorToastr(mensaje, "Oops!");
+  }
+
+  VerSolicitud(){
+    sessionStorage.setItem('solicitud', JSON.stringify(this.IdSolicitud));
+    window.open("/ver-solicitud-tab", '_blank');
+    // this.router.navigate(['/ver-solicitud-tab']);
   }
 
 }

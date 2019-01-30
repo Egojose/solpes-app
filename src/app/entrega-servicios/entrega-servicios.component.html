@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 <div class="loading" *ngIf='loading'>
     <img class="img-logo" src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
     <b>PROCESANDO...</b>
 </div>
+=======
+>>>>>>> master
 <br>
 <!-- <div class="row espacio">
     <div class="col-md-4">
@@ -91,15 +94,16 @@
 </div> -->
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group ">
+        <div  >
+            <h5><strong>Número de pedido: </strong>{{NumSolp}}</h5>
+        </div>
+        <!-- <div class="form-group ">
             <label for="colFormLabel"><strong>Número de pedido</strong></label>
             <input type="text" class="form-control" [(ngModel)]="NumSolp" readonly>
-        </div>
+        </div> -->
     </div>
     <div class="col-md-4 offset-md-2">
-        <a href="/ver-solicitud-tab" target="_blank">
-            <button class="btn btn-primary">Ver solicitud</button>
-        </a>
+        <button class="btn btn-primary" (click)="VerSolicitud()">Ver solicitud</button>
     </div>
 </div>
 <div class="row">
@@ -113,7 +117,6 @@
                             <th scope="col">Código</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Cantidad</th>
-                            <th scope="col">Comentario</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -122,7 +125,6 @@
                             <td>{{item.codigo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.totalCantidad}}</td>
-                            <td>{{item.comentario}}</td>
                             <td>
                                 <!-- <div *ngIf="item.totalCantidad !== 0 && item.ultimaEntregaCTS !== true">
                                     <button class="btn btn-warning btnAcciones" (click)="UltimaEntrega(item)">No hay mas entregas</button>
@@ -160,7 +162,7 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputEmail4">Valor</label>
-                            <input type="text" formControlName="Valor" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Valor.errors }">
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="Valor" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Valor.errors }">
                             <div *ngIf="submitted && f.Valor.errors" class="invalid-feedback">
                                 <div *ngIf="f.Valor.errors.required">Es requerido</div>
                             </div>
@@ -168,7 +170,8 @@
                         <div class="form-group col-md-2">
                             <label for="inputEmail4">Cantidad</label>
                             <ng-template #tolTemplate>{{content}}</ng-template>
-                            <input type="text" class="form-control" numbersOnly [tooltip]="tolTemplate" (change)="ValidacionCero()" triggers="" #customTooltip="bs-tooltip" placement="bottom" id="Cantidad" numbersOnly formControlName="Cantidad" [ngClass]="{ 'is-invalid': submitted && f.Cantidad.errors }">
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" type="text" class="form-control" numbersOnly [tooltip]="tolTemplate" (change)="ValidacionCero()" triggers="" #customTooltip="bs-tooltip"
+                                placement="bottom" id="Cantidad" numbersOnly formControlName="Cantidad" [ngClass]="{ 'is-invalid': submitted && f.Cantidad.errors }">
                             <div *ngIf="submitted && f.Cantidad.errors" class="invalid-feedback">
                                 <div *ngIf="f.Cantidad.errors.required">Es requerido</div>
                             </div>

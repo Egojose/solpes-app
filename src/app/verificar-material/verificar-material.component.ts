@@ -267,7 +267,7 @@ export class VerificarMaterialComponent implements OnInit {
 
   private MostrarAdjuntosActivos() {
     let cantidadesReservaVerificarEnCero = this.ObjCTVerificar.filter(c => c.cantidadreservaverificar > 0);
-    if (cantidadesReservaVerificarEnCero.length > 0) {
+    if (cantidadesReservaVerificarEnCero.length > 0 && this.OrdenEstadistica) {
       this.SwtichOrdenEstadistica = true;
     }
     else {
