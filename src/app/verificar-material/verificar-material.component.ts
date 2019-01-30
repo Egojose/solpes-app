@@ -111,6 +111,7 @@ export class VerificarMaterialComponent implements OnInit {
         return false;
       }
       this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarActivos;
+      console.log(this.ResponsableProceso);
       this.estadoSolicitud = 'Por registrar activos';
       coment = {
         Estado: this.estadoSolicitud,
@@ -120,6 +121,7 @@ export class VerificarMaterialComponent implements OnInit {
       }
     } else {
       this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarSolp;
+      console.log(this.ResponsableProceso);
       this.estadoSolicitud = 'Por registrar solp sap';
       coment = {
         Estado: this.estadoSolicitud,
@@ -336,6 +338,7 @@ export class VerificarMaterialComponent implements OnInit {
     if (this.verificarMaterialFormulario.invalid) {
       return;
     }
+
     let objGuardarVerificar;
     let codigoVerificar = this.verificarMaterialFormulario.controls["codigoVerificar"].value;
     let descripcionVerificar = this.verificarMaterialFormulario.controls["descripcionVerificar"].value;
