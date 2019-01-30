@@ -54,7 +54,7 @@ export class VerificarMaterialComponent implements OnInit {
   submitted = false;
   dataSource;
   labelPosition = "after";
-  displayedColumns: string[] = ["codigo","descripcion","modelo","fabricante","cantidad","existenciasverificar","numreservaverificar","cantidadreservaverificar","Accion"];
+  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar", "Accion"];
   modalRef: BsModalRef;
   IdVerficar: any;
   paisId: any;
@@ -66,8 +66,11 @@ export class VerificarMaterialComponent implements OnInit {
   SwtichEsOrdenEstadistica: boolean;
   ArchivoAdjunto: File;
   SwtichFaltaRecepcionBienes: boolean;
-  verificar : string;
-  
+  verificar: string;
+  existeCondicionesTecnicasBienes: boolean;
+  existeCondicionesTecnicasServicios: boolean;
+  ResponsableProceso: number;
+  estadoSolicitud: string;
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.spinner.hide();
@@ -76,17 +79,18 @@ export class VerificarMaterialComponent implements OnInit {
     this.SwtichOrdenEstadistica = false;
     this.SwtichEsOrdenEstadistica = false;
     this.cantidadTotalCompra = 0;
+    this.existeCondicionesTecnicasBienes = false;
+    this.existeCondicionesTecnicasServicios = false;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
   }
 
-  
   adjuntarArchivoVM(event) {
     let archivoAdjunto = event.target.files[0];
-      if (archivoAdjunto != null) {
-        this.ArchivoAdjunto = archivoAdjunto;
-      } else {
-        this.ArchivoAdjunto = null;
-      }
+    if (archivoAdjunto != null) {
+      this.ArchivoAdjunto = archivoAdjunto;
+    } else {
+      this.ArchivoAdjunto = null;
+    }
   }
   comfirmasalir(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
@@ -106,18 +110,20 @@ export class VerificarMaterialComponent implements OnInit {
         this.spinner.hide();
         return false;
       }
-      let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarActivos;
+      this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarActivos;
+      this.estadoSolicitud = 'Por registrar activos';
       coment = {
-        Estado: 'Por registrar activos',
-        ResponsableId: ResponsableProcesoId,
+        Estado: this.estadoSolicitud,
+        ResponsableId: this.ResponsableProceso,
         ComentarioVerificarMaterial: comentarios,
         FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes
       }
     } else {
-      let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
+      this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarSolp;
+      this.estadoSolicitud = 'Por registrar solp sap';
       coment = {
-        Estado: 'Por registrar solp sap',
-        ResponsableId: ResponsableProcesoId,
+        Estado: this.estadoSolicitud,
+        ResponsableId: this.ResponsableProceso,
         ComentarioVerificarMaterial: comentarios,
         FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes
       }
@@ -126,25 +132,49 @@ export class VerificarMaterialComponent implements OnInit {
     let cantidadMateriales = this.ObjCTVerificar.length;
     if (cantidad === cantidadMateriales) {
       this.servicio.guardarComentario(this.IdSolicitud, coment).then((resultado: ItemAddResult) => {
-          this.MostrarExitoso("Materiales verificados correctamente");
-          if (this.SwtichOrdenEstadistica === true) {
-            let nombreArchivo = "ActivoVM-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
-            this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then((respuesta) => {
+        this.MostrarExitoso("Materiales verificados correctamente");
+        if (this.SwtichOrdenEstadistica === true) {
+          let nombreArchivo = "ActivoVM-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
+          this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then((respuesta) => {
+            let notificacion = {
+              IdSolicitud: this.IdSolicitud.toString(),
+              ResponsableId: this.ResponsableProceso,
+              Estado: this.estadoSolicitud
+            };
+            this.servicio.agregarNotificacion(notificacion).then(
+              (item: ItemAddResult) => {
                 this.MostrarExitoso("Archivo guardado correctamente");
                 this.router.navigate(["/mis-pendientes"]);
                 this.spinner.hide();
-              }
-            ).catch((error) => {
-                this.mostrarError("Error al guardar el archivo");
+              }, err => {
+                this.mostrarError('Error agregando la notificación');
                 this.spinner.hide();
               }
-            );
+            )
           }
-          else {
-            this.router.navigate(["/mis-pendientes"]);
+          ).catch((error) => {
+            this.mostrarError("Error al guardar el archivo");
             this.spinner.hide();
           }
-        })
+          );
+        }
+        else {
+          let notificacion = {
+            IdSolicitud: this.IdSolicitud.toString(),
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud
+          };
+          this.servicio.agregarNotificacion(notificacion).then(
+            (item: ItemAddResult) => {
+              this.router.navigate(["/mis-pendientes"]);
+              this.spinner.hide();
+            }, err => {
+              this.mostrarError('Error agregando la notificación');
+              this.spinner.hide();
+            }
+          )
+        }
+      })
         .catch(error => {
           console.log(error);
           this.spinner.hide();
@@ -199,26 +229,29 @@ export class VerificarMaterialComponent implements OnInit {
       this.alcance = solicitud.Alcance;
       this.justificacion = solicitud.Justificacion;
       this.ComentarioSondeo = solicitud.ComentarioSondeo;
-
       this.MostrarNumeroEstadistica();
-
       if (solicitud.CondicionesContractuales != null) {
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
       }
       this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
-        this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-        console.log(this.ObjCondicionesTecnicas);
-        this.ObjCTVerificar = verificarMaterialCT.fromJsonList(RespuestaCondiciones);
-        this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
-        this.dataSource.paginator = this.paginator;
-        this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
-          this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
-          this.MostrarAdjuntosActivos();
-        });
+        if (RespuestaCondiciones.length > 0) {
+          this.existeCondicionesTecnicasBienes = true;
+          this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+          this.ObjCTVerificar = verificarMaterialCT.fromJsonList(RespuestaCondiciones);
+          this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+          this.dataSource.paginator = this.paginator;
+          this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
+            this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
+            this.MostrarAdjuntosActivos();
+          });
+
+        }
       });
       this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
-        this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-        console.log(this.ObjCondicionesTecnicasServicios);
+        if (RespuestaCondicionesServicios.length > 0) {
+          this.existeCondicionesTecnicasServicios = true;
+          this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+        }
         this.spinner.hide();
       });
     });
@@ -238,15 +271,12 @@ export class VerificarMaterialComponent implements OnInit {
     else {
       this.SwtichOrdenEstadistica = false;
     }
-  }
-
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.spinner.hide();
   }
 
   salir() {
     this.modalRef.hide();
-    this.router.navigate(["/mis-solicitudes"]);
+    this.router.navigate(["/mis-pendientes"]);
   }
 
   RegistrarFormularioVerificar() {
@@ -260,30 +290,28 @@ export class VerificarMaterialComponent implements OnInit {
       numReservaVerificar: new FormControl(""),
       cantidadReservaVerificar: new FormControl("0"),
     });
-    console.log('Fomulario creado');
   }
 
   ValidarNumReservaSiHayExistencias() {
     const numReservaVerificar = this.verificarMaterialFormulario.get('numReservaVerificar');
     this.verificarMaterialFormulario.get('existenciasVerificar').valueChanges.subscribe((valor: string) => {
-        if (valor != '' || valor != undefined || valor != null) {
-          if (parseFloat(valor) > 0) {
-            numReservaVerificar.setValidators([Validators.required]);
-          }
-          else {
-            numReservaVerificar.clearValidators();
-          }
+      if (valor != '' || valor != undefined || valor != null) {
+        if (parseFloat(valor) > 0) {
+          numReservaVerificar.setValidators([Validators.required]);
         }
         else {
           numReservaVerificar.clearValidators();
         }
-        numReservaVerificar.updateValueAndValidity();
-      });
+      }
+      else {
+        numReservaVerificar.clearValidators();
+      }
+      numReservaVerificar.updateValueAndValidity();
+    });
 
   }
 
   abrirModalVerificarMaterial(template: TemplateRef<any>, element) {
-    console.log(element);
     this.verificarSubmitted = false;
     this.IdVerficar = element.id;
     this.verificarMaterialFormulario.controls["codigoVerificar"].setValue(element.codigoSondeo);
@@ -353,9 +381,9 @@ export class VerificarMaterialComponent implements OnInit {
       else {
         this.SwtichFaltaRecepcionBienes = true;
       }
-      }).catch(error => {
-        console.log(error);
-      });
+    }).catch(error => {
+      console.log(error);
+    });
     this.dataSource = this.ObjCTVerificar;
     this.CargarTablaVerificar();
     this.limpiarControlesVerificar();

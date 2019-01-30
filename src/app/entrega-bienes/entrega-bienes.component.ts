@@ -4,13 +4,13 @@ import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../entrega-bienes/condicionTecnicaBienes';
 import { RecepcionBienes } from '../entrega-bienes/recepcionBienes';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ItemAddResult } from 'sp-pnp-js';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Contratos } from '../dominio/contrato';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-entrega-bienes',
@@ -71,7 +71,7 @@ export class EntregaBienesComponent implements OnInit {
   contrato: Contratos[] = [];
   SwtichEsOrdenEstadistica: boolean;
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private modalService: BsModalService, private activarRoute: ActivatedRoute, private router: Router, public toastr: ToastrManager) {
+  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
     this.ErrorCantidad = false;
     this.activarTool = true;
     this.EstadoSolicitud = true;
@@ -80,11 +80,11 @@ export class EntregaBienesComponent implements OnInit {
     this.ArchivoAdjunto = null;
     this.modolectura = false;
     this.SwtichEsOrdenEstadistica = false;
+    this.spinner.hide();
   }
 
-
   ngOnInit() {
-    this.loading = true;
+    this.spinner.show();
     this.AgregarElementoForm = this.formBuilder.group({
       Descripcion: ['', Validators.required],
       Cantidad: ['', Validators.required],
@@ -103,17 +103,23 @@ export class EntregaBienesComponent implements OnInit {
             this.contrato = Contratos.fromJsonList(respuesta);
             this.NumSolp = this.contrato[0].numeroContrato;
             this.ObtenerAdjuntoRegistroActivo(solicitud);
+            this.spinner.hide();
           },
           (error) => {
             this.mostrarError("error consultando el contrato");
             console.log(error);
+            this.spinner.hide();
           }
         )
 
-        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        if (solicitud.CondicionesContractuales != null) {
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        }
+
         let CantidadCT = 0;
         let CantidadConfirmada = 0;
         let TotalCantidadVerificar = 0;
+
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
@@ -125,7 +131,9 @@ export class EntregaBienesComponent implements OnInit {
               if (element.UltimaEntregaCTB === true) {
                 CantidadCT++;
               }
+              this.spinner.hide();
             });
+
             this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
               (respuesta) => {
                 this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
@@ -135,19 +143,23 @@ export class EntregaBienesComponent implements OnInit {
                   if (element.estadoRB === "No confirmado") {
                     this.ItemsAgregadosReciente++;
                   }
+                  this.spinner.hide();
                 });
+
                 if (CantidadCT === this.ObjCondicionesTecnicas.length && this.ItemsAgregadosReciente === 0) {
                   this.showBtnConfirmar = true;
                 }
+
                 this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
                   (RespuestaProcesos) => {
                     this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
                     this.ResponsableBienes = this.ObResProceso[0].porRegistrarSapBienes;
-                    this.loading = false;
+                    this.spinner.hide();
                   },
                   (error) => {
                     this.mostrarError("Error obteniendo el responsable del proceso");
                     console.log(error);
+                    this.spinner.hide();
                   }
                 )
               }
@@ -177,7 +189,7 @@ export class EntregaBienesComponent implements OnInit {
     this.OrdenEstadistica = solicitud.OrdenEstadistica;
     this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
     this.tieneArchivo = solicitud.Attachments;
-    if(this.OrdenEstadistica){
+    if (this.OrdenEstadistica) {
       this.SwtichEsOrdenEstadistica = true;
     }
   }
@@ -201,7 +213,6 @@ export class EntregaBienesComponent implements OnInit {
 
   ValidacionCero() {
     let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
-
     if (cantidad === "0") {
       this.AgregarElementoForm.controls['UltimaEntrega'].setValue("Sí");
       this.modolectura = true;
@@ -221,7 +232,6 @@ export class EntregaBienesComponent implements OnInit {
   }
 
   onSubmit() {
-
     this.submitted = true;
     if (this.AgregarElementoForm.invalid) {
       return;
@@ -286,10 +296,10 @@ export class EntregaBienesComponent implements OnInit {
       setTimeout(() => {
         this.tooltip.hide();
       }, 3000);
-
       return;
     }
-    this.loading = true;
+
+    this.spinner.show();
     this.objRecepcionAgregar = new RecepcionBienes(Objdescripcion.IdBienes, Objdescripcion.descripcion, cantidad, valor, ultimaEntregabool, comentario);
 
     this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, this.ResponsableBienes).then(
@@ -303,6 +313,7 @@ export class EntregaBienesComponent implements OnInit {
               let CantidadCT = 0;
               let CantidadConfirmada = 0;
               let TotalCantidadVerificar = 0;
+              this.ObjItemsDescripcion = [];
               this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
                 RespuestaCondiciones => {
                   this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
@@ -314,6 +325,7 @@ export class EntregaBienesComponent implements OnInit {
                     if (element.UltimaEntregaCTB === true) {
                       CantidadCT++;
                     }
+                    this.spinner.hide();
                   });
                   this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
                     (respuesta) => {
@@ -333,11 +345,12 @@ export class EntregaBienesComponent implements OnInit {
                         (RespuestaProcesos) => {
                           this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
                           this.ResponsableBienes = this.ObResProceso[0].porRegistrarSapBienes;
-                          this.loading = false;
+                          this.spinner.hide();
                         },
                         (error) => {
                           this.mostrarError("Error obteniendo responsables del proceso");
                           console.log(error);
+                          this.spinner.hide();
                         }
                       )
                     }
@@ -348,6 +361,7 @@ export class EntregaBienesComponent implements OnInit {
           ).catch(
             (error) => {
               this.mostrarError("Error al guardar el archivo");
+              this.spinner.hide();
             }
           );
         }
@@ -357,12 +371,9 @@ export class EntregaBienesComponent implements OnInit {
 
         this.ItemsAgregadosReciente++;
         this.objRecepcionAgregar["IdRecepcionBienes"] = IdRecepcionBienes;
-        //this.objRecepcionAgregar["eliminar"]=true;    
         this.objRecepcionAgregar["estadoRB"] = "No confirmado";
         this.objRecepcionAgregar["fechaRecepcion"] = new Date();
-
         this.ObjRecepcionBienes.push(this.objRecepcionAgregar);
-        // this.ObjRecepcionBienes.sort();
         this.AgregarElementoForm.reset({
           'Descripcion': '',
           'Cantidad': '',
@@ -384,25 +395,22 @@ export class EntregaBienesComponent implements OnInit {
         }
         this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(Objdescripcion.IdBienes, objActualizacionCTB).then(
           (resultado) => {
-            this.loading = false;
+            this.spinner.hide();
           }).catch(
             (error) => {
               console.log(error);
-              this.loading = false;
+              this.spinner.hide();
             }
           );
       }, error => {
         this.mostrarError("Error al realizar la recepción de bienes");
         console.log(error);
-        this.loading = false;
+        this.spinner.hide();
       }
     );
   }
 
-
-
   UltimaEntrega(ObjCTB) {
-
     let IdBienes = this.ObjCondicionesTecnicas.findIndex(x => x.IdBienes === ObjCTB.IdBienes);
     if (this.ObjCondicionesTecnicas[IdBienes].cantidadRecibida > 0) {
       let FilterRecepcionBines = this.ObjRecepcionBienes.filter(x => x.Idbienes === ObjCTB.IdBienes);
@@ -417,7 +425,7 @@ export class EntregaBienesComponent implements OnInit {
       let objActualizacionCTB = {
         UltimaEntrega: true
       }
-      this.loading = true;
+      this.spinner.show();
       this.servicio.actualizarBienesRecibidos(RecepcionBieesID).then(
         (resultado) => {
           this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(ObjCTB.IdBienes, objActualizacionCTB).then(
@@ -426,11 +434,11 @@ export class EntregaBienesComponent implements OnInit {
               let indexBienes = this.ObjRecepcionBienes.findIndex(x => x.Idbienes === ObjCTB.IdBienes);
               this.ObjRecepcionBienes[indexBienes]["ultimaEntrega"] = true;
               this.ObjItemsDescripcion.splice(indexBienes, 1);
-              this.loading = false;
+              this.spinner.hide();
             }).catch(
               (error) => {
                 console.log(error);
-                this.loading = false;
+                this.spinner.hide();
               }
             );
         }
@@ -446,7 +454,7 @@ export class EntregaBienesComponent implements OnInit {
         CantidadRecibida: 0,
         UltimaEntrega: true
       }
-      this.loading = true;
+      this.spinner.show();
       this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(ObjCTB.IdBienes, objActualizacionCTB).then(
         (resultado) => {
           this.objRecepcionAgregar = new RecepcionBienes(ObjCTB.IdBienes, ObjCTB.descripcion, 0, "0", true, "");
@@ -454,19 +462,18 @@ export class EntregaBienesComponent implements OnInit {
             (resultadoBienes: ItemAddResult) => {
               this.ItemsAgregadosReciente++;
               this.objRecepcionAgregar["IdRecepcionBienes"] = resultadoBienes.data.Id;
-              //this.objRecepcionAgregar["eliminar"]=true;    
               this.objRecepcionAgregar["estadoRB"] = "No confirmado";
               this.objRecepcionAgregar["fechaRecepcion"] = new Date();
               this.ObjRecepcionBienes.push(this.objRecepcionAgregar);
               let indexBienes = this.ObjRecepcionBienes.findIndex(x => x.Idbienes === ObjCTB.IdBienes);
               this.ObjItemsDescripcion.splice(indexBienes, 1);
-              this.loading = false;
+              this.spinner.hide();
             }
           )
         }).catch(
           (error) => {
             console.log(error);
-            this.loading = false;
+            this.spinner.hide();
           }
         );
     }
@@ -477,7 +484,7 @@ export class EntregaBienesComponent implements OnInit {
     let IdBienes = this.ObjCondicionesTecnicas.findIndex(x => x.IdBienes === ObjRecepcionEliminar.Idbienes);
     let TotalBienes = this.ObjCondicionesTecnicas[IdBienes]["totalCantidad"];
     let cantidadRecibida = this.ObjCondicionesTecnicas[IdBienes]["cantidadRecibida"];
-    this.loading = true;
+    this.spinner.show();
     this.servicio.eliminarBienesRecibidos(ObjRecepcionEliminar.IdRecepcionBienes).then(
       (resultado) => {
         this.ItemsAgregadosReciente--;
@@ -485,7 +492,6 @@ export class EntregaBienesComponent implements OnInit {
         this.ObjCondicionesTecnicas[IdBienes]["cantidadRecibida"] = cantidadRecibida - parseFloat(ObjRecepcionEliminar.cantidad);
         let indesBienes = this.ObjRecepcionBienes.findIndex(x => x.IdRecepcionBienes === ObjRecepcionEliminar.IdRecepcionBienes);
         this.ObjRecepcionBienes.splice(indesBienes, 1);
-
         let objActualizacionCTB;
         if (ObjRecepcionEliminar.ultimaEntrega === true) {
           objActualizacionCTB = {
@@ -500,18 +506,18 @@ export class EntregaBienesComponent implements OnInit {
           }
         }
 
+        this.ObjItemsDescripcion = [];
         this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(ObjRecepcionEliminar.Idbienes, objActualizacionCTB).then(
           (resultado) => {
             this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdBienes]);
             this.ObjCondicionesTecnicas[IdBienes]["UltimaEntregaCTB"] = false;
-            this.loading = false;
+            this.spinner.hide();
           }).catch(
             (error) => {
               console.log(error);
-              this.loading = false;
+              this.spinner.hide();
             }
           );
-
       }
     ).catch(
       (error) => {
@@ -530,7 +536,7 @@ export class EntregaBienesComponent implements OnInit {
       if (element.estadoRB === "No confirmado") {
         element.estadoRB = "Confirmado";
         Confirmado = true;
-        this.loading = true;
+        this.spinner.show();
         this.servicio.ConfirmarEntregaBienes(element.IdRecepcionBienes).then(
           (resultado) => {
             numeroItems++;
@@ -569,7 +575,7 @@ export class EntregaBienesComponent implements OnInit {
                       ).catch(
                         (error) => {
                           console.log(error);
-                          this.loading = false;
+                          this.spinner.hide();
                         })
                     }
                     else {
@@ -585,7 +591,7 @@ export class EntregaBienesComponent implements OnInit {
                       ).catch(
                         (error) => {
                           console.log(error);
-                          this.loading = false;
+                          this.spinner.hide();
                         })
                     }
 
@@ -595,7 +601,7 @@ export class EntregaBienesComponent implements OnInit {
                   }
                 },
                 (error) => {
-                  this.loading = false;
+                  this.spinner.hide();
                 }
               )
 
@@ -604,7 +610,7 @@ export class EntregaBienesComponent implements OnInit {
         ).catch(
           (error) => {
             console.log(error);
-            this.loading = false;
+            this.spinner.hide();
           }
         )
       }

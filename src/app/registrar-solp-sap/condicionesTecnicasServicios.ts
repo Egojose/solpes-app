@@ -49,7 +49,6 @@ export class CondicionTecnicaServicios{
            });
         }       
 
-
         return new CondicionTecnicaServicios(element.Title,
             element.Solicitud,
             element.Codigo,
