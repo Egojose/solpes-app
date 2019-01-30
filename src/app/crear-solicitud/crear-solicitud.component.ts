@@ -23,6 +23,7 @@ import { MatTableDataSource } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { NgxSpinnerService } from 'ngx-spinner';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -425,12 +426,22 @@ export class CrearSolicitudComponent implements OnInit {
       (item: ItemAddResult) => {
         this.idSolicitudGuardada = item.data.Id;
         this.spinner.hide();
+        this.cambiarNombresColumnas();
       }, err => {
         this.mostrarError('Error en la creación de la solicitud en estado inicial');
         this.spinner.hide();
         console.log('Error en la creación de la solicitud en estado inicial: ' + err);
       }
     )
+  }
+
+  cambiarNombresColumnas(): any {
+    $(document).ready(function () {
+        $(".columnaBienes")[0].innerText = "Código";
+        $(".columnaBienes")[1].innerText = "Descripción";
+        $(".columnaServicios")[0].innerText = "Código";
+        $(".columnaServicios")[1].innerText = "Descripción";
+    });
   }
 
   filtrarSubcategorias() {

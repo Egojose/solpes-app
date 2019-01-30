@@ -84,12 +84,7 @@ export class AprobarSondeoComponent implements OnInit {
     }
     if (this.RDBsondeo !== undefined) {
       if (this.RDBsondeo === 1 && this.ComentarioSondeo === undefined) {
-        this.tooltip.show();
-        setTimeout(() => {
-          this.tooltip.hide();
-        }, 3000);
-        this.spinner.hide();
-        return false;
+        return this.ValidarComentarios();
       }
       else if (this.RDBsondeo === 1) {
         //Comprador
@@ -104,12 +99,7 @@ export class AprobarSondeoComponent implements OnInit {
         }
       }
       else if (this.RDBsondeo === 2 && this.justificacionSondeo === undefined) {
-        this.tooltip1.show();
-        setTimeout(() => {
-          this.tooltip1.hide();
-        }, 3000);
-        this.spinner.hide();
-        return false;
+        return this.validarJustificacion();
       }
       else if (this.RDBsondeo === 2) {
         if (this.ObjCondicionesTecnicas.length > 0) {
@@ -174,7 +164,6 @@ export class AprobarSondeoComponent implements OnInit {
 
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
-
           let notificacion = {
             IdSolicitud: this.IdSolicitud.toString(),
             ResponsableId: this.ResponsableProceso,
@@ -202,6 +191,24 @@ export class AprobarSondeoComponent implements OnInit {
         }
       )
     }
+  }
+
+  private validarJustificacion() {
+    this.tooltip1.show();
+    setTimeout(() => {
+      this.tooltip1.hide();
+    }, 3000);
+    this.spinner.hide();
+    return false;
+  }
+
+  private ValidarComentarios() {
+    this.tooltip.show();
+    setTimeout(() => {
+      this.tooltip.hide();
+    }, 3000);
+    this.spinner.hide();
+    return false;
   }
 
   ngOnInit() {
