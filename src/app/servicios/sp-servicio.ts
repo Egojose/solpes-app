@@ -280,8 +280,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerRecepcionesBienes(IdResponsable){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles").expand("AttachmentFiles").get());
+    ObtenerRecepcionesBienes(IdResponsable : number){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles", "Author/Title").expand("AttachmentFiles", "Author").get());
         return respuesta;
     }
 
