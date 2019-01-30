@@ -101,8 +101,10 @@ export class EntregaBienesComponent implements OnInit {
         this.servicio.obtenerContratoPorSolicitud(this.IdSolicitud).subscribe(
           (respuesta) => {
             this.contrato = Contratos.fromJsonList(respuesta);
-            this.NumSolp = this.contrato[0].numeroContrato;
-            this.ObtenerAdjuntoRegistroActivo(solicitud);
+            if (this.contrato.length>0) {
+              this.NumSolp = this.contrato[0].numeroContrato;              
+            }   
+            this.ObtenerAdjuntoRegistroActivo(solicitud);         
             this.spinner.hide();
           },
           (error) => {
@@ -310,6 +312,7 @@ export class EntregaBienesComponent implements OnInit {
           this.servicio.agregarAdjuntoActivosBienes(IdRecepcionBienes, nombreArchivo, this.ArchivoAdjunto).then(
             (Respuesta) => {
               (<HTMLInputElement>document.getElementById("Adjunto")).value = null;
+              this.ArchivoAdjunto = null;
               let CantidadCT = 0;
               let CantidadConfirmada = 0;
               let TotalCantidadVerificar = 0;
