@@ -22,7 +22,7 @@
                         <td>{{item.CodigoSondeo}}</td>
                         <td>{{item.descripcion}}</td>
                         <td>{{item.CantidadSondeo | number}}</td>
-                        <td>{{item.PrecioSondeo | currency}}</td>
+                        <td>{{item.PrecioSondeo | number}}</td>
                         <td>{{item.ComentarioSondeo}}</td>
                         <td>
                             <a *ngIf="item.adjunto != null" href="{{item.adjunto.url}}" target= _blank>
@@ -54,7 +54,7 @@
                         <td>{{item.codigoSondeo}}</td>
                         <td>{{item.descripcion}}</td>
                         <td>{{item.cantidadSondeo | number}}</td>
-                        <td>{{item.precioSondeo | currency}}</td>
+                        <td>{{item.precioSondeo | number}}</td>
                         <td>{{item.comentarioSondeo}}</td>
                         <td>
                             <a *ngIf="item.RutaArchivo !== ''" href="{{item.RutaArchivo}}" target= _blank>
@@ -278,7 +278,7 @@
                                             <td>{{item.Modelo}}</td>
                                             <td>{{item.Fabricante}}</td>
                                             <td>{{item.Cantidad | number}}</td>
-                                            <td>{{item.ValorEstimado | currency}}</td>
+                                            <td>{{item.ValorEstimado | number}}</td>
                                             <td>{{item.Comentarios}}</td>
                                             <td>
                                                 <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}"
@@ -293,7 +293,7 @@
                                             <td>{{item.Modelo}}</td>
                                             <td>{{item.Fabricante}}</td>
                                             <td>{{item.CantidadSondeo | number}}</td>
-                                            <td>{{item.PrecioSondeo | currency}}</td>
+                                            <td>{{item.PrecioSondeo | number}}</td>
                                             <td>{{item.ComentarioSondeo}}</td>
                                             <td>
                                                 <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}"
@@ -331,7 +331,7 @@
                                             <td>{{item.Codigo}}</td>
                                             <td>{{item.descripcion}}</td>
                                             <td>{{item.Cantidad | number}}</td>
-                                            <td>{{item.ValorEstimado | currency}}</td>
+                                            <td>{{item.ValorEstimado | number}}</td>
                                             <td>{{item.Comentario}}</td>
                                             <td>
                                                 <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
@@ -343,7 +343,7 @@
                                             <td>{{item.codigoSondeo}}</td>
                                             <td>{{item.descripcion}}</td>
                                             <td>{{item.cantidadSondeo | number}}</td>
-                                            <td>{{item.precioSondeo | currency}}</td>
+                                            <td>{{item.precioSondeo | number}}</td>
                                             <td>{{item.comentarioSondeo}}</td>
                                             <td>
                                                 <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>

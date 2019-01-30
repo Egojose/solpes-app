@@ -37,7 +37,7 @@
                 </ng-container>
                 <ng-container matColumnDef="valorEstimado">
                     <th mat-header-cell *matHeaderCellDef> Valor</th>
-                    <td mat-cell *matCellDef="let element"> {{element.PrecioSondeo | currency}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.PrecioSondeo | number}} </td>
                 </ng-container>
                 <ng-container matColumnDef="moneda">
                     <th mat-header-cell *matHeaderCellDef> Moneda</th>
@@ -86,7 +86,7 @@
                 </ng-container>
                 <ng-container matColumnDef="valorEstimado">
                     <th mat-header-cell *matHeaderCellDef> Precio sondeo</th>
-                    <td mat-cell *matCellDef="let element"> {{element.precioSondeo | currency }} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.precioSondeo | number }} </td>
                 </ng-container>
                 <ng-container matColumnDef="moneda">
                     <th mat-header-cell *matHeaderCellDef> Moneda</th>
@@ -348,7 +348,7 @@
                                     <td>{{item.modelo}}</td>
                                     <td>{{item.fabricante}}</td>
                                     <td>{{item.cantidad | number}}</td>
-                                    <td>{{item.valorEstimado | currency}}</td>
+                                    <td>{{item.valorEstimado | number}}</td>
                                     <td>
                                         <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                             <a href="{{item.adjuntoCreacion.url}}" target="_blank">
@@ -390,7 +390,7 @@
                                     <td>{{item.codigo}}</td>
                                     <td>{{item.descripcion}}</td>
                                     <td>{{item.cantidad | number}}</td>
-                                    <td>{{item.valorEstimado | currency}}</td>
+                                    <td>{{item.valorEstimado | number}}</td>
                                     <td>
                                         <ng-container *ngIf="item.archivo !== ''; else nohayServicios">
                                             <a href="{{item.archivo}}" target="_blank">
@@ -430,7 +430,7 @@
                             <td>{{item.CodigoSondeo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.CantidadSondeo | number}}</td>
-                            <td>{{item.PrecioSondeo | currency}}</td>
+                            <td>{{item.PrecioSondeo | number}}</td>
                             <td>{{item.ComentarioSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeoBienes">
@@ -469,7 +469,7 @@
                             <td>{{item.codigoSondeo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidadSondeo | number}}</td>
-                            <td>{{item.precioSondeo | currency}}</td>
+                            <td>{{item.precioSondeo | number}}</td>
                             <td>{{item.comentarioSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeoservicio">
