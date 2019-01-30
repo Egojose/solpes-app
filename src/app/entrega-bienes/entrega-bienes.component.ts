@@ -87,7 +87,7 @@ export class EntregaBienesComponent implements OnInit {
     this.spinner.show();
     this.AgregarElementoForm = this.formBuilder.group({
       Descripcion: ['', Validators.required],
-      Cantidad: ['', Validators.required],
+      Cantidad: [0, Validators.required],
       Valor: [''],
       UltimaEntrega: ['', Validators.required],
       Comentario: ['']
@@ -101,8 +101,10 @@ export class EntregaBienesComponent implements OnInit {
         this.servicio.obtenerContratoPorSolicitud(this.IdSolicitud).subscribe(
           (respuesta) => {
             this.contrato = Contratos.fromJsonList(respuesta);
-            this.NumSolp = this.contrato[0].numeroContrato;
-            this.ObtenerAdjuntoRegistroActivo(solicitud);
+            if (this.contrato.length>0) {
+              this.NumSolp = this.contrato[0].numeroContrato;              
+            }   
+            this.ObtenerAdjuntoRegistroActivo(solicitud);         
             this.spinner.hide();
           },
           (error) => {
@@ -244,9 +246,9 @@ export class EntregaBienesComponent implements OnInit {
     let comentario = this.AgregarElementoForm.controls['Comentario'].value;
 
     let ultimaEntregabool: boolean;
-    if (ultimaEntrega == "Sí") {
+    if (ultimaEntrega == "Sí" || cantidad === 0) {
       ultimaEntregabool = true;
-      if (cantidad === "0" && comentario === "") {
+      if (comentario === "") {
         this.mostrarAdvertencia("Por favor ingrese un comentario");
         return false;
       }
@@ -255,7 +257,7 @@ export class EntregaBienesComponent implements OnInit {
       ultimaEntregabool = false;
     }
 
-    if (this.ArchivoAdjunto === null && this.OrdenEstadistica === true && cantidad !== "0") {
+    if (this.ArchivoAdjunto === null && this.OrdenEstadistica === true && cantidad !== 0) {
       this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
       return false;
     }
@@ -269,7 +271,8 @@ export class EntregaBienesComponent implements OnInit {
       this.ObjCondicionesTecnicas[IdBienes]["totalCantidad"] = totalCantidad;
       this.ObjCondicionesTecnicas[IdBienes]["cantidadRecibida"] = parseFloat(cantidad);
 
-      if (totalCantidad === 0 || cantidad === "0") {
+      if (totalCantidad === 0 || cantidad === 0) {
+        
         ultimaEntregabool = true;
         this.ObjCondicionesTecnicas[IdBienes]["UltimaEntregaCTB"] = true;
         if (IdBienes > -1) {
@@ -302,7 +305,7 @@ export class EntregaBienesComponent implements OnInit {
     this.spinner.show();
     this.objRecepcionAgregar = new RecepcionBienes(Objdescripcion.IdBienes, Objdescripcion.descripcion, cantidad, valor, ultimaEntregabool, comentario);
 
-    this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, this.ResponsableBienes).then(
+    this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, this.ResponsableBienes,this.NumSolp).then(
       (Respuesta: ItemAddResult) => {
         let IdRecepcionBienes = Respuesta.data.Id;
          if (this.ArchivoAdjunto !== null) {
@@ -310,6 +313,7 @@ export class EntregaBienesComponent implements OnInit {
           this.servicio.agregarAdjuntoActivosBienes(IdRecepcionBienes, nombreArchivo, this.ArchivoAdjunto).then(
             (Respuesta) => {
               (<HTMLInputElement>document.getElementById("Adjunto")).value = null;
+              this.ArchivoAdjunto = null;
               let CantidadCT = 0;
               let CantidadConfirmada = 0;
               let TotalCantidadVerificar = 0;
@@ -505,7 +509,7 @@ export class EntregaBienesComponent implements OnInit {
       this.servicio.actualizarCondicionesTecnicasBienesEntregaBienes(ObjCTB.IdBienes, objActualizacionCTB).then(
         (resultado) => {
           this.objRecepcionAgregar = new RecepcionBienes(ObjCTB.IdBienes, ObjCTB.descripcion, 0, "0", true, "");
-          this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, null).then(
+          this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, null,this.NumSolp).then(
             (resultadoBienes: ItemAddResult) => {
               this.ItemsAgregadosReciente++;
               this.objRecepcionAgregar["IdRecepcionBienes"] = resultadoBienes.data.Id;
