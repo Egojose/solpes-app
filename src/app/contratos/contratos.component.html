@@ -1,516 +1,506 @@
 <h1>CONTRATOS</h1>
 <hr>
 <div class="row espacio">
-    <div class="col-md-12">
-        <h3>Número SOLP SAP: {{NumSolSAP}}</h3>
-    </div>
+  <div class="col-md-12">
+    <h3>Número SOLP SAP: {{NumSolSAP}}</h3>
+  </div>
 </div>
 <br>
 <mat-accordion *ngIf="CTB === true">
-    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-            <mat-panel-title><strong>Ver bienes solicitados</strong></mat-panel-title>
-            <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row" id="TablaVerificar">
-            <div class="col-md-12">
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-                    <ng-container matColumnDef="codigo">
-                        <th mat-header-cell *matHeaderCellDef> Código </th>
-                        <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="descripcion">
-                        <th mat-header-cell *matHeaderCellDef> Descripción </th>
-                        <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="modelo">
-                        <th mat-header-cell *matHeaderCellDef> Modelo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="fabricante">
-                        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
-                        <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="cantidad">
-                        <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-                        <td mat-cell *matCellDef="let element"> {{element.cantidadComprar | number}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="valorEstimado">
-                        <th mat-header-cell *matHeaderCellDef> Valor</th>
-                        <td mat-cell *matCellDef="let element"> {{element.precioSondeo | number}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="moneda">
-                        <th mat-header-cell *matHeaderCellDef> Moneda</th>
-                        <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="adjunto">
-                        <th mat-header-cell *matHeaderCellDef> Adjunto</th>
-                        <td mat-cell *matCellDef="let element">
-                            <div *ngIf="element.adjunto !== ''">
-                                <a href="{{element.adjunto}}" target="_blank">
-                                    <button class="btn btn-success">Ver</button>
-                                </a>
-                            </div>
-                        </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-                <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
-            </div>
-        </div>
-    </mat-expansion-panel>
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title><strong>Ver bienes solicitados</strong></mat-panel-title>
+      <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="row" id="TablaVerificar">
+      <div class="col-md-12">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef> Código </th>
+            <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+          </ng-container>
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef> Descripción </th>
+            <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+          </ng-container>
+          <ng-container matColumnDef="modelo">
+            <th mat-header-cell *matHeaderCellDef> Modelo </th>
+            <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+          </ng-container>
+          <ng-container matColumnDef="fabricante">
+            <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+            <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
+          </ng-container>
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+            <td mat-cell *matCellDef="let element"> {{element.cantidadComprar | number}} </td>
+          </ng-container>
+          <ng-container matColumnDef="valorEstimado">
+            <th mat-header-cell *matHeaderCellDef> Valor</th>
+            <td mat-cell *matCellDef="let element"> {{element.precioSondeo | number}} </td>
+          </ng-container>
+          <ng-container matColumnDef="moneda">
+            <th mat-header-cell *matHeaderCellDef> Moneda</th>
+            <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+          </ng-container>
+          <ng-container matColumnDef="adjunto">
+            <th mat-header-cell *matHeaderCellDef> Adjunto</th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element.adjunto !== ''">
+                <a href="{{element.adjunto}}" target="_blank">
+                  <button class="btn btn-success">Ver</button>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </mat-expansion-panel>
 </mat-accordion>
 <br>
 <mat-accordion *ngIf="CTS === true">
-    <mat-expansion-panel (opened)="panelOpenState1 = true" (closed)="panelOpenState1 = false">
-        <mat-expansion-panel-header>
-            <mat-panel-title><strong>Ver servicios solicitados</strong></mat-panel-title>
-            <mat-panel-description>{{panelOpenState1 ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row" id="TablaVerificar">
-            <div class="col-md-12">
-                <table mat-table [dataSource]="dataSourceTS" class="mat-elevation-z8">
-                    <ng-container matColumnDef="codigo">
-                        <th mat-header-cell *matHeaderCellDef> Código </th>
-                        <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="descripcion">
-                        <th mat-header-cell *matHeaderCellDef> Descripción </th>
-                        <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="modelo">
-                        <th mat-header-cell *matHeaderCellDef> Modelo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="fabricante">
-                        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
-                        <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="cantidad">
-                        <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-                        <td mat-cell *matCellDef="let element"> {{element.cantidad | number}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="valorEstimado">
-                        <th mat-header-cell *matHeaderCellDef> Valor</th>
-                        <td mat-cell *matCellDef="let element"> {{element.valorEstimado | number}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="moneda">
-                        <th mat-header-cell *matHeaderCellDef> Moneda</th>
-                        <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="adjunto">
-                        <th mat-header-cell *matHeaderCellDef> Adjunto</th>
-                        <td mat-cell *matCellDef="let element">
-                            <div *ngIf="element.adjunto !== ''">
-                                <a href="{{element.adjunto}}" target="_blank">
-                                    <button class="btn btn-success">Ver</button>
-                                </a>
-                            </div>
-                        </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumnsTS"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumnsTS;"></tr>
-                </table>
-                <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
-            </div>
-        </div>
+  <mat-expansion-panel (opened)="panelOpenState1 = true" (closed)="panelOpenState1 = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title><strong>Ver servicios solicitados</strong></mat-panel-title>
+      <mat-panel-description>{{panelOpenState1 ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="row" id="TablaVerificar">
+      <div class="col-md-12">
+        <table mat-table [dataSource]="dataSourceTS" class="mat-elevation-z8">
+          <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef> Código </th>
+            <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+          </ng-container>
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef> Descripción </th>
+            <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+          </ng-container>
+          <ng-container matColumnDef="modelo">
+            <th mat-header-cell *matHeaderCellDef> Modelo </th>
+            <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+          </ng-container>
+          <ng-container matColumnDef="fabricante">
+            <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+            <td mat-cell *matCellDef="let element"> {{element.fabricante}} </td>
+          </ng-container>
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+            <td mat-cell *matCellDef="let element"> {{element.cantidad | number}} </td>
+          </ng-container>
+          <ng-container matColumnDef="valorEstimado">
+            <th mat-header-cell *matHeaderCellDef> Valor</th>
+            <td mat-cell *matCellDef="let element"> {{element.valorEstimado | number}} </td>
+          </ng-container>
+          <ng-container matColumnDef="moneda">
+            <th mat-header-cell *matHeaderCellDef> Moneda</th>
+            <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+          </ng-container>
+          <ng-container matColumnDef="adjunto">
+            <th mat-header-cell *matHeaderCellDef> Adjunto</th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element.adjunto !== ''">
+                <a href="{{element.adjunto}}" target="_blank">
+                  <button class="btn btn-success">Ver</button>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsTS"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsTS;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
 
-    </mat-expansion-panel>
+  </mat-expansion-panel>
 </mat-accordion>
 <br>
 <form autocomplete="off" [formGroup]="ContratosForm" (ngSubmit)="onSubmit()">
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label for="inputEmail4">Tipo de contrato <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="TipoContrato" [ngClass]="{ 'is-invalid': submitted && f.TipoContrato.errors }">
-                <option value="" [disabled]="Guardado === true"></option>
-                <option value="Pedidos Directos - Contratos" [disabled]="Guardado === true">Pedidos Directos -
-                    Contratos</option>
-                <option value="Ordenes a Marco" [disabled]="Guardado === true">Ordenes a Marco</option>
-                <option value="Contrato" [disabled]="Guardado === true">Contrato</option>
-                <option value="Pedidos de Emergencia" [disabled]="Guardado === true">Pedidos de Emergencia</option>
-                <!-- <option *ngFor="let item of Tipo" [ngValue]="item">{{item.descripcion}}</option> -->
-            </select>
-            <div *ngIf="submitted && f.TipoContrato.errors" class="invalid-feedback">
-                <div *ngIf="f.TipoContrato.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="inputEmail4">N° SOLP SAP -RFP <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.SolpSapRfp.errors }"
-                [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">El número debe estar entre 1099999980 ~ 9999999999</small>
-            <div *ngIf="submitted && f.SolpSapRfp.errors" class="invalid-feedback">
-                <div *ngIf="f.SolpSapRfp.errors.required">Es requerido</div>
-            </div>
-        </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Tipo de contrato <span class="camposRequeridos">*</span></label>
+      <select name="" id="" class="form-control" formControlName="TipoContrato" [ngClass]="{ 'is-invalid': submitted && f.TipoContrato.errors }">
+        <option value="Orden a marco negociada" [disabled]="Guardado === true">Orden a marco negociada</option>
+        <option value="Orden a marco por negociar" [disabled]="Guardado === true">Orden a marco por negociar </option>
+        <option value="Solicitud directa" [disabled]="Guardado === true">Solicitud directa</option>
+        <option value="Solicitud no directa" [disabled]="Guardado === true">Solicitud no directa</option>
+      </select>
+      <div *ngIf="submitted && f.TipoContrato.errors" class="invalid-feedback">
+        <div *ngIf="f.TipoContrato.errors.required">Es requerido</div>
+      </div>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">N° SOLP SAP -RFP <span class="camposRequeridos">*</span></label>
+      <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.SolpSapRfp.errors }"
+        [readonly]="Guardado === true">
+      <div *ngIf="submitted && f.SolpSapRfp.errors" class="invalid-feedback">
+        <div *ngIf="f.SolpSapRfp.errors.required">Es requerido</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">N° Contrato/Orden de Compra <span class="camposRequeridos">*</span></label>
+      <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }"
+        [readonly]="Guardado === true">
+      <div *ngIf="submitted && f.ContratoOC.errors" class="invalid-feedback">
+        <div *ngIf="f.ContratoOC.errors.required">Es requerido</div>
+      </div>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Requiere N° de Orden Inicio <span class="camposRequeridos">*</span></label>
+      <select name="" id="" class="form-control" formControlName="OrdenInicio" [ngClass]="{ 'is-invalid': submitted && f.OrdenInicio.errors }">
+        <option value="" [disabled]="Guardado === true"></option>
+        <option value="Si" [disabled]="Guardado === true">Si</option>
+        <option value="No" [disabled]="Guardado === true">No</option>
+        <option value="N/A" [disabled]="Guardado === true">N/A</option>
+      </select>
+      <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
+        <div *ngIf="f.OrdenInicio.errors.required">Es requerido</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label for="inputEmail4">Objeto del contrato <span class="camposRequeridos">*</span></label>
+      <textarea class="form-control" formControlName="ObjetoContrato" [ngClass]="{ 'is-invalid': submitted && f.ObjetoContrato.errors }"
+        [readonly]="Guardado === true"></textarea>
+      <div *ngIf="submitted && f.ObjetoContrato.errors" class="invalid-feedback">
+        <div *ngIf="f.ObjetoContrato.errors.required">Es requerido</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Contrato de Obra o Conexo <span class="camposRequeridos">*</span></label>
+      <select name="" id="" class="form-control" formControlName="ContratoObraConexo" 
+        [disabled]="Guardado === true">
+        <option value="" [disabled]="Guardado === true"></option>
+        <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+        <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+      </select>
+     
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Moneda del contrato <span class="camposRequeridos">*</span></label>
+      <select name="" id="" class="form-control" formControlName="MonedaContrato" [ngClass]="{ 'is-invalid': submitted && f.MonedaContrato.errors }">
+        <option value="" [disabled]="Guardado === true"></option>
+        <option value="ARS">ARS</option>
+        <option value="BRL">BRL</option>
+        <option value="CLP">CLP</option>
+        <option value="COP">COP</option>
+        <option value="EUR">EUR</option>
+        <option value="PEN">PEN</option>
+        <option value="USD">USD</option>
+      </select>
+      <div *ngIf="submitted && f.MonedaContrato.errors" class="invalid-feedback">
+        <div *ngIf="f.MonedaContrato.errors.required">Es requerido</div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">IVA del contrato<span class="camposRequeridos">*</span> </label>
+      <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text"
+        formControlName="IvaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }"
+        [readonly]="Guardado === true">
+     <div *ngIf="submitted && f.IvaContrato.errors" class="invalid-feedback">
+        <div *ngIf="f.IvaContrato.errors.required">Es requerido</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Valor Contractual <span class="camposRequeridos">*</span></label>
+      <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
+        type="text" formControlName="ValorContractual" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }"
+        [readonly]="Guardado === true">
+      <div *ngIf="submitted && f.ValorContractual.errors" class="invalid-feedback">
+        <div *ngIf="f.ValorContractual.errors.required">Es requerido</div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Línea base del contrato <span class="camposRequeridos">*</span></label>
+      <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text"
+        formControlName="LineaBaseContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LineaBaseContrato.errors }"
+        [readonly]="Guardado === true">
+      <small id="emailHelp" class="form-text text-muted">Escriba el valor en la moneda del contrato</small>
+      <div *ngIf="submitted && f.LineaBaseContrato.errors" class="invalid-feedback">
+        <div *ngIf="f.LineaBaseContrato.errors.required">Es requerido</div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Ahorro generado en contrato <span class="camposRequeridos">*</span></label>
+      <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text"
+        formControlName="AhorroGenerado" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AhorroGenerado.errors }"
+        [readonly]="Guardado === true">
+      <small id="emailHelp" class="form-text text-muted">Escriba el valor en la moneda del contrato</small>
+      <div *ngIf="submitted && f.AhorroGenerado.errors" class="invalid-feedback">
+        <div *ngIf="f.AhorroGenerado.errors.required">Es requerido</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Descripción cálculo del ahorro generado en el contrato <span class="camposRequeridos">*</span></label>
+      <select name="" id="" class="form-control" formControlName="DescripcionCalculo" [ngClass]="{ 'is-invalid': submitted && f.DescripcionCalculo.errors }">
+        <option value=""></option>
+        <option value="Rondas de negociación" [disabled]="Guardado === true">Rondas de negociación</option>
+        <option value="Presupuesto del área" [disabled]="Guardado === true">Presupuesto del área</option>
+        <option value="Frente a valor que se venia pagandp en contrato anterior" [disabled]="Guardado === true">Frente a valor que se venia pagando en contrato anterior</option>
+        <option value="Optimización de alcance o proceso" [disabled]="Guardado === true">Optimización de alcance o proceso</option>
+        <option value="No aplica" [disabled]="Guardado === true">No aplica</option>
+        <option value="Otros" [disabled]="Guardado === true">Otros</option>
+      </select>
+      <div *ngIf="submitted && f.DescripcionCalculo.errors" class="invalid-feedback">
+        <div *ngIf="f.DescripcionCalculo.errors.required">Es requerido</div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Vigencia del contrato </label>
+      <input type="text" formControlName="VigenciaContrato" class="form-control" numbersOnly>
+      <small id="emailHelp" class="form-text text-muted">Escriba la vigencia del contrato en días</small>
 
     </div>
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label for="inputEmail4">N° Contrato/Orden de Compra <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }"
-                [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">El número debe estar entre 1099999980 ~ 9999999999</small>
-            <div *ngIf="submitted && f.ContratoOC.errors" class="invalid-feedback">
-                <div *ngIf="f.ContratoOC.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="inputEmail4">Requiere N° de Orden Inicio <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="OrdenInicio" [ngClass]="{ 'is-invalid': submitted && f.OrdenInicio.errors }">
-                <option value="" [disabled]="Guardado === true"></option>
-                <option value="Si" [disabled]="Guardado === true">Si</option>
-                <option value="No" [disabled]="Guardado === true">No</option>
-                <option value="N/A" [disabled]="Guardado === true">N/A</option>
-            </select>
-            <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
-                <div *ngIf="f.OrdenInicio.errors.required">Es requerido</div>
-            </div>
-        </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Requiere SST <span class="camposRequeridos">*</span></label>
+      <select name="" id="" class="form-control" formControlName="RequiereSST" [ngClass]="{ 'is-invalid': submitted && f.RequiereSST.errors }">
+        <option value=""></option>
+        <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+        <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+      </select>
+      <div *ngIf="submitted && f.RequiereSST.errors" class="invalid-feedback">
+        <div *ngIf="f.RequiereSST.errors.required">Es requerido</div>
+      </div>
     </div>
-    <div class="row">
-        <div class="form-group col-md-12">
-            <label for="inputEmail4">Objeto del contrato <span class="camposRequeridos">*</span></label>
-            <textarea class="form-control" formControlName="ObjetoContrato" [ngClass]="{ 'is-invalid': submitted && f.ObjetoContrato.errors }"
-                [readonly]="Guardado === true"></textarea>
-            <div *ngIf="submitted && f.ObjetoContrato.errors" class="invalid-feedback">
-                <div *ngIf="f.ObjetoContrato.errors.required">Es requerido</div>
-            </div>
-        </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Requiere póliza <span class="camposRequeridos">*</span></label>
+      <select name="" id="" class="form-control" formControlName="RequierePoliza" [ngClass]="{ 'is-invalid': submitted && f.RequierePoliza.errors }">
+        <option value=""></option>
+        <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
+        <option [ngValue]="false" [disabled]="Guardado === true">No</option>
+      </select>
+      <div *ngIf="submitted && f.RequierePoliza.errors" class="invalid-feedback">
+        <div *ngIf="f.RequierePoliza.errors.required">Es requerido</div>
+      </div>
     </div>
-    <div class="row">
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Contrato de Obra o Conexo <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="ContratoObraConexo" [ngClass]="{ 'is-invalid': submitted && f.ContratoObraConexo.errors }"
-                [disabled]="Guardado === true">
-                <option value="" [disabled]="Guardado === true"></option>
-                <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
-                <option [ngValue]="false" [disabled]="Guardado === true">No</option>
-            </select>
-            <div *ngIf="submitted && f.ContratoObraConexo.errors" class="invalid-feedback">
-                <div *ngIf="f.ContratoObraConexo.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Moneda del contrato <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="MonedaContrato" (change)="ValidarIva()"
-                [ngClass]="{ 'is-invalid': submitted && f.MonedaContrato.errors }">
-                <option value="" [disabled]="Guardado === true"></option>
-                <option value="COP" [disabled]="Guardado === true">COP</option>
-                <option value="USD" [disabled]="Guardado === true">USD</option>
-                <option value="EURO" [disabled]="Guardado === true">EURO</option>
-            </select>
-            <div *ngIf="submitted && f.MonedaContrato.errors" class="invalid-feedback">
-                <div *ngIf="f.MonedaContrato.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">IVA del contrato<span class="camposRequeridos">*</span> </label>
-            <input currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="IvaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }"
-                [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">Solo aplica para contratos con moneda USD</small>
-            <div *ngIf="submitted && f.IvaContrato.errors" class="invalid-feedback">
-                <div *ngIf="f.IvaContrato.errors.required">Es requerido</div>
-            </div>
-        </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Acreedor <span class="camposRequeridos">*</span></label>
+      <input type="text" formControlName="Acreedor" class="form-control" numbersOnly 
+        [readonly]="Guardado === true">
+      <small id="emailHelp" class="form-text text-muted">NIT o documento de identificación del proveedor, sin
+        dígito de verificación</small>
+      
     </div>
-    <div class="row">
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Valor Contractual <span class="camposRequeridos">*</span></label>
-            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
-                type="text" formControlName="ValorContractual" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }"
-                [readonly]="Guardado === true">
-            <div *ngIf="submitted && f.ValorContractual.errors" class="invalid-feedback">
-                <div *ngIf="f.ValorContractual.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Línea base del contrato <span class="camposRequeridos">*</span></label>
-            <input currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="LineaBaseContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LineaBaseContrato.errors }"
-                [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">Escriba el valor del contrato en moneda local COP</small>
-            <div *ngIf="submitted && f.LineaBaseContrato.errors" class="invalid-feedback">
-                <div *ngIf="f.LineaBaseContrato.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Ahorro generado en contrato <span class="camposRequeridos">*</span></label>
-            <input currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="AhorroGenerado" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AhorroGenerado.errors }"
-                [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">Escriba el valor en moneda local COP</small>
-            <div *ngIf="submitted && f.AhorroGenerado.errors" class="invalid-feedback">
-                <div *ngIf="f.AhorroGenerado.errors.required">Es requerido</div>
-            </div>
-        </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Dígito de verificación <span class="camposRequeridos">*</span></label>
+      <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly 
+        [readonly]="Guardado === true">
+      <small id="emailHelp" class="form-text text-muted">Dígito de verificación del NIT o documento de
+        identificación del proveedor</small>
+      
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
+      <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }"
+        [readonly]="Guardado === true">
+      <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
+        <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">E-mail del proveedor <span class="camposRequeridos">*</span></label>
+      <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }"
+        [readonly]="Guardado === true">
+      <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
+        <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
+        <div *ngIf="f.EmailProveedor.errors.email">El E-mail es inválido</div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Solicitante <span class="camposRequeridos">*</span></label>
+      <input type="text" formControlName="Solicitante" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Solicitante.errors }"
+        [readonly]="true">
+      <div *ngIf="submitted && f.Solicitante.errors" class="invalid-feedback">
+        <div *ngIf="f.Solicitante.errors.required">Es requerido</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
 
-    </div>
-    <div class="row">
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Descripción cálculo del ahorro generado en el contrato <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="DescripcionCalculo" [ngClass]="{ 'is-invalid': submitted && f.DescripcionCalculo.errors }">
-                <option value=""></option>
-                <option value="Rondas de negociación" [disabled]="Guardado === true">Rondas de negociación</option>
-                <option value="Presupuesto del área" [disabled]="Guardado === true">Presupuesto del área</option>
-                <option value="Frente a valor que se venia pagandp en contrato anterior" [disabled]="Guardado === true">Frente
-                    a valor que se venia pagandp en contrato anterior</option>
-                <option value="Optimización de alcance o proceso" [disabled]="Guardado === true">Optimización de
-                    alcance o proceso</option>
-                <option value="No aplica" [disabled]="Guardado === true">No aplica</option>
-            </select>
-            <div *ngIf="submitted && f.DescripcionCalculo.errors" class="invalid-feedback">
-                <div *ngIf="f.DescripcionCalculo.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Vigencia del contrato <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="VigenciaContrato" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.VigenciaContrato.errors }"
-                [readonly]="Pais!='Colombia' || Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">Escriba la vigencia del contrato en días</small>
-            <div *ngIf="submitted && f.VigenciaContrato.errors" class="invalid-feedback">
-                <div *ngIf="f.VigenciaContrato.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Requiere SST <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="RequiereSST" [ngClass]="{ 'is-invalid': submitted && f.RequiereSST.errors }">
-                <option value=""></option>
-                <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
-                <option [ngValue]="false" [disabled]="Guardado === true">No</option>
-            </select>
-            <div *ngIf="submitted && f.RequiereSST.errors" class="invalid-feedback">
-                <div *ngIf="f.RequiereSST.errors.required">Es requerido</div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Requiere póliza <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="RequierePoliza" [ngClass]="{ 'is-invalid': submitted && f.RequierePoliza.errors }">
-                <option value=""></option>
-                <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
-                <option [ngValue]="false" [disabled]="Guardado === true">No</option>
-            </select>
-            <div *ngIf="submitted && f.RequierePoliza.errors" class="invalid-feedback">
-                <div *ngIf="f.RequierePoliza.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Acreedor <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.Acreedor.errors }"
-                [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">NIT o documento de identificación del proveedor, sin
-                dígito de verificación</small>
-            <div *ngIf="submitted && f.Acreedor.errors" class="invalid-feedback">
-                <div *ngIf="f.Acreedor.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Dígito de verificación <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.DigitoVerificacion.errors }"
-                [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">Dígito de verificación del NIT o documento de
-                identificación del proveedor</small>
-            <div *ngIf="submitted && f.DigitoVerificacion.errors" class="invalid-feedback">
-                <div *ngIf="f.DigitoVerificacion.errors.required">Es requerido</div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }"
-                [readonly]="Guardado === true">
-            <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
-                <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">E-mail del proveedor <span class="camposRequeridos">*</span></label>
-            <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }"
-                [readonly]="Guardado === true">
-            <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
-                <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
-                <div *ngIf="f.EmailProveedor.errors.email">El E-mail es inválido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Solicitante <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="Solicitante" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Solicitante.errors }"
-                [readonly]="true">
-            <div *ngIf="submitted && f.Solicitante.errors" class="invalid-feedback">
-                <div *ngIf="f.Solicitante.errors.required">Es requerido</div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
+  </div>
+  <div class="row">
 
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
+      <ng-template #tolTemplate>el usuario no existe</ng-template>
+      <input formControlName="Comprador" [typeahead]="ObjUsuarios" typeaheadOptionField="Title" (typeaheadOnSelect)="onSelect($event)"
+        (blur)="ValidarUsuario()" [tooltip]="tolTemplate" triggers="" #customTooltip="bs-tooltip" placement="bottom"
+        class="form-control" [readonly]="Guardado === true">
+      <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
+        <div *ngIf="f.Comprador.errors.required">Es requerido</div>
+      </div>
     </div>
-    <div class="row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Observaciones adicionales <span class="camposRequeridos">*</span></label>
+      <textarea formControlName="ObervacionesAdicionales" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ObervacionesAdicionales.errors }"
+        [readonly]="Guardado === true"></textarea>
+      <div *ngIf="submitted && f.ObervacionesAdicionales.errors" class="invalid-feedback">
+        <div *ngIf="f.ObervacionesAdicionales.errors.required">Es requerido</div>
+      </div>
+    </div>
 
-    </div>
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
-            <ng-template #tolTemplate>el usuario no existe</ng-template>
-            <input formControlName="Comprador" [typeahead]="ObjUsuarios" typeaheadOptionField="Title"
-                (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" triggers=""
-                #customTooltip="bs-tooltip" placement="bottom" class="form-control" [readonly]="Guardado === true">
-            <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
-                <div *ngIf="f.Comprador.errors.required">Es requerido</div>
-            </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-12">
+      <div class="botonera">
+        <div>
+          <button type="submit" class="derecha-boton btn btn-success" [hidden]="Guardado === true">Guardar
+            contrato</button>
         </div>
-        <div class="form-group col-md-6">
-            <label for="inputEmail4">Observaciones adicionales <span class="camposRequeridos">*</span></label>
-            <textarea formControlName="ObervacionesAdicionales" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ObervacionesAdicionales.errors }"
-                [readonly]="Guardado === true"></textarea>
-            <div *ngIf="submitted && f.ObervacionesAdicionales.errors" class="invalid-feedback">
-                <div *ngIf="f.ObervacionesAdicionales.errors.required">Es requerido</div>
-            </div>
+        <div>
+          <button type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);">Salir</button>
         </div>
-
+      </div>
     </div>
-    <div class="form-group row">
-        <div class="col-md-12">
-            <div class="botonera">
-                <div>
-                    <button type="submit" class="derecha-boton btn btn-success" [hidden]="Guardado === true">Guardar
-                        contrato</button>
-                </div>
-                <div>
-                    <button type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);">Salir</button>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </form>
 <br>
 
 <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState2 = true" (closed)="panelOpenState2 = false">
-        <mat-expansion-panel-header>
-            <mat-panel-title><strong>Información adicional</strong></mat-panel-title>
-            <mat-panel-description>{{panelOpenState2 ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row espacio">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <strong>Fecha deseada de entrega</strong>
-                    </div>
-                    <div class="card-body">
-                        {{fechaDeseada | date:'dd/MM/yyyy'}}
-                    </div>
-                </div>
-            </div>
+  <mat-expansion-panel (opened)="panelOpenState2 = true" (closed)="panelOpenState2 = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title><strong>Información adicional</strong></mat-panel-title>
+      <mat-panel-description>{{panelOpenState2 ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="row espacio">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <strong>Fecha deseada de entrega</strong>
+          </div>
+          <div class="card-body">
+            {{fechaDeseada | date:'dd/MM/yyyy'}}
+          </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <strong>Información de la solicitud </strong>
-                    </div>
-                    <div class="card-body">
-                        <div class="row espacio">
-                            <div class="col-md-12">
-                                <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row espacio">
-                            <div class="col-md-4">
-                                <strong>Solicitante: </strong>{{solicitante}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Empresa: </strong>{{empresa}}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <strong>País: </strong>{{Pais}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Categoría: </strong>{{categoria}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Sub-Categoría: </strong>{{subCategoria}}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <strong>Comprador: </strong>{{comprador}}
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Código ariba: </strong>{{codAriba}}
-                            </div>
-                            <div class="col-md-4"></div>
-                        </div>
-                    </div>
-                </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>Información de la solicitud </strong>
+          </div>
+          <div class="card-body">
+            <div class="row espacio">
+              <div class="col-md-12">
+                <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
+              </div>
             </div>
+            <br>
+            <div class="row espacio">
+              <div class="col-md-4">
+                <strong>Solicitante: </strong>{{solicitante}}
+              </div>
+              <div class="col-md-4">
+                <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
+              </div>
+              <div class="col-md-4">
+                <strong>Empresa: </strong>{{empresa}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-4">
+                <strong>País: </strong>{{Pais}}
+              </div>
+              <div class="col-md-4">
+                <strong>Categoría: </strong>{{categoria}}
+              </div>
+              <div class="col-md-4">
+                <strong>Sub-Categoría: </strong>{{subCategoria}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-4">
+                <strong>Comprador: </strong>{{comprador}}
+              </div>
+              <div class="col-md-4">
+                <strong>Código ariba: </strong>{{codAriba}}
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+          </div>
         </div>
-        <div class="row ">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{justificacion}}</textarea>
-                </div>
-            </div>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
         </div>
-        <hr>
-        <div class="form-group row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
-                    <div class="table-wrapper-scroll-y">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Campo</th>
-                                    <th scope="col">Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of condicionesContractuales">
-                                    <td>{{item.campo}}</td>
-                                    <td>{{item.descripcion}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{justificacion}}</textarea>
         </div>
-        <div *ngIf="OrdenEstadistica===true">
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <h4><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h4>
-                </div>
-            </div>
+      </div>
+    </div>
+    <hr>
+    <div class="form-group row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
+          <div class="table-wrapper-scroll-y">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Campo</th>
+                  <th scope="col">Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of condicionesContractuales">
+                  <td>{{item.campo}}</td>
+                  <td>{{item.descripcion}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-    </mat-expansion-panel>
+      </div>
+    </div>
+    <div *ngIf="OrdenEstadistica===true">
+      <div class="form-group row">
+        <div class="col-md-12">
+          <h4><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h4>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
 </mat-accordion>
 <ng-template #templateConfirmacionDescartar>
-    <div class="modal-body text-center">
-        <p>¿Está seguro que desea salir?</p>
-        <button type="button" class="botonSi btn btn-default" (click)="salir()">Sí</button>
-        <button type="button" class="btn btn-primary" (click)="declinarModal()">No</button>
-    </div>
+  <div class="modal-body text-center">
+    <p>¿Está seguro que desea salir?</p>
+    <button type="button" class="botonSi btn btn-default" (click)="salir()">Sí</button>
+    <button type="button" class="btn btn-primary" (click)="declinarModal()">No</button>
+  </div>
 </ng-template>
 
 <ngx-spinner>
-    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+  <p style="font-size: 20px; color: white">PROCESANDO...</p>
 </ngx-spinner>

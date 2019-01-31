@@ -259,7 +259,8 @@ export class AprobarSondeoComponent implements OnInit {
         this.comprador = solicitud.Comprador.Title;
         this.CompradorId = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;
-        this.comentarioSondeo = solicitud.ComentarioSondeo;
+        console.log(solicitud.ComentarioSondeo);
+        this.comentarioSondeo = (solicitud.ComentarioSondeo != undefined) ? solicitud.ComentarioSondeo : '';
         this.justificacion = solicitud.Justificacion;
 
         if (solicitud.CondicionesContractuales != null) {

@@ -149,6 +149,7 @@ export class SondeoComponent implements OnInit {
         CodigoSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado.toString(),
+        TipoMoneda: this.ObjCondicionesTecnicasBienesGuardar[i].tipoMoneda,
         ComentarioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].ComentarioSondeo
       }
 
@@ -332,6 +333,7 @@ export class SondeoComponent implements OnInit {
         CodigoSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].valorEstimado.toString(),
+        TipoMoneda: this.ObjCondicionesTecnicasServiciosGuardar[i].tipoMoneda,
         ComentarioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].ComentarioSondeo
       }
 
@@ -370,10 +372,9 @@ export class SondeoComponent implements OnInit {
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
     let estado = "Por aprobar sondeo";
-
-    if (this.ComentarioSolicitante != undefined) {
-      if (this.comentarioSondeo === null) {
-        this.comentarioSondeo = "Comentarios:"
+    if (this.ComentarioSolicitante != undefined || this.ComentarioSolicitante != '' || this.ComentarioSolicitante != null) {
+      if (this.comentarioSondeo === null || this.comentarioSondeo == '') {
+        this.comentarioSondeo = "";
       }
       ObjSondeo = {
         ResponsableId: this.autorId,
@@ -384,7 +385,8 @@ export class SondeoComponent implements OnInit {
     else {
       ObjSondeo = {
         ResponsableId: this.autorId,
-        Estado: estado
+        Estado: estado,
+        ComentarioSondeo: 'Sin comentario'
       }
     }
 
