@@ -55,6 +55,7 @@ export class SondeoComponent implements OnInit {
   numeroOrdenEstadistica: string;
   existeCondicionesTecnicasBienes: boolean;
   existeCondicionesTecnicasServicios: boolean;
+  OrdenEstadistica: boolean;
 
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
@@ -86,7 +87,6 @@ export class SondeoComponent implements OnInit {
         this.IdSolicitud = solicitud.Id;
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.codigoAriba = solicitud.CodigoAriba;
-        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
@@ -100,6 +100,8 @@ export class SondeoComponent implements OnInit {
         this.justificacion = solicitud.Justificacion;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.autorId = solicitud.AuthorId;
+        this.OrdenEstadistica = solicitud.OrdenEstadistica;
+        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }

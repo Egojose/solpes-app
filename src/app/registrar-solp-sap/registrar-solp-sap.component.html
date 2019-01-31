@@ -1,6 +1,5 @@
 <h3>REGISTRAR SOLP-SAP</h3>
 <hr>
-<br>
 
 <div *ngIf="existenBienes===true" class="acordeon-bienes-solicitados">
     <mat-accordion *ngIf="CTB === true">
@@ -43,15 +42,6 @@
                     <th mat-header-cell *matHeaderCellDef> Moneda</th>
                     <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
                 </ng-container>
-
-                <ng-container matColumnDef="adjunto">
-                    <th mat-header-cell *matHeaderCellDef> Adjunto</th>
-                    <td mat-cell *matCellDef="let item">
-                        <a href="{{item.adjunto.url}}" target="_blank">
-                            <button class="btn btn-success">Ver</button>
-                        </a>
-                    </td>
-                </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
@@ -81,30 +71,16 @@
                     <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
                 </ng-container>
                 <ng-container matColumnDef="cantidad">
-                    <th mat-header-cell *matHeaderCellDef> Cantidad sondeo</th>
+                    <th mat-header-cell *matHeaderCellDef> Cantidad</th>
                     <td mat-cell *matCellDef="let element"> {{element.cantidadSondeo}} </td>
                 </ng-container>
                 <ng-container matColumnDef="valorEstimado">
-                    <th mat-header-cell *matHeaderCellDef> Precio sondeo</th>
+                    <th mat-header-cell *matHeaderCellDef> Precio</th>
                     <td mat-cell *matCellDef="let element"> {{element.precioSondeo | number }} </td>
                 </ng-container>
                 <ng-container matColumnDef="moneda">
                     <th mat-header-cell *matHeaderCellDef> Moneda</th>
                     <td mat-cell *matCellDef="let element"> {{element.tipoMoneda}} </td>
-                </ng-container>
-                <ng-container matColumnDef="comentarioSondeo">
-                    <th mat-header-cell *matHeaderCellDef> Comentario</th>
-                    <td mat-cell *matCellDef="let element"> {{element.comentarioSondeo}} </td>
-                </ng-container>
-                <ng-container matColumnDef="adjunto">
-                    <th mat-header-cell *matHeaderCellDef> Adjunto</th>
-                    <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element.adjunto !== ''">
-                            <a href="{{element.adjunto}}" target="_blank">
-                                <button class="btn btn-success">Ver</button>
-                            </a>
-                        </div>
-                    </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsTS"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsTS;"></tr>
@@ -409,7 +385,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="existenBienes===true" class="form-group row">
+        <div *ngIf="existenBienes===true && FueSondeo===true" class="form-group row">
             <div class="form-group col-md-12">
                 <label for="textarea" class="col-sm-5 control-label"><b>
                         <h4>Resultado Sondeo bienes:</h4>
@@ -448,7 +424,7 @@
             </div>
         </div>
         <br>
-        <div *ngIf="existenServicios===true" class="form-group row">
+        <div *ngIf="existenServicios===true && FueSondeo===true" class="form-group row">
             <div class="form-group col-md-12">
                 <label for="textarea" class="col-sm-5 control-label"><b>
                         <h4>Resultado Sondeo servicios:</h4>
