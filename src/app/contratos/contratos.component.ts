@@ -93,7 +93,7 @@ export class ContratosComponent implements OnInit {
       ContratoOC: ['', Validators.required],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
-      ContratoObraConexo: ['false'],
+      ContratoObraConexo: [false],
       MonedaContrato: ['', Validators.required],
       IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
