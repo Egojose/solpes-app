@@ -1,5 +1,12 @@
 <h1>{{titleVerificar}}</h1>
 <hr>
+<<<<<<< HEAD
+=======
+<div class="loading" *ngIf='loading'>
+    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
+    <b>PROCESANDO...</b>
+</div>
+>>>>>>> master
 <div class="row" id="TablaVerificar">
     <div class="col-md-12">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -57,7 +64,7 @@
 <div class="row" *ngIf="SwtichEsOrdenEstadistica===true">
     <div class="col-md-12">
         <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
-    </div>
+</div>
 </div>
 
 <hr>
@@ -73,20 +80,17 @@
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
         <ng-template #popTemplate1>Por favor especifique el motivo en comentarios</ng-template>
-        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers=""
-            placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
+        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioVerificarMaterial"></textarea>
     </div>
 </div>
 <div class="form-group row">
     <div class="col-md-12">
         <div class="botonera">
             <div>
-                <input id="btnEnviar" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;"
-                    value="Enviar" (click)="GuardarComentario()" />
+                <input id="btnEnviar" type="button" class="derecha-boton btn  btn-success" style="margin-right: 15px;" value="Enviar" (click)="GuardarComentario()" />
             </div>
             <div>
-                <input id="btnSalir" type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);"
-                    value="Salir" />
+                <input id="btnSalir" type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);" value="Salir" />
             </div>
         </div>
     </div>
@@ -217,7 +221,7 @@
         </ng-template>
         <div class="form-group row">
             <div class="col-md-12">
-                <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>Condiciones técnicas bienes</strong></label>
+                <label for="colFormLabel" class="col-sm-5 col-form-label"><strong><h4>Bienes solicitados</h4></strong></label>
                 <div class="table-wrapper-scroll-y">
                     <table class="table table-striped table-bordered table-hover text-center">
                         <thead>
@@ -228,8 +232,9 @@
                                 <th>Fabricante</th>
                                 <th>Cantidad</th>
                                 <th>Valor Estimado</th>
-                                <th>Adjunto</th>
+                                <th>Moneda</th>
                                 <th>Comentario</th>
+                                <th>Adjunto</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -240,6 +245,8 @@
                                 <td>{{item.fabricante}}</td>
                                 <td>{{item.cantidad | number}}</td>
                                 <td>{{item.valorEstimado | number}}</td>
+                                <td>{{item.moneda}}</td>
+                                <td>{{item.comentario}}</td>
                                 <td>
                                     <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                         <a href="{{item.adjuntoCreacion.url}}" target="_blank">
@@ -250,7 +257,6 @@
                                         Sin adjunto
                                     </ng-template>
                                 </td>
-                                <td>{{item.comentario}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -258,52 +264,11 @@
 
             </div>
         </div>
-
-        <div *ngIf="existeCondicionesTecnicasServicios == true" class="form-group row">
+        <hr>
+        <div *ngIf="EsSondeo == true" class="form-group row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>Condiciones técnicas servicios</strong></label>
-                    <div class="table-wrapper-scroll-y">
-                        <table class="table table-striped table-bordered table-hover text-center">
-                            <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Descripción</th>
-                                    <th>Cantidad</th>
-                                    <th>Valor Estimado</th>
-                                    <th>Adjunto</th>
-                                    <th>Comentario</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                                    <td>{{item.codigo}}</td>
-                                    <td>{{item.descripcion}}</td>
-                                    <td>{{item.cantidad}}</td>
-                                    <td>{{item.valorEstimado | number}}</td>
-                                    <td>
-                                        <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
-                                            <a href="{{item.adjuntoCreacion.url}}" target="_blank">
-                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                            </a>
-                                        </ng-container>
-                                        <ng-template #nohaycreacion>
-                                            Sin adjunto
-                                        </ng-template>
-                                    </td>
-                                    <td>{{item.comentarios}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo bienes</strong></label>
+                    <label for="colFormLabel" class="col-sm-6 col-form-label"><strong><h4>Resultado Sondeo bienes</h4></strong></label>
                     <div class="table-wrapper-scroll-y">
                         <table class="table table-striped table-bordered table-hover text-center">
                             <thead>
@@ -312,6 +277,7 @@
                                     <th>Descripción</th>
                                     <th>Cantidad</th>
                                     <th>Precio</th>
+                                    <th>Moneda</th>
                                     <th>Comentario</th>
                                     <th>Adjunto</th>
                                 </tr>
@@ -322,6 +288,7 @@
                                     <td>{{item.descripcion}}</td>
                                     <td>{{item.cantidadSondeo | number}}</td>
                                     <td>{{item.precioSondeo | number}}</td>
+                                    <td>{{item.moneda}}</td>
                                     <td>{{item.comentarioSondeo}}</td>
                                     <td>
                                         <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
@@ -352,17 +319,15 @@
             <form [formGroup]="verificarMaterialFormulario" (ngSubmit)="VerificarOnSubmit()">
                 <div class="form-group">
                     <label for="codigo">Código</label><span class="asterisco-obligatorio">*</span>
-                    <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar"
-                        class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }"
-                        type="text" placeholder="Escriba el código si lo conoce" required="true" />
+                    <input id="codigoVerificar" maxlength="255" name="codigoVerificar" formControlName="codigoVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.codigoVerificar.errors }" type="text" placeholder="Escriba el código si lo conoce"
+                        required="true" />
                     <div *ngIf="verificarSubmitted && f.codigoVerificar.errors" class="invalid-feedback">
                         <div *ngIf="f.codigoVerificar.errors.required">Este campo es requerido</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción</label><span class="asterisco-obligatorio">*</span>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar"
-                        [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" formControlName="descripcionVerificar" [ngClass]="{ 'is-invalid': verificarSubmitted && f.descripcionVerificar.errors }" required="true"></textarea>
                     <div *ngIf="verificarSubmitted && f.descripcionVerificar.errors" class="invalid-feedback">
                         <div *ngIf="f.descripcionVerificar.errors.required">Este campo es requerido</div>
                     </div>
@@ -371,18 +336,15 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="modelo">Modelo</label>
-                            <input class="form-control" id="modeloVerificar" rows="2" formControlName="modeloVerificar"
-                                readonly />
+                            <input class="form-control" id="modeloVerificar" rows="2" formControlName="modeloVerificar" readonly />
                         </div>
                         <div class="col-md-4">
                             <label for="fabricante">Fabricante</label>
-                            <input class="form-control" id="fabricanteVerificar" rows="2" formControlName="fabricanteVerificar"
-                                readonly />
+                            <input class="form-control" id="fabricanteVerificar" rows="2" formControlName="fabricanteVerificar" readonly />
                         </div>
                         <div class="col-md-4">
                             <label for="cantidad">Cantidad</label>
-                            <input type="text" id="cantidadVerificar" formControlName="cantidadVerificar" class="form-control"
-                                type="text" readonly />
+                            <input type="text" id="cantidadVerificar" formControlName="cantidadVerificar" class="form-control" type="text" readonly />
                         </div>
                     </div>
                 </div>
@@ -390,20 +352,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="existencias">Existencias</label>
-                            <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly
-                                formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }"
-                                placeholder="Escriba las existencias" (change)="RestaCantidadReserva()" />
+                            <input type="text" id="existenciasVerificar" name="existenciasVerificar" numbersOnly formControlName="existenciasVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.existenciasVerificar.errors }" placeholder="Escriba las existencias"
+                                (change)="RestaCantidadReserva()" />
                             <div *ngIf="verificarSubmitted && f.existenciasVerificar.errors" class="invalid-feedback">
-                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser
-                                    mayores a la cantidad
+                                <div *ngIf="f.existenciasVerificar.errors.cantidadMenor">Las existencias no pueden ser mayores a la cantidad
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="numReserva">Número de reserva</label>
-                            <input id="numReservaVerificar" name="numReservaVerificar" numbersOnly formControlName="numReservaVerificar"
-                                class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }"
-                                type="text" placeholder="Escriba el número de la reserva" />
+                            <input id="numReservaVerificar" name="numReservaVerificar" numbersOnly formControlName="numReservaVerificar" class="form-control" [ngClass]="{ 'is-invalid': verificarSubmitted && f.numReservaVerificar.errors }" type="text" placeholder="Escriba el número de la reserva"
+                            />
                             <div *ngIf="verificarSubmitted && f.numReservaVerificar.errors" class="invalid-feedback">
                                 <div *ngIf="f.numReservaVerificar.errors.required">Este campo es requerido</div>
                             </div>

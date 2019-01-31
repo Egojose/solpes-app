@@ -92,18 +92,18 @@ export class ContratosComponent implements OnInit {
       ContratoOC: ['', Validators.required],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
-      ContratoObraConexo: ['', Validators.required],
+      ContratoObraConexo: [''],
       MonedaContrato: ['', Validators.required],
-      IvaContrato: [''],
+      IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
       LineaBaseContrato: ['', Validators.required],
       AhorroGenerado: ['', Validators.required],
       DescripcionCalculo: ['', Validators.required],
-      VigenciaContrato: ['', Validators.required],
+      VigenciaContrato: [''],
       RequiereSST: ['', Validators.required],
       RequierePoliza: ['', Validators.required],
-      Acreedor: ['', Validators.required],
-      DigitoVerificacion: ['', Validators.required],
+      Acreedor: [''],
+      DigitoVerificacion: [''],
       NombreRazonSocial: ['', Validators.required],
       EmailProveedor: ['', [Validators.required, Validators.email]],
       Solicitante: [, Validators.required],
@@ -300,12 +300,9 @@ export class ContratosComponent implements OnInit {
   ValidarIva() {
     let Moneda = this.ContratosForm.controls["MonedaContrato"].value;
     const IvaContrato = this.ContratosForm.get('IvaContrato');
-    if (Moneda != "USD") {
-      IvaContrato.clearValidators();
-    }
-    else {
-      IvaContrato.setValidators([Validators.required]);
-    }
+   
+    IvaContrato.setValidators([Validators.required]);
+    
     IvaContrato.updateValueAndValidity();
   }
 

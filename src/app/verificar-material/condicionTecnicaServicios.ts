@@ -13,6 +13,7 @@ export class CondicionTecnicaServicios{
         public cantidadSondeo?: number,
         public precioSondeo?: string,
         public comentariosSondeo?: string,
+        public moneda?: string,
         public adjunto?:any,
         public adjuntoCreacion?:any,
         public id?: number) { }
@@ -42,6 +43,7 @@ export class CondicionTecnicaServicios{
             element.CantidadSondeo,
             element.PrecioSondeo,
             element.ComentarioSondeo,
+            element.TipoMoneda,
             adjuntoSondeo,
             adjuntoCreacion,
             element.ID);
