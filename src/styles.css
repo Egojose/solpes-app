@@ -199,3 +199,7 @@ td.mat-cell,td.mat-footer-cell, th.mat-header-cell {
     max-height: inherit;
 }
 
+.version-aplicacion{
+    color: white;
+}
+

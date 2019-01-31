@@ -25,6 +25,7 @@ export class AprobarSondeoComponent implements OnInit {
   fechaDeseada: Date;
   solicitante: string;
   tipoSolicitud: string;
+  panelOpenState = false;
   codigoAriba: string;
   numeroOrdenEstadistico: string;
   ordenadorGasto: string;

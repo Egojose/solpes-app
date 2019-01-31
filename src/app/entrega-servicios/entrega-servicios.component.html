@@ -171,7 +171,6 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputEmail4">Mes</label>
-                            <!-- <input type="text" formControlName="Mes" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Mes.errors }"> -->
                             <select name="" id="" class="form-control" formControlName="Mes" [ngClass]="{ 'is-invalid': submitted && f.Mes.errors }">
                                   <option value=""></option>
                                   <option *ngFor="let item of ObjMeses" [ngValue]="item">{{item}}</option>

@@ -309,7 +309,7 @@
     <div class="container">
       <form [formGroup]="ctbFormulario" (ngSubmit)="ctbOnSubmit()">
         <div class="form-group">
-          <label for="codigo">Código de material (NCM)</label>
+          <label for="codigo">Código de material</label>
           <input id="codigoCTB" name="codigoCTB" formControlName="codigoCTB" class="form-control" type="text"
             placeholder="Escriba el código si lo conoce" />
         </div>
@@ -407,7 +407,7 @@
     <div class="container">
       <form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()">
         <div class="form-group">
-          <label for="codigo">Código de material (NCM)</label>
+          <label for="codigo">Código de material</label>
           <input id="codigoCTS" name="codigoCTS" formControlName="codigoCTS" class="form-control" type="text"
             placeholder="Escriba el código si lo conoce" />
         </div>
@@ -431,7 +431,7 @@
           <div class="row">
             <div class="col-md-6">
               <label for="valorEstimado">Valor Estimado</label>
-              <input currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTS" name="valorEstimadoCTS" formControlName="valorEstimadoCTS" class="form-control"
+              <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTS" name="valorEstimadoCTS" formControlName="valorEstimadoCTS" class="form-control"
                 type="text" placeholder="Escriba el valor estimado" />
             </div>
             <div class="col-md-6">
