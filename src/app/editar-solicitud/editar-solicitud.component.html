@@ -362,7 +362,7 @@
           <div class="row">
             <div class="col-md-6">
               <label for="valorEstimado">Valor Estimado</label>
-              <input id="valorEstimadoCTB" currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
+              <input id="valorEstimadoCTB" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
                 name="valorEstimadoCTB" formControlName="valorEstimadoCTB" class="form-control" type="text" placeholder="Escriba el valor estimado" />
             </div>
             <div class="col-md-6">

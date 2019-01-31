@@ -334,10 +334,10 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerRecepcionesServicios(IdSolicitud:number){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("IdSolicitudId eq '" + IdSolicitud + "' and Cantidad ne '0' and recibidoSap eq '0'").get());
+    ObtenerRecepcionesServicios(IdResponsable:number){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("recibidoSap eq '0' and Cantidad ne '0' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles","Author/Title").expand("AttachmentFiles", "Author").get());
         return respuesta;
-        }
+    }
 
     GuardarServiciosRecibidos(ObjRecepcionServicios: RecepcionServicios,IdSolicitud,Responsable, NumeroPedido){
         let RecepcionBienesObj = {
