@@ -22,6 +22,9 @@ export class SondeoComponent implements OnInit {
   tipoSolicitud: string;
   solicitante: string;
   ordenadorGasto: string;
+  panelOpenState1 : string;
+  panelOpenState3 : string;
+  panelOpenState2: string;
   empresa: string;
   pais: string;
   categoria: string;

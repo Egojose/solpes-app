@@ -1,125 +1,118 @@
-<div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
-    <b>PROCESANDO...</b>
-</div>
-<br>
-<div>
-    <tabset #staticTabs>
-        <tab heading="Información Solicitud">
-            <br>
-            <div class="row espacio">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Fecha deseada de entrega</strong>
-                        </div>
-                        <div class="card-body">
-                            {{fechaDeseada | date:'dd/MM/yyyy'}}
-                        </div>
+<tabset #staticTabs>
+    <tab heading="Información Solicitud">
+        <br>
+        <div class="row espacio">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Fecha deseada de entrega</strong>
+                    </div>
+                    <div class="card-body">
+                        {{fechaDeseada | date:'dd/MM/yyyy'}}
                     </div>
                 </div>
             </div>
-            <hr />
-            <br>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Información de la solicitud </strong>
+        </div>
+        <hr />
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Información de la solicitud </strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row espacio">
+                            <div class="col-md-12">
+                                <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row espacio">
-                                <div class="col-md-12">
-                                    <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
-                                </div>
+                        <br>
+                        <div class="row espacio">
+                            <div class="col-md-4">
+                                <strong>Solicitante: </strong>{{solicitante}}
                             </div>
-                            <br>
-                            <div class="row espacio">
-                                <div class="col-md-4">
-                                    <strong>Solicitante: </strong>{{solicitante}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Empresa: </strong>{{empresa}}
-                                </div>
+                            <div class="col-md-4">
+                                <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
                             </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <strong>País: </strong>{{pais}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Categoría: </strong>{{categoria}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Sub-Categoría: </strong>{{subCategoria}}
-                                </div>
+                            <div class="col-md-4">
+                                <strong>Empresa: </strong>{{empresa}}
                             </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <strong>Comprador: </strong>{{comprador}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Código ariba: </strong>{{codAriba}}
-                                </div>
-                                <div class="col-md-4">
-                                </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <strong>País: </strong>{{pais}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Categoría: </strong>{{categoria}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Sub-Categoría: </strong>{{subCategoria}}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <strong>Comprador: </strong>{{comprador}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Código ariba: </strong>{{codAriba}}
+                            </div>
+                            <div class="col-md-4">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="row ">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Alcance</strong></label>
-                        <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{alcance}}</textarea>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
-                        <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{justificacion}}</textarea>
-                    </div>
+        </div>
+        <br>
+        <div class="row ">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Alcance</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{alcance}}</textarea>
                 </div>
             </div>
-            <br>
-
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
-            <div class="table-wrapper-scroll-y">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Campo</th>
-                            <th scope="col">Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of condicionesContractuales">
-                            <td>{{item.campo}}</td>
-                            <td>{{item.descripcion}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <br>
-            <hr>
-            <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
-                <div class="form-group row">
-                    <div class="col-md-12">
-                        <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
-                    </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{justificacion}}</textarea>
                 </div>
-            </ng-container>
-            <ng-template #esteNO>
-                <h5>La solicitud no cuenta con orden estadística</h5>
-                <br>
-            </ng-template>
-
+            </div>
+        </div>
+        <br>
+        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
+        <div class="table-wrapper-scroll-y">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Campo</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of condicionesContractuales">
+                        <td>{{item.campo}}</td>
+                        <td>{{item.descripcion}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <ng-container *ngIf="OrdenEstadistica === true; else esteNO">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #esteNO>
+            <h5>La solicitud no cuenta con orden estadística</h5>
+            <br>
+        </ng-template>
+        <hr>
+        <div *ngIf="existenBienes===true">
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones técnicas bienes</strong></label>
             <div class="table-wrapper-scroll-y">
                 <table class="table table-striped table-bordered table-hover text-center">
@@ -143,12 +136,12 @@
                             <td>{{item.modelo}}</td>
                             <td>{{item.fabricante}}</td>
 
-                            <td>{{item.cantidad}}</td>
-                            <td>{{item.valorEstimado}}</td>
+                            <td>{{item.cantidad | number}}</td>
+                            <td>{{item.valorEstimado | number}}</td>
                             <td>
                                 <div *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                     <a href="{{item.adjuntoCreacion.url}}" target="_blank"><button class="btn btn-primary">Ver
-                                            archivo</button></a>
+                        archivo</button></a>
                                 </div>
                                 <ng-template #NoHayAdjBienes>
                                     Sin adjunto
@@ -159,6 +152,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <div *ngIf="existenServicios===true">
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones técnicas servicios</strong></label>
             <div class="table-wrapper-scroll-y">
                 <table class="table table-striped table-bordered table-hover text-center">
@@ -176,7 +172,7 @@
                         <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
                             <td>{{item.codigo}}</td>
                             <td>{{item.descripcion}}</td>
-                            <td>{{item.cantidad}}</td>
+                            <td>{{item.cantidad | number}}</td>
                             <td>{{item.valorEstimado}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
@@ -193,21 +189,23 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-12 row">
-                <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="siguiente(0)">Siguiente</button>
-                </div>
+        </div>
+        <div class="col-md-12 row">
+            <div>
+                <button type="button" class="btn btn-primary btn-md" (click)="siguiente(0)">Siguiente</button>
             </div>
-        </tab>
+        </div>
+    </tab>
 
-        <tab heading="Sondeo">
-            <br>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
-                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentariosolicitudsondeo}}</textarea>
-                </div>
+    <tab heading="Sondeo">
+        <br>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
+                <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentariosolicitudsondeo}}</textarea>
             </div>
+        </div>
+        <div *ngIf="existenBienes===true">
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo Bienes</strong></label>
             <div class="table-wrapper-scroll-y">
                 <table class="table table-striped table-bordered table-hover text-center">
@@ -225,8 +223,8 @@
                         <tr *ngFor="let item of ObjCondicionesTecnicas">
                             <td>{{item.codigoSondeo}}</td>
                             <td>{{item.descripcion}}</td>
-                            <td>{{item.cantidadSondeo}}</td>
-                            <td>{{item.precioSondeo}}</td>
+                            <td>{{item.cantidadSondeo | number}}</td>
+                            <td>{{item.precioSondeo | number}}</td>
                             <td>{{item.comentarioSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
@@ -242,7 +240,9 @@
                     </tbody>
                 </table>
             </div>
-            <br>
+        </div>
+        <br>
+        <div *ngIf="existenServicios===true">
             <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Resultado Sondeo Servicios</strong></label>
             <div class="table-wrapper-scroll-y">
                 <table class="table table-striped table-bordered table-hover text-center">
@@ -260,8 +260,8 @@
                         <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
                             <td>{{item.codigoSondeo}}</td>
                             <td>{{item.descripcion}}</td>
-                            <td>{{item.cantidadSondeo}}</td>
-                            <td>{{item.precioSondeo}}</td>
+                            <td>{{item.cantidadSondeo | number}}</td>
+                            <td>{{item.precioSondeo | number}}</td>
                             <td>{{item.comentariosSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeoservicio">
@@ -278,101 +278,113 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-12 row">
-                <div>
-                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(1)">Anterior</button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="siguiente(1)">Siguiente</button>
-                </div>
+        </div>
+        <div class="col-md-12 row">
+            <div>
+                <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(1)">Anterior</button>
             </div>
-        </tab>
+            <div>
+                <button type="button" class="btn btn-primary btn-md" (click)="siguiente(1)">Siguiente</button>
+            </div>
+        </div>
+    </tab>
 
-        <tab heading="Revisión sondeo">
-            <br>
-            <div class="row espacio">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Resultado Sondeo</strong>
-                        </div>
-                        <div class="card-body">
-                            {{resultadosondeo}}
-                        </div>
+    <tab heading="Revisión sondeo">
+        <br>
+        <div class="row espacio">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Resultado Sondeo</strong>
+                    </div>
+                    <div class="card-body">
+                        {{resultadosondeo}}
                     </div>
                 </div>
             </div>
-            <br>
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Revisión Sondeo</strong></label>
-            <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentariorevisionsondeo}}</textarea><br>
-            <div class="col-md-12 row">
-                <div>
-                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(2)">Anterior</button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="siguiente(2)">Siguiente</button>
-                </div>
+        </div>
+        <br>
+        <div class="col-md-12 row">
+            <div>
+                <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(2)">Anterior</button>
             </div>
-        </tab>
+            <div>
+                <button type="button" class="btn btn-primary btn-md" (click)="siguiente(2)">Siguiente</button>
+            </div>
+        </div>
+    </tab>
 
-        <tab heading="Verificación de material">
-            <br>
-            <div class="col-md-12 row">
-                <strong>Verificar material - Condiciones técnicas bienes:</strong>
-                <br>
-                <table class="table table-striped table-bordered table-hover text-center">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Descripción</th>
-                            <th>Modelo</th>
-                            <th>Fabricante</th>
-                            <th>Cantidad</th>
-                            <th>Existencias</th>
-                            <th>#Reserva</th>
-                            <th>Cantidad a comprar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of ObjCondicionesTecnicas">
-                            <td>{{item.codigoverificar}}</td>
-                            <td>{{item.descripcionverificar}}</td>
-                            <td>{{item.modeloverificar}}</td>
-                            <td>{{item.fabricanteverificar}}</td>
-                            <td>{{item.cantidadverificar}}</td>
-                            <td>{{item.existenciasverificar}}</td>
-                            <td>{{item.numreservaverificar}}</td>
-                            <td>{{item.cantidadreservaverificar}}</td>
-                        </tr>
-                    </tbody>
+    <tab heading="Verificación de material">
+        <br>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <h5><strong>Información de la verificación: </strong></h5>
+            </div>
+        </div>
+        <hr>
+        <div class="row" id="TablaVerificar">
+            <div class="col-md-12">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <ng-container matColumnDef="codigo">
+                        <th mat-header-cell *matHeaderCellDef> Código </th>
+                        <td mat-cell *matCellDef="let element"> {{element.codigoverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                        <td mat-cell *matCellDef="let element"> {{element.descripcionverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="modelo">
+                        <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.modeloverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fabricante">
+                        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fabricanteverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cantidad">
+                        <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+                        <td mat-cell *matCellDef="let element"> {{element.cantidadverificar | number}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="existenciasverificar">
+                        <th mat-header-cell *matHeaderCellDef> Existencia </th>
+                        <td mat-cell *matCellDef="let element"> {{element.existenciasverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="numreservaverificar">
+                        <th mat-header-cell *matHeaderCellDef> # Reserva </th>
+                        <td mat-cell *matCellDef="let element"> {{element.numreservaverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cantidadreservaverificar">
+                        <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+                        <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar | number}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsV"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsV;"></tr>
                 </table>
+                <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
             </div>
-
-            <p>Archivo solicitud de activos fijos:</p>
-            <!--<div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
-                <a href="{{adjuntoActivo.url}}">
-                    <button type="button" class="btn btn-primary">Descargar aquí</button>
-                </a>
-            </div>
-            <ng-template #NoHayAdjActivos>
-                Sin adjunto
-            </ng-template>-->
-            <br>
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario Verificar Material</strong></label>
-            <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioverificarmaterial}}</textarea><br>
-            <br>
-
-            <div class="col-md-12 row">
-                <div>
-                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(3)">Anterior</button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="siguiente(3)">Siguiente</button>
-                </div>
+        </div>
+        <div class="col-md-12">
+            <p><strong>Archivo</strong> solicitud de activos fijos.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <a href="{{RutaArchivo}}">
+                <button type="button" class="btn btn-primary">Descargar aquí</button>
+            </a>
+        </div>
+        <br>
+        <div class="col-md-12">
+            <label for="colFormLabel"><strong>Comentario Verificar Material</strong></label>
+            <textarea name="" id="textareaHistorial" class="historial form-control" rows="4" placeholder="" disabled>{{comentarioverificarmaterial}}</textarea><br>
+        </div>
+        <br>
+        <div class="col-md-12 row">
+            <div>
+                <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(3)">Anterior</button>
             </div>
         </tab>
 
-        <tab heading="Registro de activos">
+        <!-- <tab heading="Registro de activos">
             <mat-accordion>
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
@@ -417,226 +429,285 @@
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                             </table>
+            <div>
+                <button type="button" class="btn btn-primary btn-md" (click)="siguiente(3)">Siguiente</button>
+            </div>
+        </div>
+    </tab> -->
 
-                            <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
-                        </div>
+    <tab heading="Registro de activos">
+        <br>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <h5><strong>Información de registro de activos: </strong></h5>
+            </div>
+        </div>
+        <hr>
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <strong>Ver bienes solicitados</strong>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        {{panelOpenState ? 'cerrar' : 'Click para desplegar' }}
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="row" id="TablaVerificar">
+                    <div class="col-md-12">
+                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                            <ng-container matColumnDef="codigo">
+                                <th mat-header-cell *matHeaderCellDef> Código </th>
+                                <td mat-cell *matCellDef="let element"> {{element.codigoverificar}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="descripcion">
+                                <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                                <td mat-cell *matCellDef="let element"> {{element.descripcionverificar}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="modelo">
+                                <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                                <td mat-cell *matCellDef="let element"> {{element.modeloverificar}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="fabricante">
+                                <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                                <td mat-cell *matCellDef="let element"> {{element.fabricanteverificar}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="cantidad">
+                                <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+                                <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar | number}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="valorEstimado">
+                                <th mat-header-cell *matHeaderCellDef> Valor</th>
+                                <td mat-cell *matCellDef="let element"> {{element.valorEstimado | number}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="moneda">
+                                <th mat-header-cell *matHeaderCellDef> Moneda</th>
+                                <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
                     </div>
-                </mat-expansion-panel>
-            </mat-accordion>
-            <div class="row">
-                <p>Archivo solicitud de activos fijos:</p>
-                <!--<div *ngIf="item.adjuntoActivo != null; else NoHayAdjActivos">
-                    <a href="{{adjuntoActivo.url}}">
-                        <button type="button" class="btn btn-primary">Descargar aquí</button>
-                    </a>
                 </div>
-                <ng-template #NoHayAdjActivos>
-                    Sin adjunto
-                </ng-template>-->
-                <br>
-                <br>
-                <div class="form-group col-md-12">
-                    <label for="textarea" class="col-sm-3 control-label"><b>Comentario registro de activos:</b></label>
-                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioregistroactivos}}</textarea>
-                </div>
-                <div class="col-md-12 row">
-                    <div>
-                        <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(4)">Anterior</button>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <br>
+        <br>
+        <div class="col-md-12">
+            <p><strong>Adjunto</strong> registro de activos fijos.</p>
+        </div>
+        <div class="col-md-6">
+            <a href="{{RutaArchivo}}">
+                <button type="button" class="btn btn-primary">Descargar aquí</button>
+            </a>
+        </div>
+        <br>
+        <div class="col-md-12">
+            <label for="colFormLabel"><strong>Comentario registro de activos:</strong></label>
+            <textarea name="" id="textareaHistorial" class="historial form-control" rows="4" placeholder="" disabled>{{comentarioregistroactivos}}</textarea><br>
+        </div>
+        <br>
+        <div class="col-md-12 row">
+            <div>
+                <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(4)">Anterior</button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary btn-md" (click)="siguiente(4)">Siguiente</button>
+            </div>
+        </div>
+    </tab>
+
+    <tab heading="Solp sap">
+        <br>
+        <div class="row espacio">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Estado registrar Sol SAP</strong>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-primary btn-md" (click)="siguiente(4)">Siguiente</button>
+                    <div class="card-body">
+                        {{estadoRegistrarSAP}}
                     </div>
                 </div>
             </div>
-        </tab>
-
-        <tab heading="Solp sap">
-            <br>
-            <div class="row espacio">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Estado registrar Sol SAP</strong>
-                        </div>
-                        <div class="card-body">
-                            {{estadoRegistrarSAP}}
-                        </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Número de Solp SAP</strong>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Número de Solp SAP</strong>
-                        </div>
-                        <div class="card-body">
-                            {{numSolSAP}}
-                        </div>
+                    <div class="card-body">
+                        {{numSolSAP}}
                     </div>
                 </div>
             </div>
-            <br>
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Comentario</strong></label>
-            <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioRegistrarSAP}}</textarea>
-            <br>
-            <div class="col-md-12 row">
-                <div>
-                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(5)">Anterior</button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="siguiente(5)">Siguiente</button>
-                </div>
+        </div>
+        <br>
+        <label for="colFormLabel" class="col-form-label"><strong>Comentario</strong></label>
+        <textarea name="" id="textareaHistorial" class="historial form-control" rows="4" placeholder="" disabled>{{comentarioRegistrarSAP}}</textarea>
+        <br>
+        <div class="col-md-12 row">
+            <div>
+                <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(5)">Anterior</button>
             </div>
-        </tab>
+            <div>
+                <button type="button" class="btn btn-primary btn-md" (click)="siguiente(5)">Siguiente</button>
+            </div>
+        </div>
+    </tab>
 
-        <tab heading="Contratos">
-            <br>
-            <div class="row espacio">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Contrato</strong>
-                        </div>
-                        <div class="card-body">
+    <tab heading="Contratos">
+        <br>
+        <div class="row espacio">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Contrato</strong>
+                    </div>
+                    <div class="card-body">
 
-                            <div *ngIf="tieneContrato; else notieneContrato">
-                                <p>La solicitud tiene un contrato asignado</p>
-                                <div class="table-wrapper-scroll-y">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Tipo contrato</th>
-                                                <th scope="col">Objeto contrato</th>
-                                                <th scope="col">Fecha firma contrato</th>
-                                                <th scope="col">Nombre Proveedor</th>
-                                                <th scope="col">Solicitante</th>
-                                                <th scope="col">Comprador</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let item of ObjContratos">
-                                                <td>{{item.tipoContrato}}</td>
-                                                <td>{{item.objContrato}}</td>
-                                                <td>{{item.fechafirmaContrato}}</td>
-                                                <td>{{item.nomProveedor}}</td>
-                                                <td>{{item.solicitante}}</td>
-                                                <td>{{item.comprador}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <a href="javascript:void(0)" (click)="redireccionarContratos()">Ver más </a>
+                        <div *ngIf="tieneContrato; else notieneContrato">
+                            <p>La solicitud tiene un contrato asignado</p>
+                            <div class="table-wrapper-scroll-y">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Tipo contrato</th>
+                                            <th scope="col">Objeto contrato</th>
+                                            <th scope="col">Fecha firma contrato</th>
+                                            <th scope="col">Nombre Proveedor</th>
+                                            <th scope="col">Solicitante</th>
+                                            <th scope="col">Comprador</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of ObjContratos">
+                                            <td>{{item.tipoContrato}}</td>
+                                            <td>{{item.objContrato}}</td>
+                                            <td>{{item.fechafirmaContrato}}</td>
+                                            <td>{{item.nomProveedor}}</td>
+                                            <td>{{item.solicitante}}</td>
+                                            <td>{{item.comprador}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
-                            <ng-template #notieneContrato>
-                                <p>
-                                    La solicitud no tiene contratos asignados.
-                                </p>
-                            </ng-template>
+                            <a href="javascript:void(0)" (click)="redireccionarContratos()">Ver más </a>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="col-md-12 row">
-                <div>
-                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(6)">Anterior</button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="siguiente(6)">Siguiente</button>
-                </div>
-            </div>
-        </tab>
 
-        <tab heading="Entregas">
-            <br>
-            <div class="row espacio">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Recepción Bienes</strong>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped table-bordered table-hover text-center">
-                                <thead>
-                                    <tr>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Valor</th>
-                                        <th>Ultima entrega</th>
-                                        <th>Comentario</th>
-                                        <th>Recibido sap</th>
-                                        <th># Recepción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of ObjRecepcionBienes">
-                                        <td>{{item.descripcion}}</td>
-                                        <td>{{item.cantidad}}</td>
-                                        <td>{{item.valor}}</td>
-                                        <td>
-                                            <div *ngIf="item.ultimaEntrega === true">
-                                                Si
-                                            </div>
-                                            <div *ngIf="item.ultimaEntrega === false">
-                                                No
-                                            </div>
-                                        </td>
-                                        <td>{{item.comentario}}</td>
-                                        <th>{{item.recibidosap}}</th>
-                                        <th>{{item.numrecepcion}}</th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <ng-template #notieneContrato>
+                            <p>
+                                La solicitud no tiene contratos asignados.
+                            </p>
+                        </ng-template>
                     </div>
                 </div>
             </div>
-            <br>
-            <br>
-            <div class="row espacio">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Recepción Servicios</strong>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped table-bordered table-hover text-center">
-                                <thead>
-                                    <tr>
-                                        <th>Descripción</th>
-                                        <th>Ubicación</th>
-                                        <th>Cantidad</th>
-                                        <th>Mes</th>
-                                        <th>Valor</th>
-                                        <th>Comentario</th>
-                                        <th>Recibido sap</th>
-                                        <th># Recepción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of ObjRecepcionServicios">
-                                        <td>{{item.descripcion}}</td>
-                                        <td>{{item.ubicacion}}</td>
-                                        <td>{{item.cantidad}}</td>
-                                        <td>{{item.mes}}</td>
-                                        <td>{{item.valor}}</td>
-                                        <td>{{item.comentario}}</td>
-                                        <td>{{item.recibidosap}}</td>
-                                        <td>{{item.numrecepcion}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+        </div>
+        <br>
+        <div class="col-md-12 row">
+            <div>
+                <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(6)">Anterior</button>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary btn-md" (click)="siguiente(6)">Siguiente</button>
+            </div>
+        </div>
+    </tab>
+
+    <tab heading="Entregas">
+        <br>
+        <div class="row espacio">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Recepción Bienes</strong>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Descripción</th>
+                                    <th>Cantidad</th>
+                                    <th>Valor</th>
+                                    <th>Ultima entrega</th>
+                                    <th>Comentario</th>
+                                    <th>Recibido sap</th>
+                                    <th># Recepción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of ObjRecepcionBienes">
+                                    <td>{{item.descripcion}}</td>
+                                    <td>{{item.cantidad}}</td>
+                                    <td>{{item.valor}}</td>
+                                    <td>
+                                        <div *ngIf="item.ultimaEntrega === true">
+                                            Si
+                                        </div>
+                                        <div *ngIf="item.ultimaEntrega === false">
+                                            No
+                                        </div>
+                                    </td>
+                                    <td>{{item.comentario}}</td>
+                                    <th>{{item.recibidosap}}</th>
+                                    <th>{{item.numrecepcion}}</th>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="col-md-12 row">
-                <div>
-                    <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(7)">Anterior</button>
+        </div>
+        <br>
+        <br>
+        <div class="row espacio">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Recepción Servicios</strong>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Descripción</th>
+                                    <th>Ubicación</th>
+                                    <th>Cantidad</th>
+                                    <th>Mes</th>
+                                    <th>Valor</th>
+                                    <th>Comentario</th>
+                                    <th>Recibido sap</th>
+                                    <th># Recepción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of ObjRecepcionServicios">
+                                    <td>{{item.descripcion}}</td>
+                                    <td>{{item.ubicacion}}</td>
+                                    <td>{{item.cantidad}}</td>
+                                    <td>{{item.mes}}</td>
+                                    <td>{{item.valor}}</td>
+                                    <td>{{item.comentario}}</td>
+                                    <td>{{item.recibidosap}}</td>
+                                    <td>{{item.numrecepcion}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </tab>
-    </tabset>
-</div>
+        </div>
+        <br>
+        <div class="col-md-12 row">
+            <div>
+                <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(7)">Anterior</button>
+            </div>
+        </div>
+    </tab>
+</tabset>
+
+<ngx-spinner>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>

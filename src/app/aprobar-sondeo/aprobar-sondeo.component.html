@@ -1,227 +1,230 @@
-<div class="container">
-    <br>
-    <h1>APROBAR SONDEO</h1>
-    <hr>
-    <br>
-    <div *ngIf="existeCondicionesTecnicasBienes == true" class="row">
-        <div class="form-group col-md-12">
-            <label for="textarea" class="col-sm-4 control-label"><b><h4>Resultado sondeo bienes:</h4></b></label>
-            <table class="table table-striped table-bordered table-hover text-center">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Descripción</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Comentarios</th>
-                        <th>Adjuntos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of ObjCondicionesTecnicas">
-                        <td>{{item.CodigoSondeo}}</td>
-                        <td>{{item.descripcion}}</td>
-                        <td>{{item.CantidadSondeo | number}}</td>
-                        <td>{{item.PrecioSondeo | number}}</td>
-                        <td>{{item.ComentarioSondeo}}</td>
-                        <td>
-                            <a *ngIf="item.adjunto != null" href="{{item.adjunto.url}}" target= _blank>
-                                <button type="button" class="btn btn-primary">Ver Archivo</button>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<br>
+<h1>APROBAR SONDEO</h1>
+<hr>
+<br>
+<div *ngIf="existeCondicionesTecnicasBienes == true" class="row">
+    <div class="form-group col-md-12">
+        <label for="textarea" class="col-sm-4 control-label"><b><h4>Resultado sondeo bienes:</h4></b></label>
+        <table class="table table-striped table-bordered table-hover text-center">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Comentarios</th>
+                    <th>Adjuntos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of ObjCondicionesTecnicas">
+                    <td>{{item.CodigoSondeo}}</td>
+                    <td>{{item.descripcion}}</td>
+                    <td>{{item.CantidadSondeo | number}}</td>
+                    <td>{{item.PrecioSondeo | currency}}</td>
+                    <td>{{item.ComentarioSondeo}}</td>
+                    <td>
+                        <a *ngIf="item.adjunto != null" href="{{item.adjunto.url}}" target="_blank">
+                            <button type="button" class="btn btn-primary">Ver Archivo</button>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <div *ngIf="existeCondicionesTecnicasServicios == true" class="row">
-        <div class="form-group col-md-12">
-            <label for="textarea" class="col-sm-5 control-label"><b><h4>Resultado sondeo servicios:</h4></b></label>
-            <table class="table table-striped table-bordered table-hover text-center">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Descripción</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Comentarios</th>
-                        <th>Adjuntos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                        <td>{{item.codigoSondeo}}</td>
-                        <td>{{item.descripcion}}</td>
-                        <td>{{item.cantidadSondeo | number}}</td>
-                        <td>{{item.precioSondeo | number}}</td>
-                        <td>{{item.comentarioSondeo}}</td>
-                        <td>
-                            <a *ngIf="item.RutaArchivo !== ''" href="{{item.RutaArchivo}}" target= _blank>
-                                <button type="button" class="btn btn-primary">Ver Archivo</button>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<div *ngIf="existeCondicionesTecnicasServicios == true" class="row">
+    <div class="form-group col-md-12">
+        <label for="textarea" class="col-sm-5 control-label"><b><h4>Resultado sondeo servicios:</h4></b></label>
+        <table class="table table-striped table-bordered table-hover text-center">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Comentarios</th>
+                    <th>Adjuntos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
+                    <td>{{item.codigoSondeo}}</td>
+                    <td>{{item.descripcion}}</td>
+                    <td>{{item.cantidadSondeo | number}}</td>
+                    <td>{{item.precioSondeo | currency}}</td>
+                    <td>{{item.comentarioSondeo}}</td>
+                    <td>
+                        <a *ngIf="item.RutaArchivo !== ''" href="{{item.RutaArchivo}}" target="_blank">
+                            <button type="button" class="btn btn-primary">Ver Archivo</button>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <hr>
-    <div clas="row">
-        <div class="card">
-            <div class="card-header">
-                <strong>Acciones</strong>
-            </div>
-            <div class="card-body">
-                <div class="form-check form-check-inline">
-                    <label>
+<hr>
+<div clas="row">
+    <div class="card">
+        <div class="card-header">
+            <strong>Acciones</strong>
+        </div>
+        <div class="card-body">
+            <div class="form-check form-check-inline">
+                <label>
                         <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="1">
                         Sondeo adicional
                     </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label>
                         <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="2">
                         Convertir en SOLP
                     </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label>
                         <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="4">
                         Convertir en orden a CM
                     </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label>
                         <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="3">
                         Descartar
                     </label>
-                </div>
             </div>
+        </div>
+    </div>
+</div>
+<br>
+<ng-container *ngIf="RDBsondeo === 4">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label><b>Número Contrato Marco:</b></label>
+            <ng-template #popTemplate2>Por favor digite el número OCM</ng-template>
+            <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label for="textarea" class="col-sm-3 control-label"><b>Justificación</b></label>
+            <ng-template #popTemplate1>Por favor especifique en la justificación</ng-template>
+            <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre la justificación..." [(ngModel)]="justificacionSondeo"></textarea>
         </div>
     </div>
     <br>
-    <ng-container *ngIf="RDBsondeo === 4">
+</ng-container>
+<div class="row">
+    <div class="form-group col-md-12">
+        <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
+        <ng-template #popTemplate>Por favor especifique el motivo en los comentarios</ng-template>
+        <textarea name="" id="textarea" class="form-control" rows="2" triggers="" #customTooltip="bs-tooltip" placement="top" [tooltip]="popTemplate" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioSondeo"></textarea>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-12">
+        <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
+        <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioSondeo}}</textarea>
+    </div>
+</div>
+<hr>
+<div class="row text-center">
+    <div class="col-md-12"></div>
+    <div class="form-group col-md-12">
+        <input type="button" class="btn btn-success" value="Enviar" (click)="GuardarRevSondeo()" />
+        <input type="button" class="btn btn-danger" value="Cancelar" (click)="salir()" />
+    </div>
+</div>
+<hr>
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title><strong>Información adicional</strong></mat-panel-title>
+            <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
+        </mat-expansion-panel-header>
         <div class="row">
-            <div class="form-group col-md-4">
-                <label><b>Número Contrato Marco:</b></label>
-                <ng-template #popTemplate2>Por favor digite el número OCM</ng-template>
-                <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
-            </div>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label for="textarea" class="col-sm-3 control-label"><b>Justificación</b></label>
-                <ng-template #popTemplate1>Por favor especifique en la justificación</ng-template>
-                <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre la justificación..." [(ngModel)]="justificacionSondeo"></textarea>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Fecha deseada de entrega</strong>
+                    </div>
+                    <div class="card-body">
+                        {{fechaDeseada | date:'dd/MM/yyyy'}}
+                    </div>
+                </div>
             </div>
         </div>
         <br>
-    </ng-container>
-    <div class="row">
-        <div class="form-group col-md-12">
-            <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
-            <ng-template #popTemplate>Por favor especifique el motivo en los comentarios</ng-template>
-            <textarea name="" id="textarea" class="form-control" rows="2" triggers="" #customTooltip="bs-tooltip" placement="top" [tooltip]="popTemplate" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioSondeo"></textarea>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-md-12">
-            <label for="textarea" class="col-sm-3 control-label"><b>Historial de comentarios</b></label>
-            <textarea name="" id="textareaHistorial" class="historial form-control" rows="6" placeholder="" disabled>{{comentarioSondeo}}</textarea>
-        </div>
-    </div>
-    <hr>
-    <div class="row text-center">
-        <div class="col-md-12"></div>
-        <div class="form-group col-md-12">
-            <input type="button" class="btn btn-success" value="Enviar" (click)="GuardarRevSondeo()" />
-            <input type="button" class="btn btn-danger" value="Cancelar" (click)="salir()" />
-        </div>
-    </div>
-    <hr>
-    <accordion>
-        <accordion-group heading="Ver Información adicional">
-            <div class="row espacio">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Fecha deseada de entrega</strong>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Información de la solicitud</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <b>Tipo de solicitud: </b>{{tipoSolicitud}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong> Código ariba: </strong>{{codigoAriba}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Solicitante: </strong>{{solicitante}}
+                            </div>
                         </div>
-                        <div class="card-body">
-                            {{fechaDeseada | date:'dd/MM/yyyy'}}
+                        <br>
+                        <div class="row espacio">
+                            <div class="col-md-4">
+                                <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Empresa: </strong>{{empresa}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>País: </strong>{{pais}}
+                            </div>
                         </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <strong>Categoría: </strong>{{categoria}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Sub-Categoría: </strong>{{subCategoria}}
+                            </div>
+                            <div class="col-md-4">
+                                <strong>Comprador: </strong>{{comprador}}
+                            </div>
+                        </div>
+                        <br>
                     </div>
                 </div>
             </div>
-            <br>
+        </div>
+        <div class="row ">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{justificacion}}</textarea>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group">
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Información de la solicitud</strong>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <b>Tipo de solicitud: </b>{{tipoSolicitud}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong> Código ariba: </strong>{{codigoAriba}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Solicitante: </strong>{{solicitante}}
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row espacio">
-                                <div class="col-md-4">
-                                    <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Empresa: </strong>{{empresa}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>País: </strong>{{pais}}
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <strong>Categoría: </strong>{{categoria}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Sub-Categoría: </strong>{{subCategoria}}
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Comprador: </strong>{{comprador}}
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row ">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
-                        <textarea class="form-control" id="exampleFormControlTextarea2" rows="2" readonly>{{justificacion}}</textarea>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="form-group">
-                <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="colFormLabel" class="col-sm-4 col-form-label"><strong><h4>Condiciones contractuales</h4></strong></label>
@@ -250,118 +253,114 @@
                     <strong> Número de orden estadística: </strong>{{numeroOrdenEstadistico}}
                 </div>
             </div>
-            </div>
-            <hr>
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-3 col-form-label"><strong><h4>Bienes solicitados</h4></strong></label>
-                        <div class="table-wrapper-scroll-y">
-                            <table class="table table-striped table-bordered table-hover text-center">
-                                <thead>
-                                    <tr>
-                                        <th>Código</th>
-                                        <th>Descripción</th>
-                                        <th>Modelo</th>
-                                        <th>Fabricante</th>
-                                        <th>Cantidad</th>
-                                        <th>Valor Estimado</th>
-                                        <th>Comentario</th>
-                                        <th>Adjunto</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of ObjCondicionesTecnicas">
-                                        <ng-container *ngIf="Resondear !== true; else Codson">
-                                            <td>{{item.Codigo}}</td>
-                                            <td>{{item.descripcion}}</td>
-                                            <td>{{item.Modelo}}</td>
-                                            <td>{{item.Fabricante}}</td>
-                                            <td>{{item.Cantidad | number}}</td>
-                                            <td>{{item.ValorEstimado | number}}</td>
-                                            <td>{{item.Comentarios}}</td>
-                                            <td>
-                                                <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}"
-                                                    target=_blank>
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </td>
-                                        </ng-container>
-                                        <ng-template #Codson>
-                                            <td>{{item.CodigoSondeo}}</td>
-                                            <td>{{item.descripcion}}</td>
-                                            <td>{{item.Modelo}}</td>
-                                            <td>{{item.Fabricante}}</td>
-                                            <td>{{item.CantidadSondeo | number}}</td>
-                                            <td>{{item.PrecioSondeo | number}}</td>
-                                            <td>{{item.ComentarioSondeo}}</td>
-                                            <td>
-                                                <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}"
-                                                    target=_blank>
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </td>
-                                        </ng-template>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong><h4>Bienes solicitados</h4></strong></label>
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table table-striped table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Descripción</th>
+                                    <th>Modelo</th>
+                                    <th>Fabricante</th>
+                                    <th>Cantidad</th>
+                                    <th>Valor Estimado</th>
+                                    <th>Comentario</th>
+                                    <th>Adjunto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of ObjCondicionesTecnicas">
+                                    <ng-container *ngIf="Resondear !== true; else Codson">
+                                        <td>{{item.Codigo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.Modelo}}</td>
+                                        <td>{{item.Fabricante}}</td>
+                                        <td>{{item.Cantidad | number}}</td>
+                                        <td>{{item.ValorEstimado | currency}}</td>
+                                        <td>{{item.Comentarios}}</td>
+                                        <td>
+                                            <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}" target="_blank">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
+                                    </ng-container>
+                                    <ng-template #Codson>
+                                        <td>{{item.CodigoSondeo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.Modelo}}</td>
+                                        <td>{{item.Fabricante}}</td>
+                                        <td>{{item.CantidadSondeo | number}}</td>
+                                        <td>{{item.PrecioSondeo | currency}}</td>
+                                        <td>{{item.ComentarioSondeo}}</td>
+                                        <td>
+                                            <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}" target="_blank">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
+                                    </ng-template>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="colFormLabel" class="col-sm-4 col-form-label"><strong><h4>Servicios solicitados</h4></strong></label>
-                        <div class="table-wrapper-scroll-y">
-                            <table class="table table-striped table-bordered table-hover text-center">
-                                <thead>
-                                    <tr>
-                                        <th>Código</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Valor Estimado</th>
-                                        <th>Comentario</th>
-                                        <th>Adjunto</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                                        <ng-container *ngIf="Resondear !== true; else Codson">
-                                            <td>{{item.Codigo}}</td>
-                                            <td>{{item.descripcion}}</td>
-                                            <td>{{item.Cantidad | number}}</td>
-                                            <td>{{item.ValorEstimado | number}}</td>
-                                            <td>{{item.Comentario}}</td>
-                                            <td>
-                                                <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </td>
-                                        </ng-container>
-                                        <ng-template #Codson>
-                                            <td>{{item.codigoSondeo}}</td>
-                                            <td>{{item.descripcion}}</td>
-                                            <td>{{item.cantidadSondeo | number}}</td>
-                                            <td>{{item.precioSondeo | number}}</td>
-                                            <td>{{item.comentarioSondeo}}</td>
-                                            <td>
-                                                <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_blank>
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </td>
-                                        </ng-template>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong><h4>Servicios solicitados</h4></strong></label>
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table table-striped table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Descripción</th>
+                                    <th>Cantidad</th>
+                                    <th>Valor Estimado</th>
+                                    <th>Comentario</th>
+                                    <th>Adjunto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
+                                    <ng-container *ngIf="Resondear !== true; else Codson">
+                                        <td>{{item.Codigo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.Cantidad | number}}</td>
+                                        <td>{{item.ValorEstimado | currency}}</td>
+                                        <td>{{item.Comentario}}</td>
+                                        <td>
+                                            <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target="_blank">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
+                                    </ng-container>
+                                    <ng-template #Codson>
+                                        <td>{{item.codigoSondeo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.cantidadSondeo | number}}</td>
+                                        <td>{{item.precioSondeo | currency}}</td>
+                                        <td>{{item.comentarioSondeo}}</td>
+                                        <td>
+                                            <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target="_blank">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
+                                    </ng-template>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </accordion-group>
-    </accordion>
-</div>
-
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
 <ngx-spinner>
     <p style="font-size: 20px; color: white">PROCESANDO...</p>
-  </ngx-spinner>
+</ngx-spinner>

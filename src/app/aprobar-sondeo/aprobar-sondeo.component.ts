@@ -28,6 +28,7 @@ export class AprobarSondeoComponent implements OnInit {
   codigoAriba: string;
   numeroOrdenEstadistico: string;
   ordenadorGasto: string;
+  panelOpenState = false;
   empresa: string;
   pais: string;
   categoria: string;
