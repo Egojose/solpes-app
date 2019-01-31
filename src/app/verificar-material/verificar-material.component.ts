@@ -27,6 +27,7 @@ export class VerificarMaterialComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   tipoSolicitud: string;
+  contratoMarco: string;
   solicitante: string;
   verificarMaterialFormulario: FormGroup;
   verificarSubmitted = false;
@@ -93,6 +94,7 @@ export class VerificarMaterialComponent implements OnInit {
       this.IdSolicitud = solicitud.Id;
       this.fechaDeseada = solicitud.FechaDeseadaEntrega;
       this.tipoSolicitud = solicitud.TipoSolicitud;
+      this.contratoMarco = solicitud.CM;
       this.solicitante = solicitud.Solicitante;
       this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
       this.empresa = solicitud.Empresa.Title;
