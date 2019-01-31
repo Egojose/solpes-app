@@ -117,9 +117,16 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
                             </div>
+                            <ng-container *ngIf="tipoSolicitud == 'Orden a CM'; else SinContrato">
+                                <div class="col-md-4">
+                                    <strong>Contrato marco: </strong>{{contratoMarco}}
+                                </div>
+                            </ng-container>
+                            <ng-template #SinContrato>
+                            </ng-template>
                         </div>
                         <br>
                         <div class="row">
@@ -258,7 +265,7 @@
             </div>
         </div>
         <hr>
-        <div *ngIf="EsSondeo == true" class="form-group row">
+        <div *ngIf="EsSondeo == true && tipoSolicitud == 'Sondeo'" class="form-group row">
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="colFormLabel" class="col-sm-6 col-form-label"><strong><h4>Resultado Sondeo bienes</h4></strong></label>

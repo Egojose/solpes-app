@@ -25,6 +25,7 @@ export class ContratosComponent implements OnInit {
   ContratosForm: FormGroup;
   submitted = false;
   content: string;
+  contratoMarco: string;
   selectedValue: string;
   selectedOption: any;
   ObjUsuarios: [];
@@ -92,7 +93,7 @@ export class ContratosComponent implements OnInit {
       ContratoOC: ['', Validators.required],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
-      ContratoObraConexo: [''],
+      ContratoObraConexo: ['No'],
       MonedaContrato: ['', Validators.required],
       IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
@@ -120,6 +121,7 @@ export class ContratosComponent implements OnInit {
             this.IdSolicitud = this.ObjSolicitud.Id;
             this.fechaDeseada = this.ObjSolicitud.FechaDeseadaEntrega;
             this.tipoSolicitud = this.ObjSolicitud.TipoSolicitud;
+            this.contratoMarco = this.ObjSolicitud.CM;
             this.solicitante = this.ObjSolicitud.Solicitante;
             this.ordenadorGasto = this.ObjSolicitud.OrdenadorGastos.Title;
             this.empresa = this.ObjSolicitud.Empresa.Title;

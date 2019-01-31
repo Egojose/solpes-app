@@ -22,6 +22,7 @@ export class RegistrarSolpSapComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   tipoSolicitud: string;
   codigoAriba: string;
+  contratoMarco: string;
   numOrdenEstadistica: string;
   compradorNombre: string;
   panelOpenState1 = false;
@@ -85,6 +86,7 @@ export class RegistrarSolpSapComponent implements OnInit {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.tipoSolicitud = solicitud.CM;
         this.codigoAriba = solicitud.CodigoAriba;
         this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;

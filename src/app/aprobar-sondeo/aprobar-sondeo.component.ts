@@ -52,6 +52,7 @@ export class AprobarSondeoComponent implements OnInit {
   ComentarioSondeo: string;
   justificacionSondeo: string;
   historial: string;
+  contratoMarco: string;
   comentarioSondeo: string;
   usuario: Usuario;
   loading: boolean;
@@ -252,6 +253,7 @@ export class AprobarSondeoComponent implements OnInit {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.contratoMarco = solicitud.CM;
         this.codigoAriba = solicitud.CodigoAriba;
         this.numeroOrdenEstadistico = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;

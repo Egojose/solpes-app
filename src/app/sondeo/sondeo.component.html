@@ -22,7 +22,7 @@
                                         <th>Fabricante</th>
                                         <th>Cantidad</th>
                                         <th>Valor Estimado</th>
-                                        <th>Tipo de moneda</th>
+                                        <th>Moneda</th>
                                         <th>Comentario</th>
                                         <th>Adjunto</th>
                                     </tr>
@@ -39,8 +39,7 @@
                                             <td>{{item.tipoMoneda}}</td>
                                             <td>{{item.Comentario}}</td>
                                             <td>
-                                                <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
-                                                    target="_blank">
+                                                <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target="_blank">
                                                     <button type="button" class="btn btn-primary">Ver Archivo</button>
                                                 </a>
                                             </td>
@@ -54,8 +53,7 @@
                                             <td>{{item.precioSondeo | number}}</td>
                                             <td>{{item.ComentarioSondeo}}</td>
                                             <td>
-                                                <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
-                                                    target="_blank">
+                                                <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target="_blank">
                                                     <button type="button" class="btn btn-primary">Ver Archivo</button>
                                                 </a>
                                             </td>
@@ -82,7 +80,7 @@
                         <th>Descripción</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
-                        <th>Tipo Moneda</th>
+                        <th>Moneda</th>
                         <th>Comentarios</th>
                         <th>Adjuntos</th>
                     </tr>
@@ -93,12 +91,10 @@
                             <input type="text" class="form-control text-center" [(ngModel)]="item.codigo"></td>
                         <td>{{item.descripcion}}</td>
                         <td>
-                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }"
-                                class="form-control text-center" [(ngModel)]="item.cantidad">
+                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" class="form-control text-center" [(ngModel)]="item.cantidad">
                         </td>
                         <td>
-                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
-                                class="form-control text-center" [(ngModel)]="item.valorEstimado">
+                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" class="form-control text-center" [(ngModel)]="item.valorEstimado">
                         </td>
                         <td>
                             <select id="tipoMonedaCTB" name="tipoMonedaCTB" class="form-control" [(ngModel)]="item.tipoMoneda">
@@ -142,7 +138,7 @@
                                         <th>Descripción</th>
                                         <th>Cantidad</th>
                                         <th>Valor Estimado</th>
-                                        <th>Tipo de moneda</th>
+                                        <th>Moneda</th>
                                         <th>Comentario</th>
                                         <th>Adjunto</th>
                                     </tr>
@@ -156,8 +152,7 @@
                                         <td>{{item.tipoMoneda}}</td>
                                         <td>{{item.comentarios}}</td>
                                         <td>
-                                            <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
-                                                target="_blank">
+                                            <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target="_blank">
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>
                                         </td>
@@ -183,7 +178,7 @@
                         <th>Descripción</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
-                        <th>Tipo de moneda</th>
+                        <th>Moneda</th>
                         <th>Comentarios</th>
                         <th>Adjuntos</th>
                     </tr>
@@ -191,21 +186,19 @@
                 <tbody>
                     <tr *ngFor="let item of ObjCondicionesTecnicasServiciosGuardar let i = index" [attr.data-index]="i">
                         <td>
-                            <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo"
-                                min="0" step="" title="">
+                            <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo" min="0" step="" title="">
                         </td>
                         <td>
                             {{item.descripcion}}
                         </td>
                         <td>
-                            <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad"
-                                min="0" step="" title="">
+                            <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad" min="0" step="" title="">
                         </td>
                         <td>
                             <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" name="" id="inputPrecio" class="form-control text-center" [(ngModel)]="item.valorEstimado">
                         </td>
                         <td>
-                                <select id="tipoMonedaCTS" name="tipoMonedaCTS" class="form-control" [(ngModel)]="item.tipoMoneda">
+                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" class="form-control" [(ngModel)]="item.tipoMoneda">
                                         <option value="ARS">ARS</option>
                                         <option value="BRL">BRL</option>
                                         <option value="CLP">CLP</option>
@@ -214,10 +207,9 @@
                                         <option value="PEN">PEN</option>
                                         <option value="USD">USD</option>
                                 </select>
-                            </td>
+                        </td>
                         <td>
-                            <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.ComentarioSondeo"
-                                step="" title=""></textarea>
+                            <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.ComentarioSondeo" step="" title=""></textarea>
                         </td>
                         <td>
                             <input type="file" name="adjunto" (change)="adjuntarArchivoCTS($event, item)">
@@ -232,8 +224,7 @@
 <div class="row">
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-3 control-label">Comentario del comprador</label>
-        <textarea name="" id="comentSolcitante" class="form-control" rows="2" placeholder="Ingrese el comentario"
-            [(ngModel)]="ComentarioSolicitante"></textarea>
+        <textarea name="" id="comentSolcitante" class="form-control" rows="2" placeholder="Ingrese el comentario" [(ngModel)]="ComentarioSolicitante"></textarea>
     </div>
 </div>
 <div class="row">
@@ -276,40 +267,51 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <b>Tipo de solicitud: </b>{{tipoSolicitud}}
+                                <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
                             </div>
-                            <div class="col-md-4">
-                                <strong> Código ariba: </strong>{{codigoAriba}}
-                            </div>
+                            <ng-container *ngIf="tipoSolicitud == 'Orden a CM'; else SinContrato">
+                                <div class="col-md-4">
+                                    <strong>Contrato marco: </strong>{{contratoMarco}}
+                                </div>
+                            </ng-container>
+                            <ng-template #SinContrato>
+                            </ng-template>
+                        </div>
+                        <br>
+                        <div class="row">
                             <div class="col-md-4">
                                 <strong>Solicitante: </strong>{{solicitante}}
                             </div>
-                        </div>
-                        <br>
-                        <div class="row espacio">
                             <div class="col-md-4">
                                 <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
                             </div>
                             <div class="col-md-4">
                                 <strong>Empresa: </strong>{{empresa}}
                             </div>
-                            <div class="col-md-4">
-                                <strong>País: </strong>{{pais}}
-                            </div>
                         </div>
                         <br>
                         <div class="row">
+                            <div class="col-md-4">
+                                <strong>País: </strong>{{pais}}
+                            </div>
                             <div class="col-md-4">
                                 <strong>Categoría: </strong>{{categoria}}
                             </div>
                             <div class="col-md-4">
                                 <strong>Sub-Categoría: </strong>{{subCategoria}}
                             </div>
+                        </div>
+                        <br>
+                        <div class="row">
                             <div class="col-md-4">
                                 <strong>Comprador: </strong>{{comprador}}
                             </div>
+                            <div class="col-md-4">
+                                <strong>Código ariba: </strong>{{codigoAriba}}
+                            </div>
+                            <div class="col-md-4">
+                            </div>
                         </div>
-                        <br>
                     </div>
                 </div>
             </div>

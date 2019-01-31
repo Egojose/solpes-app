@@ -174,40 +174,51 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <b>Tipo de solicitud: </b>{{tipoSolicitud}}
+                                <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
                             </div>
-                            <div class="col-md-4">
-                                <strong> Código ariba: </strong>{{codigoAriba}}
-                            </div>
+                            <ng-container *ngIf="tipoSolicitud == 'Orden a CM'; else SinContrato">
+                                <div class="col-md-4">
+                                    <strong>Contrato marco: </strong>{{contratoMarco}}
+                                </div>
+                            </ng-container>
+                            <ng-template #SinContrato>
+                            </ng-template>
+                        </div>
+                        <br>
+                        <div class="row">
                             <div class="col-md-4">
                                 <strong>Solicitante: </strong>{{solicitante}}
                             </div>
-                        </div>
-                        <br>
-                        <div class="row espacio">
                             <div class="col-md-4">
                                 <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
                             </div>
                             <div class="col-md-4">
                                 <strong>Empresa: </strong>{{empresa}}
                             </div>
-                            <div class="col-md-4">
-                                <strong>País: </strong>{{pais}}
-                            </div>
                         </div>
                         <br>
                         <div class="row">
+                            <div class="col-md-4">
+                                <strong>País: </strong>{{pais}}
+                            </div>
                             <div class="col-md-4">
                                 <strong>Categoría: </strong>{{categoria}}
                             </div>
                             <div class="col-md-4">
                                 <strong>Sub-Categoría: </strong>{{subCategoria}}
                             </div>
+                        </div>
+                        <br>
+                        <div class="row">
                             <div class="col-md-4">
                                 <strong>Comprador: </strong>{{comprador}}
                             </div>
+                            <div class="col-md-4">
+                                <strong>Código ariba: </strong>{{codAriba}}
+                            </div>
+                            <div class="col-md-4">
+                            </div>
                         </div>
-                        <br>
                     </div>
                 </div>
             </div>

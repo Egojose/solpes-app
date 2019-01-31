@@ -21,6 +21,7 @@ export class SondeoComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   tipoSolicitud: string;
+  contratoMarco: string;
   solicitante: string;
   ordenadorGasto: string;
   panelOpenState1: string;
@@ -87,6 +88,7 @@ export class SondeoComponent implements OnInit {
       solicitud => {
         this.IdSolicitud = solicitud.Id;
         this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.contratoMarco = solicitud.CM;
         this.codigoAriba = solicitud.CodigoAriba;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.solicitante = solicitud.Solicitante;
