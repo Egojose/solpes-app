@@ -365,9 +365,13 @@
               <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control"
                 [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
                 <option value="">Seleccione</option>
+                <option value="ARS">ARS</option>
+                <option value="BRL">BRL</option>
+                <option value="CLP">CLP</option>
                 <option value="COP">COP</option>
-                <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
+                <option value="PEN">PEN</option>
+                <option value="USD">USD</option>
               </select>
               <div *ngIf="ctbSubmitted && f.tipoMonedaCTB.errors" class="invalid-feedback">
                 <div *ngIf="f.tipoMonedaCTB.errors.required">Este campo es requerido</div>
@@ -439,9 +443,13 @@
               <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control"
                 [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
                 <option value="">Seleccione</option>
+                <option value="ARS">ARS</option>
+                <option value="BRL">BRL</option>
+                <option value="CLP">CLP</option>
                 <option value="COP">COP</option>
-                <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
+                <option value="PEN">PEN</option>
+                <option value="USD">USD</option>
               </select>
               <div *ngIf="ctsSubmitted && f2.tipoMonedaCTS.errors" class="invalid-feedback">
                 <div *ngIf="f2.tipoMonedaCTS.errors.required">Este campo es requerido</div>

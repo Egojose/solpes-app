@@ -62,14 +62,15 @@ export class RegistrarSolpSapComponent implements OnInit {
   dataSourceTS;
   CTS: boolean;
   CTB: boolean;
-  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
-  displayedColumnsTS: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda", "comentarioSondeo", "adjunto",
-  ];
+  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda"];
+  displayedColumnsTS: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda"];
+
   RutaArchivo: string;
   existenBienes: boolean;
   existenServicios: boolean;
   ResponsableProceso: number;
   estadoSolicitud: string;
+  FueSondeo: boolean;
 
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
@@ -77,6 +78,87 @@ export class RegistrarSolpSapComponent implements OnInit {
     this.existenBienes = false;
     this.existenServicios = false;
     this.spinner.hide();
+  }
+
+  ngOnInit() {
+    this.spinner.show();
+    this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
+      solicitud => {
+        this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.codigoAriba = solicitud.CodigoAriba;
+        this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
+        this.IdSolicitud = solicitud.Id;
+        this.OrdenEstadistica = solicitud.OrdenEstadistica;
+        this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+        this.solicitante = solicitud.Solicitante;
+        this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
+        this.empresa = solicitud.Empresa.Title;
+        this.pais = solicitud.Pais.Title;
+        this.paisId = solicitud.Pais.Id;
+        this.categoria = solicitud.Categoria;
+        this.subCategoria = solicitud.Categoria;
+        this.compradorNombre = solicitud.Comprador.Title;
+        this.comprador = solicitud.Comprador.ID;
+        this.alcance = solicitud.Alcance;
+        this.justificacion = solicitud.Justificacion;
+        this.Autor = solicitud.AuthorId;
+        this.FueSondeo = solicitud.FueSondeo;
+        if (solicitud.Attachments === true) {
+          let ObjArchivos = solicitud.AttachmentFiles.results;
+          ObjArchivos.forEach(element => {
+            let objSplit = element.FileName.split("-");
+            if (objSplit.length > 0) {
+              let TipoArchivo = objSplit[0]
+              if (TipoArchivo === "RegistroActivo") {
+                this.RutaArchivo = element.ServerRelativeUrl;
+              }
+            }
+          });
+        }
+
+        if (solicitud.CondicionesContractuales != null) {
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        }
+
+        this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
+          RespuestaCondiciones => {
+            if (RespuestaCondiciones.length > 0) {
+              this.existenBienes = true;
+              this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+              this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+              this.ObjResultadosondeo = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+              this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
+              if (this.ObjCTVerificar.length > 0) {
+                this.CTB = true;
+              }
+              this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
+              this.dataSource.paginator = this.paginator;
+            }
+            this.spinner.hide();
+          }
+        )
+
+        this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
+          RespuestaCondicionesServicios => {
+            if (RespuestaCondicionesServicios.length > 0) {
+              this.existenServicios = true;
+              this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+              this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+              this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
+              this.dataSourceTS.paginator = this.paginator;
+            }
+            this.spinner.hide();
+          }
+        )
+
+        this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+          (RespuestaProcesos) => {
+            this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
+            this.spinner.hide();
+          }
+        )
+      }
+    );
   }
 
   GuardarSolSAP() {
@@ -199,83 +281,5 @@ export class RegistrarSolpSapComponent implements OnInit {
     this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
-  ngOnInit() {
-    this.spinner.show();
-    this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
-      solicitud => {
-        this.tipoSolicitud = solicitud.TipoSolicitud;
-        this.codigoAriba = solicitud.CodigoAriba;
-        this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
-        this.IdSolicitud = solicitud.Id;
-        this.OrdenEstadistica = solicitud.OrdenEstadistica;
-        this.fechaDeseada = solicitud.FechaDeseadaEntrega;
-        this.solicitante = solicitud.Solicitante;
-        this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
-        this.empresa = solicitud.Empresa.Title;
-        this.pais = solicitud.Pais.Title;
-        this.paisId = solicitud.Pais.Id;
-        this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Categoria;
-        this.compradorNombre = solicitud.Comprador.Title;
-        this.comprador = solicitud.Comprador.ID;
-        this.alcance = solicitud.Alcance;
-        this.justificacion = solicitud.Justificacion;
-        this.Autor = solicitud.AuthorId;
-        if (solicitud.Attachments === true) {
-          let ObjArchivos = solicitud.AttachmentFiles.results;
-          ObjArchivos.forEach(element => {
-            let objSplit = element.FileName.split("-");
-            if (objSplit.length > 0) {
-              let TipoArchivo = objSplit[0]
-              if (TipoArchivo === "RegistroActivo") {
-                this.RutaArchivo = element.ServerRelativeUrl;
-              }
-            }
-          });
-        }
 
-        if (solicitud.CondicionesContractuales != null) {
-          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
-        }
-
-        this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
-          RespuestaCondiciones => {
-            if (RespuestaCondiciones.length > 0) {
-              this.existenBienes = true;
-              this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-              this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-              this.ObjResultadosondeo = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-              this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
-              if (this.ObjCTVerificar.length > 0) {
-                this.CTB = true;
-              }
-              this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
-              this.dataSource.paginator = this.paginator;
-            }
-            this.spinner.hide();
-          }
-        )
-
-        this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
-          RespuestaCondicionesServicios => {
-            if (RespuestaCondicionesServicios.length > 0) {
-              this.existenServicios = true;
-              this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-              this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-              this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
-              this.dataSourceTS.paginator = this.paginator;
-            }
-            this.spinner.hide();
-          }
-        )
-
-        this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
-          (RespuestaProcesos) => {
-            this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
-            this.spinner.hide();
-          }
-        )
-      }
-    );
-  }
 }
