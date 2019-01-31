@@ -25,6 +25,7 @@ export class VerSolicitudTabComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   dataSource;
+  contratoMarco: string;
   RutaArchivo: string;
   tipoSolicitud: string;
   numOrdenEstadistica: string;
@@ -99,6 +100,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
+        this.contratoMarco = solicitud.CM;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
         this.categoria = solicitud.Categoria;
