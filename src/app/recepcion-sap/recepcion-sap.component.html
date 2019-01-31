@@ -27,10 +27,10 @@
                     </a>
                 </td>
                 <td>
-                    <input class="form-control" type="text" name="" id="" value="" [formControl]="numRecepcion">
+                    <input class="form-control" type="text" [(ngModel)]="item.NumeroRecepcion" [formControl]="numRecepcion">
                 </td>
                 <td>
-                    <input type="button" class="btn btn-primary" value="OK" (click)="Guardar(item)" />
+                    <input type="button" class="btn btn-success" value="OK" (click)="Guardar(item)" />
                 </td>
             </tr>
         </tbody>

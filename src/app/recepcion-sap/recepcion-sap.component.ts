@@ -26,6 +26,7 @@ export class RecepcionSapComponent implements OnInit {
   IdRecepcionBienes: number;
   IdUsuario: any;
   fulldatos: any;
+  numRecepcionValor: string;
   
 constructor(private servicio: SPServicio, public toastr: ToastrManager) {}
 
@@ -43,15 +44,13 @@ ngOnInit() {
 }  
 
   Guardar(item) {
-    console.log(this.numRecepcion.value);
-    item.NumeroRecepcion = this.numRecepcion.value;
     this.IdRecepcionBienes = item.IdRecepcionBienes;
     let objRegistrar;
     objRegistrar = {
       NumeroRecepcion: item.NumeroRecepcion,
       recibidoSap: true
     }
-    if (this.numRecepcion.value == null) {
+    if (item.NumeroRecepcion == null) {
       this.mostrarAdvertencia('Debe suministrar el número de recepción');
       return false;
     }
@@ -61,7 +60,6 @@ ngOnInit() {
       (resultado: ItemAddResult) => {
        this.MostrarExitoso('Recibido');
         this.ObjRecepcionBienes.splice(index, 1);
-        this.numRecepcion.setValue(null);
       }
     ).catch(
       (error) => {
