@@ -247,7 +247,7 @@
                                 <td>{{item.valorEstimado | number}}</td>
                                 <td>
                                     <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
-                                        <a href="{{item.adjuntoCreacion.url}}" target=_blank>
+                                        <a href="{{item.adjuntoCreacion.url}}" target="_blank">
                                             <button type="button" class="btn btn-primary">Ver Archivo</button>
                                         </a>
                                     </ng-container>
@@ -288,7 +288,7 @@
                                     <td>{{item.valorEstimado | number}}</td>
                                     <td>
                                         <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
-                                            <a href="{{item.adjuntoCreacion.url}}" target=_blank>
+                                            <a href="{{item.adjuntoCreacion.url}}" target="_blank">
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>
                                         </ng-container>
