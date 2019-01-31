@@ -189,7 +189,7 @@ export class RegistrarSolpSapComponent implements OnInit {
       }
       else if (this.RDBOrdenadorGastos === 2) {
         this.ResponsableProceso = null;
-        this.estadoSolicitud = 'Finalizado';
+        this.estadoSolicitud = 'Rechazado';
         ObjSolpSap = {
           ResponsableId: this.ResponsableProceso,
           Estado: this.estadoSolicitud,
