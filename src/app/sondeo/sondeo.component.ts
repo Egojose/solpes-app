@@ -9,6 +9,7 @@ import { Usuario } from '../dominio/usuario';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { debug } from 'util';
 @Component({
   selector: 'app-sondeo',
   templateUrl: './sondeo.component.html',
@@ -22,8 +23,8 @@ export class SondeoComponent implements OnInit {
   tipoSolicitud: string;
   solicitante: string;
   ordenadorGasto: string;
-  panelOpenState1 : string;
-  panelOpenState3 : string;
+  panelOpenState1: string;
+  panelOpenState3: string;
   panelOpenState2: string;
   empresa: string;
   pais: string;
@@ -372,23 +373,33 @@ export class SondeoComponent implements OnInit {
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
     let estado = "Por aprobar sondeo";
-    if (this.ComentarioSolicitante != undefined || this.ComentarioSolicitante != '' || this.ComentarioSolicitante != null) {
-      if (this.comentarioSondeo === null || this.comentarioSondeo == '') {
-        this.comentarioSondeo = "";
-      }
-      ObjSondeo = {
-        ResponsableId: this.autorId,
-        Estado: estado,
-        ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
-      }
+
+    if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
+      this.comentarioSondeo = "Comentarios: ";
     }
-    else {
-      ObjSondeo = {
-        ResponsableId: this.autorId,
-        Estado: estado,
-        ComentarioSondeo: 'Sin comentario'
-      }
+    if (this.ComentarioSolicitante == null || this.ComentarioSolicitante == undefined) {
+      this.ComentarioSolicitante = "Sin comentario.";
     }
+
+    ObjSondeo = {
+      ResponsableId: this.autorId,
+      Estado: estado,
+      ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
+    }
+
+    // if (this.ComentarioSolicitante != undefined || this.ComentarioSolicitante != '' || this.ComentarioSolicitante != null) {
+    //   if (this.comentarioSondeo === null || this.comentarioSondeo == '') {
+    //     this.comentarioSondeo = "";
+    //   }
+
+    // }
+    // else {
+    //   ObjSondeo = {
+    //     ResponsableId: this.autorId,
+    //     Estado: estado,
+    //     ComentarioSondeo: 'Sin comentario'
+    //   }
+    // }
 
     this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
       (respuesta) => {
