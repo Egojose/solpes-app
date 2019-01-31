@@ -12,6 +12,7 @@
                     <th>Descripción</th>
                     <th>Cantidad</th>
                     <th>Precio</th>
+                    <th>Moneda</th>
                     <th>Comentarios</th>
                     <th>Adjuntos</th>
                 </tr>
@@ -22,6 +23,7 @@
                     <td>{{item.descripcion}}</td>
                     <td>{{item.CantidadSondeo | number}}</td>
                     <td>{{item.PrecioSondeo | number}}</td>
+                    <td>{{item.moneda}}</td>
                     <td>{{item.ComentarioSondeo}}</td>
                     <td>
                         <a *ngIf="item.adjunto != null" href="{{item.adjunto.url}}" target="_blank">
@@ -44,6 +46,7 @@
                     <th>Descripción</th>
                     <th>Cantidad</th>
                     <th>Precio</th>
+                    <th>Moneda</th>
                     <th>Comentarios</th>
                     <th>Adjuntos</th>
                 </tr>
@@ -54,6 +57,7 @@
                     <td>{{item.descripcion}}</td>
                     <td>{{item.cantidadSondeo | number}}</td>
                     <td>{{item.precioSondeo | number}}</td>
+                    <td>{{item.moneda}}</td>
                     <td>{{item.comentarioSondeo}}</td>
                     <td>
                         <a *ngIf="item.RutaArchivo !== ''" href="{{item.RutaArchivo}}" target="_blank">
@@ -145,7 +149,7 @@
 <mat-accordion>
     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
-            <mat-panel-title><strong>Información adicional</strong></mat-panel-title>
+            <mat-panel-title><strong>Información adicional solicitud</strong></mat-panel-title>
             <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
         </mat-expansion-panel-header>
         <div class="row">
@@ -269,6 +273,7 @@
                                     <th>Fabricante</th>
                                     <th>Cantidad</th>
                                     <th>Valor Estimado</th>
+                                    <th>Moneda</th>
                                     <th>Comentario</th>
                                     <th>Adjunto</th>
                                 </tr>
@@ -282,6 +287,7 @@
                                         <td>{{item.Fabricante}}</td>
                                         <td>{{item.Cantidad | number}}</td>
                                         <td>{{item.ValorEstimado | number}}</td>
+                                        <td>{{item.moneda}}</td>
                                         <td>{{item.Comentarios}}</td>
                                         <td>
                                             <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}" target="_blank">
@@ -296,6 +302,7 @@
                                         <td>{{item.Fabricante}}</td>
                                         <td>{{item.CantidadSondeo | number}}</td>
                                         <td>{{item.PrecioSondeo | number}}</td>
+                                        <td>{{item.moneda}}</td>
                                         <td>{{item.ComentarioSondeo}}</td>
                                         <td>
                                             <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}" target="_blank">
@@ -322,6 +329,7 @@
                                     <th>Descripción</th>
                                     <th>Cantidad</th>
                                     <th>Valor Estimado</th>
+                                    <th>Moneda</th>
                                     <th>Comentario</th>
                                     <th>Adjunto</th>
                                 </tr>
@@ -333,6 +341,7 @@
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.Cantidad | number}}</td>
                                         <td>{{item.ValorEstimado | number}}</td>
+                                        <td>{{item.moneda}}</td>
                                         <td>{{item.Comentario}}</td>
                                         <td>
                                             <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target="_blank">
@@ -345,6 +354,7 @@
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.cantidadSondeo | number}}</td>
                                         <td>{{item.precioSondeo | number}}</td>
+                                        <td>{{item.moneda}}</td>
                                         <td>{{item.comentarioSondeo}}</td>
                                         <td>
                                             <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target="_blank">
