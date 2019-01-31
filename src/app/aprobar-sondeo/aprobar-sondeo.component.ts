@@ -83,6 +83,14 @@ export class AprobarSondeoComponent implements OnInit {
       this.mostrarAdvertencia('Debe seleccionar una acción');
       this.spinner.hide();
     }
+
+    if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
+      this.comentarioSondeo = "Comentarios: ";
+    }
+    if (this.ComentarioSondeo == null || this.ComentarioSondeo == undefined) {
+      this.ComentarioSondeo = "Sin comentario.";
+    }
+
     if (this.RDBsondeo !== undefined) {
       if (this.RDBsondeo === 1 && this.ComentarioSondeo === undefined) {
         return this.ValidarComentarios();
@@ -258,8 +266,7 @@ export class AprobarSondeoComponent implements OnInit {
         this.subCategoria = solicitud.Categoria;
         this.comprador = solicitud.Comprador.Title;
         this.CompradorId = solicitud.Comprador.ID;
-        this.alcance = solicitud.Alcance;
-        console.log(solicitud.ComentarioSondeo);
+        this.alcance = solicitud.Alcance;        
         this.comentarioSondeo = (solicitud.ComentarioSondeo != undefined) ? solicitud.ComentarioSondeo : '';
         this.justificacion = solicitud.Justificacion;
 
