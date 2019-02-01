@@ -9,6 +9,7 @@ import { ItemAddResult } from 'sp-pnp-js';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Contratos } from '../dominio/contrato';
 
 @Component({
   selector: 'app-entrega-servicios',
@@ -53,8 +54,10 @@ export class EntregaServiciosComponent implements OnInit {
   ResponsableServicios: any;
   paisId: any;
   NumSolp: any;
+  CM: string;
   modolectura: boolean;
   year: number;
+  contrato: any;
 
   constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager,private spinner: NgxSpinnerService) {
     this.ItemsAgregadosReciente = 0;
@@ -97,12 +100,28 @@ export class EntregaServiciosComponent implements OnInit {
         this.justificacion = solicitud.Justificacion;
         this.CompraBienes = solicitud.CompraBienes;
         this.FaltaBienes = solicitud.FaltaRecepcionBienes;
-        this.NumSolp = solicitud.NumSolSAP;
+        this.CM = solicitud.CM;
         this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         let CantidadCT = 0;
         let TotalCantidadVerificar = 0;
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           (RespuestaCTServicios) => {
+            this.servicio.obtenerContratoPorSolicitud(this.IdSolicitud).subscribe(
+              (respuesta) => {
+                this.contrato = Contratos.fromJsonList(respuesta);
+                if (this.contrato.length>0) {
+                  this.NumSolp = this.contrato[0].numeroContrato;              
+                }   
+                   
+                this.spinner.hide();
+              },
+              (error) => {
+                this.mostrarError("error consultando el contrato");
+                console.log(error);
+                this.spinner.hide();
+              }
+            )
+
             this.ObjCondicionesTecnicas = CondicionesTecnicasServicios.fromJsonList(RespuestaCTServicios);
 
             this.ObjCondicionesTecnicas.forEach(element => {
@@ -502,9 +521,8 @@ export class EntregaServiciosComponent implements OnInit {
   }
 
   VerSolicitud(){
-    sessionStorage.setItem('solicitud', JSON.stringify(this.IdSolicitud));
-    window.open("/ver-solicitud-tab", '_blank');
-    // this.router.navigate(['/ver-solicitud-tab']);
+    sessionStorage.setItem('solicitud', this.IdSolicitud);
+    this.router.navigate(['/ver-solicitud-tab']);
   }
 
 }

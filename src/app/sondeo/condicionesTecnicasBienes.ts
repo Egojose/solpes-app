@@ -16,7 +16,8 @@ export class CondicionesTecnicasBienes {
         public adjunto?:any,
         public adjuntoCreacion?:any,
         public ComentarioSondeo?: string,
-        public codigoSondeo?: string) { }
+        public codigoSondeo?: string,
+        public tipoMonedaSondeo?: string) { }
 
     public static fromJson(element: any) {
 
@@ -46,7 +47,8 @@ export class CondicionesTecnicasBienes {
             null, //adjunto
             adjuntoCreacion,
             '', //comentario sondeo
-            element.CodigoSondeo);
+            element.CodigoSondeo,
+            element.MonedaSondeo);
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
