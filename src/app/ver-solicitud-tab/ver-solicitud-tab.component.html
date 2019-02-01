@@ -224,6 +224,7 @@
                             <th>Descripción</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
+                            <th>Moneda</th>
                             <th>Comentarios</th>
                             <th>Adjuntos</th>
                         </tr>
@@ -234,6 +235,7 @@
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidadSondeo | number}}</td>
                             <td>{{item.precioSondeo | number}}</td>
+                            <td>{{item.monedaSondeo}}</td>
                             <td>{{item.comentarioSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeobien">
@@ -261,6 +263,7 @@
                             <th>Descripción</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
+                            <th>Moneda</th>
                             <th>Comentarios</th>
                             <th>Adjuntos</th>
                         </tr>
@@ -271,6 +274,7 @@
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidadSondeo | number}}</td>
                             <td>{{item.precioSondeo | number}}</td>
+                            <td>{{item.monedaSondeo}}</td>
                             <td>{{item.comentariosSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeoservicio">
@@ -281,7 +285,6 @@
                                 <ng-template #nohaySondeoservicio>
                                     Sin adjunto
                                 </ng-template>
-
                             </td>
                         </tr>
                     </tbody>
@@ -394,8 +397,8 @@
                 <button type="button" style="margin-right: 15px;" class="btn btn-primary btn-md" (click)="anterior(3)">Anterior</button>
             </div>
             <div>
-                    <button type="button" class="btn btn-primary btn-md" (click)="siguiente(3)">Siguiente</button>
-                </div>
+                <button type="button" class="btn btn-primary btn-md" (click)="siguiente(3)">Siguiente</button>
+            </div>
         </div>
     </tab>
 
