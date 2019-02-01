@@ -52,6 +52,7 @@ export class VerSolicitudTabComponent implements OnInit {
   existenBienes: boolean;
   estadoRegistrarSAP: string;
   ArchivoAdjunto: boolean;
+  ArchivoAdjuntoActivos: boolean;
   numSolSAP: number;
   comentarioRegistrarSAP: string;
   tieneContrato: Boolean;
@@ -85,6 +86,7 @@ export class VerSolicitudTabComponent implements OnInit {
     this.existenBienes = false;
     this.existenServicios = false;
     this.ArchivoAdjunto = false;
+    this.ArchivoAdjuntoActivos = false;
   }
 
   ngOnInit() {
@@ -138,6 +140,7 @@ export class VerSolicitudTabComponent implements OnInit {
               }
               if(TipoArchivo === "RegistroActivo"){
                 this.RegistroActivoArchivo = element.ServerRelativeUrl;
+                this.ArchivoAdjuntoActivos = true;
               }
             }
           });

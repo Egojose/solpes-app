@@ -455,14 +455,16 @@
         </mat-accordion>
         <br>
         <br>
-        <div class="col-md-12">
-            <p><strong>Adjunto</strong> registro de activos fijos.</p>
-        </div>
-        <div class="col-md-6">
-            <a href="{{RegistroActivoArchivo}}">
-                <button type="button" class="btn btn-primary">Descargar aquí</button>
-            </a>
-        </div>
+        <ng-container *ngIf="ArchivoAdjuntoActivos === true">
+            <div class="col-md-12">
+                <p><strong>Adjunto</strong> registro de activos fijos.</p>
+            </div>
+            <div class="col-md-6">
+                <a href="{{RegistroActivoArchivo}}">
+                    <button type="button" class="btn btn-primary">Descargar aquí</button>
+                </a>
+            </div>
+        </ng-container>
         <br>
         <div class="col-md-12">
             <label for="colFormLabel"><strong>Comentario registro de activos:</strong></label>
