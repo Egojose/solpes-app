@@ -21,10 +21,14 @@
                 <td>{{item.valor}}</td>
                 <td>{{item.comentario}}</td>
                 <td>
-                    <a *ngIf="item.adjunto != null || item.adjunto != undefined" href="{{item.adjunto}}"
-                        target=_blank>
-                        <button type="button" class="btn btn-primary">Ver Archivo</button>
-                    </a>
+                    <ng-container *ngIf="item.adjunto != null; else NoHayAdjBienes">
+                        <a *ngIf="item.adjunto != null || item.adjunto != undefined" href="{{item.adjunto}}" target=_blank>
+                            <button type="button" class="btn btn-primary">Ver Archivo</button>
+                        </a>
+                    </ng-container>
+                    <ng-template #NoHayAdjBienes>
+                        Sin adjunto
+                    </ng-template>
                 </td>
                 <td>
                     <input class="form-control" type="text" [(ngModel)]="item.NumeroRecepcion" [formControl]="numRecepcion">
