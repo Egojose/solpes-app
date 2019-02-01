@@ -27,6 +27,7 @@ export class CondicionesTecnicasBienes {
         public ComentarioSondeo?: string,
         public Estado?: any,
         public moneda?: string,
+        public monedaSondeo?: string,
         public adjunto?:any,
         public adjuntoCreacion?: any) {}
 
@@ -71,6 +72,7 @@ export class CondicionesTecnicasBienes {
             element.ComentarioSondeo,
             element.Estado,
             element.TipoMoneda,
+            element.MonedaSondeo,
             adjuntoSondeo,
             adjuntoCreacion);
     }
