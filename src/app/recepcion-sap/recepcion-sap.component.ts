@@ -41,6 +41,7 @@ export class RecepcionSapComponent implements OnInit {
         this.servicio.ObtenerRecepcionesBienes(this.IdUsuario).subscribe(
           (respuesta) => {
             this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
+            console.log();
             this.spinner.hide();
           }, err => {
             this.mostrarError('Error obteniendo las entradas de las recepciones de bienes');

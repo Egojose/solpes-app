@@ -74,6 +74,10 @@ export class ContratosComponent implements OnInit {
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
     this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
+    if(this.idSolicitudParameter == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
     this.Guardado = false;
   }
 

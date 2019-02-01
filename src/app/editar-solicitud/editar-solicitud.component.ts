@@ -116,6 +116,10 @@ export class EditarSolicitudComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    if(this.solicitudRecuperada == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
     setTheme('bs4');
     this.mostrarContratoMarco = false;
     this.spinner.hide();
@@ -1418,7 +1422,6 @@ export class EditarSolicitudComponent implements OnInit {
         this.spinner.hide();
       }
     )
-
   }
 
 
@@ -1614,6 +1617,7 @@ export class EditarSolicitudComponent implements OnInit {
                         (item: ItemAddResult) => {
                           this.spinner.hide();
                           this.MostrarExitoso("La solicitud se ha guardado y enviado correctamente");
+                          this.limpiarSession();
                           this.router.navigate(['/mis-solicitudes']);
                         }, err => {
                           this.mostrarError('Error agregando la notificación');
@@ -1641,6 +1645,10 @@ export class EditarSolicitudComponent implements OnInit {
         this.spinner.hide();
       }
     )
+  }
+
+  limpiarSession(): any {
+    sessionStorage.removeItem("solicitud");
   }
 
   private ValidarCondicionesContractuales(): boolean {

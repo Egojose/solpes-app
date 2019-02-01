@@ -72,6 +72,11 @@ export class EntregaBienesComponent implements OnInit {
   SwtichEsOrdenEstadistica: boolean;
 
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    if(this.IdSolicitudParms == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
     this.ErrorCantidad = false;
     this.activarTool = true;
     this.IdSolicitud 
@@ -95,7 +100,7 @@ export class EntregaBienesComponent implements OnInit {
     });
 
     this.RutaArchivo = null;
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.ObtenerPropiedadesSolicitud(solicitud);
@@ -240,38 +245,32 @@ export class EntregaBienesComponent implements OnInit {
       return;
     }
 
+    let ultimaEntregabool: boolean;
+    let TieneAdjuntoActivos: boolean;
     let Objdescripcion = this.AgregarElementoForm.controls['Descripcion'].value;
     let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
     let valor = this.AgregarElementoForm.controls['Valor'].value.toString();
     let ultimaEntrega = this.AgregarElementoForm.controls['UltimaEntrega'].value;
     let comentario = this.AgregarElementoForm.controls['Comentario'].value;
 
-    let ultimaEntregabool: boolean;
-    if (ultimaEntrega == "Sí" || cantidad === 0) {
-      ultimaEntregabool = true;
-      if (comentario === "") {
-        this.mostrarAdvertencia("Por favor ingrese un comentario");
-        return false;
-      }
-    }
-    else {
-      ultimaEntregabool = false;
+    ultimaEntregabool = this.validarUltimaEntrega(ultimaEntrega, cantidad, comentario);
+    if(!ultimaEntregabool){
+      return false;
     }
 
-    if (this.ArchivoAdjunto === null && this.OrdenEstadistica === true && cantidad !== 0) {
-      this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
+    TieneAdjuntoActivos = this.validarArchivoAdjuntoActivos(cantidad);
+    if(!TieneAdjuntoActivos){
       return false;
     }
 
     let IdBienes = this.ObjCondicionesTecnicas.findIndex(x => x.IdBienes === Objdescripcion.IdBienes);
     this.cantidadCTB = this.ObjCondicionesTecnicas[IdBienes].totalCantidad;
     this.cantidadRecibidaCTB = this.ObjCondicionesTecnicas[IdBienes].cantidadRecibida;
+
     if (this.cantidadCTB >= cantidad) {
       let totalCantidad = this.cantidadCTB - cantidad;
-
       this.ObjCondicionesTecnicas[IdBienes]["totalCantidad"] = totalCantidad;
       this.ObjCondicionesTecnicas[IdBienes]["cantidadRecibida"] = parseFloat(cantidad);
-
       if (totalCantidad === 0 || cantidad === 0) {
 
         ultimaEntregabool = true;
@@ -305,7 +304,6 @@ export class EntregaBienesComponent implements OnInit {
 
     this.spinner.show();
     this.objRecepcionAgregar = new RecepcionBienes(Objdescripcion.IdBienes, Objdescripcion.descripcion, cantidad, valor, ultimaEntregabool, comentario);
-
     this.servicio.GuardarBienesRecibidos(this.objRecepcionAgregar, this.IdSolicitud, this.ResponsableBienes, this.NumSolp).then(
       (Respuesta: ItemAddResult) => {
         let IdRecepcionBienes = Respuesta.data.Id;
@@ -460,6 +458,25 @@ export class EntregaBienesComponent implements OnInit {
         this.spinner.hide();
       }
     );
+  }
+
+  validarUltimaEntrega(ultimaEntrega : string, cantidad : number, comentario : string) : boolean{
+    let ultimaEntregabool = true;
+    if (ultimaEntrega == "Sí" || cantidad === 0) {
+      if (comentario === "") {
+        this.mostrarAdvertencia("Por favor ingrese un comentario");
+        return false;
+      }
+    }
+    return ultimaEntregabool;
+  }
+
+  validarArchivoAdjuntoActivos(cantidad: number): boolean{
+    if (this.ArchivoAdjunto === null && this.OrdenEstadistica === true && cantidad !== 0) {
+      this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
+      return false;
+    }
+    return true;
   }
 
   UltimaEntrega(ObjCTB) {

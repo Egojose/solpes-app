@@ -25,12 +25,17 @@ export class MisSolicitudesComponent implements OnInit {
     this.spinner.hide();
   }
 
-
   displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Responsable', 'VerSolicitud']; 
 
   ngOnInit() {
     this.spinner.show();
+    this.destruirSessionesSolicitudes();
     this.ObtenerUsuarioActual();
+  }
+
+  destruirSessionesSolicitudes(): any {
+     sessionStorage.removeItem("IdSolicitud");
+      sessionStorage.removeItem("solicitud");
   }
 
   ObtenerUsuarioActual() {

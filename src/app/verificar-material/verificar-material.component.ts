@@ -84,6 +84,10 @@ export class VerificarMaterialComponent implements OnInit {
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    if(this.IdSolicitudParms == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
   }
 
   ngOnInit() {

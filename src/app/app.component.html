@@ -4,7 +4,7 @@
       <li class="sidebar-brand">
       </li>
       <li>
-        <a routerLink="/crear-solicitud" routerLinkActive="active">Crear solicitud</a>
+        <a *ngIf="PermisosCreacion" routerLink="/crear-solicitud" routerLinkActive="active">Crear solicitud</a>
       </li>
       <li>
         <a routerLink="/mis-solicitudes" routerLinkActive="active">Mis solicitudes</a>
@@ -13,7 +13,7 @@
         <a routerLink="/mis-pendientes" routerLinkActive="active">Mis pendientes</a>
       </li>
       <li>
-        <a routerLink="/registrar-entradas-sap-bienes" routerLinkActive="active">Registrar entrada SAP bienes</a>
+        <a routerLink="/registrar-entradas-sap-bienes" routerLinkActive="active">Registrar entrada SIA bienes</a>
       </li>
       <li>
         <a routerLink="/registrar-entradas-sap-servicios" routerLinkActive="active">Registrar entrada SAP servicios</a>

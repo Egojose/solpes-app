@@ -21,10 +21,10 @@ export class AppComponent implements OnInit {
   linkEdicionContratos: string;
 
   constructor(private servicio: SPServicio) {
-    /*this.PermisosCreacion = false;
+    this.PermisosCreacion = false;
     this.PermisosEdicionContratos = false;
     this.PermisosRegistroEntradasBienes = false;
-    this.PermisosRegistroEntradasServicios = false;*/
+    this.PermisosRegistroEntradasServicios = false;
     this.linkEdicionContratos = environment.urlWeb + environment.linkVistaEdicionContratos;
   }
 
@@ -52,14 +52,14 @@ export class AppComponent implements OnInit {
         this.usuario = new Usuario(respuesta.Title, respuesta.email,respuesta.Id);
         this.nombreUsuario = this.usuario.nombre;
         sessionStorage.setItem('usuario',JSON.stringify(this.usuario));
-        /*this.servicio.ObtenerGruposUsuario(this.usuario.id).subscribe(
+        this.servicio.ObtenerGruposUsuario(this.usuario.id).subscribe(
           (respuesta) => {
               this.grupos = Grupo.fromJsonList(respuesta);
               this.VerificarPermisosMenu();
           }, err => {
             console.log('Error obteniendo grupos de usuario: ' + err);
           }
-        )*/
+        )
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
       }

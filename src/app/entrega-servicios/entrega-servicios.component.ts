@@ -60,10 +60,14 @@ export class EntregaServiciosComponent implements OnInit {
   contrato: any;
 
   constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager,private spinner: NgxSpinnerService) {
+    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    if(this.IdSolicitudParms == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
     this.ItemsAgregadosReciente = 0;
     this.showBtnConfirmar = false;
     this.ErrorCantidad = false;
-    //this.modolectura = true; 
   }
 
   ngOnInit() {
@@ -82,7 +86,6 @@ export class EntregaServiciosComponent implements OnInit {
     });
 
     this.ObjMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       (solicitud) => {
         this.IdSolicitud = solicitud.Id;

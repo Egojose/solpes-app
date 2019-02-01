@@ -1,52 +1,66 @@
+import { Adjunto } from "./adjunto";
+
 export class RecepcionBienes {
     constructor(
         public IdSolicitud: number,
-        public Idbienes:number ,
-        public descripcion:string, 
-        public cantidad:number, 
-        public valor:string, 
-        public ultimaEntrega:boolean, 
-        public comentario?:string, 
-        public IdRecepcionBienes?:number, 
-        public autor?: any, 
-        public Responsable?: any, 
-        public NumeroRecepcion?: string, 
+        public Idbienes: number,
+        public descripcion: string,
+        public cantidad: number,
+        public valor: string,
+        public ultimaEntrega: boolean,
+        public comentario?: string,
+        public IdRecepcionBienes?: number,
+        public autor?: any,
+        public Responsable?: any,
+        public NumeroRecepcion?: string,
         public recibidoSap?: boolean,
         public numeroPedido?: string,
-        public adjunto?: any){}
+        public adjuntoEntregaBienes?: any) { }
 
     public static fromJson(element: any) {
-        
-        let RutaArchivo = "";
-        if (element.Attachments ===true) {
-           let ObjArchivos = element.AttachmentFiles.results;
-            
-           ObjArchivos.forEach(element => {
-               let objSplit = element.FileName.split("-");
-               if (objSplit.length>0) {
-                   let TipoArchivo = objSplit[0]
-                   if (TipoArchivo==="EntregaBienes") {
-                        RutaArchivo=element.ServerRelativeUrl;
-                   }                
-               }
-           });
+
+        let adjuntosEntregaBienes: Adjunto[] = [];
+        let adjuntoEntregaBienes: Adjunto;
+
+        let arrayAdjuntos = element.AttachmentFiles.results;
+        for (let i = 0; i < arrayAdjuntos.length; i++) {
+            adjuntosEntregaBienes.push(new Adjunto(element.Id, arrayAdjuntos[i].FileName, arrayAdjuntos[i].ServerRelativeUrl));
         }
+
+        adjuntoEntregaBienes = RecepcionBienes.ObtenerAdjunto("EntregaBienes-", adjuntosEntregaBienes, adjuntoEntregaBienes);
 
         return new RecepcionBienes(
             element.IdSolicitudId,
             element.IdCTBienesId,
-            element.Descripcion, 
-            element.Cantidad, 
-            element.Valor, 
-            element.UltimaEntrega, 
-            element.Comentario, 
+            element.Descripcion,
+            element.Cantidad,
+            element.Valor,
+            element.UltimaEntrega,
+            element.Comentario,
             element.Id,
             element.Author.Title,
-            element.ResponsableSAPId, 
-            element.NumeroRecepcion, 
+            element.ResponsableSAPId,
+            element.NumeroRecepcion,
             element.recibidoSap,
             element.NumeroPedido,
-            RutaArchivo);
+            adjuntoEntregaBienes);
+    }
+
+    private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
+        if (adjuntosBienes.length > 0) {
+            let adjuntoPorBuscar = adjuntosBienes.filter(a => a.filename.startsWith(identificadorAdjunto));
+            if (adjuntoPorBuscar.length > 0) {
+                let ultimaPosicion = adjuntoPorBuscar.length - 1;
+                adjuntoRetornar = adjuntoPorBuscar[ultimaPosicion];
+            }
+            else {
+                adjuntoRetornar = null;
+            }
+        }
+        else {
+            adjuntoRetornar = null;
+        }
+        return adjuntoRetornar;
     }
 
     public static fromJsonList(elements: any) {

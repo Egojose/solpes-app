@@ -27,9 +27,12 @@ export class ReasignarComponent implements OnInit {
   ];
   ReasignarControl: FormControl;
 
-  constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
+  constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
-    this.loading = false;
+    if(this.solicitudRecuperada == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
   }
 
   ngOnInit() {

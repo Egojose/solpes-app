@@ -41,6 +41,10 @@ export class RegistroActivosComponent implements OnInit {
   constructor(public toastr: ToastrManager, private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, private spinner: NgxSpinnerService) {
     this.spinner.hide();
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    if(this.IdSolicitudParms == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
     this.ArchivoAdjunto = null;
   }
 

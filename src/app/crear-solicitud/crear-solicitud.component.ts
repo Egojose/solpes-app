@@ -24,6 +24,7 @@ import { environment } from 'src/environments/environment';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as $ from 'jquery';
+import { Grupo } from '../dominio/grupo';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -112,9 +113,12 @@ export class CrearSolicitudComponent implements OnInit {
   responsableProcesoEstado: responsableProceso[] = [];
   emptyNumeroOrdenEstadistica: boolean;
   fueSondeo: boolean;
+  PermisosCreacion: boolean;
+  grupos: Grupo[] = [];
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
+    this.PermisosCreacion = false;
     this.mostrarContratoMarco = false;
     this.spinner.hide();
     this.emptyCTB = true;
@@ -169,7 +173,29 @@ export class CrearSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
-    this.obtenerTiposSolicitud();
+    this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
+      (respuesta) => {
+          this.grupos = Grupo.fromJsonList(respuesta);
+          this.VerificarPermisosCreacion();
+      }, err => {
+        this.mostrarError('Error obteniendo grupos de usuario');
+        this.spinner.hide();
+        console.log('Error obteniendo grupos de usuario: ' + err);
+      }
+    )
+  }
+
+  
+  VerificarPermisosCreacion(): any {
+    const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
+    let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
+    if(existeGrupoCreacion != null){
+      this.obtenerTiposSolicitud();
+    }else{
+      this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
+      this.spinner.hide();
+      this.router.navigate(['/mis-solicitudes']);
+    }
   }
 
   aplicarTemaCalendario() {
@@ -273,6 +299,9 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   obtenerTiposSolicitud() {
+
+
+
     this.servicio.ObtenerTiposSolicitud().subscribe(
       (respuesta) => {
         this.tiposSolicitud = TipoSolicitud.fromJsonList(respuesta);
