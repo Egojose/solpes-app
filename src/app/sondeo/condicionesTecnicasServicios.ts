@@ -3,22 +3,22 @@ import { Adjunto } from "./adjunto";
 export class CondicionTecnicaServicios{
   IdServicios: any;
  
- 
-    constructor(
-        public titulo: string,
-        public idSolicitud: any,
-        public codigo: string,
-        public codigoSondeo: string,
-        public descripcion: string,
-        public cantidad: number,
-        public valorEstimado: number,
-        public comentarios: string,
-        public tipoMoneda?: string,
-        public PrecioSondeo?: number,
-        public id?: number,
-        public adjunto?:any,
-        public adjuntoCreacion?:any,
-        public ComentarioSondeo?: string) { }
+  constructor(
+    public titulo: string,
+    public idSolicitud: any,
+    public codigo: string,
+    public codigoSondeo: string,
+    public descripcion: string,
+    public cantidad: number,
+    public valorEstimado: number,
+    public comentarios: string,
+    public tipoMoneda?: string,
+    public PrecioSondeo?: number,
+    public id?: number,
+    public adjunto?:any,
+    public adjuntoCreacion?:any,
+    public ComentarioSondeo?: string,
+    public tipoMonedaSondeo?: string) { }
 
     public static fromJson(element: any) {
 
@@ -47,8 +47,8 @@ export class CondicionTecnicaServicios{
             element.ID,
             null, //adjuntoSondeo,
             adjuntoCreacion,
-            '' //element.ComentarioSondeo
-            );
+            '', //element.ComentarioSondeo
+            element.MonedaSondeo);
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {

@@ -198,7 +198,10 @@ export class VerSolicitudTabComponent implements OnInit {
   }
 
   siguiente(tabId: number){
-    if(tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo"){
+    console.log(tabId);
+    console.log(this.solicitudRecuperada);
+
+    if(tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo" && this.solicitudRecuperada.FueSondeo == false){
       tabId = tabId + 3;
       this.staticTabs.tabs[tabId].active = true;
       document.body.scrollTop = document.documentElement.scrollTop = 0;
