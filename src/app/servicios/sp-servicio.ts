@@ -157,7 +157,8 @@ export class SPServicio {
             ValorEstimado: condicionTecnicaBienes.valorEstimado,
             PrecioSondeo: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios,
-            TipoMoneda: condicionTecnicaBienes.tipoMoneda
+            TipoMoneda: condicionTecnicaBienes.tipoMoneda,
+            MonedaSondeo: condicionTecnicaBienes.tipoMoneda
         });
     }
 
@@ -175,7 +176,8 @@ export class SPServicio {
             ValorEstimado: condicionTecnicaBienes.valorEstimado,
             PrecioSondeo: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios,
-            TipoMoneda: condicionTecnicaBienes.tipoMoneda
+            TipoMoneda: condicionTecnicaBienes.tipoMoneda,
+            MonedaSondeo: condicionTecnicaBienes.tipoMoneda
         });
     }
 
@@ -226,6 +228,7 @@ export class SPServicio {
             ValorEstimado: condicionTecnicaServicios.valorEstimado,
             PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
+            MonedaSondeo: condicionTecnicaServicios.tipoMoneda,
             Comentario: condicionTecnicaServicios.comentarios
         });
     }
@@ -242,6 +245,7 @@ export class SPServicio {
             ValorEstimado: condicionTecnicaServicios.valorEstimado,
             PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
+            MonedaSondeo: condicionTecnicaServicios.tipoMoneda,
             Comentario: condicionTecnicaServicios.comentarios
         });
     }
