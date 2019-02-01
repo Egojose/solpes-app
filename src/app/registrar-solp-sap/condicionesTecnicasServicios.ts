@@ -14,6 +14,7 @@ export class CondicionTecnicaServicios{
         public adjunto?: any,
         public archivo?: any,
         public tipoMoneda?: string,
+        public monedaSondeo?: string,
         public id?: number,
         ) { }
 
@@ -63,6 +64,7 @@ export class CondicionTecnicaServicios{
             RutaArchivo,
             Archivo,
             element.TipoMoneda,
+            element.MonedaSondeo,
             element.ID);
     }
 
