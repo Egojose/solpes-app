@@ -21,13 +21,13 @@
                 <td>{{item.valor}}</td>
                 <td>{{item.comentario}}</td>
                 <td>
-                    <ng-container *ngIf="item.adjunto != null; else NoHayAdjBienes">
-                        <a *ngIf="item.adjunto != null || item.adjunto != undefined" href="{{item.adjunto}}" target=_blank>
+                    <ng-container *ngIf="item.adjuntoEntregaBienes != null; else NoHayAdjEntregaBienes">
+                        <a *ngIf="item.adjuntoEntregaBienes != null" href="{{item.adjuntoEntregaBienes.url}}" target="_blank">
                             <button type="button" class="btn btn-primary">Ver Archivo</button>
                         </a>
                     </ng-container>
-                    <ng-template #NoHayAdjBienes>
-                        Sin adjunto
+                    <ng-template #NoHayAdjEntregaBienes>
+                        Sin orden estadística
                     </ng-template>
                 </td>
                 <td>

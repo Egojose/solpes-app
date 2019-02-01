@@ -24,6 +24,7 @@ import { environment } from 'src/environments/environment';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as $ from 'jquery';
+import { Grupo } from '../dominio/grupo';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -112,9 +113,12 @@ export class CrearSolicitudComponent implements OnInit {
   responsableProcesoEstado: responsableProceso[] = [];
   emptyNumeroOrdenEstadistica: boolean;
   fueSondeo: boolean;
+  PermisosCreacion: boolean;
+  grupos: Grupo[] = [];
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
+    this.PermisosCreacion = false;
     this.mostrarContratoMarco = false;
     this.spinner.hide();
     this.emptyCTB = true;
@@ -169,7 +173,29 @@ export class CrearSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
-    this.obtenerTiposSolicitud();
+    this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
+      (respuesta) => {
+          this.grupos = Grupo.fromJsonList(respuesta);
+          this.VerificarPermisosCreacion();
+      }, err => {
+        this.mostrarError('Error obteniendo grupos de usuario');
+        this.spinner.hide();
+        console.log('Error obteniendo grupos de usuario: ' + err);
+      }
+    )
+  }
+
+  
+  VerificarPermisosCreacion(): any {
+    const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
+    let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
+    if(existeGrupoCreacion != null){
+      this.obtenerTiposSolicitud();
+    }else{
+      this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
+      this.spinner.hide();
+      this.router.navigate(['/mis-solicitudes']);
+    }
   }
 
   aplicarTemaCalendario() {
@@ -273,6 +299,9 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   obtenerTiposSolicitud() {
+
+
+
     this.servicio.ObtenerTiposSolicitud().subscribe(
       (respuesta) => {
         this.tiposSolicitud = TipoSolicitud.fromJsonList(respuesta);
@@ -1030,8 +1059,12 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["comentariosCTB"].setValue('');
   }
 
-  subirAdjuntoCTB(event) {
-    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.target.files[0], '', '');
+  subirAdjuntoCTB(files: FileList) {
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', files.item(0), '', '');
+  }
+
+  subirAdjuntoCTS(files: FileList) {
+    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', files.item(0), '', '');
   }
 
   ctsOnSubmit() {
@@ -1047,7 +1080,7 @@ export class CrearSolicitudComponent implements OnInit {
       let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
       let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
       let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
+      let adjunto = this.condicionTS.archivoAdjunto.name;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (adjunto == null) {
         this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
@@ -1245,9 +1278,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["comentariosCTS"].setValue('');
   }
 
-  subirAdjuntoCTS(event) {
-    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', event.target.files[0], '', '');
-  }
+
 
   editarBienes(element, template: TemplateRef<any>) {
     this.indiceCTBActualizar = element.indice;

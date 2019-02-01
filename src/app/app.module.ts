@@ -19,7 +19,6 @@ import { EntregaBienesComponent } from './entrega-bienes/entrega-bienes.componen
 import { EntregaServiciosComponent } from './entrega-servicios/entrega-servicios.component';
 import { RecepcionSapComponent } from './recepcion-sap/recepcion-sap.component';
 import { MisSolicitudesComponent } from './mis-solicitudes/mis-solicitudes.component';
-import { ConsultarSolicitudesComponent } from './consultar-solicitudes/consultar-solicitudes.component';
 import { RegistrarSolpSapComponent } from './registrar-solp-sap/registrar-solp-sap.component';
 import { SPServicio } from './servicios/sp-servicio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,7 +43,6 @@ import { ReasignarComponent } from './reasignar/reasignar.component';
     EntregaServiciosComponent,
     RecepcionSapComponent,
     MisSolicitudesComponent,
-    ConsultarSolicitudesComponent,
     RegistrarSolpSapComponent,
     NumberDirective,
     RegistrarEntradasSapServiciosComponent,
@@ -88,10 +86,10 @@ import { ReasignarComponent } from './reasignar/reasignar.component';
     RouterModule.forRoot([
       {path:'',redirectTo:'/mis-solicitudes',pathMatch:'full'},
       {path:'aprobar-sondeo', component:AprobarSondeoComponent},
-      {path:'consultar-solicitudes',component:ConsultarSolicitudesComponent},
       {path:'contratos', component:ContratosComponent},
+      {path:'reasignar', component:ReasignarComponent},
       {path:'crear-solicitud', component:CrearSolicitudComponent},
-      {path: 'editar-solicitud', component:EditarSolicitudComponent},
+      {path:'editar-solicitud', component:EditarSolicitudComponent},
       {path:'entrega-bienes', component:EntregaBienesComponent},
       {path:'entrega-servicios', component:EntregaServiciosComponent},
       {path:'mis-solicitudes', component:MisSolicitudesComponent},
@@ -101,7 +99,7 @@ import { ReasignarComponent } from './reasignar/reasignar.component';
       {path:'registrar-solp-sap', component:RegistrarSolpSapComponent},
       {path:'sondeo', component:SondeoComponent},
       {path:'verificar-material', component:VerificarMaterialComponent},
-      { path:'ver-solicitud-tab', component: VerSolicitudTabComponent },
+      {path:'ver-solicitud-tab', component: VerSolicitudTabComponent },
       {path:'registro-activos', component:RegistroActivosComponent}
     ])
   ],

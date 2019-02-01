@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Solicitud } from '../dominio/solicitud';
 import { MatTableDataSource } from '@angular/material';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
   selector: 'app-ver-solicitud-tab',
@@ -79,14 +80,22 @@ export class VerSolicitudTabComponent implements OnInit {
     "moneda"
   ];
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, private spinner: NgxSpinnerService) { 
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) { 
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    if(this.solicitudRecuperada == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
     this.IdSolicitud = this.solicitudRecuperada.id;
     this.spinner .hide();
     this.existenBienes = false;
     this.existenServicios = false;
     this.ArchivoAdjunto = false;
     this.ArchivoAdjuntoActivos = false;
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, 'Validación');
   }
 
   ngOnInit() {
