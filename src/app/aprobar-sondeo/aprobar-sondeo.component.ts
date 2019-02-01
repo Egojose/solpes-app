@@ -25,6 +25,7 @@ export class AprobarSondeoComponent implements OnInit {
   fechaDeseada: Date;
   solicitante: string;
   tipoSolicitud: string;
+  panelOpenState = false;
   codigoAriba: string;
   numeroOrdenEstadistico: string;
   ordenadorGasto: string;
@@ -51,6 +52,7 @@ export class AprobarSondeoComponent implements OnInit {
   ComentarioSondeo: string;
   justificacionSondeo: string;
   historial: string;
+  contratoMarco: string;
   comentarioSondeo: string;
   usuario: Usuario;
   loading: boolean;
@@ -82,17 +84,19 @@ export class AprobarSondeoComponent implements OnInit {
       this.mostrarAdvertencia('Debe seleccionar una acción');
       this.spinner.hide();
     }
+
+    if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
+      this.comentarioSondeo = "Comentarios: ";
+    }
+    if (this.ComentarioSondeo == null || this.ComentarioSondeo == undefined) {
+      this.ComentarioSondeo = "Sin comentario.";
+    }
+
     if (this.RDBsondeo !== undefined) {
       if (this.RDBsondeo === 1 && this.ComentarioSondeo === undefined) {
-        this.tooltip.show();
-        setTimeout(() => {
-          this.tooltip.hide();
-        }, 3000);
-        this.spinner.hide();
-        return false;
+        return this.ValidarComentarios();
       }
       else if (this.RDBsondeo === 1) {
-        //Comprador
         this.ResponsableProceso = this.CompradorId;
         this.estadoSolicitud = 'Por sondear';
         ObjSondeo = {
@@ -104,12 +108,8 @@ export class AprobarSondeoComponent implements OnInit {
         }
       }
       else if (this.RDBsondeo === 2 && this.justificacionSondeo === undefined) {
-        this.tooltip1.show();
-        setTimeout(() => {
-          this.tooltip1.hide();
-        }, 3000);
-        this.spinner.hide();
-        return false;
+        this.numeroSolpCm = '';
+        return this.validarJustificacion();
       }
       else if (this.RDBsondeo === 2) {
         if (this.ObjCondicionesTecnicas.length > 0) {
@@ -141,12 +141,7 @@ export class AprobarSondeoComponent implements OnInit {
         }
       }
       if (this.RDBsondeo === 4 && this.justificacionSondeo === undefined) {
-        this.tooltip1.show();
-        setTimeout(() => {
-          this.tooltip1.hide();
-        }, 3000);
-        this.spinner.hide();
-        return false;
+        return this.validarJustificacion();
       }
       else if (this.RDBsondeo === 4) {
         if (this.ObjCondicionesTecnicas.length > 0) {
@@ -174,7 +169,6 @@ export class AprobarSondeoComponent implements OnInit {
 
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
-
           let notificacion = {
             IdSolicitud: this.IdSolicitud.toString(),
             ResponsableId: this.ResponsableProceso,
@@ -202,6 +196,24 @@ export class AprobarSondeoComponent implements OnInit {
         }
       )
     }
+  }
+
+  private validarJustificacion() {
+    this.tooltip1.show();
+    setTimeout(() => {
+      this.tooltip1.hide();
+    }, 3000);
+    this.spinner.hide();
+    return false;
+  }
+
+  private ValidarComentarios() {
+    this.tooltip.show();
+    setTimeout(() => {
+      this.tooltip.hide();
+    }, 3000);
+    this.spinner.hide();
+    return false;
   }
 
   ngOnInit() {
@@ -241,6 +253,7 @@ export class AprobarSondeoComponent implements OnInit {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.contratoMarco = solicitud.CM;
         this.codigoAriba = solicitud.CodigoAriba;
         this.numeroOrdenEstadistico = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;
@@ -255,8 +268,8 @@ export class AprobarSondeoComponent implements OnInit {
         this.subCategoria = solicitud.Categoria;
         this.comprador = solicitud.Comprador.Title;
         this.CompradorId = solicitud.Comprador.ID;
-        this.alcance = solicitud.Alcance;
-        this.comentarioSondeo = solicitud.ComentarioSondeo;
+        this.alcance = solicitud.Alcance;        
+        this.comentarioSondeo = (solicitud.ComentarioSondeo != undefined) ? solicitud.ComentarioSondeo : '';
         this.justificacion = solicitud.Justificacion;
 
         if (solicitud.CondicionesContractuales != null) {

@@ -25,6 +25,7 @@ export class ContratosComponent implements OnInit {
   ContratosForm: FormGroup;
   submitted = false;
   content: string;
+  contratoMarco: string;
   selectedValue: string;
   selectedOption: any;
   ObjUsuarios: [];
@@ -92,18 +93,18 @@ export class ContratosComponent implements OnInit {
       ContratoOC: ['', Validators.required],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
-      ContratoObraConexo: ['', Validators.required],
+      ContratoObraConexo: [false],
       MonedaContrato: ['', Validators.required],
-      IvaContrato: [''],
+      IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
       LineaBaseContrato: ['', Validators.required],
       AhorroGenerado: ['', Validators.required],
       DescripcionCalculo: ['', Validators.required],
-      VigenciaContrato: ['', Validators.required],
+      VigenciaContrato: [''],
       RequiereSST: ['', Validators.required],
       RequierePoliza: ['', Validators.required],
-      Acreedor: ['', Validators.required],
-      DigitoVerificacion: ['', Validators.required],
+      Acreedor: [''],
+      DigitoVerificacion: [''],
       NombreRazonSocial: ['', Validators.required],
       EmailProveedor: ['', [Validators.required, Validators.email]],
       Solicitante: [, Validators.required],
@@ -120,6 +121,7 @@ export class ContratosComponent implements OnInit {
             this.IdSolicitud = this.ObjSolicitud.Id;
             this.fechaDeseada = this.ObjSolicitud.FechaDeseadaEntrega;
             this.tipoSolicitud = this.ObjSolicitud.TipoSolicitud;
+            this.contratoMarco = this.ObjSolicitud.CM;
             this.solicitante = this.ObjSolicitud.Solicitante;
             this.ordenadorGasto = this.ObjSolicitud.OrdenadorGastos.Title;
             this.empresa = this.ObjSolicitud.Empresa.Title;
@@ -300,12 +302,9 @@ export class ContratosComponent implements OnInit {
   ValidarIva() {
     let Moneda = this.ContratosForm.controls["MonedaContrato"].value;
     const IvaContrato = this.ContratosForm.get('IvaContrato');
-    if (Moneda != "USD") {
-      IvaContrato.clearValidators();
-    }
-    else {
-      IvaContrato.setValidators([Validators.required]);
-    }
+   
+    IvaContrato.setValidators([Validators.required]);
+    
     IvaContrato.updateValueAndValidity();
   }
 

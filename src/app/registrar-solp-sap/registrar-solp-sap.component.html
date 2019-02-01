@@ -1,6 +1,5 @@
 <h3>REGISTRAR SOLP-SAP</h3>
 <hr>
-<br>
 
 <div *ngIf="existenBienes===true" class="acordeon-bienes-solicitados">
     <mat-accordion *ngIf="CTB === true">
@@ -32,25 +31,15 @@
                 </ng-container>
                 <ng-container matColumnDef="cantidad">
                     <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-                    <td mat-cell *matCellDef="let element" class="text-center"> {{element.CantidadReservaVerificar |
-                        number}} </td>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{element.CantidadReservaVerificar | number}} </td>
                 </ng-container>
                 <ng-container matColumnDef="valorEstimado">
                     <th mat-header-cell *matHeaderCellDef> Valor</th>
-                    <td mat-cell *matCellDef="let element"> {{element.PrecioSondeo | currency}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.PrecioSondeo | number}} </td>
                 </ng-container>
                 <ng-container matColumnDef="moneda">
                     <th mat-header-cell *matHeaderCellDef> Moneda</th>
                     <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="adjunto">
-                    <th mat-header-cell *matHeaderCellDef> Adjunto</th>
-                    <td mat-cell *matCellDef="let item">
-                        <a href="{{item.adjunto.url}}" target="_blank">
-                            <button class="btn btn-success">Ver</button>
-                        </a>
-                    </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -81,30 +70,16 @@
                     <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
                 </ng-container>
                 <ng-container matColumnDef="cantidad">
-                    <th mat-header-cell *matHeaderCellDef> Cantidad sondeo</th>
+                    <th mat-header-cell *matHeaderCellDef> Cantidad</th>
                     <td mat-cell *matCellDef="let element"> {{element.cantidadSondeo}} </td>
                 </ng-container>
                 <ng-container matColumnDef="valorEstimado">
-                    <th mat-header-cell *matHeaderCellDef> Precio sondeo</th>
-                    <td mat-cell *matCellDef="let element"> {{element.precioSondeo | currency }} </td>
+                    <th mat-header-cell *matHeaderCellDef> Precio</th>
+                    <td mat-cell *matCellDef="let element"> {{element.precioSondeo | number }} </td>
                 </ng-container>
                 <ng-container matColumnDef="moneda">
                     <th mat-header-cell *matHeaderCellDef> Moneda</th>
                     <td mat-cell *matCellDef="let element"> {{element.tipoMoneda}} </td>
-                </ng-container>
-                <ng-container matColumnDef="comentarioSondeo">
-                    <th mat-header-cell *matHeaderCellDef> Comentario</th>
-                    <td mat-cell *matCellDef="let element"> {{element.comentarioSondeo}} </td>
-                </ng-container>
-                <ng-container matColumnDef="adjunto">
-                    <th mat-header-cell *matHeaderCellDef> Adjunto</th>
-                    <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element.adjunto !== ''">
-                            <a href="{{element.adjunto}}" target="_blank">
-                                <button class="btn btn-success">Ver</button>
-                            </a>
-                        </div>
-                    </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsTS"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsTS;"></tr>
@@ -174,8 +149,7 @@
         <div class="form-group col-md-4">
             <label><b>Número Solp SAP:</b></label>
             <ng-template #popTemplate>Por favor digite el número SOLP SAP</ng-template>
-            <input type="text" class="form-control" placeholder="" triggers="" #customTooltip="bs-tooltip" placement="top"
-                [tooltip]="popTemplate" [(ngModel)]="numeroSolpSap">
+            <input type="text" class="form-control" placeholder="" triggers="" #customTooltip="bs-tooltip" placement="top" [tooltip]="popTemplate" [(ngModel)]="numeroSolpSap">
         </div>
     </div>
 </ng-container>
@@ -183,8 +157,7 @@
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
         <ng-template #popTemplate1>Por favor especifique en los comentarios</ng-template>
-        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers=""
-            placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioRegistrarSap"></textarea>
+        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioRegistrarSap"></textarea>
     </div>
 </div>
 <div class="row text-center">
@@ -227,9 +200,16 @@
 
                     <div class="card-body">
                         <div class="row espacio">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <strong>Tipo de solicitud: </strong>{{tipoSolicitud}}
                             </div>
+                            <ng-container *ngIf="tipoSolicitud == 'Orden a CM'; else SinContrato">
+                                <div class="col-md-4">
+                                    <strong>Contrato marco: </strong>{{contratoMarco}}
+                                </div>
+                            </ng-container>
+                            <ng-template #SinContrato>
+                            </ng-template>
                         </div>
                         <br>
                         <div class="row espacio">
@@ -337,6 +317,7 @@
                                     <th>Fabricante</th>
                                     <th>Cantidad</th>
                                     <th>Valor Estimado</th>
+                                    <th>Moneda</th>
                                     <th>Adjunto</th>
                                     <th>Comentario</th>
                                 </tr>
@@ -348,7 +329,8 @@
                                     <td>{{item.modelo}}</td>
                                     <td>{{item.fabricante}}</td>
                                     <td>{{item.cantidad | number}}</td>
-                                    <td>{{item.valorEstimado | currency}}</td>
+                                    <td>{{item.valorEstimado | number}}</td>
+                                    <td>{{item.moneda}}</td>
                                     <td>
                                         <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                             <a href="{{item.adjuntoCreacion.url}}" target="_blank">
@@ -381,6 +363,7 @@
                                     <th>Descripción</th>
                                     <th>Cantidad</th>
                                     <th>Valor Estimado</th>
+                                    <th>Moneda</th>
                                     <th>Adjunto</th>
                                     <th>Comentario</th>
                                 </tr>
@@ -390,11 +373,17 @@
                                     <td>{{item.codigo}}</td>
                                     <td>{{item.descripcion}}</td>
                                     <td>{{item.cantidad | number}}</td>
-                                    <td>{{item.valorEstimado | currency}}</td>
+                                    <td>{{item.valorEstimado | number}}</td>
+                                    <td>{{item.tipoMoneda}}</td>
                                     <td>
-                                        <a *ngIf="item.archivo !== ''" href="{{item.archivo}}" target=_ blank>
-                                            <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                        </a>
+                                        <ng-container *ngIf="item.archivo !== ''; else nohayServicios">
+                                            <a href="{{item.archivo}}" target="_blank">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </ng-container>
+                                        <ng-template #nohayServicios>
+                                            Sin adjunto
+                                        </ng-template>
                                     </td>
                                     <td>{{item.comentarios}}</td>
                                 </tr>
@@ -404,7 +393,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="existenBienes===true" class="form-group row">
+        <div *ngIf="existenBienes===true && FueSondeo===true" class="form-group row">
             <div class="form-group col-md-12">
                 <label for="textarea" class="col-sm-5 control-label"><b>
                         <h4>Resultado Sondeo bienes:</h4>
@@ -416,6 +405,7 @@
                             <th>Descripción</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
+                            <th>Moneda</th>
                             <th>Comentarios</th>
                             <th>Adjunto</th>
                         </tr>
@@ -425,12 +415,18 @@
                             <td>{{item.CodigoSondeo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.CantidadSondeo | number}}</td>
-                            <td>{{item.PrecioSondeo | currency}}</td>
+                            <td>{{item.PrecioSondeo | number}}</td>
+                            <td>{{item.moneda}}</td>
                             <td>{{item.ComentarioSondeo}}</td>
                             <td>
-                                <a *ngIf="item.adjunto != null" href="{{item.adjunto.url}}" target="_blank">
-                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                </a>
+                                <ng-container *ngIf="item.adjunto != null; else nohaySondeoBienes">
+                                    <a href="{{item.adjunto.url}}" target="_blank">
+                                        <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                    </a>
+                                </ng-container>
+                                <ng-template #nohaySondeoBienes>
+                                    Sin adjunto
+                                </ng-template>
                             </td>
                         </tr>
                     </tbody>
@@ -438,7 +434,7 @@
             </div>
         </div>
         <br>
-        <div *ngIf="existenServicios===true" class="form-group row">
+        <div *ngIf="existenServicios===true && FueSondeo===true" class="form-group row">
             <div class="form-group col-md-12">
                 <label for="textarea" class="col-sm-5 control-label"><b>
                         <h4>Resultado Sondeo servicios:</h4>
@@ -450,6 +446,7 @@
                             <th>Descripción</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
+                            <th>Moneda</th>
                             <th>Comentarios</th>
                             <th>Adjuntos</th>
                         </tr>
@@ -459,18 +456,18 @@
                             <td>{{item.codigoSondeo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidadSondeo | number}}</td>
-                            <td>{{item.precioSondeo | currency}}</td>
+                            <td>{{item.precioSondeo | number}}</td>
+                            <td>{{item.tipoMoneda}}</td>
                             <td>{{item.comentarioSondeo}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjunto != null; else nohaySondeoservicio">
-                                    <a href="{{item.adjunto.url}}" target="_blank">
+                                    <a href="{{item.adjunto}}" target="_blank">
                                         <button type="button" class="btn btn-primary">Ver Archivo</button>
                                     </a>
                                 </ng-container>
                                 <ng-template #nohaySondeoservicio>
                                     Sin adjunto
                                 </ng-template>
-
                             </td>
                         </tr>
                     </tbody>

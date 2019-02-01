@@ -4,7 +4,7 @@
   <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <strong>Condiciones técnicas bienes</strong>
+        <strong>Ver bienes solicitados</strong>
       </mat-panel-title>
       <mat-panel-description>
         {{panelOpenState ? 'cerrar' : 'Click para desplegar' }}
@@ -35,7 +35,7 @@
           </ng-container>
           <ng-container matColumnDef="precioSondeo">
             <th mat-header-cell *matHeaderCellDef> Precio</th>
-            <td mat-cell *matCellDef="let element"> {{element.precioSondeo | currency}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.precioSondeo | number}} </td>
           </ng-container>
           <ng-container matColumnDef="moneda">
             <th mat-header-cell *matHeaderCellDef> Moneda</th>
@@ -51,7 +51,7 @@
                 </a>
               </ng-container>
               <ng-template #elseTemplate>
-                Sin adjunto de sondeo
+                Sin adjunto
               </ng-template>
             </td>
           </ng-container>

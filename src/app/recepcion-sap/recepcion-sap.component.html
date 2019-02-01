@@ -1,6 +1,3 @@
-<br>
-<br>
-<br>
 <h3>Registrar recepción bienes en SIA</h3>
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover text-center">
@@ -18,8 +15,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let item of ObjRecepcionBienes">
-                <td>{{item.contratoMarco}}</td>
-                <td>{{item.Author}}</td>
+                <td>{{item.numeroPedido}}</td>
+                <td>{{item.autor}}</td>
                 <td>{{item.cantidad}}</td>
                 <td>{{item.valor}}</td>
                 <td>{{item.comentario}}</td>
@@ -30,12 +27,16 @@
                     </a>
                 </td>
                 <td>
-                    <input class="form-control" type="text" name="" id="" value="" [formControl]="numRecepcion">
+                    <input class="form-control" type="text" [(ngModel)]="item.NumeroRecepcion" [formControl]="numRecepcion">
                 </td>
                 <td>
-                    <input type="button" class="btn btn-primary" value="OK" (click)="Guardar(item)" />
+                    <input type="button" class="btn btn-success" value="OK" (click)="Guardar(item)" />
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+
+<ngx-spinner>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>

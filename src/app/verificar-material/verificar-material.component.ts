@@ -27,6 +27,7 @@ export class VerificarMaterialComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   tipoSolicitud: string;
+  contratoMarco: string;
   solicitante: string;
   verificarMaterialFormulario: FormGroup;
   verificarSubmitted = false;
@@ -71,6 +72,7 @@ export class VerificarMaterialComponent implements OnInit {
   existeCondicionesTecnicasServicios: boolean;
   ResponsableProceso: number;
   estadoSolicitud: string;
+  EsSondeo: boolean;
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.spinner.hide();
@@ -82,6 +84,58 @@ export class VerificarMaterialComponent implements OnInit {
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+  }
+
+  ngOnInit() {
+    this.spinner.show();
+    this.RegistrarFormularioVerificar();
+    this.ValidarNumReservaSiHayExistencias();
+    this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(solicitud => {
+      this.IdSolicitud = solicitud.Id;
+      this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+      this.tipoSolicitud = solicitud.TipoSolicitud;
+      this.contratoMarco = solicitud.CM;
+      this.solicitante = solicitud.Solicitante;
+      this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
+      this.empresa = solicitud.Empresa.Title;
+      this.codAriba = solicitud.CodigoAriba;
+      this.pais = solicitud.Pais.Title;
+      this.paisId = solicitud.Pais.Id;
+      this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
+      this.OrdenEstadistica = solicitud.OrdenEstadistica;
+      this.categoria = solicitud.Categoria;
+      this.subCategoria = solicitud.Subcategoria;
+      this.comprador = solicitud.Comprador.Title;
+      this.alcance = solicitud.Alcance;
+      this.justificacion = solicitud.Justificacion;
+      this.ComentarioSondeo = solicitud.ComentarioSondeo;
+      this.EsSondeo = solicitud.FueSondeo;
+      this.MostrarNumeroEstadistica();
+      if (solicitud.CondicionesContractuales != null) {
+        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+      }
+      this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
+        if (RespuestaCondiciones.length > 0) {
+          this.existeCondicionesTecnicasBienes = true;
+          this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+          this.ObjCTVerificar = verificarMaterialCT.fromJsonList(RespuestaCondiciones);
+          this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+          this.dataSource.paginator = this.paginator;
+          this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
+            this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
+            this.MostrarAdjuntosActivos();
+          });
+
+        }
+      });
+      this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
+        if (RespuestaCondicionesServicios.length > 0) {
+          this.existeCondicionesTecnicasServicios = true;
+          this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+        }
+        this.spinner.hide();
+      });
+    });
   }
 
   adjuntarArchivoVM(event) {
@@ -111,6 +165,7 @@ export class VerificarMaterialComponent implements OnInit {
         return false;
       }
       this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarActivos;
+      console.log(this.ResponsableProceso);
       this.estadoSolicitud = 'Por registrar activos';
       coment = {
         Estado: this.estadoSolicitud,
@@ -120,6 +175,7 @@ export class VerificarMaterialComponent implements OnInit {
       }
     } else {
       this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarSolp;
+      console.log(this.ResponsableProceso);
       this.estadoSolicitud = 'Por registrar solp sap';
       coment = {
         Estado: this.estadoSolicitud,
@@ -207,56 +263,6 @@ export class VerificarMaterialComponent implements OnInit {
     return valorprimitivo;
   }
 
-  ngOnInit() {
-    this.spinner.show();
-    this.RegistrarFormularioVerificar();
-    this.ValidarNumReservaSiHayExistencias();
-    this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(solicitud => {
-      this.IdSolicitud = solicitud.Id;
-      this.fechaDeseada = solicitud.FechaDeseadaEntrega;
-      this.tipoSolicitud = solicitud.TipoSolicitud;
-      this.solicitante = solicitud.Solicitante;
-      this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
-      this.empresa = solicitud.Empresa.Title;
-      this.codAriba = solicitud.CodigoAriba;
-      this.pais = solicitud.Pais.Title;
-      this.paisId = solicitud.Pais.Id;
-      this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
-      this.OrdenEstadistica = solicitud.OrdenEstadistica;
-      this.categoria = solicitud.Categoria;
-      this.subCategoria = solicitud.Subcategoria;
-      this.comprador = solicitud.Comprador.Title;
-      this.alcance = solicitud.Alcance;
-      this.justificacion = solicitud.Justificacion;
-      this.ComentarioSondeo = solicitud.ComentarioSondeo;
-      this.MostrarNumeroEstadistica();
-      if (solicitud.CondicionesContractuales != null) {
-        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
-      }
-      this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
-        if (RespuestaCondiciones.length > 0) {
-          this.existeCondicionesTecnicasBienes = true;
-          this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-          this.ObjCTVerificar = verificarMaterialCT.fromJsonList(RespuestaCondiciones);
-          this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
-          this.dataSource.paginator = this.paginator;
-          this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
-            this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
-            this.MostrarAdjuntosActivos();
-          });
-
-        }
-      });
-      this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
-        if (RespuestaCondicionesServicios.length > 0) {
-          this.existeCondicionesTecnicasServicios = true;
-          this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-        }
-        this.spinner.hide();
-      });
-    });
-  }
-
   private MostrarNumeroEstadistica() {
     if (this.OrdenEstadistica) {
       this.SwtichEsOrdenEstadistica = true;
@@ -265,7 +271,7 @@ export class VerificarMaterialComponent implements OnInit {
 
   private MostrarAdjuntosActivos() {
     let cantidadesReservaVerificarEnCero = this.ObjCTVerificar.filter(c => c.cantidadreservaverificar > 0);
-    if (cantidadesReservaVerificarEnCero.length > 0) {
+    if (cantidadesReservaVerificarEnCero.length > 0 && this.OrdenEstadistica) {
       this.SwtichOrdenEstadistica = true;
     }
     else {
@@ -322,11 +328,11 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.controls["existenciasVerificar"].setValue(element.existenciasverificar);
     this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(element.numreservaverificar);
 
-    if (element.cantidadreservaverificar === null || element.cantidadreservaverificar === undefined || element.cantidadreservaverificar == 0) {
-      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(element.cantidad);
-    } else {
-      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(element.cantidadreservaverificar);
-    }
+    let cantidad = (this.verificarMaterialFormulario.controls["cantidadVerificar"].value != '') ? this.verificarMaterialFormulario.controls["cantidadVerificar"].value : 0;
+    let existencias = (this.verificarMaterialFormulario.controls["existenciasVerificar"].value) ? this.verificarMaterialFormulario.controls["existenciasVerificar"].value : 0;
+    let restaCantidadComprar = cantidad - existencias;
+    this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(restaCantidadComprar);
+
     this.modalRef = this.modalServicio.show(template, Object.assign({}, { class: "gray modal-lg" }));
     this.verificarMaterialFormulario.get('existenciasVerificar').setValidators([ValidarMayorExistencias(element.cantidad)]);
   }
@@ -336,6 +342,7 @@ export class VerificarMaterialComponent implements OnInit {
     if (this.verificarMaterialFormulario.invalid) {
       return;
     }
+
     let objGuardarVerificar;
     let codigoVerificar = this.verificarMaterialFormulario.controls["codigoVerificar"].value;
     let descripcionVerificar = this.verificarMaterialFormulario.controls["descripcionVerificar"].value;

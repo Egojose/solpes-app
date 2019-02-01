@@ -169,7 +169,7 @@
         <div id="condiciones-tecnicas-bienes" class="mat-elevation-z8" [hidden]="emptyCTB">
           <table mat-table [dataSource]="dataSourceCTB" multiTemplateDataRows class="mat-elevation-z8">
             <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTB">
-              <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+              <th class="columnaBienes" mat-header-cell *matHeaderCellDef> {{column}} </th>
               <div *ngIf="column == 'Acciones'; else contenidoCTB">
                 <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/editar.png"
                     class="icono-tabla" alt="editar" (click)="editarBienes(element, templateCondicionesTecnicasBienes);"
@@ -202,8 +202,8 @@
                             <tr>
                               <td>{{element.modelo}}</td>
                               <td>{{element.fabricante}}</td>
-                              <td>{{element.cantidad}}</td>
-                              <td>{{element.valorEstimado}}</td>
+                              <td>{{element.cantidad | number}}</td>
+                              <td>{{element.valorEstimado | number}}</td>
                               <td>{{element.tipoMoneda}}</td>
                               <td>{{element.comentarios}}</td>
                             </tr>
@@ -236,7 +236,7 @@
         <div id="condiciones-tecnicas-servicios" class="mat-elevation-z8" [hidden]="emptyCTS">
           <table mat-table [dataSource]="dataSourceCTS" multiTemplateDataRows class="mat-elevation-z8">
             <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTS">
-              <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+              <th class="columnaServicios" mat-header-cell *matHeaderCellDef> {{column}} </th>
               <div *ngIf="column == 'Acciones'; else contenidoCTS">
                 <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/editar.png"
                     class="icono-tabla" alt="editar" (click)="editarServicios(element, templateCondicionesTecnicasServicios);"
@@ -266,8 +266,8 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td>{{element.cantidad}}</td>
-                              <td>{{element.valorEstimado}}</td>
+                              <td>{{element.cantidad | number}}</td>
+                              <td>{{element.valorEstimado | number}}</td>
                               <td>{{element.tipoMoneda}}</td>
                               <td>{{element.comentarios}}</td>
                             </tr>
@@ -362,7 +362,7 @@
           <div class="row">
             <div class="col-md-6">
               <label for="valorEstimado">Valor Estimado</label>
-              <input id="valorEstimadoCTB" currencyMask [options]="{ thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
+              <input id="valorEstimadoCTB" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
                 name="valorEstimadoCTB" formControlName="valorEstimadoCTB" class="form-control" type="text" placeholder="Escriba el valor estimado" />
             </div>
             <div class="col-md-6">
@@ -370,9 +370,13 @@
               <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control"
                 [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
                 <option value="">Seleccione</option>
+                <option value="ARS">ARS</option>
+                <option value="BRL">BRL</option>
+                <option value="CLP">CLP</option>
                 <option value="COP">COP</option>
-                <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
+                <option value="PEN">PEN</option>
+                <option value="USD">USD</option>
               </select>
               <div *ngIf="ctbSubmitted && f.tipoMonedaCTB.errors" class="invalid-feedback">
                 <div *ngIf="f.tipoMonedaCTB.errors.required">Este campo es requerido</div>
@@ -448,9 +452,13 @@
               <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control"
                 [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
                 <option value="">Seleccione</option>
+                <option value="ARS">ARS</option>
+                <option value="BRL">BRL</option>
+                <option value="CLP">CLP</option>
                 <option value="COP">COP</option>
-                <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
+                <option value="PEN">PEN</option>
+                <option value="USD">USD</option>
               </select>
               <div *ngIf="ctsSubmitted && f2.tipoMonedaCTS.errors" class="invalid-feedback">
                 <div *ngIf="f2.tipoMonedaCTS.errors.required">Este campo es requerido</div>

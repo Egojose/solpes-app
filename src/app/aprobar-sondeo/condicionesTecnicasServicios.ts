@@ -14,7 +14,8 @@ export class CondicionTecnicaServicios{
         public Codigo?: string,
         public Cantidad?: number,
         public ValorEstimado?: string,
-        public Comentario?: string) { }
+        public Comentario?: string,
+        public moneda?: string) { }
 
     public static fromJson(element: any) {
         let RutaArchivo = "";
@@ -62,7 +63,8 @@ export class CondicionTecnicaServicios{
             element.Codigo,
             element.Cantidad,
             element.ValorEstimado,
-            element.Comentario);
+            element.Comentario,
+            element.TipoMoneda);
     }
 
     public static fromJsonList(elements: any) {

@@ -9,6 +9,7 @@ import { Usuario } from '../dominio/usuario';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { debug } from 'util';
 @Component({
   selector: 'app-sondeo',
   templateUrl: './sondeo.component.html',
@@ -20,8 +21,12 @@ export class SondeoComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   tipoSolicitud: string;
+  contratoMarco: string;
   solicitante: string;
   ordenadorGasto: string;
+  panelOpenState1: string;
+  panelOpenState3: string;
+  panelOpenState2: string;
   empresa: string;
   pais: string;
   categoria: string;
@@ -52,6 +57,7 @@ export class SondeoComponent implements OnInit {
   numeroOrdenEstadistica: string;
   existeCondicionesTecnicasBienes: boolean;
   existeCondicionesTecnicasServicios: boolean;
+  OrdenEstadistica: boolean;
 
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
@@ -82,8 +88,8 @@ export class SondeoComponent implements OnInit {
       solicitud => {
         this.IdSolicitud = solicitud.Id;
         this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.contratoMarco = solicitud.CM;
         this.codigoAriba = solicitud.CodigoAriba;
-        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
@@ -97,6 +103,8 @@ export class SondeoComponent implements OnInit {
         this.justificacion = solicitud.Justificacion;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.autorId = solicitud.AuthorId;
+        this.OrdenEstadistica = solicitud.OrdenEstadistica;
+        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
@@ -135,14 +143,8 @@ export class SondeoComponent implements OnInit {
   }
 
   GuardarSondeoBienes() {
-    this.spinner.show();
     let objSondeo;
     let contador = 0;
-
-    let respuesta = this.validarCamposBienesYServicios();
-    if (!respuesta) {
-      return false;
-    }
 
     for (let i = 0; i < this.ObjCondicionesTecnicasBienesGuardar.length; i++) {
 
@@ -150,6 +152,7 @@ export class SondeoComponent implements OnInit {
         CodigoSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado.toString(),
+        TipoMoneda: this.ObjCondicionesTecnicasBienesGuardar[i].tipoMoneda,
         ComentarioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].ComentarioSondeo
       }
 
@@ -324,7 +327,6 @@ export class SondeoComponent implements OnInit {
     return respuesta;
   }
 
-
   GuardarSondeoServicios() {
     let objSondeo;
     let contador = 0;
@@ -334,6 +336,7 @@ export class SondeoComponent implements OnInit {
         CodigoSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].valorEstimado.toString(),
+        TipoMoneda: this.ObjCondicionesTecnicasServiciosGuardar[i].tipoMoneda,
         ComentarioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].ComentarioSondeo
       }
 
@@ -373,22 +376,32 @@ export class SondeoComponent implements OnInit {
     let fechaFormateada = dia + "/" + mes + "/" + año;
     let estado = "Por aprobar sondeo";
 
-    if (this.ComentarioSolicitante != undefined) {
-      if (this.comentarioSondeo === null) {
-        this.comentarioSondeo = "Comentarios:"
-      }
-      ObjSondeo = {
-        ResponsableId: this.autorId,
-        Estado: estado,
-        ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
-      }
+    if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
+      this.comentarioSondeo = "Comentarios: ";
     }
-    else {
-      ObjSondeo = {
-        ResponsableId: this.autorId,
-        Estado: estado
-      }
+    if (this.ComentarioSolicitante == null || this.ComentarioSolicitante == undefined) {
+      this.ComentarioSolicitante = "Sin comentario.";
     }
+
+    ObjSondeo = {
+      ResponsableId: this.autorId,
+      Estado: estado,
+      ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
+    }
+
+    // if (this.ComentarioSolicitante != undefined || this.ComentarioSolicitante != '' || this.ComentarioSolicitante != null) {
+    //   if (this.comentarioSondeo === null || this.comentarioSondeo == '') {
+    //     this.comentarioSondeo = "";
+    //   }
+
+    // }
+    // else {
+    //   ObjSondeo = {
+    //     ResponsableId: this.autorId,
+    //     Estado: estado,
+    //     ComentarioSondeo: 'Sin comentario'
+    //   }
+    // }
 
     this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
       (respuesta) => {
@@ -418,8 +431,6 @@ export class SondeoComponent implements OnInit {
     )
   }
 
-
-
   adjuntarArchivoCTB(event, item) {
     let archivoAdjunto = event.target.files[0];
     if (archivoAdjunto != null) {
@@ -440,11 +451,19 @@ export class SondeoComponent implements OnInit {
   }
 
   guardarEnviar() {
-    if (this.ObjCondicionesTecnicasBienesGuardar.length > 0) {
-      this.GuardarSondeoBienes();
-    } else if (this.ObjCondicionesTecnicasServiciosGuardar.length > 0) {
-      this.GuardarSondeoServicios();
+    this.spinner.show();
+    let respuesta = this.validarCamposBienesYServicios();
+    if (!respuesta) {
+      return false;
     }
+    else {
+      if (this.ObjCondicionesTecnicasBienesGuardar.length > 0) {
+        this.GuardarSondeoBienes();
+      } else if (this.ObjCondicionesTecnicasServiciosGuardar.length > 0) {
+        this.GuardarSondeoServicios();
+      }
+    }
+
   }
 
   MostrarExitoso(mensaje: string) {

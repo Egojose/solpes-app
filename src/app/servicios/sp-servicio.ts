@@ -27,7 +27,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCIsImtpZCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4Nzk4NjIxLCJuYmYiOjE1NDg3OTg2MjEsImV4cCI6MTU0ODgyNzcyMSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.TFaIzZr1q-ojNtf61neR7xdMh9CJGVUW2kMc_txX167uG_GmUa5y3lRwCKgE4l35Yp7_-XjzPp0buyXXts5cyyfK4gjuoz0veQOAyDD-ecYrHJEOTaqL2xLgoSjsk_1f83p3hANgzr2AoCfFU2cb2_JyikefZ2CHF8qUeWVZAZJdmfloqopp6RZ55vE_eBskGAps1OamXs4003Uhkqi6hazqMfNug7gVrOQ-NsfyOcfDXCGHOlc553kFZymokuNZXhTTJxoWn5c3Od6pLKiMv_4kjVssrs2TbCvXBg7MGmC6aUHHwkk6VIFaje-jIOj6kFGg9dSC7kNasI5IGoPXNg'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCIsImtpZCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ4OTcyNTQ2LCJuYmYiOjE1NDg5NzI1NDYsImV4cCI6MTU0OTAwMTY0NiwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.E46WGdzPpNyCrAi7zhLwMcY0cC3TgdWS2zOM_ibsinlXqpcQ9z0uHQn9VMDlR0E8dN4alg4jsAoHoZTy8pFmeaNcZdQB0x2-7UWtk5uc0Yskbk6C50hKe3Hdgx_SmtMMiBeJsZkFpvY5kmSe9Dy59QWUc8Mxmu9Z_rm6kKrTXQnYDIF9wb8LuEWPy30r3ENVTWOyapzEhQP3rU2b0NONQheTrZFbW8cZHdRHXqqLnxV0-Kv1XyqaOPJxg7GJt-kEM167lZgJ8mTAJB9q08AFeXioqZShYHMRgwIHuxcANS25W6nbuTQge-xj3W3l9gOeh3adhxNLI7fau2dDkjZOWw'
             }
         }, environment.urlWeb);
 
@@ -157,7 +157,8 @@ export class SPServicio {
             ValorEstimado: condicionTecnicaBienes.valorEstimado,
             PrecioSondeo: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios,
-            TipoMoneda: condicionTecnicaBienes.tipoMoneda
+            TipoMoneda: condicionTecnicaBienes.tipoMoneda,
+            MonedaSondeo: condicionTecnicaBienes.tipoMoneda
         });
     }
 
@@ -175,7 +176,8 @@ export class SPServicio {
             ValorEstimado: condicionTecnicaBienes.valorEstimado,
             PrecioSondeo: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios,
-            TipoMoneda: condicionTecnicaBienes.tipoMoneda
+            TipoMoneda: condicionTecnicaBienes.tipoMoneda,
+            MonedaSondeo: condicionTecnicaBienes.tipoMoneda
         });
     }
 
@@ -226,6 +228,7 @@ export class SPServicio {
             ValorEstimado: condicionTecnicaServicios.valorEstimado,
             PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
+            MonedaSondeo: condicionTecnicaServicios.tipoMoneda,
             Comentario: condicionTecnicaServicios.comentarios
         });
     }
@@ -242,6 +245,7 @@ export class SPServicio {
             ValorEstimado: condicionTecnicaServicios.valorEstimado,
             PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
+            MonedaSondeo: condicionTecnicaServicios.tipoMoneda,
             Comentario: condicionTecnicaServicios.comentarios
         });
     }
@@ -271,7 +275,7 @@ export class SPServicio {
     }
 
     ObtenerSolicitudBienesServicios(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","FechaDeseadaEntrega","Solicitante","Responsable/Title","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles").get());
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","Solicitante","Responsable/Title","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles").get());
         return respuesta;
     }
 
@@ -280,8 +284,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerRecepcionesBienes(IdResponsable){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles").expand("AttachmentFiles").get());
+    ObtenerRecepcionesBienes(IdResponsable : number){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles", "Author/Title").expand("AttachmentFiles", "Author").get());
         return respuesta;
     }
 
@@ -290,7 +294,7 @@ export class SPServicio {
         return respuesta;
     }
 
-    GuardarBienesRecibidos(ObjRecepcionBienes: RecepcionBienes,IdSolicitud,Responsable){
+    GuardarBienesRecibidos(ObjRecepcionBienes: RecepcionBienes,IdSolicitud,Responsable,NumeroPedido){
         let RecepcionBienesObj = {
             IdSolicitudId: IdSolicitud,
             IdCTBienesId: ObjRecepcionBienes.Idbienes,
@@ -300,7 +304,8 @@ export class SPServicio {
             UltimaEntrega: ObjRecepcionBienes.ultimaEntrega,
             Comentario: ObjRecepcionBienes.comentario,
             FechaRecepcion: new Date(),
-            ResponsableSAPId: Responsable
+            ResponsableSAPId: Responsable,
+            NumeroPedido: NumeroPedido
         };
         let elemento = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.add(RecepcionBienesObj);
         return elemento;
@@ -333,12 +338,12 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerRecepcionesServicios(IdSolicitud:number){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("IdSolicitudId eq '" + IdSolicitud + "' and Cantidad ne '0' and recibidoSap eq '0'").get());
+    ObtenerRecepcionesServicios(IdResponsable:number){
+        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("recibidoSap eq '0' and Cantidad ne '0' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles","Author/Title").expand("AttachmentFiles", "Author").get());
         return respuesta;
-        }
+    }
 
-    GuardarServiciosRecibidos(ObjRecepcionServicios: RecepcionServicios,IdSolicitud,Responsable){
+    GuardarServiciosRecibidos(ObjRecepcionServicios: RecepcionServicios,IdSolicitud,Responsable, NumeroPedido){
         let RecepcionBienesObj = {
             IdSolicitudId: IdSolicitud,
             IdCTServiciosId: ObjRecepcionServicios.idServicio,
@@ -352,7 +357,8 @@ export class SPServicio {
             Ubicacion: ObjRecepcionServicios.ubicacion,
             Mes: ObjRecepcionServicios.mes,
             Ano: ObjRecepcionServicios.ano,
-            ResponsableSAPId: Responsable
+            ResponsableSAPId: Responsable,
+            NumeroPedido: NumeroPedido
         };
         let elemento = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.add(RecepcionBienesObj);
         return elemento;

@@ -8,11 +8,11 @@ export class RecepcionBienes {
         public ultimaEntrega:boolean, 
         public comentario?:string, 
         public IdRecepcionBienes?:number, 
-        public ultimaEntregaCTB?:boolean, 
-        public Author?: any, 
-        public Editor?: any, 
+        public autor?: any, 
+        public Responsable?: any, 
         public NumeroRecepcion?: string, 
         public recibidoSap?: boolean,
+        public numeroPedido?: string,
         public adjunto?: any){}
 
     public static fromJson(element: any) {
@@ -33,7 +33,7 @@ export class RecepcionBienes {
         }
 
         return new RecepcionBienes(
-            element.IdSolicitud,
+            element.IdSolicitudId,
             element.IdCTBienesId,
             element.Descripcion, 
             element.Cantidad, 
@@ -41,11 +41,11 @@ export class RecepcionBienes {
             element.UltimaEntrega, 
             element.Comentario, 
             element.Id,
-            null,
-            element.Author, 
-            element.Editor.Title, 
+            element.Author.Title,
+            element.ResponsableSAPId, 
             element.NumeroRecepcion, 
             element.recibidoSap,
+            element.NumeroPedido,
             RutaArchivo);
     }
 

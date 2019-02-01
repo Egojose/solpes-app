@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnicaServicios';
 import { Contratos } from '../dominio/contrato';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Solicitud } from '../dominio/solicitud';
 import { MatTableDataSource } from '@angular/material';
 
@@ -24,9 +25,11 @@ export class VerSolicitudTabComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   dataSource;
+  contratoMarco: string;
   RutaArchivo: string;
   tipoSolicitud: string;
   numOrdenEstadistica: string;
+  existenServicios: boolean;
   solicitante: string;
   comentarioregistroactivos: string;
   ordenadorGasto: string;
@@ -44,6 +47,7 @@ export class VerSolicitudTabComponent implements OnInit {
   alcance: string;
   resultadosondeo: string;
   comentariorevisionsondeo: string;
+  existenBienes: boolean;
   estadoRegistrarSAP: string;
   numSolSAP: number;
   comentarioRegistrarSAP: string;
@@ -60,6 +64,7 @@ export class VerSolicitudTabComponent implements OnInit {
   solicitudRecuperada: Solicitud;
   fueSondeo : boolean;
   paginator: any;
+  displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
   displayedColumns: string[] = [
     "codigo",
     "descripcion",
@@ -70,10 +75,12 @@ export class VerSolicitudTabComponent implements OnInit {
     "moneda"
   ];
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router) { 
-    this.loading = false;
+  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, private spinner: NgxSpinnerService) { 
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.IdSolicitud = this.solicitudRecuperada.id;
+    this.spinner .hide();
+    this.existenBienes = false;
+    this.existenServicios = false;
   }
 
   ngOnInit() {
@@ -87,12 +94,13 @@ export class VerSolicitudTabComponent implements OnInit {
     }
 
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
-      solicitud => {
+      solicitud => {      
         this.IdSolicitud = solicitud.Id;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
+        this.contratoMarco = solicitud.CM;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
         this.categoria = solicitud.Categoria;
@@ -112,26 +120,44 @@ export class VerSolicitudTabComponent implements OnInit {
         this.numSolSAP = solicitud.NumSolSAP;
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
         this.tieneContrato = solicitud.TieneContrato;
-     
+        if (solicitud.Attachments === true) {
+          let ObjArchivos = solicitud.AttachmentFiles.results;
+          ObjArchivos.forEach(element => {
+            let objSplit = element.FileName.split("-");
+            if (objSplit.length > 0) {
+              let TipoArchivo = objSplit[0];
+              if (TipoArchivo === "ActivoVM") {
+                this.RutaArchivo = element.ServerRelativeUrl;
+              }
+            }
+          });
+        }
         if(solicitud.CondicionesContractuales != null){
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
-        
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
+            if (RespuestaCondiciones.length > 0) {
+              this.existenBienes = true;
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
                 this.dataSource.paginator = this.paginator;
+            }
+            this.spinner.hide();
           }
         );
-        this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
+          this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-            this.ObjContratos = Contratos.fromJsonList(RespuestaCondiciones);
+          this.ObjContratos = Contratos.fromJsonList(RespuestaCondiciones);
           }
         );
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
+            if (RespuestaCondicionesServicios.length > 0) {
+              this.existenServicios = true;
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            }
+            this.spinner.hide();
           }
         );
         this.servicio.ObtenerRecepcionesBienes(this.IdSolicitud).subscribe(
