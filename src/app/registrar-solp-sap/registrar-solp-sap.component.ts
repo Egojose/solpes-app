@@ -86,7 +86,7 @@ export class RegistrarSolpSapComponent implements OnInit {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.tipoSolicitud = solicitud.TipoSolicitud;
-        this.tipoSolicitud = solicitud.CM;
+        this.contratoMarco = solicitud.CM;
         this.codigoAriba = solicitud.CodigoAriba;
         this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;
