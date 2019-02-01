@@ -372,15 +372,17 @@
                 <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
-        <div class="col-md-12">
-            <p><strong>Archivo</strong> solicitud de activos fijos.
-            </p>
-        </div>
-        <div class="col-md-6">
-            <a href="{{RutaArchivo}}">
-                <button type="button" class="btn btn-primary">Descargar aquí</button>
-            </a>
-        </div>
+        <ng-container *ngIf="ArchivoAdjunto === true">
+            <div class="col-md-12">
+                <p><strong>Archivo</strong> solicitud de activos fijos.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <a href="{{RutaArchivo}}">
+                    <button type="button" class="btn btn-primary">Descargar aquí</button>
+                </a>
+            </div>
+        </ng-container>
         <br>
         <div class="col-md-12">
             <label for="colFormLabel"><strong>Comentario Verificar Material</strong></label>
@@ -457,7 +459,7 @@
             <p><strong>Adjunto</strong> registro de activos fijos.</p>
         </div>
         <div class="col-md-6">
-            <a href="{{RutaArchivo}}">
+            <a href="{{RegistroActivoArchivo}}">
                 <button type="button" class="btn btn-primary">Descargar aquí</button>
             </a>
         </div>

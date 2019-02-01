@@ -28,6 +28,7 @@ export class VerSolicitudTabComponent implements OnInit {
   contratoMarco: string;
   moneda: string;
   RutaArchivo: string;
+  RegistroActivoArchivo: string;
   tipoSolicitud: string;
   numOrdenEstadistica: string;
   existenServicios: boolean;
@@ -50,6 +51,7 @@ export class VerSolicitudTabComponent implements OnInit {
   comentariorevisionsondeo: string;
   existenBienes: boolean;
   estadoRegistrarSAP: string;
+  ArchivoAdjunto: boolean;
   numSolSAP: number;
   comentarioRegistrarSAP: string;
   tieneContrato: Boolean;
@@ -82,6 +84,7 @@ export class VerSolicitudTabComponent implements OnInit {
     this.spinner .hide();
     this.existenBienes = false;
     this.existenServicios = false;
+    this.ArchivoAdjunto = false;
   }
 
   ngOnInit() {
@@ -130,6 +133,11 @@ export class VerSolicitudTabComponent implements OnInit {
               let TipoArchivo = objSplit[0];
               if (TipoArchivo === "ActivoVM") {
                 this.RutaArchivo = element.ServerRelativeUrl;
+                this.ArchivoAdjunto = true;
+                console.log(this.ArchivoAdjunto);
+              }
+              if(TipoArchivo === "RegistroActivo"){
+                this.RegistroActivoArchivo = element.ServerRelativeUrl;
               }
             }
           });
