@@ -26,6 +26,7 @@ export class VerSolicitudTabComponent implements OnInit {
   fechaDeseada: Date;
   dataSource;
   contratoMarco: string;
+  moneda: string;
   RutaArchivo: string;
   tipoSolicitud: string;
   numOrdenEstadistica: string;
@@ -97,6 +98,7 @@ export class VerSolicitudTabComponent implements OnInit {
       solicitud => {      
         this.IdSolicitud = solicitud.Id;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+        this.moneda = solicitud.TipoMoneda;
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;

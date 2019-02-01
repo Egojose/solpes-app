@@ -135,9 +135,11 @@ export class AprobarSondeoComponent implements OnInit {
         }
       }
       else if (this.RDBsondeo === 3) {
+        this.estadoSolicitud = 'Solicitud descartada';
         ObjSondeo = {
           ResponsableId: null,
-          ResultadoSondeo: "Descartar",
+          Estado: this.estadoSolicitud,
+          ResultadoSondeo: "Descartar"
         }
       }
       if (this.RDBsondeo === 4 && this.justificacionSondeo === undefined) {
