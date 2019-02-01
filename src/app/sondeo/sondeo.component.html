@@ -29,35 +29,20 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicasBienesLectura">
-                                        <ng-container *ngIf="Resondear !== true; else Codson">
-                                            <td>{{item.codigo}}</td>
-                                            <td>{{item.descripcion}}</td>
-                                            <td>{{item.modelo}}</td>
-                                            <td>{{item.fabricante}}</td>
-                                            <td>{{item.cantidad | number}}</td>
-                                            <td>{{item.valorEstimado | number}}</td>
-                                            <td>{{item.tipoMoneda}}</td>
-                                            <td>{{item.Comentario}}</td>
-                                            <td>
-                                                <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target="_blank">
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </td>
-                                        </ng-container>
-                                        <ng-template #Codson>
-                                            <td>{{item.codigoSondeo}}</td>
-                                            <td>{{item.descripcion}}</td>
-                                            <td>{{item.modelo}}</td>
-                                            <td>{{item.fabricante}}</td>
-                                            <td>{{item.cantidadSondeo | number}}</td>
-                                            <td>{{item.precioSondeo | number}}</td>
-                                            <td>{{item.ComentarioSondeo}}</td>
-                                            <td>
-                                                <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target="_blank">
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </td>
-                                        </ng-template>
+                                        <td>{{item.codigo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.modelo}}</td>
+                                        <td>{{item.fabricante}}</td>
+                                        <td>{{item.cantidad | number}}</td>
+                                        <td>{{item.valorEstimado | number}}</td>
+                                        <td>{{item.tipoMoneda}}</td>
+                                        <td>{{item.Comentario}}</td>
+                                        <td>
+                                            <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
+                                                target="_blank">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -91,20 +76,22 @@
                             <input type="text" class="form-control text-center" [(ngModel)]="item.codigo"></td>
                         <td>{{item.descripcion}}</td>
                         <td>
-                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" class="form-control text-center" [(ngModel)]="item.cantidad">
+                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }"
+                                class="form-control text-center" [(ngModel)]="item.cantidad">
                         </td>
                         <td>
-                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" class="form-control text-center" [(ngModel)]="item.valorEstimado">
+                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
+                                class="form-control text-center" [(ngModel)]="item.valorEstimado">
                         </td>
                         <td>
-                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" class="form-control" [(ngModel)]="item.tipoMoneda">
-                                    <option value="ARS">ARS</option>
-                                    <option value="BRL">BRL</option>
-                                    <option value="CLP">CLP</option>
-                                    <option value="COP">COP</option>
-                                    <option value="EUR">EUR</option>
-                                    <option value="PEN">PEN</option>
-                                    <option value="USD">USD</option>
+                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" class="form-control" [(ngModel)]="item.tipoMonedaSondeo">
+                                <option value="ARS">ARS</option>
+                                <option value="BRL">BRL</option>
+                                <option value="CLP">CLP</option>
+                                <option value="COP">COP</option>
+                                <option value="EUR">EUR</option>
+                                <option value="PEN">PEN</option>
+                                <option value="USD">USD</option>
                             </select>
                         </td>
                         <td>
@@ -152,7 +139,8 @@
                                         <td>{{item.tipoMoneda}}</td>
                                         <td>{{item.comentarios}}</td>
                                         <td>
-                                            <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}" target="_blank">
+                                            <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
+                                                target="_blank">
                                                 <button type="button" class="btn btn-primary">Ver Archivo</button>
                                             </a>
                                         </td>
@@ -186,30 +174,34 @@
                 <tbody>
                     <tr *ngFor="let item of ObjCondicionesTecnicasServiciosGuardar let i = index" [attr.data-index]="i">
                         <td>
-                            <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo" min="0" step="" title="">
+                            <input type="text" name="" id="inputCodigo" class="form-control text-center" [(ngModel)]="item.codigo"
+                                min="0" step="" title="">
                         </td>
                         <td>
                             {{item.descripcion}}
                         </td>
                         <td>
-                            <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad" min="0" step="" title="">
+                            <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad"
+                                min="0" step="" title="">
                         </td>
                         <td>
-                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" name="" id="inputPrecio" class="form-control text-center" [(ngModel)]="item.valorEstimado">
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
+                                type="text" name="" id="inputPrecio" class="form-control text-center" [(ngModel)]="item.valorEstimado">
                         </td>
                         <td>
-                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" class="form-control" [(ngModel)]="item.tipoMoneda">
-                                        <option value="ARS">ARS</option>
-                                        <option value="BRL">BRL</option>
-                                        <option value="CLP">CLP</option>
-                                        <option value="COP">COP</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="PEN">PEN</option>
-                                        <option value="USD">USD</option>
-                                </select>
+                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" class="form-control" [(ngModel)]="item.tipoMonedaSondeo">
+                                <option value="ARS">ARS</option>
+                                <option value="BRL">BRL</option>
+                                <option value="CLP">CLP</option>
+                                <option value="COP">COP</option>
+                                <option value="EUR">EUR</option>
+                                <option value="PEN">PEN</option>
+                                <option value="USD">USD</option>
+                            </select>
                         </td>
                         <td>
-                            <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.ComentarioSondeo" step="" title=""></textarea>
+                            <textarea type="text" name="" id="" class="form-control text-center" [(ngModel)]="item.ComentarioSondeo"
+                                step="" title=""></textarea>
                         </td>
                         <td>
                             <input type="file" name="adjunto" (change)="adjuntarArchivoCTS($event, item)">
@@ -224,7 +216,8 @@
 <div class="row">
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-3 control-label">Comentario del comprador</label>
-        <textarea name="" id="comentSolcitante" class="form-control" rows="2" placeholder="Ingrese el comentario" [(ngModel)]="ComentarioSolicitante"></textarea>
+        <textarea name="" id="comentSolcitante" class="form-control" rows="2" placeholder="Ingrese el comentario"
+            [(ngModel)]="ComentarioSolicitante"></textarea>
     </div>
 </div>
 <div class="row">

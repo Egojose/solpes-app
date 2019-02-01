@@ -9,7 +9,7 @@ import { Usuario } from '../dominio/usuario';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { debug } from 'util';
+
 @Component({
   selector: 'app-sondeo',
   templateUrl: './sondeo.component.html',
@@ -152,7 +152,7 @@ export class SondeoComponent implements OnInit {
         CodigoSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado.toString(),
-        TipoMoneda: this.ObjCondicionesTecnicasBienesGuardar[i].tipoMoneda,
+        MonedaSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].tipoMonedaSondeo,
         ComentarioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].ComentarioSondeo
       }
 
@@ -336,7 +336,7 @@ export class SondeoComponent implements OnInit {
         CodigoSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].cantidad,
         PrecioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].valorEstimado.toString(),
-        TipoMoneda: this.ObjCondicionesTecnicasServiciosGuardar[i].tipoMoneda,
+        MonedaSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].tipoMonedaSondeo,
         ComentarioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].ComentarioSondeo
       }
 
@@ -388,20 +388,6 @@ export class SondeoComponent implements OnInit {
       Estado: estado,
       ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
     }
-
-    // if (this.ComentarioSolicitante != undefined || this.ComentarioSolicitante != '' || this.ComentarioSolicitante != null) {
-    //   if (this.comentarioSondeo === null || this.comentarioSondeo == '') {
-    //     this.comentarioSondeo = "";
-    //   }
-
-    // }
-    // else {
-    //   ObjSondeo = {
-    //     ResponsableId: this.autorId,
-    //     Estado: estado,
-    //     ComentarioSondeo: 'Sin comentario'
-    //   }
-    // }
 
     this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
       (respuesta) => {
