@@ -129,9 +129,9 @@
                             <th>Descripción</th>
                             <th>Modelo</th>
                             <th>Fabricante</th>
-
                             <th>Cantidad</th>
                             <th>Valor Estimado</th>
+                            <th>Moneda</th>
                             <th>Adjunto</th>
                             <th>Comentario</th>
                         </tr>
@@ -142,9 +142,9 @@
                             <td>{{item.descripcion}}</td>
                             <td>{{item.modelo}}</td>
                             <td>{{item.fabricante}}</td>
-
                             <td>{{item.cantidad | number}}</td>
                             <td>{{item.valorEstimado | number}}</td>
+                            <td>{{item.moneda}}</td>
                             <td>
                                 <div *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                     <a href="{{item.adjuntoCreacion.url}}" target="_blank"><button class="btn btn-primary">Ver
@@ -171,6 +171,7 @@
                             <th>Descripción</th>
                             <th>Cantidad</th>
                             <th>Valor Estimado</th>
+                            <th>Moneda</th>
                             <th>Adjunto</th>
                             <th>Comentario</th>
                         </tr>
@@ -180,7 +181,8 @@
                             <td>{{item.codigo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidad | number}}</td>
-                            <td>{{item.valorEstimado}}</td>
+                            <td>{{item.valorEstimado | number}}</td>
+                            <td>{{item.moneda}}</td>
                             <td>
                                 <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
                                     <a href="{{item.adjuntoCreacion.url}}" target="_blank">
@@ -354,7 +356,7 @@
                     </ng-container>
                     <ng-container matColumnDef="existenciasverificar">
                         <th mat-header-cell *matHeaderCellDef> Existencia </th>
-                        <td mat-cell *matCellDef="let element"> {{element.existenciasverificar}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.existenciasverificar | number}} </td>
                     </ng-container>
                     <ng-container matColumnDef="numreservaverificar">
                         <th mat-header-cell *matHeaderCellDef> # Reserva </th>
@@ -597,8 +599,8 @@
                             <tbody>
                                 <tr *ngFor="let item of ObjRecepcionBienes">
                                     <td>{{item.descripcion}}</td>
-                                    <td>{{item.cantidad}}</td>
-                                    <td>{{item.valor}}</td>
+                                    <td>{{item.cantidad | number}}</td>
+                                    <td>{{item.valor | number}}</td>
                                     <td>
                                         <div *ngIf="item.ultimaEntrega === true">
                                             Si
@@ -643,9 +645,9 @@
                                 <tr *ngFor="let item of ObjRecepcionServicios">
                                     <td>{{item.descripcion}}</td>
                                     <td>{{item.ubicacion}}</td>
-                                    <td>{{item.cantidad}}</td>
+                                    <td>{{item.cantidad | number}}</td>
                                     <td>{{item.mes}}</td>
-                                    <td>{{item.valor}}</td>
+                                    <td>{{item.valor | number}}</td>
                                     <td>{{item.comentario}}</td>
                                     <td>{{item.recibidosap}}</td>
                                     <td>{{item.numrecepcion}}</td>
