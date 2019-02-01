@@ -502,9 +502,8 @@ export class EntregaServiciosComponent implements OnInit {
   }
 
   VerSolicitud(){
-    sessionStorage.setItem('solicitud', JSON.stringify(this.IdSolicitud));
-    window.open("/ver-solicitud-tab", '_blank');
-    // this.router.navigate(['/ver-solicitud-tab']);
+    sessionStorage.setItem('solicitud', this.IdSolicitud);
+    this.router.navigate(['/ver-solicitud-tab']);
   }
 
 }

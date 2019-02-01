@@ -74,6 +74,7 @@ export class EntregaBienesComponent implements OnInit {
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
     this.ErrorCantidad = false;
     this.activarTool = true;
+    this.IdSolicitud 
     this.EstadoSolicitud = true;
     this.showBtnConfirmar = false;
     this.ItemsAgregadosReciente = 0;
@@ -695,9 +696,9 @@ export class EntregaBienesComponent implements OnInit {
   }
 
   VerSolicitud(){
-    sessionStorage.setItem('solicitud', JSON.stringify(this.IdSolicitud));
-    window.open("/ver-solicitud-tab", '_blank');
-    // this.router.navigate(['/ver-solicitud-tab']);
+    sessionStorage.setItem('solicitud', this.IdSolicitud);
+    // window.open("/ver-solicitud-tab", '_blank');
+    this.router.navigate(['/ver-solicitud-tab']);
   }
 
 }
