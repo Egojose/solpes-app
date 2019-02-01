@@ -26,7 +26,9 @@ export class VerSolicitudTabComponent implements OnInit {
   fechaDeseada: Date;
   dataSource;
   contratoMarco: string;
+  moneda: string;
   RutaArchivo: string;
+  RegistroActivoArchivo: string;
   tipoSolicitud: string;
   numOrdenEstadistica: string;
   existenServicios: boolean;
@@ -49,6 +51,8 @@ export class VerSolicitudTabComponent implements OnInit {
   comentariorevisionsondeo: string;
   existenBienes: boolean;
   estadoRegistrarSAP: string;
+  ArchivoAdjunto: boolean;
+  ArchivoAdjuntoActivos: boolean;
   numSolSAP: number;
   comentarioRegistrarSAP: string;
   tieneContrato: Boolean;
@@ -81,6 +85,8 @@ export class VerSolicitudTabComponent implements OnInit {
     this.spinner .hide();
     this.existenBienes = false;
     this.existenServicios = false;
+    this.ArchivoAdjunto = false;
+    this.ArchivoAdjuntoActivos = false;
   }
 
   ngOnInit() {
@@ -97,6 +103,7 @@ export class VerSolicitudTabComponent implements OnInit {
       solicitud => {      
         this.IdSolicitud = solicitud.Id;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+        this.moneda = solicitud.TipoMoneda;
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
@@ -128,6 +135,12 @@ export class VerSolicitudTabComponent implements OnInit {
               let TipoArchivo = objSplit[0];
               if (TipoArchivo === "ActivoVM") {
                 this.RutaArchivo = element.ServerRelativeUrl;
+                this.ArchivoAdjunto = true;
+                console.log(this.ArchivoAdjunto);
+              }
+              if(TipoArchivo === "RegistroActivo"){
+                this.RegistroActivoArchivo = element.ServerRelativeUrl;
+                this.ArchivoAdjuntoActivos = true;
               }
             }
           });
@@ -198,7 +211,10 @@ export class VerSolicitudTabComponent implements OnInit {
   }
 
   siguiente(tabId: number){
-    if(tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo"){
+    console.log(tabId);
+    console.log(this.solicitudRecuperada);
+
+    if(tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo" && this.solicitudRecuperada.FueSondeo == false){
       tabId = tabId + 3;
       this.staticTabs.tabs[tabId].active = true;
       document.body.scrollTop = document.documentElement.scrollTop = 0;

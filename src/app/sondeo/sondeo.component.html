@@ -29,38 +29,20 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of ObjCondicionesTecnicasBienesLectura">
-                                        <ng-container *ngIf="Resondear !== true; else Codson">
-                                            <td>{{item.codigo}}</td>
-                                            <td>{{item.descripcion}}</td>
-                                            <td>{{item.modelo}}</td>
-                                            <td>{{item.fabricante}}</td>
-                                            <td>{{item.cantidad | number}}</td>
-                                            <td>{{item.valorEstimado | number}}</td>
-                                            <td>{{item.tipoMoneda}}</td>
-                                            <td>{{item.Comentario}}</td>
-                                            <td>
-                                                <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
-                                                    target="_blank">
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </td>
-                                        </ng-container>
-                                        <ng-template #Codson>
-                                            <td>{{item.codigoSondeo}}</td>
-                                            <td>{{item.descripcion}}</td>
-                                            <td>{{item.modelo}}</td>
-                                            <td>{{item.fabricante}}</td>
-                                            <td>{{item.cantidadSondeo | number}}</td>
-                                            <td>{{item.precioSondeo | number}}</td>
-                                            <td>{{item.tipoMonedaSondeo}}</td>
-                                            <td>{{item.ComentarioSondeo}}</td>
-                                            <td>
-                                                <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
-                                                    target="_blank">
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </td>
-                                        </ng-template>
+                                        <td>{{item.codigo}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.modelo}}</td>
+                                        <td>{{item.fabricante}}</td>
+                                        <td>{{item.cantidad | number}}</td>
+                                        <td>{{item.valorEstimado | number}}</td>
+                                        <td>{{item.tipoMoneda}}</td>
+                                        <td>{{item.Comentario}}</td>
+                                        <td>
+                                            <a *ngIf="item.adjuntoCreacion != null" href="{{item.adjuntoCreacion.url}}"
+                                                target="_blank">
+                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

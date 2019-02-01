@@ -23,7 +23,7 @@
                     <td>{{item.descripcion}}</td>
                     <td>{{item.CantidadSondeo | number}}</td>
                     <td>{{item.PrecioSondeo | number}}</td>
-                    <td>{{item.moneda}}</td>
+                    <td>{{item.monedaSondeo}}</td>
                     <td>{{item.ComentarioSondeo}}</td>
                     <td>
                         <a *ngIf="item.adjunto != null" href="{{item.adjunto.url}}" target="_blank">
@@ -57,7 +57,7 @@
                     <td>{{item.descripcion}}</td>
                     <td>{{item.cantidadSondeo | number}}</td>
                     <td>{{item.precioSondeo | number}}</td>
-                    <td>{{item.moneda}}</td>
+                    <td>{{item.monedaSondeo}}</td>
                     <td>{{item.comentarioSondeo}}</td>
                     <td>
                         <a *ngIf="item.RutaArchivo !== ''" href="{{item.RutaArchivo}}" target="_blank">
@@ -313,7 +313,7 @@
                                         <td>{{item.Fabricante}}</td>
                                         <td>{{item.CantidadSondeo | number}}</td>
                                         <td>{{item.PrecioSondeo | number}}</td>
-                                        <td>{{item.moneda}}</td>
+                                        <td>{{item.monedaSondeo}}</td>
                                         <td>{{item.ComentarioSondeo}}</td>
                                         <td>
                                             <a *ngIf="item.adjuntoCreacion != null || item.adjuntoCreacion != undefined" href="{{item.adjuntoCreacion.url}}" target="_blank">

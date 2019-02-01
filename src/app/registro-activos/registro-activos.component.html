@@ -1,48 +1,48 @@
 <h1>{{titleActivos}}</h1>
 <hr>
 <mat-accordion>
-  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <strong>Ver bienes solicitados</strong>
-      </mat-panel-title>
-      <mat-panel-description>
-        {{panelOpenState ? 'cerrar' : 'Click para desplegar' }}
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="row" id="TablaVerificar">
-      <div class="col-md-12">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-          <ng-container matColumnDef="codigo">
-            <th mat-header-cell *matHeaderCellDef> Código </th>
-            <td mat-cell *matCellDef="let element"> {{element.codigoverificar}} </td>
-          </ng-container>
-          <ng-container matColumnDef="descripcion">
-            <th mat-header-cell *matHeaderCellDef> Descripción </th>
-            <td mat-cell *matCellDef="let element"> {{element.descripcionverificar}} </td>
-          </ng-container>
-          <ng-container matColumnDef="modelo">
-            <th mat-header-cell *matHeaderCellDef> Modelo </th>
-            <td mat-cell *matCellDef="let element"> {{element.modeloverificar}} </td>
-          </ng-container>
-          <ng-container matColumnDef="fabricante">
-            <th mat-header-cell *matHeaderCellDef> Fabricante </th>
-            <td mat-cell *matCellDef="let element"> {{element.fabricanteverificar}} </td>
-          </ng-container>
-          <ng-container matColumnDef="cantidad">
-            <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
-            <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar | number}} </td>
-          </ng-container>
-          <ng-container matColumnDef="precioSondeo">
-            <th mat-header-cell *matHeaderCellDef> Precio</th>
-            <td mat-cell *matCellDef="let element"> {{element.precioSondeo | number}} </td>
-          </ng-container>
-          <ng-container matColumnDef="moneda">
-            <th mat-header-cell *matHeaderCellDef> Moneda</th>
-            <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
-          </ng-container>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <strong>Ver bienes solicitados</strong>
+            </mat-panel-title>
+            <mat-panel-description>
+                {{panelOpenState ? 'cerrar' : 'Click para desplegar' }}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row" id="TablaVerificar">
+            <div class="col-md-12">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <ng-container matColumnDef="codigo">
+                        <th mat-header-cell *matHeaderCellDef> Código </th>
+                        <td mat-cell *matCellDef="let element"> {{element.codigoverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                        <td mat-cell *matCellDef="let element"> {{element.descripcionverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="modelo">
+                        <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.modeloverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fabricante">
+                        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fabricanteverificar}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cantidad">
+                        <th mat-header-cell *matHeaderCellDef> Cantidad a comprar</th>
+                        <td mat-cell *matCellDef="let element"> {{element.cantidadreservaverificar | number}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="precioSondeo">
+                        <th mat-header-cell *matHeaderCellDef> Precio</th>
+                        <td mat-cell *matCellDef="let element"> {{element.precioSondeo | number}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="moneda">
+                        <th mat-header-cell *matHeaderCellDef> Moneda</th>
+                        <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+                    </ng-container>
 
-          <ng-container matColumnDef="adjunto">
+                    <!-- <ng-container matColumnDef="adjunto">
             <th mat-header-cell *matHeaderCellDef> Adjunto</th>
             <td mat-cell *matCellDef="let item">
               <ng-container *ngIf="item.adjunto !== null; else elseTemplate">
@@ -54,82 +54,81 @@
                 Sin adjunto
               </ng-template>
             </td>
-          </ng-container>
+          </ng-container> -->
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
 
-        <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
-        <div class="form-group col-md-12">
-          <label for="textarea" class="col-sm-6 control-label"><b>Comentario de verificación de materiales:</b></label>
-          <textarea name="" id="textareaHistorial" class="historial form-control" rows="5" placeholder="" disabled>{{ComentarioVerificar}}</textarea>
+                <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+                <div class="form-group col-md-12">
+                    <label for="textarea" class="col-sm-6 control-label"><b>Comentario de verificación de materiales:</b></label>
+                    <textarea name="" id="textareaHistorial" class="historial form-control" rows="5" placeholder="" disabled>{{ComentarioVerificar}}</textarea>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </mat-expansion-panel>
+    </mat-expansion-panel>
 </mat-accordion>
 <br>
 <br>
 
 <div class="row">
-  <div class="col-md-12">
-    <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
-  </div>
-  <br>
-  <br>
-  <div class="col-md-12">
-    <p><strong>Paso 1.</strong> Descargue el archivo adjunto y complete la información de registro de activos en SAP.
-    </p>
-  </div>
-  <br>
-  <br>
-  <div class="col-md-6">
-    <a href="{{RutaArchivo}}">
-      <button type="button" class="btn btn-primary">Descargar aquí</button>
-    </a>
-  </div>
-  <br>
-  <br>
-  <div class="col-md-12">
-    <p><strong>Paso 2.</strong> Cargue el archivo adjunto con la información de registro de activos en SAP.
-    </p>
-  </div>
-  <div class="form-group col-md-6">
-    <label for="adjunto"> <strong> Solicitud de activos </strong></label><span class="asterisco-obligatorio">*</span>
-    <input id="adjuntoSolicituAF" name="adjuntoSolicituAFCompleto" type="file" class="form-control" (change)="adjuntarArchivoVM($event)" />
+    <div class="col-md-12">
+        <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
+    </div>
     <br>
-  </div>
+    <br>
+    <div class="col-md-12">
+        <p><strong>Paso 1.</strong> Descargue el archivo adjunto y complete la información de registro de activos en SAP.
+        </p>
+    </div>
+    <br>
+    <br>
+    <div class="col-md-6">
+        <a href="{{RutaArchivo}}">
+            <button type="button" class="btn btn-primary">Descargar aquí</button>
+        </a>
+    </div>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <p><strong>Paso 2.</strong> Cargue el archivo adjunto con la información de registro de activos en SAP.
+        </p>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="adjunto"> <strong> Solicitud de activos </strong></label><span class="asterisco-obligatorio">*</span>
+        <input id="adjuntoSolicituAF" name="adjuntoSolicituAFCompleto" type="file" class="form-control" (change)="adjuntarArchivoVM($event)" />
+        <br>
+    </div>
 </div>
 
 <div class="row">
-  <div class="form-group col-md-12">
-    <label for="textarea" class="control-label"><b>Comentarios:</b></label>
-    <textarea name="" id="textarea" class="form-control" rows="2" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioRegistroActivos"></textarea>
-  </div>
+    <div class="form-group col-md-12">
+        <label for="textarea" class="control-label"><b>Comentarios:</b></label>
+        <textarea name="" id="textarea" class="form-control" rows="2" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioRegistroActivos"></textarea>
+    </div>
 </div>
 
 <div class="form-group row">
-  <div class="col-md-12">
-    <div class="botonera">
-      <div>
-        <input id="btnEnviar" type="button" class="derecha-boton btn  btn-success" value="Enviar" (click)="GuardarActivos()" />
-      </div>
-      <div>
-        <input id="btnSalir" type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);"
-          value="Salir" />
-      </div>
+    <div class="col-md-12">
+        <div class="botonera">
+            <div>
+                <input id="btnEnviar" type="button" class="derecha-boton btn  btn-success" value="Enviar" (click)="GuardarActivos()" />
+            </div>
+            <div>
+                <input id="btnSalir" type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);" value="Salir" />
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <ng-template #templateConfirmacionDescartar>
-  <div class="modal-body text-center">
-    <p>¿Está seguro de que desea salir?</p>
-    <button type="button" class="botonSi btn btn-default" style="margin-right: 15px;" (click)="salir()">Sí</button>
-    <button type="button" class="btn btn-primary" (click)="declinarModal()">No</button>
-  </div>
+    <div class="modal-body text-center">
+        <p>¿Está seguro de que desea salir?</p>
+        <button type="button" class="botonSi btn btn-default" style="margin-right: 15px;" (click)="salir()">Sí</button>
+        <button type="button" class="btn btn-primary" (click)="declinarModal()">No</button>
+    </div>
 </ng-template>
 
 <ngx-spinner>
-  <p style="font-size: 20px; color: white">PROCESANDO...</p>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
 </ngx-spinner>
