@@ -1059,8 +1059,12 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["comentariosCTB"].setValue('');
   }
 
-  subirAdjuntoCTB(event) {
-    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.target.files[0], '', '');
+  subirAdjuntoCTB(files: FileList) {
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', files.item(0), '', '');
+  }
+
+  subirAdjuntoCTS(files: FileList) {
+    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', files.item(0), '', '');
   }
 
   ctsOnSubmit() {
@@ -1076,7 +1080,7 @@ export class CrearSolicitudComponent implements OnInit {
       let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
       let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
       let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
+      let adjunto = this.condicionTS.archivoAdjunto.name;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (adjunto == null) {
         this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
@@ -1274,9 +1278,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["comentariosCTS"].setValue('');
   }
 
-  subirAdjuntoCTS(event) {
-    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', event.target.files[0], '', '');
-  }
+
 
   editarBienes(element, template: TemplateRef<any>) {
     this.indiceCTBActualizar = element.indice;
