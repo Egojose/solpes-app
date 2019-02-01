@@ -1,46 +1,46 @@
 <div id="wrapper">
-  <div id="sidebar-wrapper">
-    <ul class="sidebar-nav">
-      <li class="sidebar-brand">
-      </li>
-      <li>
-        <a routerLink="/crear-solicitud" routerLinkActive="active">Crear solicitud</a>
-      </li>
-      <li>
-        <a routerLink="/mis-solicitudes" routerLinkActive="active">Mis solicitudes</a>
-      </li>
-      <li>
-        <a routerLink="/mis-pendientes" routerLinkActive="active">Mis pendientes</a>
-      </li>
-      <li>
-        <a routerLink="/registrar-entradas-sap-bienes" routerLinkActive="active">Registrar entrada SAP bienes</a>
-      </li>
-      <li>
-        <a routerLink="/registrar-entradas-sap-servicios" routerLinkActive="active">Registrar entrada SAP servicios</a>
-      </li>
-      <li>
-        <a href="{{linkEdicionContratos}}" target="_blank">Edición Vista Contratos</a>
-      </li>
-    </ul>
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+            </li>
+            <li>
+                <a routerLink="/crear-solicitud" routerLinkActive="active">Crear solicitud</a>
+            </li>
+            <li>
+                <a routerLink="/mis-solicitudes" routerLinkActive="active">Mis solicitudes</a>
+            </li>
+            <li>
+                <a routerLink="/mis-pendientes" routerLinkActive="active">Mis pendientes</a>
+            </li>
+            <li>
+                <a routerLink="/registrar-entradas-sap-bienes" routerLinkActive="active">Registrar entradas SAP bienes</a>
+            </li>
+            <li>
+                <a routerLink="/registrar-entradas-sap-servicios" routerLinkActive="active">Registrar entradas SAP servicios</a>
+            </li>
+            <li>
+                <a href="{{linkEdicionContratos}}" target="_blank">Edición Vista Contratos</a>
+            </li>
+        </ul>
 
-    <div class="version-aplicacion">Versión 1.0</div>
+        <div class="version-aplicacion">Versión 1.0</div>
 
-  </div>
-  <div id="page-content-wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Ocultar menú</a>
-          <div class="zona-usuario-logueado">
-            <div class="usuario">
-              <span class="usuario-logueado">Bienvenido {{nombreUsuario}}</span>
-            </div>
-          </div>
-          <div class="contenido-aplicacion">
-            <router-outlet></router-outlet>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Ocultar menú</a>
+                    <div class="zona-usuario-logueado">
+                        <div class="usuario">
+                            <span class="usuario-logueado">Bienvenido {{nombreUsuario}}</span>
+                        </div>
+                    </div>
+                    <div class="contenido-aplicacion">
+                        <router-outlet></router-outlet>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
