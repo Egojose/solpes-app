@@ -735,18 +735,27 @@ export class EditarSolicitudComponent implements OnInit {
     }
 
     this.spinner.show();
-    if (this.textoBotonGuardarCTS == "Guardar") {
-      this.limpiarAdjuntosCTS();
-      let codigo = this.ctsFormulario.controls["codigoCTS"].value;
+
+    let codigo = this.ctsFormulario.controls["codigoCTS"].value;
       let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
       let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
       let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
       let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
       let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (this.condicionTS == null) {
         this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '');
       }
+      let adjunto = null;
+      if(this.condicionTS.archivoAdjunto != null)
+      {
+        adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
+      }
+      
+
+
+    if (this.textoBotonGuardarCTS == "Guardar") {
+      this.limpiarAdjuntosCTS();
+      
       this.condicionTS.indice = this.indiceCTB;
       this.condicionTS.titulo = "Condición Técnicas Servicios " + new Date().toDateString();
       this.condicionTS.idSolicitud = this.solicitudRecuperada.id;
@@ -805,14 +814,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
 
     if (this.textoBotonGuardarCTS == "Actualizar") {
-      let codigo = this.ctsFormulario.controls["codigoCTS"].value;
-      let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
-      let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
-      let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
-      let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
-      let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
-      if (adjunto == null) {
+        if (adjunto == null) {
         this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas servicios" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
