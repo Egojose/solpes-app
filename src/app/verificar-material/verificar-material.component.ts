@@ -111,14 +111,14 @@ export class VerificarMaterialComponent implements OnInit {
         }
       }
       else {
-        this.mostrarAdvertencia("La solicitud no es encuentra en el estado correcto para verificar material");
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para verificar material");
         this.router.navigate(['/mis-solicitudes']);
       }
     }
   }
 
   verificarEstado(): boolean {
-    if (this.solicitudRecuperada.estado == 'Por aprobar sondeo') {
+    if (this.solicitudRecuperada.estado == 'Por verificar material') {
       return true;
     } else {
       return false;

@@ -124,8 +124,8 @@ export class MisPendientesComponent implements OnInit {
     this.router.navigate(['/verificar-material']);
   }
 
-  RegistrarSOLPSAP(id) {
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarSOLPSAP(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/registrar-solp-sap']);
   }
 

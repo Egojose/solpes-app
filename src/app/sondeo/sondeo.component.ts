@@ -90,7 +90,7 @@ export class SondeoComponent implements OnInit {
         }
       }
       else {
-        this.mostrarAdvertencia("La solicitud no es encuentra en el estado correcto para su sondeo");
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para su sondeo");
         this.router.navigate(['/mis-solicitudes']);
       }
     }

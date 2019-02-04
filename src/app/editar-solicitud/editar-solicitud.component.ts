@@ -165,7 +165,7 @@ export class EditarSolicitudComponent implements OnInit {
         }
       }
       else {
-        this.mostrarAdvertencia("La solicitud no es encuentra en el estado correcto para su edición");
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para su edición");
         this.router.navigate(['/mis-solicitudes']);
       }
     }
