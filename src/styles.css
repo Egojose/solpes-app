@@ -201,5 +201,8 @@ td.mat-cell,td.mat-footer-cell, th.mat-header-cell {
 
 .version-aplicacion{
     color: white;
+    bottom:0;
+    position: absolute;
+    margin-left: 150px;
 }
 

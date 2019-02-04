@@ -39,7 +39,7 @@
                 </ng-container>
                 <ng-container matColumnDef="moneda">
                     <th mat-header-cell *matHeaderCellDef> Moneda</th>
-                    <td mat-cell *matCellDef="let element"> {{element.moneda}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.monedaSondeo}} </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -79,7 +79,7 @@
                 </ng-container>
                 <ng-container matColumnDef="moneda">
                     <th mat-header-cell *matHeaderCellDef> Moneda</th>
-                    <td mat-cell *matCellDef="let element"> {{element.tipoMoneda}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.monedaSondeo}} </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsTS"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsTS;"></tr>
