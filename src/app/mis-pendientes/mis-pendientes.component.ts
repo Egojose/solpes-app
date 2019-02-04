@@ -232,8 +232,8 @@ export class MisPendientesComponent implements OnInit {
     this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
-  RegistrarActivos(id) {
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarActivos(solicitud) {
+    sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
     this.router.navigate(['/registro-activos']);
   }
 
