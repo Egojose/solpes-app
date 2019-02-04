@@ -71,13 +71,13 @@ export class AprobarSondeoComponent implements OnInit {
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
-    this.perfilacionEdicion();    
+    this.perfilacionEstado();    
     this.IdSolicitudParms = this.solicitudRecuperada.id;
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
   }
 
-  private perfilacionEdicion() {
+  private perfilacionEstado() {
     if (this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);

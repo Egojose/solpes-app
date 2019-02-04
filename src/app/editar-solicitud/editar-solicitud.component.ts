@@ -118,7 +118,7 @@ export class EditarSolicitudComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
-    this.perfilacionEdicion();
+    this.perfilacionEstado();
     setTheme('bs4');
     this.mostrarContratoMarco = false;
     this.spinner.hide();
@@ -146,7 +146,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.fueSondeo = false;
   }
 
-  private perfilacionEdicion() {
+  private perfilacionEstado() {
     console.log(this.solicitudRecuperada);
     if (this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
