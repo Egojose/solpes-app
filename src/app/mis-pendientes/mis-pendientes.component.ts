@@ -119,8 +119,8 @@ export class MisPendientesComponent implements OnInit {
     this.router.navigate(['/aprobar-sondeo']);
   }
 
-  VerificarMaterial(id) {
-    sessionStorage.setItem("IdSolicitud", id);
+  VerificarMaterial(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/verificar-material']);
   }
 

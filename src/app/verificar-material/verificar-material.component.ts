@@ -12,6 +12,8 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { verificarMaterialCT } from "./verificarMaterialCT";
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: "app-verificar-material",
@@ -60,7 +62,7 @@ export class VerificarMaterialComponent implements OnInit {
   IdVerficar: any;
   paisId: any;
   IdResponsable: any;
-  IdSolicitudParms: string;
+  IdSolicitudParms: number;
   cantidadTotalCompra: number;
   OrdenEstadistica: boolean;
   SwtichOrdenEstadistica: boolean;
@@ -73,9 +75,15 @@ export class VerificarMaterialComponent implements OnInit {
   ResponsableProceso: number;
   estadoSolicitud: string;
   EsSondeo: boolean;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
-    this.spinner.hide();
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
     this.emptyVerificar = true;
     this.ArchivoAdjunto = null;
     this.SwtichOrdenEstadistica = false;
@@ -83,10 +91,45 @@ export class VerificarMaterialComponent implements OnInit {
     this.cantidadTotalCompra = 0;
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
-    if(this.IdSolicitudParms == null){
+  }
+
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no es encuentra en el estado correcto para verificar material");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if (this.solicitudRecuperada.estado == 'Por aprobar sondeo') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean {
+    if (this.solicitudRecuperada.responsable.ID == this.usuarioActual.id) {
+      return true;
+    } else {
+      return false;
     }
   }
 
