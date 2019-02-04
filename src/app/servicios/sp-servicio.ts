@@ -12,7 +12,7 @@ import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
 export class SPServicio {
     constructor() { }
 
-    public obtenerConfiguracion() {
+    public ObtenerConfiguracion() {
         const configuracionSharepoint = pnp.sp.configure({
             headers: {
                 "Accept": "application/json; odata=verbose"
@@ -27,7 +27,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCIsImtpZCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ5Mjk0ODMwLCJuYmYiOjE1NDkyOTQ4MzAsImV4cCI6MTU0OTMyMzkzMCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.kOJ5jndol85Q6dN_swkSNdzUZEuyUQgcFmB_Yg8xtjAmcefaqINXz_EB43VgIJ-oGiAOodFxa0NecHuTMWwG57pxa496YGsXSxqGE-6WsA4dogyTyapXsWCOqAz_bBNY1KI_GxhtPDB_MzLk8mm3MXaHidzEB0_iy44wWPNi-5gh2EBJbqxjK28BqLLPfBF-kuVascs0mwYv4A8ZKI2QBrKzOqNXcZFTDNRVgGCRAmLPFK6G8sMdLMHdWM_r7WelsDnuBh-yOSqfP1tOn8pLR2tZNMGILHsanTJnuHO8tW3_i8XcfalJuW_FGwfnSyTuiO_4Cgm0qmtAw1LH_h2DAQ'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCIsImtpZCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTQ5MzE2NTI0LCJuYmYiOjE1NDkzMTY1MjQsImV4cCI6MTU0OTM0NTYyNCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.I2_OUa6vw_0sZdS2z9-1w6aXDLZq5aSj7cylzhsflIfIc8NT9xGlDIQSTyzj9nqtX-eO-9GS2DawkjwY5yJMK-qBa0ubEELGBeFmrKznJCn1K23hGnI_rLH0zG-NCvj9v3UW91wKkJe2EKwNO9WRZvWqTBgKkWtgi5-kzjU0AcZFRkQjaAQHOyKRUdVoraF6HMH_ghWcZKenla-VZoYXhp5fD4TQt2VJ0tC3sQIjAWy8xXJ9N5E5NIPgfCThb2DD_uYwB0ngPR_HM2DR7yczkwPdNHe5VvxnK3w82V157iaYiFDlq1YfdEUXz__03zIgv9HOvdO6zIEvatdx8eDsVA'
             }
         }, environment.urlWeb);
 
@@ -35,52 +35,52 @@ export class SPServicio {
     }
 
     ObtenerUsuarioActual() {
-        let respuesta = from(this.obtenerConfiguracion().web.currentUser.get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.currentUser.get());
         return respuesta;
     }
 
     ObtenerTodosLosUsuarios() {
-        let respuesta = from(this.obtenerConfiguracion().web.siteUsers.get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.siteUsers.get());
         return respuesta;
     }
 
     ObtenerUsuarioPorEmail(email : string){
-        let respuesta = from(this.obtenerConfiguracion().web.siteUsers.getByEmail(email).get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.siteUsers.getByEmail(email).get());
         return respuesta;
     }
 
     ObtenerTiposSolicitud() {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaTiposSolicitud).items.getAll());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaTiposSolicitud).items.getAll());
         return respuesta;
     }
 
     ObtenerEmpresas() {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaEmpresas).items.getAll());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaEmpresas).items.getAll());
         return respuesta;
     }
 
     ObtenerPaises() {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaPaises).items.getAll());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaPaises).items.getAll());
         return respuesta;
     }
 
     ObtenerCategorias() {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCategorias).items.getAll());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCategorias).items.getAll());
         return respuesta;
     }
 
     ObtenerSubcategorias(idCategoria: number, idPais: number) {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "Pais/Title", "Pais/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID", "CodigoAriba").expand("Categoria", "Comprador", "CondicionesTecnicas", "Pais").filter("CategoriaId eq " + idCategoria + "and PaisId eq " + idPais).get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "Pais/Title", "Pais/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID", "CodigoAriba").expand("Categoria", "Comprador", "CondicionesTecnicas", "Pais").filter("CategoriaId eq " + idCategoria + "and PaisId eq " + idPais).get());
         return respuesta;
     }
 
     obtenerMisSolicitudes(usuarioId: number) {
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Responsable/Title", "Created", "CodigoAriba", "Consecutivo", "FueSondeo").expand("Empresa", "Pais", "OrdenadorGastos", "Responsable", "Comprador", "Author").filter("AuthorId eq " + usuarioId + " and Estado ne 'Inicial'").orderBy('Consecutivo', true).get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Responsable/Title", "Created", "CodigoAriba", "Consecutivo", "FueSondeo").expand("Empresa", "Pais", "OrdenadorGastos", "Responsable", "Comprador", "Author").filter("AuthorId eq " + usuarioId + " and Estado ne 'Inicial'").orderBy('Consecutivo', true).get());
         return respuesta;
     }
 
     agregarSolicitud(solicitud: Solicitud) {
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.add({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.add({
             Title: solicitud.titulo,
             TipoSolicitud: solicitud.tipoSolicitud,
             CM: solicitud.cm,
@@ -110,11 +110,11 @@ export class SPServicio {
     }
 
     borrarSolicitud(Idsolicitud: number){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(Idsolicitud).delete();
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(Idsolicitud).delete();
     }
 
     actualizarSolicitud(idSolicitud: number, solicitud: Solicitud){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update({
             Title: solicitud.titulo,
             TipoSolicitud: solicitud.tipoSolicitud,
             CM: solicitud.cm,
@@ -144,7 +144,7 @@ export class SPServicio {
     }
 
     agregarCondicionesTecnicasBienes(condicionTecnicaBienes: CondicionTecnicaBienes) {
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.add({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.add({
             Title: condicionTecnicaBienes.titulo,
             SolicitudId: condicionTecnicaBienes.idSolicitud,
             Codigo: condicionTecnicaBienes.codigo,
@@ -163,7 +163,7 @@ export class SPServicio {
     }
 
     actualizarCondicionesTecnicasBienes(idCondicionTecnicaBienes: number, condicionTecnicaBienes: CondicionTecnicaBienes){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).update({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).update({
             Title: condicionTecnicaBienes.titulo,
             SolicitudId: condicionTecnicaBienes.idSolicitud,
             Codigo: condicionTecnicaBienes.codigo,
@@ -182,42 +182,42 @@ export class SPServicio {
     }
 
     actualizarCondicionesTecnicasBienesEntregaBienes(IdBienes,objActualizacionCTB){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(IdBienes).update(
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(IdBienes).update(
             objActualizacionCTB
         );
     }
 
     borrarCondicionTecnicaBienes(idCondicionTecnicaBienes: number){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).delete();
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).delete();
     }
 
     agregarAdjuntoCondicionesTecnicasBienes(idCondicion: number, nombreArchivo: string, archivo: File) {
-        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     agregarAdjuntoActivos(IdSolicitud: number, nombreArchivo: string, archivo: File) {
-        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud);
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     agregarAdjuntoActivosBienes(IdSolicitud: number, nombreArchivo: string, archivo: File) {
-        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdSolicitud);
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdSolicitud);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     agregarAdjuntoActivosServicios(IdSolicitud: number, nombreArchivo: string, archivo: File) {
-        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdSolicitud);
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdSolicitud);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     borrarAdjuntoCondicionesTecnicasBienes(idCondicion: number, nombreArchivo: string){
-        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
         return item.attachmentFiles.getByName(nombreArchivo).delete();
     }
 
     agregarCondicionesTecnicasServicios(condicionTecnicaServicios: CondicionTecnicaServicios) {
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.add({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.add({
             Title: condicionTecnicaServicios.titulo,
             SolicitudId: condicionTecnicaServicios.idSolicitud,
             Codigo: condicionTecnicaServicios.codigo,
@@ -234,7 +234,7 @@ export class SPServicio {
     }
 
     actualizarCondicionesTecnicasServicios(idCondicionTecnicaServicios: number, condicionTecnicaServicios: CondicionTecnicaServicios){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicionTecnicaServicios).update({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicionTecnicaServicios).update({
             Title: condicionTecnicaServicios.titulo,
             SolicitudId: condicionTecnicaServicios.idSolicitud,
             Codigo: condicionTecnicaServicios.codigo,
@@ -251,46 +251,46 @@ export class SPServicio {
     }
 
     borrarCondicionTecnicaServicios(idCondicionTecnicaServicios: number){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicionTecnicaServicios).delete();
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicionTecnicaServicios).delete();
     }
 
     agregarAdjuntoCondicionesTecnicasServicios(idSolicitud: number, nombreArchivo: string, archivo: File) {
-        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idSolicitud);
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idSolicitud);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     borraAdjuntoCondicionesTecnicasServicios(idCondicion: number, nombreArchivo: string){
-        let item = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicion);
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicion);
         return item.attachmentFiles.getByName(nombreArchivo).delete();
     }
 
     obtenerParametrosConfiguracion(){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaConfiguracion).items.filter("Title eq 'Configuración'").get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaConfiguracion).items.filter("Title eq 'Configuración'").get());
         return respuesta;
     }
 
     obtenerdatosProfile(){
-        let respuesta = from(this.obtenerConfiguracion().profiles.myProperties.get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().profiles.myProperties.get());
         return respuesta;
     }
 
     ObtenerSolicitudBienesServicios(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","Solicitante","Responsable/Title","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles").get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","Solicitante","Responsable/Title","OrdenadorGastos/Title","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles").get());
         return respuesta;
     }
 
     ObtenerCondicionesTecnicasBienes(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
         return respuesta;
     }
 
     ObtenerRecepcionesBienes(IdResponsable : number){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and Estado eq 'Confirmado' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles", "Author/Title").expand("AttachmentFiles", "Author").get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and Estado eq 'Confirmado' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles", "Author/Title").expand("AttachmentFiles", "Author").get());
         return respuesta;
     }
 
     ObtenerRecepcionesBienesEntregaBienes(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("IdSolicitud eq '"+IdSolicitud+"' and recibidoSap eq '0'").select("*","AttachmentFiles").expand("AttachmentFiles").get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("IdSolicitud eq '"+IdSolicitud+"' and recibidoSap eq '0'").select("*","AttachmentFiles").expand("AttachmentFiles").get());
         return respuesta;
     }
 
@@ -307,39 +307,39 @@ export class SPServicio {
             ResponsableSAPId: Responsable,
             NumeroPedido: NumeroPedido
         };
-        let elemento = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.add(RecepcionBienesObj);
+        let elemento = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.add(RecepcionBienesObj);
         return elemento;
     }
 
     actualizarBienesRecibidos(IdBienes){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdBienes).update({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdBienes).update({
             UltimaEntrega: true
         });
     }
 
     eliminarBienesRecibidos(idBienes){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(idBienes).delete();
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(idBienes).delete();
     }
 
     ConfirmarEntregaBienes(IdBienes){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdBienes).update({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdBienes).update({
             Estado: "Confirmado"
         }); 
     }
 
     cambioEstadoRecepcionBienesServicios(IdSolicitud, objeto){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
             objeto
         );
     } 
     
     ObtenerCondicionesTecnicasServicios(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());
         return respuesta;
     }
 
     ObtenerRecepcionesServicios(IdResponsable:number){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("recibidoSap eq '0' and Cantidad ne '0' and Estado eq 'Confirmado' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles","Author/Title").expand("AttachmentFiles", "Author").get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("recibidoSap eq '0' and Cantidad ne '0' and Estado eq 'Confirmado' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles","Author/Title").expand("AttachmentFiles", "Author").get());
         return respuesta;
     }
 
@@ -360,38 +360,38 @@ export class SPServicio {
             ResponsableSAPId: Responsable,
             NumeroPedido: NumeroPedido
         };
-        let elemento = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.add(RecepcionBienesObj);
+        let elemento = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.add(RecepcionBienesObj);
         return elemento;
     }
 
     actualizarCondicionesTecnicasServiciosEntregaServicios(IdServicio,objActualizacionCTS){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(IdServicio).update(
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(IdServicio).update(
             objActualizacionCTS
         );
     }
 
     actualizarServiciosRecibidos(IdServicios){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdServicios).update({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdServicios).update({
             UltimaEntrega: true
         });
     }
 
     eliminarServiciosRecibidos(idServicios){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(idServicios).delete();
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(idServicios).delete();
     }
 
     ConfirmarEntregaServicios(IdServicios){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdServicios).update({
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdServicios).update({
             Estado: "Confirmado"
         }); 
     }
 
     GuardarContrato(ObjContrato){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
     }
 
     cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
             {
                 Estado: nombreEstado,
                 ResponsableId: autor
@@ -400,62 +400,62 @@ export class SPServicio {
     }
     
     ObtenerMisPendientes(usuarioId){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "OrdenadorGastos/ID", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created","Responsable/Title", "Responsable/ID", "CompraBienes", "CompraServicios", "CodigoAriba", "Consecutivo", "OrdenEstadistica", "NumeroOrdenEstadistica","FaltaRecepcionServicios","FaltaRecepcionBienes", "FueSondeo").expand("Empresa", "Pais", "OrdenadorGastos", "Comprador", "Responsable", "Author").filter("Responsable eq '"+usuarioId+"' and Estado ne 'Finalizado' and Estado ne 'Rechazado' and Estado ne 'Descartado' and Estado ne 'Inicial' and Estado ne 'Recibido'").orderBy('Consecutivo', true).get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "OrdenadorGastos/ID", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created","Responsable/Title", "Responsable/ID", "CompraBienes", "CompraServicios", "CodigoAriba", "Consecutivo", "OrdenEstadistica", "NumeroOrdenEstadistica","FaltaRecepcionServicios","FaltaRecepcionBienes", "FueSondeo").expand("Empresa", "Pais", "OrdenadorGastos", "Comprador", "Responsable", "Author").filter("Responsable eq '"+usuarioId+"' and Estado ne 'Finalizado' and Estado ne 'Rechazado' and Estado ne 'Descartado' and Estado ne 'Inicial' and Estado ne 'Recibido'").orderBy('Consecutivo', true).get());
         return respuesta;
     }
 
     guardarComentario(IdSolicitud, coment){
-        let respuesta = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(coment);
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(coment);
         return respuesta;
     }
 
     obtenerResponsableProcesos(IdPais){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaResponsableProceso).items.filter("PaisId eq '"+IdPais+"'").getAll());  
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaResponsableProceso).items.filter("PaisId eq '"+IdPais+"'").getAll());  
         return respuesta;
     }
 
     guardarVerificarMaterial(IdSolicitud, objGuardarVerificar){
-        let respuesta = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(IdSolicitud).update(objGuardarVerificar);
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(IdSolicitud).update(objGuardarVerificar);
         return respuesta;
     }
 
     ObtenerContratos(IdSolicitud){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.getAll());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.getAll());
         return respuesta;
     }
 
     guardarSondeoBienes(idCondicion, objSondeo){   
-        let respuesta = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion).update(objSondeo);        
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion).update(objSondeo);        
         return respuesta;
     }
 
     guardarSondeoServicios(idCondicion, objSondeo){   
-        let respuesta = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicion).update(objSondeo);        
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicion).update(objSondeo);        
         return respuesta;
     }
 
     guardarRegSondeo(IdSolicitud, ObjSolpSap){
-        let respuesta = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjSolpSap);
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjSolpSap);
         return respuesta;
     }
 
     guardarSOLPSAP(IdSolicitud, ObjSolpSap){
-        let respuesta = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjSolpSap);
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjSolpSap);
         return respuesta;
     }
 
     registrarRecepcionBienes(IdRecepcion, objRegistrar){
-        let respuesta = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdRecepcion).update(objRegistrar);
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionBienes).items.getById(IdRecepcion).update(objRegistrar);
         return respuesta;
     }
 
     registrarRecepcionServicios(IdRecepcion, objRegistrar){
-        let respuesta = this.obtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdRecepcion).update(objRegistrar);
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaRecepcionServicios).items.getById(IdRecepcion).update(objRegistrar);
         return respuesta;
     }
 
     actualizarConsecutivo(consecutivoNuevo: number){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaConfiguracion).items.getById(1).update(
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaConfiguracion).items.getById(1).update(
             {
                 ConsecutivoSolicitudes: consecutivoNuevo
             }
@@ -463,20 +463,20 @@ export class SPServicio {
     }
 
     agregarNotificacion(objNotificacion){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaNotificaciones).items.add(objNotificacion);
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaNotificaciones).items.add(objNotificacion);
     }
 
     ObtenerGruposUsuario(usuarioId: number){
-        let respuesta = from(this.obtenerConfiguracion().web.getUserById(usuarioId).groups.get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.getUserById(usuarioId).groups.get());
         return respuesta;
     }
 
     actualizarResponsableCompradorSolicitud(idSolicitud: number, objetoActualizar){
-        return this.obtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(objetoActualizar);
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(objetoActualizar);
     }
 
     obtenerContratoPorSolicitud(idSolicitud: number){
-        let respuesta = from(this.obtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq " + idSolicitud).top(1).get());
+        let respuesta = from(this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq " + idSolicitud).top(1).get());
         return respuesta;
     }
 
