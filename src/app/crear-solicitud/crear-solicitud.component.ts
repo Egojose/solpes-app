@@ -1092,7 +1092,6 @@ export class CrearSolicitudComponent implements OnInit {
         adjunto = this.condicionTS.archivoAdjunto.name;
       }
     }
-
     if (this.textoBotonGuardarCTS == "Guardar") {
       if (adjunto == null) {
         this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
