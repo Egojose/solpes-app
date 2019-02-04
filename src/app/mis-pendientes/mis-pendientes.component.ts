@@ -109,13 +109,13 @@ export class MisPendientesComponent implements OnInit {
     this.router.navigate(['/ver-solicitud-tab']);
   }
 
-  PorSondear(id) {
-    sessionStorage.setItem("IdSolicitud", id);
+  PorSondear(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/sondeo']);
   }
 
-  AprobarSondeo(id) {
-    sessionStorage.setItem("IdSolicitud", id);
+  AprobarSondeo(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/aprobar-sondeo']);
   }
 

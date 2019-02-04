@@ -16,7 +16,7 @@ export class Solicitud {
         public justificacion: string,
         public condicionesContractuales: any,
         public estado?: string,
-        public responsable?: number,
+        public responsable?: any,
         public compraBienes?: boolean,
         public compraServicios?: boolean,
         public consecutivo?: number,

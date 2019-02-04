@@ -9,6 +9,7 @@ import { Usuario } from '../dominio/usuario';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Solicitud } from '../dominio/solicitud';
 
 @Component({
   selector: 'app-sondeo',
@@ -44,6 +45,7 @@ export class SondeoComponent implements OnInit {
   numeroSolpSap: string;
   ComentarioRegistrarSap: string;
   submitted = false;
+  solicitudRecuperada: Solicitud;
   IdSolicitudParms: any;
   ComentarioSondeo: string;
   comentarioSondeo: any;
@@ -58,16 +60,56 @@ export class SondeoComponent implements OnInit {
   existeCondicionesTecnicasBienes: boolean;
   existeCondicionesTecnicasServicios: boolean;
   OrdenEstadistica: boolean;
+  perfilacion: boolean;
+  usuarioActual: Usuario;
 
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
-    if(this.IdSolicitudParms == null){
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEdicion();
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
+    this.existeCondicionesTecnicasBienes = false;
+    this.existeCondicionesTecnicasServicios = false;
+  }
+
+  private perfilacionEdicion() {
+    if (this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
     }
-    this.spinner.hide();
-    this.existeCondicionesTecnicasBienes = false;
-    this.existeCondicionesTecnicasServicios = false;
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no es encuentra en el estado correcto para su sondeo");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por sondear'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   ngOnInit() {

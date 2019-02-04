@@ -113,13 +113,12 @@ export class EditarSolicitudComponent implements OnInit {
   solicitudGuardar: Solicitud;
   responsableProcesoEstado: responsableProceso[] = [];
   fueSondeo: boolean;
+  perfilacion: boolean;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
-    if(this.solicitudRecuperada == null){
-      this.mostrarAdvertencia("No se puede realizar esta acción");
-      this.router.navigate(['/mis-solicitudes']);
-    }
+    this.perfilacionEdicion();
     setTheme('bs4');
     this.mostrarContratoMarco = false;
     this.spinner.hide();
@@ -147,6 +146,47 @@ export class EditarSolicitudComponent implements OnInit {
     this.fueSondeo = false;
   }
 
+  private perfilacionEdicion() {
+    console.log(this.solicitudRecuperada);
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no es encuentra en el estado correcto para su edición");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Borrador'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   MostrarExitoso(mensaje: string) {
     this.toastr.successToastr(mensaje, 'Confirmación!');
   }
@@ -170,7 +210,6 @@ export class EditarSolicitudComponent implements OnInit {
   ngOnInit() {
     this.spinner.show();
     this.aplicarTemaCalendario();
-    this.RecuperarUsuario();
     this.RegistrarFormularioSolp();
     this.RegistrarFormularioCTB();
     this.RegistrarFormularioCTS();
