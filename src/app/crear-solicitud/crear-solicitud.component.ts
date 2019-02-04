@@ -190,13 +190,13 @@ export class CrearSolicitudComponent implements OnInit {
   VerificarPermisosCreacion(): any {
     const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
     let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
-    if(existeGrupoCreacion != null){
-      this.obtenerTiposSolicitud();
-    }else{
-      this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
-      this.spinner.hide();
-      this.router.navigate(['/mis-solicitudes']);
-    }
+    // if(existeGrupoCreacion != null){
+    //   this.obtenerTiposSolicitud();
+    // }else{
+    //   this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
+    //   this.spinner.hide();
+    //   this.router.navigate(['/mis-solicitudes']);
+    // }
   }
 
   aplicarTemaCalendario() {
