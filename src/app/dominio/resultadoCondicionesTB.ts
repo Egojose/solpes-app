@@ -10,6 +10,7 @@ export class resultadoCondicionesTB {
         public valorEstimado?: string,
         public precioSondeo?: string,
         public moneda?: string,
+        public monedaSondeo?: string,
         public adjunto?: string) { console.log(this.adjunto) }
 
     public static fromJson(element: any) {
@@ -43,6 +44,7 @@ export class resultadoCondicionesTB {
             element.ValorEstimado, 
             element.PrecioSondeo, 
             element.TipoMoneda,
+            element.MonedaSondeo,
             RutaArchivo);
     }
 
