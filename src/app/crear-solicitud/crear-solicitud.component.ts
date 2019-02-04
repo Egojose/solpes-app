@@ -173,10 +173,11 @@ export class CrearSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
+    this.VerificarPermisosCreacion();
     this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
       (respuesta) => {
           this.grupos = Grupo.fromJsonList(respuesta);
-          this.VerificarPermisosCreacion();
+          // this.VerificarPermisosCreacion();
       }, err => {
         this.mostrarError('Error obteniendo grupos de usuario');
         this.spinner.hide();
@@ -189,13 +190,13 @@ export class CrearSolicitudComponent implements OnInit {
   VerificarPermisosCreacion(): any {
     const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
     let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
-    if(existeGrupoCreacion != null){
+    // if(existeGrupoCreacion != null){
       this.obtenerTiposSolicitud();
-    }else{
-      this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
-      this.spinner.hide();
-      this.router.navigate(['/mis-solicitudes']);
-    }
+    // }else{
+    //   this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
+    //   this.spinner.hide();
+    //   this.router.navigate(['/mis-solicitudes']);
+    // }
   }
 
   aplicarTemaCalendario() {
@@ -835,27 +836,36 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     this.spinner.show();
+
+    let codigo = this.ctbFormulario.controls["codigoCTB"].value;
+    let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
+    let modelo = this.ctbFormulario.controls["modeloCTB"].value;
+    let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
+    let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
+    let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
+    let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
+    let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
+    let adjunto = null;
+    if (this.condicionTB == null) {
+      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+    }      
+    if(this.condicionTB.archivoAdjunto != null)
+    {
+      adjunto =this.condicionTB.archivoAdjunto.name;          
+    }   
+
+
     if (this.textoBotonGuardarCTB == "Guardar") {
-      let codigo = this.ctbFormulario.controls["codigoCTB"].value;
-      let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
-      let modelo = this.ctbFormulario.controls["modeloCTB"].value;
-      let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
-      let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
-      let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
-      let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
-      let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
-      let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
-      if (this.condicionTB == null) {
-        this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
-      }
       this.condicionTB.indice = this.indiceCTB;
       this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
       this.condicionTB.idSolicitud = this.idSolicitudGuardada;
+
       this.condicionTB.codigo = codigo;
       this.condicionTB.descripcion = descripcion;
       this.condicionTB.modelo = modelo;
       this.condicionTB.fabricante = fabricante;
       this.condicionTB.cantidad = cantidad;
+
       this.condicionTB.valorEstimado = valorEstimado.toString();
       this.condicionTB.tipoMoneda = tipoMoneda;
       this.condicionTB.comentarios = comentarios;
@@ -908,15 +918,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     if (this.textoBotonGuardarCTB == "Actualizar") {
-      let codigo = this.ctbFormulario.controls["codigoCTB"].value;
-      let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
-      let modelo = this.ctbFormulario.controls["modeloCTB"].value;
-      let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
-      let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
-      let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
-      let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
-      let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
-      let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
+      
       if (adjunto == null) {
         this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTB.id = this.idCondicionTBGuardada;
@@ -944,7 +946,8 @@ export class CrearSolicitudComponent implements OnInit {
             this.spinner.hide();
           }
         )
-      } else {
+      } 
+      else {
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.condicionTB.indice = this.indiceCTBActualizar;
         this.condicionTB.titulo = "Condición Técnicas Bienes" + new Date().toDateString();
@@ -994,7 +997,8 @@ export class CrearSolicitudComponent implements OnInit {
               this.spinner.hide();
             }
           )
-        } else {
+        } 
+        else {
           this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
             (item: ItemAddResult) => {
               this.servicio.borrarAdjuntoCondicionesTecnicasBienes(this.condicionTB.id, nombreArchivoBorrar[nombreArchivoBorrar.length - 1]).then(
@@ -1059,8 +1063,12 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["comentariosCTB"].setValue('');
   }
 
-  subirAdjuntoCTB(event) {
-    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.target.files[0], '', '');
+  subirAdjuntoCTB(files: FileList) {
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', files.item(0), '', '');
+  }
+
+  subirAdjuntoCTS(files: FileList) {
+    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', files.item(0), '', '');
   }
 
   ctsOnSubmit() {
@@ -1070,14 +1078,23 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     this.spinner.show();
+    
+    let codigo = this.ctsFormulario.controls["codigoCTS"].value;
+    let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
+    let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
+    let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
+    let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
+    let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
+    let adjunto = null;
+    if(this.condicionTS != null)
+    {
+      if(this.condicionTS.archivoAdjunto != null)
+      {
+        adjunto = this.condicionTS.archivoAdjunto.name;
+      }
+    }
+
     if (this.textoBotonGuardarCTS == "Guardar") {
-      let codigo = this.ctsFormulario.controls["codigoCTS"].value;
-      let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
-      let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
-      let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
-      let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
-      let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (adjunto == null) {
         this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
@@ -1136,13 +1153,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     if (this.textoBotonGuardarCTS == "Actualizar") {
-      let codigo = this.ctsFormulario.controls["codigoCTS"].value;
-      let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
-      let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
-      let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
-      let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
-      let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
+      
       if (adjunto == null) {
         this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTS.id = this.idCondicionTSGuardada;
@@ -1274,9 +1285,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["comentariosCTS"].setValue('');
   }
 
-  subirAdjuntoCTS(event) {
-    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', event.target.files[0], '', '');
-  }
+
 
   editarBienes(element, template: TemplateRef<any>) {
     this.indiceCTBActualizar = element.indice;

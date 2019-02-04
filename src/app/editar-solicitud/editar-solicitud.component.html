@@ -171,9 +171,9 @@
             <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTB">
               <th class="columnaBienes" mat-header-cell *matHeaderCellDef> {{column}} </th>
               <div *ngIf="column == 'Acciones'; else contenidoCTB">
-                <td mat-cell *matCellDef="let element"><img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/editar.png"
+                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/editar.png"
                     class="icono-tabla" alt="editar" (click)="editarBienes(element, templateCondicionesTecnicasBienes);"
-                    tooltip="Editar bien" placement="bottom" />&nbsp;<img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/borrar.png"
+                    tooltip="Editar bien" placement="bottom" />&nbsp;<img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/borrar.png" 
                     class="icono-tabla" alt="borrar" (click)="borrarBienes(element);" tooltip="Borrar bien" placement="bottom" /></td>
               </div>
               <ng-template #contenidoCTB>
