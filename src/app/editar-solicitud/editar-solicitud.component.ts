@@ -160,8 +160,8 @@ export class EditarSolicitudComponent implements OnInit {
           console.log("perfilación correcta");
         }
         else {
-          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
-          this.router.navigate(['/mis-solicitudes']);
+          // this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          // this.router.navigate(['/mis-solicitudes']);
         }
       }
       else {

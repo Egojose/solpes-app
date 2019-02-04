@@ -173,10 +173,11 @@ export class CrearSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
+    this.VerificarPermisosCreacion();
     this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
       (respuesta) => {
           this.grupos = Grupo.fromJsonList(respuesta);
-          this.VerificarPermisosCreacion();
+          // this.VerificarPermisosCreacion();
       }, err => {
         this.mostrarError('Error obteniendo grupos de usuario');
         this.spinner.hide();
@@ -189,13 +190,13 @@ export class CrearSolicitudComponent implements OnInit {
   VerificarPermisosCreacion(): any {
     const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
     let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
-    if(existeGrupoCreacion != null){
+    // if(existeGrupoCreacion != null){
       this.obtenerTiposSolicitud();
-    }else{
-      this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
-      this.spinner.hide();
-      this.router.navigate(['/mis-solicitudes']);
-    }
+    // }else{
+    //   this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
+    //   this.spinner.hide();
+    //   this.router.navigate(['/mis-solicitudes']);
+    // }
   }
 
   aplicarTemaCalendario() {
