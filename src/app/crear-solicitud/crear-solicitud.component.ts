@@ -191,7 +191,7 @@ export class CrearSolicitudComponent implements OnInit {
     const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
     let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
     // if(existeGrupoCreacion != null){
-    //   this.obtenerTiposSolicitud();
+      this.obtenerTiposSolicitud();
     // }else{
     //   this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
     //   this.spinner.hide();
