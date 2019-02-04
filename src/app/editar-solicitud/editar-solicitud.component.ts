@@ -944,20 +944,27 @@ export class EditarSolicitudComponent implements OnInit {
     }
 
     this.spinner.show();
+
+    let codigo = this.ctbFormulario.controls["codigoCTB"].value;
+    let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
+    let modelo = this.ctbFormulario.controls["modeloCTB"].value;
+    let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
+    let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
+    let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
+    let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
+    let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
+    let adjunto = null;
+    if (this.condicionTB == null) {
+      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+    }      
+    if(this.condicionTB.archivoAdjunto != null)
+    {
+      adjunto =this.condicionTB.archivoAdjunto.name;          
+    }   
+
     if (this.textoBotonGuardarCTB == "Guardar") {
       this.limpiarAdjuntosCTB();
-      let codigo = this.ctbFormulario.controls["codigoCTB"].value;
-      let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
-      let modelo = this.ctbFormulario.controls["modeloCTB"].value;
-      let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
-      let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
-      let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
-      let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
-      let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
-      let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
-      if (this.condicionTB == null) {
-        this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
-      }
+      
       this.condicionTB.indice = this.indiceCTB;
       this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
       this.condicionTB.idSolicitud = this.solicitudRecuperada.id;
@@ -1018,15 +1025,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
 
     if (this.textoBotonGuardarCTB == "Actualizar") {
-      let codigo = this.ctbFormulario.controls["codigoCTB"].value;
-      let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
-      let modelo = this.ctbFormulario.controls["modeloCTB"].value;
-      let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
-      let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
-      let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
-      let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
-      let adjunto = this.ctbFormulario.controls["adjuntoCTB"].value;
-      let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
+      
       if (adjunto == null) {
         this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTB.id = this.idCondicionTBGuardada;
