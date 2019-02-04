@@ -181,8 +181,8 @@
                             {{item.descripcion}}
                         </td>
                         <td>
-                            <input type="text" name="" id="inputCantidad" class="form-control text-center" [(ngModel)]="item.cantidad"
-                                min="0" step="" title="">
+                            <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }"
+                                class="form-control text-center" [(ngModel)]="item.cantidad">
                         </td>
                         <td>
                             <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
