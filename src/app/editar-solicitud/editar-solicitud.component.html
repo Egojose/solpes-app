@@ -237,10 +237,10 @@
           <table mat-table [dataSource]="dataSourceCTS" multiTemplateDataRows class="mat-elevation-z8">
             <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTS">
               <th class="columnaServicios" mat-header-cell *matHeaderCellDef> {{column}} </th>
-              <div *ngIf="column == 'Acciones'; else contenidoCTS">
-                <td mat-cell *matCellDef="let element"><img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/editar.png"
+              <div *ngIf="column == 'Acciones'; else contenidoCTS"> 
+                  <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/editar.png" 
                     class="icono-tabla" alt="editar" (click)="editarServicios(element, templateCondicionesTecnicasServicios);"
-                    tooltip="Editar servicio" placement="bottom" />&nbsp;<img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/borrar.png"
+                    tooltip="Editar servicio" placement="bottom" />&nbsp;<img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/borrar.png" 
                     class="icono-tabla" alt="borrar" (click)="borrarServicios(element);" tooltip="Borrar servicio"
                     placement="bottom" /></td>
               </div>
