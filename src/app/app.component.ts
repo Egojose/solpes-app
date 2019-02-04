@@ -28,19 +28,19 @@ export class AppComponent implements OnInit {
     this.linkEdicionContratos = environment.urlWeb + environment.linkVistaEdicionContratos;
   }
 
-  abrirCerrarMenu(){
+  abrirCerrarMenu() {
     $(document).ready(function () {
       $("#menu-toggle").click(function (e) {
-        let textoMenu  = e.target.innerText;
+        let textoMenu = e.target.innerText;
         let nuevoTextoMenu = "";
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
-        if (textoMenu == "Ocultar menú"){
-           nuevoTextoMenu = "Mostrar menú";
-           e.target.innerText = nuevoTextoMenu;
-        }else{
-           nuevoTextoMenu = "Ocultar menú";
-           e.target.innerText = nuevoTextoMenu;
+        if (textoMenu == "Ocultar menú") {
+          nuevoTextoMenu = "Mostrar menú";
+          e.target.innerText = nuevoTextoMenu;
+        } else {
+          nuevoTextoMenu = "Ocultar menú";
+          e.target.innerText = nuevoTextoMenu;
         }
       });
     });
@@ -49,13 +49,15 @@ export class AppComponent implements OnInit {
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (respuesta) => {
-        this.usuario = new Usuario(respuesta.Title, respuesta.email,respuesta.Id);
+        this.usuario = new Usuario(respuesta.Title, respuesta.email, respuesta.Id);
         this.nombreUsuario = this.usuario.nombre;
-        sessionStorage.setItem('usuario',JSON.stringify(this.usuario));
+        sessionStorage.setItem('usuario', JSON.stringify(this.usuario));
         this.servicio.ObtenerGruposUsuario(this.usuario.id).subscribe(
           (respuesta) => {
-              this.grupos = Grupo.fromJsonList(respuesta);
-              this.VerificarPermisosMenu();
+            console.log(respuesta);
+            this.grupos = Grupo.fromJsonList(respuesta);
+            console.log(this.grupos);
+            this.VerificarPermisosMenu();
           }, err => {
             console.log('Error obteniendo grupos de usuario: ' + err);
           }
@@ -73,23 +75,23 @@ export class AppComponent implements OnInit {
     const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
     const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
 
-    let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
-    if(existeGrupoCreacion != null){
+    let existeGrupoCreacion = this.grupos.find(x => x.title == grupoCreacionSolicitud);
+    if (existeGrupoCreacion != null) {
       this.PermisosCreacion = true;
     }
 
-    let existeGrupoEdicionContratos = this.grupos.find(x=> x.title == grupoEdicionContratos);
-    if(existeGrupoEdicionContratos != null){
+    let existeGrupoEdicionContratos = this.grupos.find(x => x.title == grupoEdicionContratos);
+    if (existeGrupoEdicionContratos != null) {
       this.PermisosEdicionContratos = true;
     }
 
-    let existeGrupoRegistroEntradasBienes = this.grupos.find(x=> x.title == grupoRegistroEntradasBienes);
-    if(existeGrupoRegistroEntradasBienes != null){
+    let existeGrupoRegistroEntradasBienes = this.grupos.find(x => x.title == grupoRegistroEntradasBienes);
+    if (existeGrupoRegistroEntradasBienes != null) {
       this.PermisosRegistroEntradasBienes = true;
     }
 
-    let existeGrupoRegistroEntradasServicios = this.grupos.find(x=> x.title == grupoRegistroEntradasServicios);
-    if(existeGrupoRegistroEntradasServicios != null){
+    let existeGrupoRegistroEntradasServicios = this.grupos.find(x => x.title == grupoRegistroEntradasServicios);
+    if (existeGrupoRegistroEntradasServicios != null) {
       this.PermisosRegistroEntradasServicios = true;
     }
   }

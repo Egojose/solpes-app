@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ItemAddResult } from 'sp-pnp-js';
@@ -6,6 +6,7 @@ import { RecepcionServicios } from '../registrar-entradas-sap-servicios/Recepcio
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Contratos } from '../recepcion-sap/contratos';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-registrar-entradas-sap-servicios',
@@ -27,31 +28,47 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   IdRecepcionServicios: number;
   IdUsuario: any;
 
+  dataSource;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  empty: boolean;
+
+  displayedColumns: string[] = ['numeroPedido', 'autor', 'ubicacion', 'cantidad', 'mes', 'valor', 'comentario', 'NumeroRecepcion', 'Acciones'];
+
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
     this.spinner.hide();
   }
 
   ngOnInit() {
     this.spinner.show();
-    this.servicio.ObtenerUsuarioActual().subscribe(
-      (respuesta) => {
-        this.IdUsuario = respuesta.Id;
-        this.servicio.ObtenerRecepcionesServicios(this.IdUsuario).subscribe(
-          (respuesta) => {
-            this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
-            this.spinner.hide();
-          }, err => {
-            this.mostrarError('Error obteniendo las entradas de las recepciones de servicios');
-            this.spinner.hide();
-            console.log('Error obteniendo las entradas de las recepciones de servicios: ' + err);
-          }
-        );
-      }, err => {
-        this.mostrarError('Error obteniendo el usuario actual');
+    this.ObtenerRecepciones();
+  }
+
+  private ObtenerRecepciones() {
+    this.servicio.ObtenerUsuarioActual().subscribe((respuesta) => {
+      this.IdUsuario = respuesta.Id;
+      this.servicio.ObtenerRecepcionesServicios(this.IdUsuario).subscribe((respuesta) => {
+        this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
+        if (this.ObjRecepcionServicios.length > 0) {
+          this.empty = false;
+          this.dataSource = new MatTableDataSource(this.ObjRecepcionServicios);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+        else {
+          this.empty = true;
+        }
         this.spinner.hide();
-        console.log('Error obteniendo el usuario actual: ' + err);
-      }
-    )
+      }, err => {
+        this.mostrarError('Error obteniendo las entradas de las recepciones de servicios');
+        this.spinner.hide();
+        console.log('Error obteniendo las entradas de las recepciones de servicios: ' + err);
+      });
+    }, err => {
+      this.mostrarError('Error obteniendo el usuario actual');
+      this.spinner.hide();
+      console.log('Error obteniendo el usuario actual: ' + err);
+    });
   }
 
   Guardar(item) {
@@ -62,7 +79,7 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
       NumeroRecepcion: item.NumeroRecepcion,
       recibidoSap: true,
     }
-    if (item.NumeroRecepcion == null) {
+    if (item.NumeroRecepcion == null || item.NumeroRecepcion == '') {
       this.mostrarAdvertencia('Debe suministrar el número de recepción');
       this.spinner.hide();
       return false;
@@ -72,7 +89,7 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
       this.servicio.registrarRecepcionServicios(this.IdRecepcionServicios, objRegistrar).then(
         (resultado: ItemAddResult) => {
           this.MostrarExitoso('Recibido');
-          this.ObjRecepcionServicios.splice(index, 1);
+          this.ObtenerRecepciones();
           this.spinner.hide();
         }
       ).catch(
@@ -94,6 +111,10 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
 
   mostrarError(mensaje: string) {
     this.toastr.errorToastr(mensaje, 'Oops!');
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
 
