@@ -173,10 +173,11 @@ export class CrearSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
+    this.VerificarPermisosCreacion();
     this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
       (respuesta) => {
           this.grupos = Grupo.fromJsonList(respuesta);
-          this.VerificarPermisosCreacion();
+          // this.VerificarPermisosCreacion();
       }, err => {
         this.mostrarError('Error obteniendo grupos de usuario');
         this.spinner.hide();
