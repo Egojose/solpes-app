@@ -1,27 +1,28 @@
 <div id="wrapper">
-  <div id="sidebar-wrapper">
-    <ul class="sidebar-nav">
-      <li class="sidebar-brand">
-      </li>
-      <li>
-        <a *ngIf="PermisosCreacion" routerLink="/crear-solicitud" routerLinkActive="active">Crear solicitud</a>
-      </li>
-      <li>
-        <a routerLink="/mis-solicitudes" routerLinkActive="active">Mis solicitudes</a>
-      </li>
-      <li>
-        <a routerLink="/mis-pendientes" routerLinkActive="active">Mis pendientes</a>
-      </li>
-      <li>
-        <a routerLink="/registrar-entradas-sap-bienes" routerLinkActive="active">Registrar entrada SIA bienes</a>
-      </li>
-      <li>
-        <a routerLink="/registrar-entradas-sap-servicios" routerLinkActive="active">Registrar entrada SAP servicios</a>
-      </li>
-      <li>
-        <a href="{{linkEdicionContratos}}" target="_blank">Edición Vista Contratos</a>
-      </li>
-    </ul>
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+            </li>
+            <li *ngIf="PermisosCreacion">
+                <a routerLink="/crear-solicitud" routerLinkActive="active">Crear solicitud</a>
+            </li>
+            <li>
+                <a routerLink="/mis-solicitudes" routerLinkActive="active">Mis solicitudes</a>
+            </li>
+            <li>
+                <a routerLink="/mis-pendientes" routerLinkActive="active">Mis pendientes</a>
+            </li>
+            <li *ngIf="PermisosRegistroEntradasBienes">
+                <a routerLink="/registrar-entradas-sap-bienes" routerLinkActive="active">Registrar entrada SIA bienes</a>
+            </li>
+            <li *ngIf="PermisosRegistroEntradasServicios">
+                <a routerLink="/registrar-entradas-sap-servicios" routerLinkActive="active">Registrar entrada SAP
+                    servicios</a>
+            </li>
+            <li *ngIf="PermisosEdicionContratos">
+                <a href="{{linkEdicionContratos}}" target="_blank">Edición Vista Contratos</a>
+            </li>
+        </ul>
 
         <div class="version-aplicacion">Versión 1.0</div>
 

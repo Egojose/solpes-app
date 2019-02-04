@@ -92,7 +92,6 @@ export class AppComponent implements OnInit {
     if(existeGrupoRegistroEntradasServicios != null){
       this.PermisosRegistroEntradasServicios = true;
     }
-
   }
 
   public ngOnInit() {

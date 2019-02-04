@@ -53,7 +53,7 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button *ngIf="element.estado =='Por sondear'" class="btn btn-primary btn-block" (click)="PorSondear(element.id)">Sondear</button>
+            <button *ngIf="element.estado =='Por sondear'" class="btn btn-primary btn-block" (click)="PorSondear(element)">Sondear</button>
           </div>
         </div>
         <div class="filaBtn">
@@ -63,19 +63,19 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button *ngIf="element.estado =='Por aprobar sondeo'" class="btn btn-primary btn-block" (click)="AprobarSondeo(element.id)">
+            <button *ngIf="element.estado =='Por aprobar sondeo'" class="btn btn-primary btn-block" (click)="AprobarSondeo(element)">
               Revisar sondeo</button>
           </div>
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button *ngIf="element.estado =='Por verificar material'" class="btn btn-primary btn-block" (click)="VerificarMaterial(element.id)">Ir
+            <button *ngIf="element.estado =='Por verificar material'" class="btn btn-primary btn-block" (click)="VerificarMaterial(element)">Ir
               a verificar material</button>
           </div>
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button *ngIf="element.estado =='Por registrar solp sap'" class="btn btn-primary btn-block" (click)="RegistrarSOLPSAP(element.id)">Ir
+            <button *ngIf="element.estado =='Por registrar solp sap'" class="btn btn-primary btn-block" (click)="RegistrarSOLPSAP(element)">Ir
               a registrar SOLP SAP</button>
           </div>
         </div>
