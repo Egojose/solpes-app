@@ -172,17 +172,17 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   verificarEstado(): boolean {
-    if(this.solicitudRecuperada.estado == 'Borrador'){
+    if (this.solicitudRecuperada.estado == 'Borrador') {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  verificarResponsable(): boolean{
-    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+  verificarResponsable(): boolean {
+    if (this.solicitudRecuperada.responsable.ID == this.usuarioActual.id) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -396,10 +396,10 @@ export class EditarSolicitudComponent implements OnInit {
 
   cambiarNombresColumnas(): any {
     $(document).ready(function () {
-        $(".columnaBienes")[0].innerText = "Código";
-        $(".columnaBienes")[1].innerText = "Descripción";
-        $(".columnaServicios")[0].innerText = "Código";
-        $(".columnaServicios")[1].innerText = "Descripción";
+      $(".columnaBienes")[0].innerText = "Código";
+      $(".columnaBienes")[1].innerText = "Descripción";
+      $(".columnaServicios")[0].innerText = "Código";
+      $(".columnaServicios")[1].innerText = "Descripción";
     });
   }
 
@@ -735,18 +735,25 @@ export class EditarSolicitudComponent implements OnInit {
     }
 
     this.spinner.show();
+
+
+    let codigo = this.ctsFormulario.controls["codigoCTS"].value;
+    let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
+    let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
+    let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
+    let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
+    let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
+    if (this.condicionTS == null) {
+      this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '');
+    }
+    let adjunto = null;
+    if (this.condicionTS.archivoAdjunto != null) {
+      adjunto = this.condicionTS.archivoAdjunto.name;
+    }
+
     if (this.textoBotonGuardarCTS == "Guardar") {
       this.limpiarAdjuntosCTS();
-      let codigo = this.ctsFormulario.controls["codigoCTS"].value;
-      let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
-      let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
-      let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
-      let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
-      let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
-      if (this.condicionTS == null) {
-        this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '');
-      }
+
       this.condicionTS.indice = this.indiceCTB;
       this.condicionTS.titulo = "Condición Técnicas Servicios " + new Date().toDateString();
       this.condicionTS.idSolicitud = this.solicitudRecuperada.id;
@@ -805,13 +812,6 @@ export class EditarSolicitudComponent implements OnInit {
     }
 
     if (this.textoBotonGuardarCTS == "Actualizar") {
-      let codigo = this.ctsFormulario.controls["codigoCTS"].value;
-      let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
-      let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
-      let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
-      let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
-      let adjunto = this.ctsFormulario.controls["adjuntoCTS"].value;
-      let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
       if (adjunto == null) {
         this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas servicios" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTS.id = this.idCondicionTSGuardada;
@@ -956,15 +956,14 @@ export class EditarSolicitudComponent implements OnInit {
     let adjunto = null;
     if (this.condicionTB == null) {
       this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
-    }      
-    if(this.condicionTB.archivoAdjunto != null)
-    {
-      adjunto =this.condicionTB.archivoAdjunto.name;          
-    }   
+    }
+    if (this.condicionTB.archivoAdjunto != null) {
+      adjunto = this.condicionTB.archivoAdjunto.name;
+    }
 
     if (this.textoBotonGuardarCTB == "Guardar") {
       this.limpiarAdjuntosCTB();
-      
+
       this.condicionTB.indice = this.indiceCTB;
       this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
       this.condicionTB.idSolicitud = this.solicitudRecuperada.id;
@@ -1025,7 +1024,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
 
     if (this.textoBotonGuardarCTB == "Actualizar") {
-      
+
       if (adjunto == null) {
         this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
         this.condicionTB.id = this.idCondicionTBGuardada;
