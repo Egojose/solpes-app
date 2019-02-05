@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Compiler } from '@angular/core';
 import { Select2Data } from 'ng-select2-component';
 import { MatDialogRef } from '@angular/material';
 import { SPServicio } from '../servicios/sp-servicio';
@@ -27,7 +27,8 @@ export class ReasignarComponent implements OnInit {
   ];
   ReasignarControl: FormControl;
 
-  constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService) {
+  constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService, private compilador: Compiler) {
+    this.compilador.clearCache();
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     if(this.solicitudRecuperada == null){
       this.mostrarAdvertencia("No se puede realizar esta acción");
