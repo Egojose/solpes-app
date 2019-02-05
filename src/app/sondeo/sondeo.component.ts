@@ -63,8 +63,7 @@ export class SondeoComponent implements OnInit {
   perfilacion: boolean;
   usuarioActual: Usuario;
 
-  constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private compilador: Compiler) {
-    this.compilador.clearCache();
+  constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.perfilacionEstado();

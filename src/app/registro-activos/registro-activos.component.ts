@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, Compiler } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ToastrManager } from "ng6-toastr-notifications";
 import { Router } from "@angular/router";
 import { SPServicio } from "../servicios/sp-servicio";
@@ -43,8 +43,7 @@ export class RegistroActivosComponent implements OnInit {
   usuarioActual: Usuario;
   perfilacion: boolean;
 
-  constructor(public toastr: ToastrManager, private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, private spinner: NgxSpinnerService, private compilador: Compiler) {
-    this.compilador.clearCache();
+  constructor(public toastr: ToastrManager, private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.perfilacionEstado();
