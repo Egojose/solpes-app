@@ -10,6 +10,8 @@ import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Contratos } from '../dominio/contrato';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: 'app-entrega-servicios',
@@ -58,20 +60,62 @@ export class EntregaServiciosComponent implements OnInit {
   modolectura: boolean;
   year: number;
   contrato: any;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
   constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager,private spinner: NgxSpinnerService) {
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
-    if(this.IdSolicitudParms == null){
-      this.mostrarAdvertencia("No se puede realizar esta acción");
-      this.router.navigate(['/mis-solicitudes']);
-    }
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();    
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
     this.ItemsAgregadosReciente = 0;
     this.showBtnConfirmar = false;
     this.ErrorCantidad = false;
   }
 
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para entrega servicios");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por recepcionar'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   ngOnInit() {
-    this.loading = true;
+    this.spinner.show();
     let fecha = new Date();
     this.year = fecha.getFullYear();
     this.AgregarElementoForm = this.formBuilder.group({
@@ -104,7 +148,11 @@ export class EntregaServiciosComponent implements OnInit {
         this.CompraBienes = solicitud.CompraBienes;
         this.FaltaBienes = solicitud.FaltaRecepcionBienes;
         this.CM = solicitud.CM;
-        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+
+        if (solicitud.CondicionesContractuales != null) {
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        }
+
         let CantidadCT = 0;
         let TotalCantidadVerificar = 0;
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
@@ -115,7 +163,6 @@ export class EntregaServiciosComponent implements OnInit {
                 if (this.contrato.length>0) {
                   this.NumSolp = this.contrato[0].numeroContrato;              
                 }   
-                   
                 this.spinner.hide();
               },
               (error) => {
@@ -153,7 +200,7 @@ export class EntregaServiciosComponent implements OnInit {
                   (RespuestaProcesos)=>{
                     this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);                     
                     this.ResponsableServicios = this.ObResProceso[0].porRegistrarSapServicios;
-                    this.loading = false;
+                    this.spinner.hide();
                   },
                   (error)=>{
 
@@ -168,6 +215,7 @@ export class EntregaServiciosComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.spinner.hide();
       }
     );
   }
@@ -296,8 +344,8 @@ export class EntregaServiciosComponent implements OnInit {
           );
       }, (error) => {
         console.log(error);
+        this.spinner.hide();
       });
-
   }
 
   UltimaEntrega(ObjCTS) {
@@ -358,7 +406,7 @@ export class EntregaServiciosComponent implements OnInit {
               this.ObjRecepcionServicios.push(this.objRecepcionAgregar);
               let indexServicio = this.ObjRecepcionServicios.findIndex(x=> x.idServicio === ObjCTS.IdServicio)
               this.ObjItemsDescripcion.splice(indexServicio,1);
-              this.loading = false;
+              this.spinner.hide();
             }
           )
         }).catch(

@@ -7,6 +7,9 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { Contratos } from '../recepcion-sap/contratos';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Usuario } from '../dominio/usuario';
+import { Grupo } from '../dominio/grupo';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recepcion-sap',
@@ -34,15 +37,43 @@ export class RecepcionSapComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   empty: boolean;
+  PermisosRegistroEntradasBienes: boolean;
+  usuarioActual: Usuario;
+  grupos: Grupo[] = [];
 
   displayedColumns: string[] = ['numeroPedido', 'autor', 'cantidad', 'valor', 'comentario', 'adjuntoEntregaBienes', 'NumeroRecepcion', 'Acciones'];
 
-  constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
+  constructor(private servicio: SPServicio, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.PermisosRegistroEntradasBienes = false;
   }
 
   ngOnInit() {
     this.spinner.show();
-    this.ObtenerRecepciones();
+    this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
+      (respuesta) => {
+        this.grupos = Grupo.fromJsonList(respuesta);
+        this.VerificarPermisosMenu();
+        if(this.PermisosRegistroEntradasBienes){
+          this.ObtenerRecepciones();
+        }else{
+          this.mostrarAdvertencia("No se puede realizar esta acción");
+          this.spinner.hide();
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }, err => {
+        console.log('Error obteniendo grupos de usuario: ' + err);
+        this.spinner.hide();
+      }
+    )
+  }
+
+  VerificarPermisosMenu(): any {
+    const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
+    let existeGrupoRegistroEntradasBienes = this.grupos.find(x => x.title == grupoRegistroEntradasBienes);
+    if (existeGrupoRegistroEntradasBienes != null) {
+      this.PermisosRegistroEntradasBienes = true;
+    }
   }
 
   private ObtenerRecepciones() {
