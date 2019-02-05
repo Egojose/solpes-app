@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, ElementRef, Compiler } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { SPServicio } from "../servicios/sp-servicio";
 import { CondicionContractual } from "../dominio/condicionContractual";
 import { CondicionesTecnicasBienes } from "../verificar-material/condicionTecnicaBienes";
@@ -79,8 +79,7 @@ export class VerificarMaterialComponent implements OnInit {
   usuarioActual: Usuario;
   perfilacion: boolean;
 
-  constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private compilador: Compiler) {
-    this.compilador.clearCache();
+  constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.perfilacionEstado();

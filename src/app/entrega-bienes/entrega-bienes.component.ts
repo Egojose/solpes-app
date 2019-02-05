@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Compiler } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../entrega-bienes/condicionTecnicaBienes';
@@ -71,8 +71,7 @@ export class EntregaBienesComponent implements OnInit {
   contrato: Contratos[] = [];
   SwtichEsOrdenEstadistica: boolean;
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService, private compilador: Compiler) {
-    this.compilador.clearCache();
+  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
     this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     if(this.IdSolicitudParms == null){
       this.mostrarAdvertencia("No se puede realizar esta acción");
