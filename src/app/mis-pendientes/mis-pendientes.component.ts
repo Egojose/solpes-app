@@ -128,18 +128,18 @@ export class MisPendientesComponent implements OnInit {
     this.router.navigate(['/registrar-solp-sap']);
   }
 
-  RegistrarContratos(id) {
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarContratos(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/contratos']);
   }
 
-  RegistrarEntregasBienes(id) {
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarEntregasBienes(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/entrega-bienes']);
   }
 
-  RegistrarEntregasServicios(id) {
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarEntregasServicios(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/entrega-servicios']);
   }
 

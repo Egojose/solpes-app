@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
   usuario: Usuario;
   nombreUsuario: string;
   grupos: Grupo[] = [];
-  PermisosCreacion: boolean;
   PermisosEdicionContratos: boolean;
   PermisosRegistroEntradasBienes: boolean;
   PermisosRegistroEntradasServicios: boolean;
@@ -22,7 +21,6 @@ export class AppComponent implements OnInit {
 
   constructor(private servicio: SPServicio, private compilador: Compiler) {
     this.compilador.clearCache();
-    this.PermisosCreacion = false;
     this.PermisosEdicionContratos = false;
     this.PermisosRegistroEntradasBienes = false;
     this.PermisosRegistroEntradasServicios = false;
@@ -55,9 +53,7 @@ export class AppComponent implements OnInit {
         sessionStorage.setItem('usuario', JSON.stringify(this.usuario));
         this.servicio.ObtenerGruposUsuario(this.usuario.id).subscribe(
           (respuesta) => {
-            console.log(respuesta);
             this.grupos = Grupo.fromJsonList(respuesta);
-            console.log(this.grupos);
             this.VerificarPermisosMenu();
           }, err => {
             console.log('Error obteniendo grupos de usuario: ' + err);
@@ -71,15 +67,9 @@ export class AppComponent implements OnInit {
 
   VerificarPermisosMenu(): any {
 
-    const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
     const grupoEdicionContratos = "Solpes-Edicion-Contratos";
     const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
     const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
-
-    let existeGrupoCreacion = this.grupos.find(x => x.title == grupoCreacionSolicitud);
-    if (existeGrupoCreacion != null) {
-      this.PermisosCreacion = true;
-    }
 
     let existeGrupoEdicionContratos = this.grupos.find(x => x.title == grupoEdicionContratos);
     if (existeGrupoEdicionContratos != null) {
