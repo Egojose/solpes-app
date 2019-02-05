@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Compiler } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
@@ -21,8 +21,7 @@ export class MisSolicitudesComponent implements OnInit {
   loading: boolean;
   empty: boolean;
   
-  constructor( private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, private compilador: Compiler) { 
-    this.compilador.clearCache();
+  constructor( private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService) { 
   }
 
   displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Responsable', 'VerSolicitud']; 

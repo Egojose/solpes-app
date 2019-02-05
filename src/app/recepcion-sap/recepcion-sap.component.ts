@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Compiler } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RecepcionBienes } from '../recepcion-sap/RecepcionBienes'
 import { SPServicio } from '../servicios/sp-servicio';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -37,8 +37,7 @@ export class RecepcionSapComponent implements OnInit {
 
   displayedColumns: string[] = ['numeroPedido', 'autor', 'cantidad', 'valor', 'comentario', 'adjuntoEntregaBienes', 'NumeroRecepcion', 'Acciones'];
 
-  constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService, private compilador: Compiler) {
-    this.compilador.clearCache();
+  constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, Compiler } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -72,8 +72,7 @@ export class ContratosComponent implements OnInit {
   numOrdenEstadistica: any;
   NumSolSAP: any;
 
-  constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService, private compilador: Compiler) {
-    this.compilador.clearCache();
+  constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
     this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
     if(this.idSolicitudParameter == null){
       this.mostrarAdvertencia("No se puede realizar esta acción");

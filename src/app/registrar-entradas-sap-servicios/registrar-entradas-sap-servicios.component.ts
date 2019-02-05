@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Compiler } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ItemAddResult } from 'sp-pnp-js';
@@ -35,8 +35,7 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
 
   displayedColumns: string[] = ['numeroPedido', 'autor', 'ubicacion', 'cantidad', 'mes', 'valor', 'comentario', 'NumeroRecepcion', 'Acciones'];
 
-  constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService, private compilador: Compiler) {
-    this.compilador.clearCache();
+  constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {

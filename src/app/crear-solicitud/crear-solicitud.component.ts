@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, Compiler } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { TipoSolicitud } from '../dominio/tipoSolicitud';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { SPServicio } from '../servicios/sp-servicio';
@@ -116,8 +116,7 @@ export class CrearSolicitudComponent implements OnInit {
   PermisosCreacion: boolean;
   grupos: Grupo[] = [];
 
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private compilador: Compiler) {
-    this.compilador.clearCache();
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
     this.PermisosCreacion = false;
     this.mostrarContratoMarco = false;
