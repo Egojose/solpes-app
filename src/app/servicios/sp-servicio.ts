@@ -1,4 +1,4 @@
-import { environment } from "src/environments/environment";
+import { environment } from "src/environments/environment.prod";
 import { default as pnp } from 'sp-pnp-js';
 import { Injectable } from "@angular/core";
 import { from } from 'rxjs';
