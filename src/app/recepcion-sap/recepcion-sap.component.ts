@@ -38,7 +38,6 @@ export class RecepcionSapComponent implements OnInit {
   displayedColumns: string[] = ['numeroPedido', 'autor', 'cantidad', 'valor', 'comentario', 'adjuntoEntregaBienes', 'NumeroRecepcion', 'Acciones'];
 
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
-    this.spinner.hide();
   }
 
   ngOnInit() {

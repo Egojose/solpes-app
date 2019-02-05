@@ -8,6 +8,8 @@ import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ng6-toastr-notifications';
 import { NgxCurrencyModule } from "ngx-currency";
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CacheInterceptor } from './http-interceptors/cacheInterceptor';
 
 import { AppComponent } from './app.component';
 import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
@@ -103,7 +105,7 @@ import { ReasignarComponent } from './reasignar/reasignar.component';
       {path:'registro-activos', component:RegistroActivosComponent}
     ])
   ],
-  providers: [SPServicio, BsModalService, ModalBackdropComponent],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

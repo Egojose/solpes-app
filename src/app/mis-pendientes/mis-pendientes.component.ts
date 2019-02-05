@@ -32,7 +32,6 @@ export class MisPendientesComponent implements OnInit {
   constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService) {
     this.dataSource = new MatTableDataSource();
     this.dataSource.data = this.misSolicitudes;
-    this.spinner.hide();
   }
 
   ngOnInit() {

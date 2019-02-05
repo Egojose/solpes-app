@@ -4,7 +4,7 @@ import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
 import { RecepcionBienes } from '../ver-solicitud-tab/recepcionBienes';
 import { RecepcionServicios } from '../ver-solicitud-tab/recepcionServicios';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnicaServicios';
 import { Contratos } from '../dominio/contrato';
 import { Router } from '@angular/router';

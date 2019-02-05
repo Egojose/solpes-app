@@ -36,7 +36,6 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   displayedColumns: string[] = ['numeroPedido', 'autor', 'ubicacion', 'cantidad', 'mes', 'valor', 'comentario', 'NumeroRecepcion', 'Acciones'];
 
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
-    this.spinner.hide();
   }
 
   ngOnInit() {

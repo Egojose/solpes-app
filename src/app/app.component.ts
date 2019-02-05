@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Compiler } from '@angular/core';
 import * as $ from 'jquery';
 import { SPServicio } from './servicios/sp-servicio';
 import { Usuario } from './dominio/usuario';
@@ -7,8 +7,8 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.component.html?v=2.0',
+  styleUrls: ['./app.component.css?v=2.0']
 })
 export class AppComponent implements OnInit {
   usuario: Usuario;
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit {
   PermisosRegistroEntradasServicios: boolean;
   linkEdicionContratos: string;
 
-  constructor(private servicio: SPServicio) {
+  constructor(private servicio: SPServicio, private compilador: Compiler) {
+    this.compilador.clearCache();
     this.PermisosCreacion = false;
     this.PermisosEdicionContratos = false;
     this.PermisosRegistroEntradasBienes = false;
