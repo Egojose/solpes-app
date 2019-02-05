@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Compiler } from '@angular/core';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
@@ -29,7 +29,8 @@ export class MisPendientesComponent implements OnInit {
   ObjResponsableProceso: any;
   IdPais: any;
 
-  constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService) {
+  constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService, private compilador: Compiler) {
+    this.compilador.clearCache();
     this.dataSource = new MatTableDataSource();
     this.dataSource.data = this.misSolicitudes;
     this.spinner.hide();
