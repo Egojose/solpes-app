@@ -7,8 +7,8 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html?v=2.0',
-  styleUrls: ['./app.component.css?v=2.0']
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   usuario: Usuario;
