@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Compiler } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
@@ -80,7 +80,8 @@ export class VerSolicitudTabComponent implements OnInit {
     "moneda"
   ];
 
-  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) { 
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private compilador: Compiler) { 
+    this.compilador.clearCache();
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     if(this.solicitudRecuperada == null){
       this.mostrarAdvertencia("No se puede realizar esta acción");
