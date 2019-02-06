@@ -146,7 +146,7 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Categoria;
+        this.subCategoria = solicitud.Subcategoria;
         this.compradorNombre = solicitud.Comprador.Title;
         this.comprador = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;
