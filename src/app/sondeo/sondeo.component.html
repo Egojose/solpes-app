@@ -81,7 +81,7 @@
                             <input type="text" currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" class="form-control text-center" [(ngModel)]="item.valorEstimado">
                         </td>
                         <td>
-                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" class="form-control" [(ngModel)]="item.tipoMoneda">
+                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" class="form-control" [(ngModel)]="item.tipoMonedaSondeo">
                                 <option value="ARS">ARS</option>
                                 <option value="BRL">BRL</option>
                                 <option value="CLP">CLP</option>
@@ -182,7 +182,7 @@
                             <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" name="" id="inputPrecio" class="form-control text-center" [(ngModel)]="item.valorEstimado">
                         </td>
                         <td>
-                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" class="form-control" [(ngModel)]="item.tipoMoneda">
+                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" class="form-control" [(ngModel)]="item.tipoMonedaSondeo">
                                 <option value="ARS">ARS</option>
                                 <option value="BRL">BRL</option>
                                 <option value="CLP">CLP</option>
