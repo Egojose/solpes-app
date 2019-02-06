@@ -67,7 +67,7 @@ export class VerSolicitudTabComponent implements OnInit {
   AgregarElementoForm: FormGroup;
   submitted = false;
   solicitudRecuperada: Solicitud;
-  fueSondeo : boolean;
+  fueSondeo: boolean;
   paginator: any;
   displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
   displayedColumns: string[] = [
@@ -80,15 +80,13 @@ export class VerSolicitudTabComponent implements OnInit {
     "moneda"
   ];
 
-  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) { 
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
-    console.log(this.solicitudRecuperada);
-    if(this.solicitudRecuperada == null){
+    if (this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
     }
     this.IdSolicitud = this.solicitudRecuperada.id;
-    this.spinner .hide();
     this.existenBienes = false;
     this.existenServicios = false;
     this.ArchivoAdjunto = false;
@@ -100,17 +98,13 @@ export class VerSolicitudTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = true;
-    if(this.solicitudRecuperada.FueSondeo != null){
-      if(this.solicitudRecuperada.FueSondeo){
-        this.habilitarTabsSondeo();
-      }else{
-        this.deshabilitarTabsSondeo();
-      }
-    }
+    this.spinner.show();
+    console.log(this.solicitudRecuperada.estado);
+    this.ValidacionTabsPorEstado();
+    //this.ValidacionSondeo();
 
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
-      solicitud => {      
+      solicitud => {
         this.IdSolicitud = solicitud.Id;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.moneda = solicitud.TipoMoneda;
@@ -146,39 +140,39 @@ export class VerSolicitudTabComponent implements OnInit {
               if (TipoArchivo === "ActivoVM") {
                 this.RutaArchivo = element.ServerRelativeUrl;
                 this.ArchivoAdjunto = true;
-                console.log(this.ArchivoAdjunto);
               }
-              if(TipoArchivo === "RegistroActivo"){
+              if (TipoArchivo === "RegistroActivo") {
                 this.RegistroActivoArchivo = element.ServerRelativeUrl;
                 this.ArchivoAdjuntoActivos = true;
               }
             }
           });
         }
-        if(solicitud.CondicionesContractuales != null){
-          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        if (solicitud.CondicionesContractuales != null) {
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales.replace(/(\r\n|\n|\r)/gm, "")).condiciones;
         }
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             if (RespuestaCondiciones.length > 0) {
               this.existenBienes = true;
-            this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-            this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
-                this.dataSource.paginator = this.paginator;
+              this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+              this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
+              this.dataSource.paginator = this.paginator;
             }
             this.spinner.hide();
           }
         );
-          this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
+        this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-          this.ObjContratos = Contratos.fromJsonList(RespuestaCondiciones);
+            this.ObjContratos = Contratos.fromJsonList(RespuestaCondiciones);
+            this.spinner.hide();
           }
         );
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
             if (RespuestaCondicionesServicios.length > 0) {
               this.existenServicios = true;
-            this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+              this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
             }
             this.spinner.hide();
           }
@@ -186,49 +180,123 @@ export class VerSolicitudTabComponent implements OnInit {
         this.servicio.ObtenerRecepcionesBienes(this.IdSolicitud).subscribe(
           (respuesta) => {
             this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
+            this.spinner.hide();
           }
         );
         this.servicio.ObtenerRecepcionesServicios(this.IdSolicitud).subscribe(
           (respuesta) => {
             this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
+            this.spinner.hide();
           }
         );
-        this.loading = false;
+        this.spinner.hide();
       }
     );
   }
 
-  habilitarTabsSondeo(){
+  ValidacionTabsPorEstado(): any {
+    this.DeshabilitarTodosLosTabs();
+    switch (this.solicitudRecuperada.estado) {
+      case 'Borrador': {
+        this.HabilitarTabInformacionSolicitud();
+        break;
+      }
+      case 'Por sondear': {
+        this.HabilitarTabSondeo();
+        break;
+      }
+      case 'Por aprobar sondeo': {
+        this.HabilitarTabAprobarSondeo();
+        break;
+      }
+      case 'Por verificar material': {
+        this.ValidacionSondeo();
+        this.HabilitarTabVerificarMaterial();
+      }
+    }
+  }
+
+  private HabilitarTodosLosTabs(){
+    for(let i=0; i<8; i++){
+      this.staticTabs.tabs[i].disabled = false;
+    }
+  }
+
+  private DeshabilitarTodosLosTabs(){
+    for(let i=0; i<8; i++){
+      this.staticTabs.tabs[i].disabled = true;
+    }
+  }
+
+  private HabilitarTabInformacionSolicitud(){
+    this.staticTabs.tabs[0].disabled = false;
+  }
+
+  private HabilitarTabSondeo(){
+    this.HabilitarTabInformacionSolicitud();
+    this.staticTabs.tabs[1].disabled = false;
+  }
+
+  private DeshabilitarSondeo(){
+    this.staticTabs.tabs[1].disabled = true;
+  }
+
+  private HabilitarTabAprobarSondeo(){
+    this.HabilitarTabSondeo();
+    this.staticTabs.tabs[2].disabled = true;
+  }
+
+  private DeshabilitarTabAprobarSondeo(){
+    this.staticTabs.tabs[2].disabled = true;
+  }
+
+  private HabilitarTabVerificarMaterial(){
+    this.staticTabs.tabs[3].disabled = false;
+  }
+
+  private DeshabilitarTabVerificarMaterial(){
+    this.staticTabs.tabs[3].disabled = true;
+  }
+
+  private ValidacionSondeo() {
+    if (this.solicitudRecuperada.FueSondeo != null) {
+      if (this.solicitudRecuperada.FueSondeo) {
+        this.habilitarTabsSondeo();
+      }
+      else {
+        this.deshabilitarTabsSondeo();
+      }
+    }
+  }
+
+  habilitarTabsSondeo() {
     this.staticTabs.tabs[1].disabled = false;
     this.staticTabs.tabs[2].disabled = false;
-}
+  }
 
-  deshabilitarTabsSondeo(){
-      this.staticTabs.tabs[1].disabled = true;
-      this.staticTabs.tabs[2].disabled = true;
+  deshabilitarTabsSondeo() {
+    this.staticTabs.tabs[1].disabled = true;
+    this.staticTabs.tabs[2].disabled = true;
   }
 
   anterior(tabId: number) {
-    if(tabId == 3 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo"){
+    if (tabId == 3 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo") {
       tabId = tabId - 3;
       this.staticTabs.tabs[tabId].active = true;
       document.body.scrollTop = document.documentElement.scrollTop = 0;
-    }else{
+    } else {
       tabId = tabId - 1;
       this.staticTabs.tabs[tabId].active = true;
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     }
   }
 
-  siguiente(tabId: number){
-    console.log(tabId);
-    console.log(this.solicitudRecuperada);
-
-    if(tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo" && this.solicitudRecuperada.FueSondeo == false){
+  siguiente(tabId: number) {
+    if (tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo" && this.solicitudRecuperada.FueSondeo == false) {
       tabId = tabId + 3;
       this.staticTabs.tabs[tabId].active = true;
       document.body.scrollTop = document.documentElement.scrollTop = 0;
-    }else{
+    } else {
       tabId = tabId + 1;
       this.staticTabs.tabs[tabId].active = true;
       document.body.scrollTop = document.documentElement.scrollTop = 0;
