@@ -232,7 +232,7 @@ export class EntregaBienesComponent implements OnInit {
     this.pais = solicitud.Pais.Title;
     this.paisId = solicitud.Pais.Id;
     this.categoria = solicitud.Categoria;
-    this.subCategoria = solicitud.Categoria;
+    this.subCategoria = solicitud.Subcategoria;
     this.comprador = solicitud.Comprador.Title;
     this.alcance = solicitud.Alcance;
     this.justificacion = solicitud.Justificacion;

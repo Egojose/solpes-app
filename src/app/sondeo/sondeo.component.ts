@@ -143,7 +143,7 @@ export class SondeoComponent implements OnInit {
         this.pais = solicitud.Pais.Title;
         this.PaisId = solicitud.Pais.Id
         this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Categoria;
+        this.subCategoria = solicitud.Subcategoria;
         this.comprador = solicitud.Comprador.Title;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
