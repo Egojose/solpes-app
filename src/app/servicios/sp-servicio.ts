@@ -419,8 +419,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerContratos(IdSolicitud){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.getAll());
+    ObtenerContratos(IdSolicitud: number){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq " + IdSolicitud).top(1).get());
         return respuesta;
     }
 
