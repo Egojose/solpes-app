@@ -226,7 +226,6 @@ export class AprobarSondeoComponent implements OnInit {
           this.servicio.agregarNotificacion(notificacion).then(
             (item: ItemAddResult) => {
               this.MostrarExitoso("La acción se ha guardado con éxito");
-              sessionStorage.removeItem("IdSolicitud");
               this.spinner.hide();
               setTimeout(() => {
                 this.salir();
