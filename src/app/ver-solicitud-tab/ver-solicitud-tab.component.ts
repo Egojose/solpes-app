@@ -212,51 +212,81 @@ export class VerSolicitudTabComponent implements OnInit {
       case 'Por verificar material': {
         this.HabilitarTabVerificarMaterial();
       }
+      case 'Por registrar activos': {
+        this.HabilitarTabRegistroActivos();
+        break;
+      }
+      case 'Por registrar solp sap': {
+        this.HabilitarTabRegistrarSolpSAP();
+        break;
+      }
+      case 'Por registrar contratos': {
+        this.HabilitarTabContratos();
+        break;
+      }
+      case 'Por recepcionar': {
+        this.HabilitarTabEntregas();
+      }
     }
   }
 
-  private HabilitarTodosLosTabs(){
-    for(let i=0; i<8; i++){
+  private HabilitarTodosLosTabs() {
+    for (let i = 0; i < 8; i++) {
       this.staticTabs.tabs[i].disabled = false;
     }
   }
 
-  private DeshabilitarTodosLosTabs(){
-    for(let i=0; i<8; i++){
+  private DeshabilitarTodosLosTabs() {
+    for (let i = 0; i < 8; i++) {
       this.staticTabs.tabs[i].disabled = true;
     }
   }
 
-  private HabilitarTabInformacionSolicitud(){
+  private HabilitarTabInformacionSolicitud() {
     this.staticTabs.tabs[0].disabled = false;
   }
 
-  private HabilitarTabSondeo(){
+  private HabilitarTabSondeo() {
     this.HabilitarTabInformacionSolicitud();
     this.staticTabs.tabs[1].disabled = false;
   }
 
-  private DeshabilitarSondeo(){
-    this.staticTabs.tabs[1].disabled = true;
-  }
-
-  private HabilitarTabAprobarSondeo(){
+  private HabilitarTabAprobarSondeo() {
     this.HabilitarTabSondeo();
     this.staticTabs.tabs[2].disabled = true;
   }
 
-  private DeshabilitarTabAprobarSondeo(){
-    this.staticTabs.tabs[2].disabled = true;
-  }
-
-  private HabilitarTabVerificarMaterial(){
+  private HabilitarTabVerificarMaterial() {
     this.HabilitarTabInformacionSolicitud();
     this.ValidacionSondeo();
     this.staticTabs.tabs[3].disabled = false;
   }
 
-  private DeshabilitarTabVerificarMaterial(){
-    this.staticTabs.tabs[3].disabled = true;
+<<<<<<< HEAD
+  private HabilitarTabVerificarMaterial(){
+    this.HabilitarTabInformacionSolicitud();
+    this.ValidacionSondeo();
+    this.staticTabs.tabs[3].disabled = false;
+=======
+  private HabilitarTabRegistroActivos() {
+    this.HabilitarTabVerificarMaterial();
+    this.staticTabs.tabs[4].disabled = false;
+  }
+
+  private HabilitarTabRegistrarSolpSAP() {
+    this.HabilitarTabRegistroActivos();
+    this.staticTabs.tabs[5].disabled = false;
+  }
+
+  private HabilitarTabContratos() {
+    this.HabilitarTabRegistrarSolpSAP();
+    this.staticTabs.tabs[6].disabled = false;
+>>>>>>> master
+  }
+
+  private HabilitarTabEntregas() {
+    this.HabilitarTabContratos();
+    this.staticTabs.tabs[7].disabled = false;
   }
 
   private ValidacionSondeo() {
