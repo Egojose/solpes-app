@@ -257,6 +257,7 @@ export class EntregaServiciosComponent implements OnInit {
     if (ultimaEntrega == "Sí" || cantidad === 0) {
       if (comentario === "") {
         this.mostrarAdvertencia("Por favor ingrese un comentario");
+        this.spinner.hide();
         return false;
       }
     }
@@ -479,7 +480,7 @@ export class EntregaServiciosComponent implements OnInit {
       if (element.estadoRS === "No confirmado") {
         element.estadoRS = "Confirmado";
         Confirmado = true;
-        this.spinner.show();
+        // this.spinner.show();
         this.servicio.ConfirmarEntregaServicios(element.IdRecepcionServicios).then(
           (resultado) => {
             numeroItems++;
@@ -529,6 +530,7 @@ export class EntregaServiciosComponent implements OnInit {
                       }
                       this.servicio.cambioEstadoRecepcionBienesServicios(this.IdSolicitud, objCT).then(
                         (respuesta) => {
+                          this.spinner.hide();
                           this.router.navigate(['/mis-solicitudes']);
                         }
                       ).catch(
@@ -539,6 +541,7 @@ export class EntregaServiciosComponent implements OnInit {
                     }
                   }
                   else {
+                    this.spinner.hide();
                     this.router.navigate(['/mis-solicitudes']);
                   }
                 },
