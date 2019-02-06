@@ -165,7 +165,7 @@ export class EntregaServiciosComponent implements OnInit {
               (RespuestaProcesos) => {
                 this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
                 this.ResponsableServicios = this.ObResProceso[0].porRegistrarSapServicios;
-                this.loading = false;
+                this.spinner.hide();
               },
               (error) => {
 
@@ -430,7 +430,7 @@ export class EntregaServiciosComponent implements OnInit {
     let numeroItems = 0;
     let CantidadCT = 0;
     let Confirmado = false;
-
+    this.spinner.show();
     this.ObjRecepcionServicios.forEach(element => {
 
       if (element.estadoRS === "No confirmado") {
@@ -454,7 +454,6 @@ export class EntregaServiciosComponent implements OnInit {
                     if (this.CompraBienes === true) {
                       let objCT;
 
-
                       if (this.FaltaBienes === false) {
                         objCT = {
                           Estado: "Recibido",
@@ -470,6 +469,7 @@ export class EntregaServiciosComponent implements OnInit {
                       }
                       this.servicio.cambioEstadoRecepcionBienesServicios(this.IdSolicitud, objCT).then(
                         (respuesta) => {
+                          this.spinner.hide();
                           this.router.navigate(['/mis-solicitudes']);
                         }
                       ).catch(
