@@ -246,7 +246,7 @@ export class VerSolicitudTabComponent implements OnInit {
 
   private HabilitarTabAprobarSondeo() {
     this.HabilitarTabSondeo();
-    this.staticTabs.tabs[2].disabled = true;
+    this.staticTabs.tabs[2].disabled = false;
   }
 
   private HabilitarTabVerificarMaterial() {
