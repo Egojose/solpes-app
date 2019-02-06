@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Compiler } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../sondeo/condicionesTecnicasBienes';
@@ -9,6 +9,8 @@ import { Usuario } from '../dominio/usuario';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Solicitud } from '../dominio/solicitud';
+
 @Component({
   selector: 'app-sondeo',
   templateUrl: './sondeo.component.html',
@@ -20,8 +22,12 @@ export class SondeoComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   tipoSolicitud: string;
+  contratoMarco: string;
   solicitante: string;
   ordenadorGasto: string;
+  panelOpenState1: boolean;
+  panelOpenState3: boolean;
+  panelOpenState2: boolean;
   empresa: string;
   pais: string;
   categoria: string;
@@ -39,6 +45,7 @@ export class SondeoComponent implements OnInit {
   numeroSolpSap: string;
   ComentarioRegistrarSap: string;
   submitted = false;
+  solicitudRecuperada: Solicitud;
   IdSolicitudParms: any;
   ComentarioSondeo: string;
   comentarioSondeo: any;
@@ -50,9 +57,59 @@ export class SondeoComponent implements OnInit {
   autorId: any;
   codigoAriba: string;
   numeroOrdenEstadistica: string;
+  existeCondicionesTecnicasBienes: boolean;
+  existeCondicionesTecnicasServicios: boolean;
+  OrdenEstadistica: boolean;
+  perfilacion: boolean;
+  usuarioActual: Usuario;
+
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
-    this.spinner.hide();
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
+    this.existeCondicionesTecnicasBienes = false;
+    this.existeCondicionesTecnicasServicios = false;
+  }
+
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para su sondeo");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por sondear'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   ngOnInit() {
@@ -77,8 +134,8 @@ export class SondeoComponent implements OnInit {
       solicitud => {
         this.IdSolicitud = solicitud.Id;
         this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.contratoMarco = solicitud.CM;
         this.codigoAriba = solicitud.CodigoAriba;
-        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
@@ -92,22 +149,31 @@ export class SondeoComponent implements OnInit {
         this.justificacion = solicitud.Justificacion;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         this.autorId = solicitud.AuthorId;
+        this.OrdenEstadistica = solicitud.OrdenEstadistica;
+        this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
 
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-            this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-            this.ObjCondicionesTecnicasBienesGuardar = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            if (RespuestaCondiciones.length > 0) {
+              this.existeCondicionesTecnicasBienes = true;
+              this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+              this.ObjCondicionesTecnicasBienesGuardar = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            }
             this.spinner.hide();
           }
         )
 
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
-            this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            this.ObjCondicionesTecnicasServiciosGuardar = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            if (RespuestaCondicionesServicios.length > 0) {
+              this.existeCondicionesTecnicasServicios = true;
+              this.ObjCondicionesTecnicasServiciosLectura = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+              this.ObjCondicionesTecnicasServiciosGuardar = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            }
+
             this.spinner.hide();
           }
         )
@@ -123,21 +189,16 @@ export class SondeoComponent implements OnInit {
   }
 
   GuardarSondeoBienes() {
-    this.spinner.show();
     let objSondeo;
     let contador = 0;
-
-    let respuesta = this.validarCamposBienesYServicios();
-    if(!respuesta){
-      return false;
-    }
 
     for (let i = 0; i < this.ObjCondicionesTecnicasBienesGuardar.length; i++) {
 
       objSondeo = {
         CodigoSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].cantidad,
-        PrecioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado,
+        PrecioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado.toString(),
+        MonedaSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].tipoMonedaSondeo,
         ComentarioSondeo: this.ObjCondicionesTecnicasBienesGuardar[i].ComentarioSondeo
       }
 
@@ -183,7 +244,7 @@ export class SondeoComponent implements OnInit {
           this.spinner.hide();
           respuesta = false;
           return respuesta;
-          
+
         }
 
         if (this.EsCampoVacio(this.ObjCondicionesTecnicasBienesGuardar[i].valorEstimado)) {
@@ -191,7 +252,7 @@ export class SondeoComponent implements OnInit {
           this.spinner.hide();
           respuesta = false;
           return respuesta;
-          
+
         }
 
         if (this.EsCampoVacio(this.ObjCondicionesTecnicasBienesGuardar[i].codigo)) {
@@ -199,7 +260,7 @@ export class SondeoComponent implements OnInit {
           this.spinner.hide();
           respuesta = false;
           return respuesta;
-          
+
         }
 
         if (this.ObjCondicionesTecnicasBienesGuardar[i].adjunto === null) {
@@ -207,7 +268,7 @@ export class SondeoComponent implements OnInit {
           this.spinner.hide();
           respuesta = false;
           return respuesta;
-         
+
         }
       }
 
@@ -312,7 +373,6 @@ export class SondeoComponent implements OnInit {
     return respuesta;
   }
 
-
   GuardarSondeoServicios() {
     let objSondeo;
     let contador = 0;
@@ -321,7 +381,8 @@ export class SondeoComponent implements OnInit {
       objSondeo = {
         CodigoSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].codigo,
         CantidadSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].cantidad,
-        PrecioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].valorEstimado,
+        PrecioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].valorEstimado.toString(),
+        MonedaSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].tipoMonedaSondeo,
         ComentarioSondeo: this.ObjCondicionesTecnicasServiciosGuardar[i].ComentarioSondeo
       }
 
@@ -359,28 +420,40 @@ export class SondeoComponent implements OnInit {
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
-    if (this.ComentarioSolicitante != undefined) {
-      if (this.comentarioSondeo === null) {
-        this.comentarioSondeo = "Comentarios:"
-      }
-      ObjSondeo = {
-        ResponsableId: this.autorId,
-        Estado: "Por aprobar sondeo",
-        ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
-      }
+    let estado = "Por aprobar sondeo";
+
+    if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
+      this.comentarioSondeo = "Comentarios: ";
     }
-    else {
-      ObjSondeo = {
-        ResponsableId: this.autorId,
-        Estado: "Por aprobar sondeo"
-      }
+    if (this.ComentarioSolicitante == null || this.ComentarioSolicitante == undefined) {
+      this.ComentarioSolicitante = "Sin comentario.";
+    }
+
+    ObjSondeo = {
+      ResponsableId: this.autorId,
+      Estado: estado,
+      ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
     }
 
     this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
       (respuesta) => {
-        this.spinner.hide();
-        sessionStorage.removeItem("IdSolicitud");
-        this.salir();
+
+        let notificacion = {
+          IdSolicitud: this.IdSolicitud.toString(),
+          ResponsableId: this.autorId,
+          Estado: estado
+        };
+
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.spinner.hide();
+            this.salir();
+            sessionStorage.removeItem("IdSolicitud");
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        )
       }
     ).catch(
       (error) => {
@@ -410,11 +483,19 @@ export class SondeoComponent implements OnInit {
   }
 
   guardarEnviar() {
-    if (this.ObjCondicionesTecnicasBienesGuardar.length > 0) {
-      this.GuardarSondeoBienes();
-    } else if (this.ObjCondicionesTecnicasServiciosGuardar.length > 0) {
-      this.GuardarSondeoServicios();
+    this.spinner.show();
+    let respuesta = this.validarCamposBienesYServicios();
+    if (!respuesta) {
+      return false;
     }
+    else {
+      if (this.ObjCondicionesTecnicasBienesGuardar.length > 0) {
+        this.GuardarSondeoBienes();
+      } else if (this.ObjCondicionesTecnicasServiciosGuardar.length > 0) {
+        this.GuardarSondeoServicios();
+      }
+    }
+
   }
 
   MostrarExitoso(mensaje: string) {

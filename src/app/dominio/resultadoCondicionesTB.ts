@@ -4,10 +4,13 @@ export class resultadoCondicionesTB {
         public codigo: string,
         public descripcion: string,
         public modelo: string,
-        public fabricante: string,        
-        public cantidad: number,
+        public fabricante: string,
+        public cantidad: string,        
+        public cantidadComprar?: number,
         public valorEstimado?: string,
+        public precioSondeo?: string,
         public moneda?: string,
+        public monedaSondeo?: string,
         public adjunto?: string) { console.log(this.adjunto) }
 
     public static fromJson(element: any) {
@@ -35,10 +38,13 @@ export class resultadoCondicionesTB {
             element.CodigoVerificar, 
             element.DescripcionVerificar, 
             element.ModeloVerificar, 
-            element.Fabricante,             
+            element.Fabricante,
+            element.CantidadVerificar,             
             element.CantidadReservaVerificar, 
+            element.ValorEstimado, 
             element.PrecioSondeo, 
             element.TipoMoneda,
+            element.MonedaSondeo,
             RutaArchivo);
     }
 

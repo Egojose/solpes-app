@@ -8,6 +8,8 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { responsableProceso } from '../dominio/responsableProceso';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: "app-registro-activos",
@@ -30,15 +32,63 @@ export class RegistroActivosComponent implements OnInit {
   numOrdenEstadistica: string;
   loading: boolean;
   IdSolicitud: any;
-  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
-  IdSolicitudParms: string;
+  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "precioSondeo", "moneda"];
+  IdSolicitudParms: number;
   RutaArchivo: string;
   paisId: any;
   ArchivoAdjunto: any;
+  ResponsableProceso: number;
+  estadoSolicitud: string;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
+
   constructor(public toastr: ToastrManager, private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, private spinner: NgxSpinnerService) {
-    this.spinner.hide();
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
     this.ArchivoAdjunto = null;
+  }
+
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para registro de activos");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if (this.solicitudRecuperada.estado == 'Por registrar activos') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean {
+    if (this.solicitudRecuperada.responsable.ID == this.usuarioActual.id) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   adjuntarArchivoVM(event) {
@@ -62,23 +112,36 @@ export class RegistroActivosComponent implements OnInit {
     this.spinner.show();
     let coment;
     let comentarios = this.ComentarioRegistroActivos;
-    let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
+    this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarSolp;
+    this.estadoSolicitud = 'Por registrar solp sap';
     if (this.ArchivoAdjunto === null) {
       this.mostrarAdvertencia("Por favor ingrese el documento de registro de activos");
       this.spinner.hide();
       return false;
     } else {
       coment = {
-        Estado: "Por registrar solp sap",
-        ResponsableId: ResponsableProcesoId,
+        Estado: this.estadoSolicitud,
+        ResponsableId: this.ResponsableProceso,
         ComentarioRegistroActivos: comentarios
       };
       this.servicio.guardarComentario(this.IdSolicitud, coment).then((resultado: ItemAddResult) => {
         let nombreArchivo = "RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
         this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then(respuesta => {
-          this.MostrarExitoso("Archivo guardado correctamente");
-          this.router.navigate(["/mis-pendientes"]);
-          this.spinner.hide();
+          let notificacion = {
+            IdSolicitud: this.IdSolicitud.toString(),
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud
+          };
+          this.servicio.agregarNotificacion(notificacion).then(
+            (item: ItemAddResult) => {
+              this.MostrarExitoso("Archivo guardado correctamente");
+              this.router.navigate(["/mis-pendientes"]);
+              this.spinner.hide();
+            }, err => {
+              this.mostrarError('Error agregando la notificación');
+              this.spinner.hide();
+            }
+          )
         })
           .catch(error => {
             this.mostrarError("Error al guardar el archivo");
@@ -137,19 +200,20 @@ export class RegistroActivosComponent implements OnInit {
         }
         this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
           this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
+          this.spinner.hide();
         });
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
           this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
           this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
           this.dataSource.paginator = this.paginator;
+          this.spinner.hide();
         });
       });
     });
-    this.spinner.hide();
   }
 
   salir() {
     this.modalRef.hide();
-    this.router.navigate(["/mis-solicitudes"]);
+    this.router.navigate(["/mis-pendientes"]);
   }
 }

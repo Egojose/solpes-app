@@ -17,7 +17,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class MisPendientesComponent implements OnInit {
 
-  usuarioActual : Usuario;
+  usuarioActual: Usuario;
   misSolicitudes: Solicitud[] = [];
   dataSource;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -29,24 +29,28 @@ export class MisPendientesComponent implements OnInit {
   ObjResponsableProceso: any;
   IdPais: any;
 
-  constructor( private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService) {
+  constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService) {
     this.dataSource = new MatTableDataSource();
     this.dataSource.data = this.misSolicitudes;
-    this.spinner.hide();
-    
-   }
+  }
 
   ngOnInit() {
     this.spinner.show();
+    this.destruirSessionesSolicitudes();
     this.ObtenerUsuarioActual();
   }
 
-  displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Acciones']; 
- 
+  destruirSessionesSolicitudes(): any {
+    sessionStorage.removeItem("IdSolicitud");
+    sessionStorage.removeItem("solicitud");
+  }
+
+  displayedColumns: string[] = ['Consecutivo', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Acciones'];
+
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (Response) => {
-        this.usuarioActual  = new Usuario(Response.Title, Response.email,Response.Id);
+        this.usuarioActual = new Usuario(Response.Title, Response.email, Response.Id);
         this.ObtenerMisSolicitudes();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
@@ -60,16 +64,13 @@ export class MisPendientesComponent implements OnInit {
     this.servicio.ObtenerMisPendientes(idUsuario).subscribe(
       (respuesta) => {
         this.misSolicitudes = Solicitud.fromJsonList(respuesta);
-        if(this.misSolicitudes.length > 0){
+        if (this.misSolicitudes.length > 0) {
           this.empty = false;
-          
-          //this.PaisId = this.misSolicitudes.PaisId;
           this.dataSource = new MatTableDataSource(this.misSolicitudes);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-          
         }
-        else{
+        else {
           this.empty = true;
         }
         this.spinner.hide();
@@ -80,65 +81,65 @@ export class MisPendientesComponent implements OnInit {
     )
   }
 
-  ObtenerResponsableProceso(PaisId,IdSolicitud){
+  ObtenerResponsableProceso(PaisId, IdSolicitud) {
     this.servicio
-            .obtenerResponsableProcesos(PaisId) 
-            .subscribe(RespuestaResponsableProceso => {
-              this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
-              let Responsable = this.ObjResponsableProceso[0].porRegistrarSolp;
-              this.servicio.cambioEstadoSolicitud(IdSolicitud,"Por registrar solp sap",Responsable).then(
-                (respuesta)=>{
-                  this.MostrarExitoso("Registro enviado con éxito");
-                  this.modalRef.hide();                  
-                  window.location.reload();
-                }
-              ).catch(
-                (error)=>{
-                  console.log(error);
-                  this.mostrarError("Error al enviar el registro");
-                  this.modalRef.hide();
-                }
-              );
-            });
+      .obtenerResponsableProcesos(PaisId)
+      .subscribe(RespuestaResponsableProceso => {
+        this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
+        let Responsable = this.ObjResponsableProceso[0].porRegistrarSolp;
+        this.servicio.cambioEstadoSolicitud(IdSolicitud, "Por registrar solp sap", Responsable).then(
+          (respuesta) => {
+            this.MostrarExitoso("Registro enviado con éxito");
+            this.modalRef.hide();
+            window.location.reload();
+          }
+        ).catch(
+          (error) => {
+            console.log(error);
+            this.mostrarError("Error al enviar el registro");
+            this.modalRef.hide();
+          }
+        );
+      });
   }
 
-  VerSolicitud(id){
+  VerSolicitud(id) {
     sessionStorage.setItem("IdSolicitud", id);
     this.router.navigate(['/ver-solicitud-tab']);
   }
 
-  PorSondear(id){
-    sessionStorage.setItem("IdSolicitud", id);
+  PorSondear(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/sondeo']);
   }
 
-  AprobarSondeo(id){
-    sessionStorage.setItem("IdSolicitud", id);
+  AprobarSondeo(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/aprobar-sondeo']);
   }
 
-  VerificarMaterial(id){
-    sessionStorage.setItem("IdSolicitud", id);
+  VerificarMaterial(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/verificar-material']);
   }
 
-  RegistrarSOLPSAP(id){
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarSOLPSAP(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/registrar-solp-sap']);
   }
 
-  RegistrarContratos(id){
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarContratos(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/contratos']);
   }
 
-  RegistrarEntregasBienes(id){    
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarEntregasBienes(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/entrega-bienes']);
   }
 
-  RegistrarEntregasServicios(id){
-    sessionStorage.setItem("IdSolicitud", id);
+  RegistrarEntregasServicios(solicitud) {
+    sessionStorage.setItem("solicitud", JSON.stringify(solicitud));
     this.router.navigate(['/entrega-servicios']);
   }
 
@@ -146,52 +147,48 @@ export class MisPendientesComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  descartarSolicitud(IdSolicitud: number, template: TemplateRef<any>){
+  descartarSolicitud(IdSolicitud: number, template: TemplateRef<any>) {
     this.idSolicitud = IdSolicitud;
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
   }
 
-
-  //Accioness que determinan la solicitud sin presupuesto
-  Descartar(element, template: TemplateRef<any>){
-    this.idSolicitud = element.id;
-    this.IdPais = element.pais.ID;
-    this.modalRef = this.modalServicio.show(template);
-  }  
-
-  ConPresupuesto(element, template: TemplateRef<any>){
+  Descartar(element, template: TemplateRef<any>) {
     this.idSolicitud = element.id;
     this.IdPais = element.pais.ID;
     this.modalRef = this.modalServicio.show(template);
   }
 
-  confirmarDescartarPresupuesto(){
-    this.servicio.cambioEstadoSolicitud(this.idSolicitud,"Solicitud descartada",null).then(
-      (respuesta)=>{
+  ConPresupuesto(element, template: TemplateRef<any>) {
+    this.idSolicitud = element.id;
+    this.IdPais = element.pais.ID;
+    this.modalRef = this.modalServicio.show(template);
+  }
+
+  confirmarDescartarPresupuesto() {
+    this.servicio.cambioEstadoSolicitud(this.idSolicitud, "Solicitud descartada", null).then(
+      (respuesta) => {
         this.MostrarExitoso("Solicitud descartada con éxito");
         this.modalRef.hide();
         window.location.reload();
       }
     ).catch(
-      (error)=>{
+      (error) => {
         this.mostrarError("Error al descartar la solicitud");
         this.modalRef.hide();
       }
     );
-  }  
-
-  confirmarPresupuesto(){
-    this.ObtenerResponsableProceso(this.IdPais,this.idSolicitud)
   }
 
-  VerDetalle(id){
+  confirmarPresupuesto() {
+    this.ObtenerResponsableProceso(this.IdPais, this.idSolicitud)
+  }
+
+  VerDetalle(id) {
     sessionStorage.setItem("IdSolicitud", id);
     this.router.navigate(['/ver-solicitud-tab']);
   }
 
-  //Fin de acciones de sin presupuesto
-
-  EditarSolicitud(solicitud){
+  EditarSolicitud(solicitud) {
     sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
     this.router.navigate(['/editar-solicitud']);
   }
@@ -234,14 +231,14 @@ export class MisPendientesComponent implements OnInit {
     this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
-  RegistrarActivos(id){
-    sessionStorage.setItem("IdSolicitud", id);
-    this.router.navigate(['/registro-activos']); 
+  RegistrarActivos(solicitud) {
+    sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
+    this.router.navigate(['/registro-activos']);
   }
 
   reasignar(solicitud) {
     sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
-    window.scroll(0,0);
+    window.scroll(0, 0);
     this.dialog.open(ReasignarComponent, {
       height: '360px',
       width: '600px',

@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  urlRaiz: 'https://enovelsoluciones.sharepoint.com',
-  urlWeb:'https://enovelsoluciones.sharepoint.com/sites/jam/solpes',
+  urlRaiz: 'https://enovelsoluciones.sharepoint.com',
+  urlWeb:'https://enovelsoluciones.sharepoint.com/sites/jam/solpes', 
   urlReltativa: '/sites/jam/solpes',
   listaEmpresas: 'Empresas',
   listaPaises: 'Paises',

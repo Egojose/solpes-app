@@ -1,8 +1,7 @@
 import { Adjunto } from "./adjunto";
 
 export class CondicionesTecnicasBienes {
-
-
+    
     constructor(public IdBienes: number,
         public codigo: string,
         public descripcion: string,
@@ -11,12 +10,14 @@ export class CondicionesTecnicasBienes {
         public cantidad: number,
         public cantidadSondeo: number,
         public valorEstimado?: string,
+        public tipoMoneda?: string,
         public precioSondeo?: string,
         public Comentario?: string,
         public adjunto?:any,
         public adjuntoCreacion?:any,
         public ComentarioSondeo?: string,
-        public codigoSondeo?: string) { }
+        public codigoSondeo?: string,
+        public tipoMonedaSondeo?: string) { }
 
     public static fromJson(element: any) {
 
@@ -40,12 +41,14 @@ export class CondicionesTecnicasBienes {
             element.Cantidad,
             element.CantidadSondeo,
             element.ValorEstimado,
+            element.TipoMoneda,
             element.PrecioSondeo,
             element.Comentarios,
             null, //adjunto
             adjuntoCreacion,
             '', //comentario sondeo
-            element.CodigoSondeo);
+            element.CodigoSondeo,
+            element.MonedaSondeo);
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {

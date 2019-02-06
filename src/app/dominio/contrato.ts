@@ -7,14 +7,19 @@ export class Contratos {
         public fechafirmaContrato: Date,
         public nomProveedor: string,
         public solicitante: string,
-        public comprador: string
-            ) {
-
-    }
+        public comprador: string,
+        public numeroContrato?: string) { }
 
     public static fromJson(element: any) {
-        return new Contratos(element.Id , element.TipoContrato, element.ObjContrato, element.FechaFirmaContrato,
-            element.NombreProveedor, element.Solicitante, element.Comprador);
+        return new Contratos(
+            element.Id, 
+            element.TipoContrato, 
+            element.ObjContrato, 
+            element.FechaFirmaContrato,
+            element.NombreProveedor, 
+            element.Solicitante, 
+            element.Comprador,
+            element.CM);
     }
 
     public static fromJsonList(elements: any) {

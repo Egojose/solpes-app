@@ -12,6 +12,8 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { verificarMaterialCT } from "./verificarMaterialCT";
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: "app-verificar-material",
@@ -27,6 +29,7 @@ export class VerificarMaterialComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   tipoSolicitud: string;
+  contratoMarco: string;
   solicitante: string;
   verificarMaterialFormulario: FormGroup;
   verificarSubmitted = false;
@@ -54,39 +57,141 @@ export class VerificarMaterialComponent implements OnInit {
   submitted = false;
   dataSource;
   labelPosition = "after";
-  displayedColumns: string[] = ["codigo","descripcion","modelo","fabricante","cantidad","existenciasverificar","numreservaverificar","cantidadreservaverificar","Accion"];
+  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar", "Accion"];
   modalRef: BsModalRef;
   IdVerficar: any;
   paisId: any;
   IdResponsable: any;
-  IdSolicitudParms: string;
+  IdSolicitudParms: number;
   cantidadTotalCompra: number;
   OrdenEstadistica: boolean;
   SwtichOrdenEstadistica: boolean;
   SwtichEsOrdenEstadistica: boolean;
   ArchivoAdjunto: File;
   SwtichFaltaRecepcionBienes: boolean;
-  verificar : string;
-  
+  verificar: string;
+  existeCondicionesTecnicasBienes: boolean;
+  existeCondicionesTecnicasServicios: boolean;
+  ResponsableProceso: number;
+  estadoSolicitud: string;
+  EsSondeo: boolean;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
-    this.spinner.hide();
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
     this.emptyVerificar = true;
     this.ArchivoAdjunto = null;
     this.SwtichOrdenEstadistica = false;
     this.SwtichEsOrdenEstadistica = false;
     this.cantidadTotalCompra = 0;
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
+    this.existeCondicionesTecnicasBienes = false;
+    this.existeCondicionesTecnicasServicios = false;
   }
 
-  
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para verificar material");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if (this.solicitudRecuperada.estado == 'Por verificar material') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean {
+    if (this.solicitudRecuperada.responsable.ID == this.usuarioActual.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  ngOnInit() {
+    this.spinner.show();
+    this.RegistrarFormularioVerificar();
+    this.ValidarNumReservaSiHayExistencias();
+    this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(solicitud => {
+      this.IdSolicitud = solicitud.Id;
+      this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+      this.tipoSolicitud = solicitud.TipoSolicitud;
+      this.contratoMarco = solicitud.CM;
+      this.solicitante = solicitud.Solicitante;
+      this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
+      this.empresa = solicitud.Empresa.Title;
+      this.codAriba = solicitud.CodigoAriba;
+      this.pais = solicitud.Pais.Title;
+      this.paisId = solicitud.Pais.Id;
+      this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
+      this.OrdenEstadistica = solicitud.OrdenEstadistica;
+      this.categoria = solicitud.Categoria;
+      this.subCategoria = solicitud.Subcategoria;
+      this.comprador = solicitud.Comprador.Title;
+      this.alcance = solicitud.Alcance;
+      this.justificacion = solicitud.Justificacion;
+      this.ComentarioSondeo = solicitud.ComentarioSondeo;
+      this.EsSondeo = solicitud.FueSondeo;
+      this.MostrarNumeroEstadistica();
+      if (solicitud.CondicionesContractuales != null) {
+        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+      }
+      this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
+        if (RespuestaCondiciones.length > 0) {
+          this.existeCondicionesTecnicasBienes = true;
+          this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+          this.ObjCTVerificar = verificarMaterialCT.fromJsonList(RespuestaCondiciones);
+          this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+          this.dataSource.paginator = this.paginator;
+          this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
+            this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
+            this.MostrarAdjuntosActivos();
+          });
+
+        }
+      });
+      this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
+        if (RespuestaCondicionesServicios.length > 0) {
+          this.existeCondicionesTecnicasServicios = true;
+          this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+        }
+        this.spinner.hide();
+      });
+    });
+  }
+
   adjuntarArchivoVM(event) {
     let archivoAdjunto = event.target.files[0];
-      if (archivoAdjunto != null) {
-        this.ArchivoAdjunto = archivoAdjunto;
-      } else {
-        this.ArchivoAdjunto = null;
-      }
+    if (archivoAdjunto != null) {
+      this.ArchivoAdjunto = archivoAdjunto;
+    } else {
+      this.ArchivoAdjunto = null;
+    }
   }
   comfirmasalir(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
@@ -106,18 +211,22 @@ export class VerificarMaterialComponent implements OnInit {
         this.spinner.hide();
         return false;
       }
-      let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarActivos;
+      this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarActivos;
+      console.log(this.ResponsableProceso);
+      this.estadoSolicitud = 'Por registrar activos';
       coment = {
-        Estado: 'Por registrar activos',
-        ResponsableId: ResponsableProcesoId,
+        Estado: this.estadoSolicitud,
+        ResponsableId: this.ResponsableProceso,
         ComentarioVerificarMaterial: comentarios,
         FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes
       }
     } else {
-      let ResponsableProcesoId = this.ObjResponsableProceso[0].porRegistrarSolp;
+      this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarSolp;
+      console.log(this.ResponsableProceso);
+      this.estadoSolicitud = 'Por registrar solp sap';
       coment = {
-        Estado: 'Por registrar solp sap',
-        ResponsableId: ResponsableProcesoId,
+        Estado: this.estadoSolicitud,
+        ResponsableId: this.ResponsableProceso,
         ComentarioVerificarMaterial: comentarios,
         FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes
       }
@@ -126,25 +235,49 @@ export class VerificarMaterialComponent implements OnInit {
     let cantidadMateriales = this.ObjCTVerificar.length;
     if (cantidad === cantidadMateriales) {
       this.servicio.guardarComentario(this.IdSolicitud, coment).then((resultado: ItemAddResult) => {
-          this.MostrarExitoso("Materiales verificados correctamente");
-          if (this.SwtichOrdenEstadistica === true) {
-            let nombreArchivo = "ActivoVM-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
-            this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then((respuesta) => {
+        this.MostrarExitoso("Materiales verificados correctamente");
+        if (this.SwtichOrdenEstadistica === true) {
+          let nombreArchivo = "ActivoVM-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
+          this.servicio.agregarAdjuntoActivos(this.IdSolicitud, nombreArchivo, this.ArchivoAdjunto).then((respuesta) => {
+            let notificacion = {
+              IdSolicitud: this.IdSolicitud.toString(),
+              ResponsableId: this.ResponsableProceso,
+              Estado: this.estadoSolicitud
+            };
+            this.servicio.agregarNotificacion(notificacion).then(
+              (item: ItemAddResult) => {
                 this.MostrarExitoso("Archivo guardado correctamente");
                 this.router.navigate(["/mis-pendientes"]);
                 this.spinner.hide();
-              }
-            ).catch((error) => {
-                this.mostrarError("Error al guardar el archivo");
+              }, err => {
+                this.mostrarError('Error agregando la notificación');
                 this.spinner.hide();
               }
-            );
+            )
           }
-          else {
-            this.router.navigate(["/mis-pendientes"]);
+          ).catch((error) => {
+            this.mostrarError("Error al guardar el archivo");
             this.spinner.hide();
           }
-        })
+          );
+        }
+        else {
+          let notificacion = {
+            IdSolicitud: this.IdSolicitud.toString(),
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud
+          };
+          this.servicio.agregarNotificacion(notificacion).then(
+            (item: ItemAddResult) => {
+              this.router.navigate(["/mis-pendientes"]);
+              this.spinner.hide();
+            }, err => {
+              this.mostrarError('Error agregando la notificación');
+              this.spinner.hide();
+            }
+          )
+        }
+      })
         .catch(error => {
           console.log(error);
           this.spinner.hide();
@@ -177,53 +310,6 @@ export class VerificarMaterialComponent implements OnInit {
     return valorprimitivo;
   }
 
-  ngOnInit() {
-    this.spinner.show();
-    this.RegistrarFormularioVerificar();
-    this.ValidarNumReservaSiHayExistencias();
-    this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(solicitud => {
-      this.IdSolicitud = solicitud.Id;
-      this.fechaDeseada = solicitud.FechaDeseadaEntrega;
-      this.tipoSolicitud = solicitud.TipoSolicitud;
-      this.solicitante = solicitud.Solicitante;
-      this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
-      this.empresa = solicitud.Empresa.Title;
-      this.codAriba = solicitud.CodigoAriba;
-      this.pais = solicitud.Pais.Title;
-      this.paisId = solicitud.Pais.Id;
-      this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
-      this.OrdenEstadistica = solicitud.OrdenEstadistica;
-      this.categoria = solicitud.Categoria;
-      this.subCategoria = solicitud.Subcategoria;
-      this.comprador = solicitud.Comprador.Title;
-      this.alcance = solicitud.Alcance;
-      this.justificacion = solicitud.Justificacion;
-      this.ComentarioSondeo = solicitud.ComentarioSondeo;
-
-      this.MostrarNumeroEstadistica();
-
-      if (solicitud.CondicionesContractuales != null) {
-        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
-      }
-      this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
-        this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-        console.log(this.ObjCondicionesTecnicas);
-        this.ObjCTVerificar = verificarMaterialCT.fromJsonList(RespuestaCondiciones);
-        this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
-        this.dataSource.paginator = this.paginator;
-        this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(RespuestaResponsableProceso => {
-          this.ObjResponsableProceso = responsableProceso.fromJsonList(RespuestaResponsableProceso);
-          this.MostrarAdjuntosActivos();
-        });
-      });
-      this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
-        this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-        console.log(this.ObjCondicionesTecnicasServicios);
-        this.spinner.hide();
-      });
-    });
-  }
-
   private MostrarNumeroEstadistica() {
     if (this.OrdenEstadistica) {
       this.SwtichEsOrdenEstadistica = true;
@@ -232,21 +318,18 @@ export class VerificarMaterialComponent implements OnInit {
 
   private MostrarAdjuntosActivos() {
     let cantidadesReservaVerificarEnCero = this.ObjCTVerificar.filter(c => c.cantidadreservaverificar > 0);
-    if (cantidadesReservaVerificarEnCero.length > 0) {
+    if (cantidadesReservaVerificarEnCero.length > 0 && this.OrdenEstadistica) {
       this.SwtichOrdenEstadistica = true;
     }
     else {
       this.SwtichOrdenEstadistica = false;
     }
-  }
-
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.spinner.hide();
   }
 
   salir() {
     this.modalRef.hide();
-    this.router.navigate(["/mis-solicitudes"]);
+    this.router.navigate(["/mis-pendientes"]);
   }
 
   RegistrarFormularioVerificar() {
@@ -260,30 +343,28 @@ export class VerificarMaterialComponent implements OnInit {
       numReservaVerificar: new FormControl(""),
       cantidadReservaVerificar: new FormControl("0"),
     });
-    console.log('Fomulario creado');
   }
 
   ValidarNumReservaSiHayExistencias() {
     const numReservaVerificar = this.verificarMaterialFormulario.get('numReservaVerificar');
     this.verificarMaterialFormulario.get('existenciasVerificar').valueChanges.subscribe((valor: string) => {
-        if (valor != '' || valor != undefined || valor != null) {
-          if (parseFloat(valor) > 0) {
-            numReservaVerificar.setValidators([Validators.required]);
-          }
-          else {
-            numReservaVerificar.clearValidators();
-          }
+      if (valor != '' || valor != undefined || valor != null) {
+        if (parseFloat(valor) > 0) {
+          numReservaVerificar.setValidators([Validators.required]);
         }
         else {
           numReservaVerificar.clearValidators();
         }
-        numReservaVerificar.updateValueAndValidity();
-      });
+      }
+      else {
+        numReservaVerificar.clearValidators();
+      }
+      numReservaVerificar.updateValueAndValidity();
+    });
 
   }
 
   abrirModalVerificarMaterial(template: TemplateRef<any>, element) {
-    console.log(element);
     this.verificarSubmitted = false;
     this.IdVerficar = element.id;
     this.verificarMaterialFormulario.controls["codigoVerificar"].setValue(element.codigoSondeo);
@@ -294,11 +375,11 @@ export class VerificarMaterialComponent implements OnInit {
     this.verificarMaterialFormulario.controls["existenciasVerificar"].setValue(element.existenciasverificar);
     this.verificarMaterialFormulario.controls["numReservaVerificar"].setValue(element.numreservaverificar);
 
-    if (element.cantidadreservaverificar === null || element.cantidadreservaverificar === undefined || element.cantidadreservaverificar == 0) {
-      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(element.cantidad);
-    } else {
-      this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(element.cantidadreservaverificar);
-    }
+    let cantidad = (this.verificarMaterialFormulario.controls["cantidadVerificar"].value != '') ? this.verificarMaterialFormulario.controls["cantidadVerificar"].value : 0;
+    let existencias = (this.verificarMaterialFormulario.controls["existenciasVerificar"].value) ? this.verificarMaterialFormulario.controls["existenciasVerificar"].value : 0;
+    let restaCantidadComprar = cantidad - existencias;
+    this.verificarMaterialFormulario.controls["cantidadReservaVerificar"].setValue(restaCantidadComprar);
+
     this.modalRef = this.modalServicio.show(template, Object.assign({}, { class: "gray modal-lg" }));
     this.verificarMaterialFormulario.get('existenciasVerificar').setValidators([ValidarMayorExistencias(element.cantidad)]);
   }
@@ -308,6 +389,7 @@ export class VerificarMaterialComponent implements OnInit {
     if (this.verificarMaterialFormulario.invalid) {
       return;
     }
+
     let objGuardarVerificar;
     let codigoVerificar = this.verificarMaterialFormulario.controls["codigoVerificar"].value;
     let descripcionVerificar = this.verificarMaterialFormulario.controls["descripcionVerificar"].value;
@@ -353,9 +435,9 @@ export class VerificarMaterialComponent implements OnInit {
       else {
         this.SwtichFaltaRecepcionBienes = true;
       }
-      }).catch(error => {
-        console.log(error);
-      });
+    }).catch(error => {
+      console.log(error);
+    });
     this.dataSource = this.ObjCTVerificar;
     this.CargarTablaVerificar();
     this.limpiarControlesVerificar();

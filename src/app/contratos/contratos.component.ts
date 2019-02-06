@@ -11,7 +11,10 @@ import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
 import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ItemAddResult } from 'sp-pnp-js';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: 'app-contratos',
@@ -24,43 +27,27 @@ export class ContratosComponent implements OnInit {
   ContratosForm: FormGroup;
   submitted = false;
   content: string;
+  contratoMarco: string;
   selectedValue: string;
   selectedOption: any;
-  ObjUsuarios:[];
+  ObjUsuarios: [];
   ObjSolicitud: any;
   Pais: any;
   Guardado: boolean
   IdSolicitud: any;
   autor: any;
-  loading:boolean;
-  idSolicitudParameter: string;
+  loading: boolean;
+  idSolicitudParameter: number;
   CompraBienes: any;
   CompraServicios: any;
   paisId: any;
   ObResProceso: responsableProceso[];
   NombreSolicitante: string;
-  displayedColumns: string[] = [
-    "codigo",
-    "descripcion",
-    "modelo",
-    "fabricante",    
-    "cantidad",
-    "valorEstimado",
-    "moneda",
-    "adjunto"
-  ];
-  displayedColumnsTS: string[] = [
-    "codigo",
-    "descripcion",        
-    "cantidad",
-    "valorEstimado",
-    "moneda",
-    "adjunto"
-  ];
+  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
+  displayedColumnsTS: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda", "adjunto"];
   ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
   ObjCTVerificar: any[];
   dataSource;
-  title: 'Contratos';
   dataSourceTS;
   panelOpenState = false;
   panelOpenState1 = false;
@@ -86,12 +73,59 @@ export class ContratosComponent implements OnInit {
   OrdenEstadistica: any;
   numOrdenEstadistica: any;
   NumSolSAP: any;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
-  constructor(private servicio: SPServicio,  private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager,private formBuilder: FormBuilder) {
-    this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
-    this.Guardado=false;
-   }
-   comfirmasalir(template: TemplateRef<any>) {
+  constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();  
+    this.idSolicitudParameter = this.solicitudRecuperada.id;
+    this.Guardado = false;
+  }
+
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para registrar contratos");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por registrar contratos'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  comfirmasalir(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
   }
 
@@ -100,37 +134,25 @@ export class ContratosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = true;
+    this.spinner.show();
     this.ContratosForm = this.formBuilder.group({
       TipoContrato: ['', Validators.required],
       SolpSapRfp: ['', Validators.required],
       ContratoOC: ['', Validators.required],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
-      // FechaFirmaContrato: [''],
-      ContratoObraConexo: ['', Validators.required],
-      // FechaEntregaCSCBPO: [''],
-      // FechaEnvioProvedor: [''],
-      // FechaDevolucionProvedor: [''],
+      ContratoObraConexo: [false],
       MonedaContrato: ['', Validators.required],
-      // TrmSap: [''],
-      IvaContrato: [''],
+      IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
-      // ValorSinIVA: [''],
-      // ValorFinalIVA: [''],
-      // Referencia: [''],
       LineaBaseContrato: ['', Validators.required],
       AhorroGenerado: ['', Validators.required],
       DescripcionCalculo: ['', Validators.required],
-      VigenciaContrato: ['', Validators.required],
+      VigenciaContrato: [''],
       RequiereSST: ['', Validators.required],
       RequierePoliza: ['', Validators.required],
-      // FechaEntrgaPoliza: [''],
-      // FechaRealEntrgaPoliza: [''],
-      // FechaEstadoPoliza: [''],
-      // CondicionPoliza: [''],
-      Acreedor: ['', Validators.required],
-      DigitoVerificacion: ['', Validators.required],
+      Acreedor: [''],
+      DigitoVerificacion: [''],
       NombreRazonSocial: ['', Validators.required],
       EmailProveedor: ['', [Validators.required, Validators.email]],
       Solicitante: [, Validators.required],
@@ -139,67 +161,66 @@ export class ContratosComponent implements OnInit {
     });
 
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
-      (Usuarios)=>{
-        this.ObjUsuarios = Usuarios;  
+      (Usuarios) => {
+        this.ObjUsuarios = Usuarios;
         this.servicio.ObtenerSolicitudBienesServicios(this.idSolicitudParameter).subscribe(
-          (respuesta)=>{
-              this.ObjSolicitud = respuesta;
-              this.IdSolicitud = this.ObjSolicitud.Id;
-              this.fechaDeseada = this.ObjSolicitud.FechaDeseadaEntrega;
-              this.tipoSolicitud = this.ObjSolicitud.TipoSolicitud;
-              this.solicitante = this.ObjSolicitud.Solicitante;
-              this.ordenadorGasto = this.ObjSolicitud.OrdenadorGastos.Title;
-              this.empresa = this.ObjSolicitud.Empresa.Title;
-              this.codAriba = this.ObjSolicitud.CodigoAriba;
-              this.Pais=this.ObjSolicitud.Pais.Title;
-              this.paisId = this.ObjSolicitud.Pais.Id;
-              this.categoria = this.ObjSolicitud.Categoria;
-              this.subCategoria = this.ObjSolicitud.Subcategoria;
-              this.comprador = this.ObjSolicitud.Comprador.Title;
-              this.alcance = this.ObjSolicitud.Alcance;
-              this.justificacion = this.ObjSolicitud.Justificacion;
-              this.ComentarioSondeo = this.ObjSolicitud.ComentarioSondeo;
-              this.autor = this.ObjSolicitud.AuthorId;
-              this.NumSolSAP = this.ObjSolicitud.NumSolSAP;
-              this.NombreSolicitante = this.ObjSolicitud.Author.Title;
-              this.ContratosForm.controls["Solicitante"].setValue(this.NombreSolicitante);
-              this.CompraBienes = this.ObjSolicitud.CompraBienes;
-              this.CompraServicios = this.ObjSolicitud.CompraServicios;
-              this.OrdenEstadistica = this.ObjSolicitud.OrdenEstadistica;
-              this.numOrdenEstadistica = this.ObjSolicitud.NumeroOrdenEstadistica;
-              if(this.ObjSolicitud.CondicionesContractuales != null){
-                this.condicionesContractuales = JSON.parse(this.ObjSolicitud.CondicionesContractuales).condiciones;
+          (respuesta) => {
+            this.ObjSolicitud = respuesta;
+            this.IdSolicitud = this.ObjSolicitud.Id;
+            this.fechaDeseada = this.ObjSolicitud.FechaDeseadaEntrega;
+            this.tipoSolicitud = this.ObjSolicitud.TipoSolicitud;
+            this.contratoMarco = this.ObjSolicitud.CM;
+            this.solicitante = this.ObjSolicitud.Solicitante;
+            this.ordenadorGasto = this.ObjSolicitud.OrdenadorGastos.Title;
+            this.empresa = this.ObjSolicitud.Empresa.Title;
+            this.codAriba = this.ObjSolicitud.CodigoAriba;
+            this.Pais = this.ObjSolicitud.Pais.Title;
+            this.paisId = this.ObjSolicitud.Pais.Id;
+            this.categoria = this.ObjSolicitud.Categoria;
+            this.subCategoria = this.ObjSolicitud.Subcategoria;
+            this.comprador = this.ObjSolicitud.Comprador.Title;
+            this.alcance = this.ObjSolicitud.Alcance;
+            this.justificacion = this.ObjSolicitud.Justificacion;
+            this.ComentarioSondeo = this.ObjSolicitud.ComentarioSondeo;
+            this.autor = this.ObjSolicitud.AuthorId;
+            this.NumSolSAP = this.ObjSolicitud.NumSolSAP;
+            this.NombreSolicitante = this.ObjSolicitud.Author.Title;
+            this.ContratosForm.controls["Solicitante"].setValue(this.NombreSolicitante);
+            this.CompraBienes = this.ObjSolicitud.CompraBienes;
+            this.CompraServicios = this.ObjSolicitud.CompraServicios;
+            this.OrdenEstadistica = this.ObjSolicitud.OrdenEstadistica;
+            this.numOrdenEstadistica = this.ObjSolicitud.NumeroOrdenEstadistica;
+
+            if (this.ObjSolicitud.CondicionesContractuales != null) {
+              this.condicionesContractuales = JSON.parse(this.ObjSolicitud.CondicionesContractuales).condiciones;
+            }
+
+            this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
+              (RespuestaProcesos) => {
+                this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
+                this.spinner.hide();
               }
-              this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
-                (RespuestaProcesos)=>{
-                  
-                    this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
+            )
+
+            this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(RespuestaCondiciones => {
+              this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
+              if (this.ObjCTVerificar.length > 0) {
+                this.CTB = true;
+              }
+              this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
+              this.dataSource.paginator = this.paginator;
+              this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
+                this.ObjCondicionesTecnicasServicios = resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
+                if (this.ObjCondicionesTecnicasServicios.length > 0) {
+                  this.CTS = true;
                 }
-              )
-              this.servicio
-          .ObtenerCondicionesTecnicasBienes(this.IdSolicitud)
-          .subscribe(RespuestaCondiciones => {                   
-            this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
-            if (this.ObjCTVerificar.length>0) {
-              this.CTB = true;
-            }
-            this.dataSource = new MatTableDataSource(this.ObjCTVerificar);
-            this.dataSource.paginator = this.paginator;   
-            this.servicio
-          .ObtenerCondicionesTecnicasServicios(this.IdSolicitud)
-          .subscribe(RespuestaCondicionesServicios => {           
-            this.ObjCondicionesTecnicasServicios = resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
-            if (this.ObjCondicionesTecnicasServicios.length>0) {
-              this.CTS = true;
-            }
-            this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
-            this.dataSourceTS.paginator = this.paginator;
-            this.loading = false;
-          });
-          });
-        
+                this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
+                this.dataSourceTS.paginator = this.paginator;
+                this.spinner.hide();
+              });
+            });
           }
-        )      
+        )
       }
     )
   }
@@ -207,77 +228,52 @@ export class ContratosComponent implements OnInit {
   get f() { return this.ContratosForm.controls; }
 
   onSubmit() {
-
     this.submitted = true;
-    if (this.ContratosForm.invalid) {   
+    if (this.ContratosForm.invalid) {
       return;
-    } 
-    
+    }
+    this.spinner.show();
     let TipoContrato = this.ContratosForm.controls["TipoContrato"].value;
     let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
     let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
-    let OrdenInicio = this.ContratosForm.controls["OrdenInicio"].value; 
+    let OrdenInicio = this.ContratosForm.controls["OrdenInicio"].value;
     let ObjetoContrato = this.ContratosForm.controls["ObjetoContrato"].value;
-    // let FechaFirmaContrato = this.ContratosForm.controls["FechaFirmaContrato"].value;
     let ContratoObraConexo = this.ContratosForm.controls["ContratoObraConexo"].value;
-    // let FechaEntregaCSCBPO = this.ContratosForm.controls["FechaEntregaCSCBPO"].value;
-    // let FechaEnvioProvedor = this.ContratosForm.controls["FechaEnvioProvedor"].value;
-    // let FechaDevolucionProvedor = this.ContratosForm.controls["FechaDevolucionProvedor"].value;
     let MonedaContrato = this.ContratosForm.controls["MonedaContrato"].value;
-    // let TrmSap = this.ContratosForm.controls["TrmSap"].value;
-    let IvaContrato = this.ContratosForm.controls["IvaContrato"].value;
-    let ValorContractual = this.ContratosForm.controls["ValorContractual"].value;
-    // let ValorSinIVA = this.ContratosForm.controls["ValorSinIVA"].value;
-    // let ValorFinalIVA = this.ContratosForm.controls["ValorFinalIVA"].value;
-    // let Referencia = this.ContratosForm.controls["Referencia"].value;
-    let LineaBaseContrato = this.ContratosForm.controls["LineaBaseContrato"].value;
-    let AhorroGenerado = this.ContratosForm.controls["AhorroGenerado"].value;
+    let IvaContrato = this.ContratosForm.controls["IvaContrato"].value.toString();
+    let ValorContractual = this.ContratosForm.controls["ValorContractual"].value.toString();
+    let LineaBaseContrato = this.ContratosForm.controls["LineaBaseContrato"].value.toString();
+    let AhorroGenerado = this.ContratosForm.controls["AhorroGenerado"].value.toString();
     let DescripcionCalculo = this.ContratosForm.controls["DescripcionCalculo"].value;
     let VigenciaContrato = this.ContratosForm.controls["VigenciaContrato"].value;
     let RequiereSST = this.ContratosForm.controls["RequiereSST"].value;
     let RequierePoliza = this.ContratosForm.controls["RequierePoliza"].value;
-    // let FechaEntrgaPoliza = this.ContratosForm.controls["FechaEntrgaPoliza"].value;
-    //let FechaRealEntrgaPoliza = this.ContratosForm.controls["FechaRealEntrgaPoliza"].value;
-    // let FechaEstadoPoliza = this.ContratosForm.controls["FechaEstadoPoliza"].value;
-    // let CondicionPoliza = this.ContratosForm.controls["CondicionPoliza"].value;
     let Acreedor = this.ContratosForm.controls["Acreedor"].value;
     let DigitoVerificacion = this.ContratosForm.controls["DigitoVerificacion"].value;
     let NombreRazonSocial = this.ContratosForm.controls["NombreRazonSocial"].value;
     let EmailProveedor = this.ContratosForm.controls["EmailProveedor"].value;
     let Solicitante = this.ContratosForm.controls["Solicitante"].value;
     let Comprador = this.ContratosForm.controls["Comprador"].value;
-    let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value; 
-
+    let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value;
     let ObjContrato;
-    if (this.Pais==="Colombia") {
+
+    if (this.Pais === "Colombia") {
       ObjContrato = {
         TipoContrato: TipoContrato,
         NumSolpSAP: SolpSapRfp,
         CM: ContratoOC,
         RequiereNumOrdenInicio: OrdenInicio,
         ObjContrato: ObjetoContrato,
-        // FechaFirmaContrato: new Date(FechaFirmaContrato),
         ContratoObra: ContratoObraConexo,
-        // FechaEntregaCSC: new Date(FechaEntregaCSCBPO),
-        // FechaEnvioProveedor: new Date(FechaEnvioProvedor),
-        // FechaDevolucionProveedor: new Date(FechaDevolucionProvedor),
         MonedaContrato: MonedaContrato,
-        // TMRSAP: TrmSap,
         IvaContrato: IvaContrato,
         ValorContractual: ValorContractual,
-        // ValorFinalSinIva: ValorSinIVA,
-        // ValorFinal: ValorFinalIVA,
-        // Referencia: Referencia,
         LineaBaseContrato: LineaBaseContrato,
         AhorroGenerado: AhorroGenerado,
         DescripcionCalculoAhorroGenerado: DescripcionCalculo,
         VigenciaContrato: VigenciaContrato,
         RequiereSST: RequiereSST,
         RequierePoliza: RequierePoliza,
-        // FechaEntregaPoliza: new Date(FechaEntrgaPoliza),
-        // FechaEntregaRealPoliza: new Date(FechaRealEntrgaPoliza),
-        // FechaEstadoPoliza: new Date(FechaEstadoPoliza),
-        // CondicionPoliza: CondicionPoliza,
         Acreedor: Acreedor,
         DigitoVerificacion: DigitoVerificacion,
         NombreProveedor: NombreRazonSocial,
@@ -287,36 +283,22 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter
       }
-
-
-    }
-    else{
+    } else {
       ObjContrato = {
         TipoContrato: TipoContrato,
         NumSolpSAP: SolpSapRfp,
         CM: ContratoOC,
         RequiereNumOrdenInicio: OrdenInicio,
         ObjContrato: ObjetoContrato,
-        // FechaFirmaContrato: new Date(FechaFirmaContrato),
         ContratoObra: ContratoObraConexo,
-        // FechaEntregaCSC: new Date(FechaEntregaCSCBPO),
-        // FechaEnvioProveedor: new Date(FechaEnvioProvedor),
-        // FechaDevolucionProveedor: new Date(FechaDevolucionProvedor),
         MonedaContrato: MonedaContrato,
-        // TMRSAP: TrmSap,
         IvaContrato: IvaContrato,
         ValorContractual: ValorContractual,
-        // ValorFinalSinIva: ValorSinIVA,
-        // ValorFinal: ValorFinalIVA,
         LineaBaseContrato: LineaBaseContrato,
         AhorroGenerado: AhorroGenerado,
         DescripcionCalculoAhorroGenerado: DescripcionCalculo,
         RequiereSST: RequiereSST,
         RequierePoliza: RequierePoliza,
-        // FechaEntregaPoliza: new Date(FechaEntrgaPoliza),
-        // FechaEntregaRealPoliza: new Date(FechaRealEntrgaPoliza),
-        // FechaEstadoPoliza: new Date(FechaEstadoPoliza),
-        // CondicionPoliza: CondicionPoliza,
         Acreedor: Acreedor,
         DigitoVerificacion: DigitoVerificacion,
         NombreProveedor: NombreRazonSocial,
@@ -325,59 +307,59 @@ export class ContratosComponent implements OnInit {
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter
-      }      
-    } 
-  
-    this.servicio.GuardarContrato(ObjContrato).then(
-      (resultado)=>{
-        this.Guardado=true;
-        let ResponsableServicios=null;
-        let ResponsablesBienes=null;
-        if (this.CompraServicios) {
-            ResponsableServicios=this.autor;
-        }
-        if (this.CompraBienes) {
-          ResponsableServicios=this.ObResProceso[0].porConfirmarEntregaBienes;
+      }
+    }
 
-        }
-        this.servicio.cambioEstadoSolicitud(this.IdSolicitud,"Por recepcionar",this.autor).then(
-          (resultado)=>{             
-              this.MostrarExitoso("El contrato se ha guardado correctamente");
-              setTimeout(() => {
-                this.router.navigate(["/mis-pendientes"]);
-              }, 1000);
+    this.servicio.GuardarContrato(ObjContrato).then(
+      (resultado) => {
+        this.Guardado = true;
+        this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+          (resultado) => {
+            let notificacion = {
+              IdSolicitud: this.IdSolicitud.toString(),
+              ResponsableId: this.autor,
+              Estado: 'Por recepcionar'
+            };
+            this.servicio.agregarNotificacion(notificacion).then(
+              (item: ItemAddResult) => {
+                this.MostrarExitoso("El contrato se ha guardado correctamente");
+                this.spinner.hide();
+                setTimeout(() => {
+                  this.router.navigate(["/mis-pendientes"]);
+                }, 1000);
+              }, err => {
+                this.mostrarError('Error agregando la notificación');
+                this.spinner.hide();
+              }
+            )
           }
         ).catch(
-          (error)=>{
-            console.log(error); 
+          (error) => {
+            console.log(error);
+            this.spinner.hide();
           }
         );
-      }      
-      ).catch(
-      (error)=>{
-
-    });
-    
+      }
+    ).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+      });
   }
 
-  ValidarIva(){
+  ValidarIva() {
     let Moneda = this.ContratosForm.controls["MonedaContrato"].value;
     const IvaContrato = this.ContratosForm.get('IvaContrato');
-      if (Moneda!="USD") {
-        IvaContrato.clearValidators();
-      }
-      else{
-        IvaContrato.setValidators([Validators.required]);
-      }
-      IvaContrato.updateValueAndValidity();
-     
+   
+    IvaContrato.setValidators([Validators.required]);
+    
+    IvaContrato.updateValueAndValidity();
   }
 
   salir() {
     this.modalRef.hide();
     this.router.navigate(["/mis-pendientes"]);
   }
- 
   onSelect(event: any): void {
     console.log("Sfs");
     this.selectedOption = event.item;
@@ -395,23 +377,21 @@ export class ContratosComponent implements OnInit {
     this.toastr.warningToastr(mensaje, 'Validación');
   }
 
-  ValidarUsuario(){
-    
+  ValidarUsuario() {
     let comprador = this.ContratosForm.controls["Comprador"].value;
     if (comprador.length > 0) {
-      if (this.selectedOption===undefined) {      
+      if (this.selectedOption === undefined) {
         this.tooltip.show();
-        setTimeout(()=>{   
+        setTimeout(() => {
           this.tooltip.hide();
-         }, 3000);
-      }
-      else {
+        }, 3000);
+      } else {
         this.tooltip.hide();
       }
-    }    
-  } 
+    }
+  }
 
-  Salir(){
+  Salir() {
     this.router.navigate(['/mis-solicitudes']);
   }
 

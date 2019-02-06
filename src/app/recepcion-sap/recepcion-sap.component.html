@@ -1,41 +1,74 @@
-<br>
-<br>
-<br>
 <h3>Registrar recepción bienes en SIA</h3>
-<div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover text-center">
-        <thead>
-            <tr>
-                <th>Número Pedido</th>
-                <th>Recepcionado por</th>
-                <th>Cantidad</th>
-                <th>Valor</th>
-                <th>Comentarios</th>
-                <th>Adjunto Activos</th>
-                <th># Recepción SIA</th>
-                <th>Guardar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of ObjRecepcionBienes">
-                <td>{{item.contratoMarco}}</td>
-                <td>{{item.Author}}</td>
-                <td>{{item.cantidad}}</td>
-                <td>{{item.valor}}</td>
-                <td>{{item.comentario}}</td>
-                <td>
-                    <a *ngIf="item.adjunto != null || item.adjunto != undefined" href="{{item.adjunto}}"
-                        target=_blank>
+
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar recepción">
+</mat-form-field>
+
+<mat-toolbar color="primary" [hidden]="!empty">No hay recepciones de bienes</mat-toolbar>
+
+
+<div class="mat-elevation-z8" [hidden]="empty">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="numeroPedido">
+            <th mat-header-cell *matHeaderCellDef> Número de pedido </th>
+            <td mat-cell *matCellDef="let element"> {{element.numeroPedido}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="autor">
+            <th mat-header-cell *matHeaderCellDef> Recepcionado por </th>
+            <td mat-cell *matCellDef="let element"> {{element.autor}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+            <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="valor">
+            <th mat-header-cell *matHeaderCellDef> Valor </th>
+            <td mat-cell *matCellDef="let element"> {{element.valor | number}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="comentario">
+            <th mat-header-cell *matHeaderCellDef> Comentario </th>
+            <td mat-cell *matCellDef="let element"> {{element.comentario}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="adjuntoEntregaBienes">
+            <th mat-header-cell *matHeaderCellDef> Adjunto </th>
+            <td mat-cell *matCellDef="let element">
+                <ng-container *ngIf="element.adjuntoEntregaBienes != null; else NoHayAdjEntregaBienes">
+                    <a href="{{element.adjuntoEntregaBienes.url}}" target="_blank">
                         <button type="button" class="btn btn-primary">Ver Archivo</button>
                     </a>
+                </ng-container>
+                <ng-template #NoHayAdjEntregaBienes>
+                    Sin orden estadística
+                </ng-template>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="NumeroRecepcion">
+            <th mat-header-cell *matHeaderCellDef> Número de recepción </th>
+            <td mat-cell *matCellDef="let element">
+                <input class="form-control" type="text" [(ngModel)]="element.NumeroRecepcion" [formControl]="numRecepcion">
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Acciones">
+                <th mat-header-cell *matHeaderCellDef> Guardar </th>
+                <td mat-cell *matCellDef="let element">
+                        <input type="button" class="btn btn-success" value="OK" (click)="Guardar(element)" />
                 </td>
-                <td>
-                    <input class="form-control" type="text" name="" id="" value="" [formControl]="numRecepcion">
-                </td>
-                <td>
-                    <input type="button" class="btn btn-primary" value="OK" (click)="Guardar(item)" />
-                </td>
-            </tr>
-        </tbody>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
 </div>
+
+<ngx-spinner>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>

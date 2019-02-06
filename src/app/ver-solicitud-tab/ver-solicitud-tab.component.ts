@@ -4,12 +4,14 @@ import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
 import { RecepcionBienes } from '../ver-solicitud-tab/recepcionBienes';
 import { RecepcionServicios } from '../ver-solicitud-tab/recepcionServicios';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnicaServicios';
 import { Contratos } from '../dominio/contrato';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Solicitud } from '../dominio/solicitud';
 import { MatTableDataSource } from '@angular/material';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
   selector: 'app-ver-solicitud-tab',
@@ -24,9 +26,13 @@ export class VerSolicitudTabComponent implements OnInit {
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
   dataSource;
+  contratoMarco: string;
+  moneda: string;
   RutaArchivo: string;
+  RegistroActivoArchivo: string;
   tipoSolicitud: string;
   numOrdenEstadistica: string;
+  existenServicios: boolean;
   solicitante: string;
   comentarioregistroactivos: string;
   ordenadorGasto: string;
@@ -44,7 +50,10 @@ export class VerSolicitudTabComponent implements OnInit {
   alcance: string;
   resultadosondeo: string;
   comentariorevisionsondeo: string;
+  existenBienes: boolean;
   estadoRegistrarSAP: string;
+  ArchivoAdjunto: boolean;
+  ArchivoAdjuntoActivos: boolean;
   numSolSAP: number;
   comentarioRegistrarSAP: string;
   tieneContrato: Boolean;
@@ -60,6 +69,7 @@ export class VerSolicitudTabComponent implements OnInit {
   solicitudRecuperada: Solicitud;
   fueSondeo : boolean;
   paginator: any;
+  displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
   displayedColumns: string[] = [
     "codigo",
     "descripcion",
@@ -70,10 +80,23 @@ export class VerSolicitudTabComponent implements OnInit {
     "moneda"
   ];
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router) { 
-    this.loading = false;
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) { 
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    console.log(this.solicitudRecuperada);
+    if(this.solicitudRecuperada == null){
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
     this.IdSolicitud = this.solicitudRecuperada.id;
+    this.spinner .hide();
+    this.existenBienes = false;
+    this.existenServicios = false;
+    this.ArchivoAdjunto = false;
+    this.ArchivoAdjuntoActivos = false;
+  }
+
+  mostrarAdvertencia(mensaje: string) {
+    this.toastr.warningToastr(mensaje, 'Validación');
   }
 
   ngOnInit() {
@@ -87,12 +110,14 @@ export class VerSolicitudTabComponent implements OnInit {
     }
 
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
-      solicitud => {
+      solicitud => {      
         this.IdSolicitud = solicitud.Id;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+        this.moneda = solicitud.TipoMoneda;
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.solicitante = solicitud.Solicitante;
         this.ordenadorGasto = solicitud.OrdenadorGastos.Title;
+        this.contratoMarco = solicitud.CM;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
         this.categoria = solicitud.Categoria;
@@ -112,26 +137,50 @@ export class VerSolicitudTabComponent implements OnInit {
         this.numSolSAP = solicitud.NumSolSAP;
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
         this.tieneContrato = solicitud.TieneContrato;
-     
+        if (solicitud.Attachments === true) {
+          let ObjArchivos = solicitud.AttachmentFiles.results;
+          ObjArchivos.forEach(element => {
+            let objSplit = element.FileName.split("-");
+            if (objSplit.length > 0) {
+              let TipoArchivo = objSplit[0];
+              if (TipoArchivo === "ActivoVM") {
+                this.RutaArchivo = element.ServerRelativeUrl;
+                this.ArchivoAdjunto = true;
+                console.log(this.ArchivoAdjunto);
+              }
+              if(TipoArchivo === "RegistroActivo"){
+                this.RegistroActivoArchivo = element.ServerRelativeUrl;
+                this.ArchivoAdjuntoActivos = true;
+              }
+            }
+          });
+        }
         if(solicitud.CondicionesContractuales != null){
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
-        
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
+            if (RespuestaCondiciones.length > 0) {
+              this.existenBienes = true;
             this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
             this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
                 this.dataSource.paginator = this.paginator;
+            }
+            this.spinner.hide();
           }
         );
-        this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
+          this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-            this.ObjContratos = Contratos.fromJsonList(RespuestaCondiciones);
+          this.ObjContratos = Contratos.fromJsonList(RespuestaCondiciones);
           }
         );
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
+            if (RespuestaCondicionesServicios.length > 0) {
+              this.existenServicios = true;
             this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            }
+            this.spinner.hide();
           }
         );
         this.servicio.ObtenerRecepcionesBienes(this.IdSolicitud).subscribe(
@@ -172,7 +221,10 @@ export class VerSolicitudTabComponent implements OnInit {
   }
 
   siguiente(tabId: number){
-    if(tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo"){
+    console.log(tabId);
+    console.log(this.solicitudRecuperada);
+
+    if(tabId == 0 && this.solicitudRecuperada.tipoSolicitud != null && this.solicitudRecuperada.tipoSolicitud != "Sondeo" && this.solicitudRecuperada.FueSondeo == false){
       tabId = tabId + 3;
       this.staticTabs.tabs[tabId].active = true;
       document.body.scrollTop = document.documentElement.scrollTop = 0;

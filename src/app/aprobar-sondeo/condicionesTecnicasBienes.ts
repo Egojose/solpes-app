@@ -17,7 +17,9 @@ export class CondicionesTecnicasBienes {
         public Fabricante?: string,
         public Cantidad?: number,
         public ValorEstimado?: string,
-        public Comentarios?: string) {}
+        public Comentarios?: string,
+        public moneda?: string,
+        public monedaSondeo?: string) {}
 
     public static fromJson(element: any) {
 
@@ -49,7 +51,9 @@ export class CondicionesTecnicasBienes {
             element.Fabricante, 
             element.Cantidad, 
             element.ValorEstimado, 
-            element.Comentarios);
+            element.Comentarios,
+            element.TipoMoneda,
+            element.MonedaSondeo);
     }
 
 

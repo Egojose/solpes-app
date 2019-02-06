@@ -6,6 +6,7 @@ export class resultadoCondicionesTS {
         public cantidad: number,
         public valorEstimado?: string,
         public moneda?: string,
+        public monedaSondeo?: string,
         public adjunto?: any) { }
 
     public static fromJson(element: any) {
@@ -30,8 +31,9 @@ export class resultadoCondicionesTS {
             element.CodigoSondeo, 
             element.Descripcion,                       
             element.CantidadSondeo, 
-            element.PrecioSoneo, 
+            element.PrecioSondeo, 
             element.TipoMoneda,
+            element.MonedaSondeo,
             RutaArchivo);
     }
 

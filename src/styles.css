@@ -199,3 +199,15 @@ td.mat-cell,td.mat-footer-cell, th.mat-header-cell {
     max-height: inherit;
 }
 
+.version-aplicacion{
+    color: white;
+    bottom:0;
+    position: absolute;
+    margin-left: 150px;
+}
+
+.texto-version{
+    font-size: small;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+

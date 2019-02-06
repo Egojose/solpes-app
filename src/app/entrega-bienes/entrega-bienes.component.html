@@ -1,98 +1,7 @@
-<div class="loading" *ngIf='loading'>
-    <img class="img-logo" src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/loading/loading.gif" alt="loading...">
-</div>
-<br>
-<!-- <div class="row espacio">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <strong>Fecha deseada de entrega</strong>
-            </div>
-            <div class="card-body">
-                {{fechaDeseada | date:'dd/MM/yyyy'}}
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <strong>Información de la solicitud</strong>
-            </div>
-            <div class="card-body">
-                <div class="row espacio">
-                    <div class="col-md-4">
-                        <strong>Solicitante: </strong>{{solicitante}}
-                    </div>
-                    <div class="col-md-4">
-                        <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
-                    </div>
-                    <div class="col-md-4">
-                        <strong>Empresa: </strong>{{empresa}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <strong>País: </strong>{{pais}}
-                    </div>
-                    <div class="col-md-3">
-                        <strong>Categoría: </strong>{{categoria}}
-                    </div>
-                    <div class="col-md-3">
-                        <strong>Sub-Categoría: </strong>{{subCategoria}}
-                    </div>
-                    <div class="col-md-3">
-                        <strong>Comprador: </strong>{{comprador}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row ">
+<!-- <div class="row">
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Justificación</strong></label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{justificacion}}</textarea>
-        </div>
-    </div>
-</div>
-<hr>
-<div class="form-group row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Condiciones contractuales</strong></label>
-            <div class="table-wrapper-scroll-y">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Campo</th>
-                            <th scope="col">Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of condicionesContractuales">
-                            <td>{{item.campo}}</td>
-                            <td>{{item.descripcion}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div> -->
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group ">
-            <label for="colFormLabel"><strong>Número de pedido</strong></label>
-            <input type="text" class="form-control" [(ngModel)]="NumSolp" readonly>
+        <div *ngIf="SwtichEsOrdenEstadistica===true"  >
+            <h5><strong>Número de pedido: </strong>{{NumSolp}}</h5>
         </div>
     </div>
     <div class="col-md-4 offset-md-2">
@@ -101,6 +10,42 @@
         </a>
     </div>
 </div>
+<div class="row">
+    <div *ngIf="SwtichEsOrdenEstadistica===true"  class="col-md-12">
+        <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
+    </div>
+</div> -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <h5><strong>Número de pedido: </strong>{{NumSolp}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div *ngIf="SwtichEsOrdenEstadistica===true"  class="col-md-12">
+                <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
+            </div>
+        </div>
+        <div class="row" *ngIf="tieneArchivo === true">
+            <div class="col-md-12">
+                <a href="{{RutaArchivo}}" target="_blank">Descargar archivo de activos fijos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-primary" style="margin-top: 3%" (click)="VerSolicitud()">Ver solicitud</button>
+    </div>
+</div>
+<br>
+<hr>
+<!-- <div class="row" *ngIf="tieneArchivo === true">
+    <div class="col-md-12">
+        <a href="{{RutaArchivo}}" target="_blank">Descargar archivo de activos fijos</a>
+    </div>
+</div> -->
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
@@ -113,7 +58,7 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Modelo</th>
                             <th scope="col">Fabricante</th>
-                            <th scope="col">Cantidad</th>
+                            <th scope="col">Cantidad restante</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -123,12 +68,8 @@
                             <td>{{item.descripcion}}</td>
                             <td>{{item.modelo}}</td>
                             <td>{{item.fabricante}}</td>
-                            <!-- <td>{{item.claseSIA}}</td> -->
-                            <td>{{item.totalCantidad}}</td>
+                            <td>{{item.totalCantidad | number}}</td>
                             <td>
-                                <!-- <div *ngIf="item.totalCantidad !== 0 && item.UltimaEntregaCTB !== true">
-                                    <button class="btn btn-warning btnAcciones" (click)="UltimaEntrega(item)">No hay mas entregas</button>
-                                </div> -->
                                 <div *ngIf="item.totalCantidad === 0 || item.UltimaEntregaCTB === true">
                                     Última entrega realizada
                                 </div>
@@ -140,17 +81,7 @@
         </div>
     </div>
 </div>
-<div class="row" *ngIf="tieneArchivo === true">
-    <div class="col-md-12">
-        <a href="{{RutaArchivo}}" target="_blank">Descargar archivo de activos fijos</a>
-    </div>
-</div>
-<!-- <div class="form-group row">
-  <label for="colFormLabel" class="col-sm-2 col-form-label"><strong>Condiciones técnicas</strong></label>
-  <div class="col-sm-10">
-      
-  </div>
-</div> -->
+
 <br>
 <div class="row espacio">
     <div class="col-12">
@@ -164,25 +95,25 @@
                         <div class="form-group col-md-3">
                             <label for="inputEmail4">Descripción</label>
                             <select name="" id="" class="form-control" formControlName="Descripcion" [ngClass]="{ 'is-invalid': submitted && f.Descripcion.errors }">
-                              <option value=""></option>
-                              <option *ngFor="let item of ObjItemsDescripcion" [ngValue]="item">{{item.descripcion}}</option>
-                          </select>
+                                <option value=""></option>
+                                <option *ngFor="let item of ObjItemsDescripcion" [ngValue]="item">{{item.descripcion}}</option>
+                            </select>
                             <div *ngIf="submitted && f.Descripcion.errors" class="invalid-feedback">
                                 <div *ngIf="f.Descripcion.errors.required">Es requerido</div>
                             </div>
-                            <!-- <input type="email" class="form-control" id="inputEmail4"> -->
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputEmail4">Cantidad</label>
                             <ng-template #tolTemplate>{{content}}</ng-template>
-                            <input type="text" class="form-control" [tooltip]="tolTemplate" triggers="" (change)="ValidacionCero()" #customTooltip="bs-tooltip" placement="bottom" id="Cantidad" numbersOnly formControlName="Cantidad" [ngClass]="{ 'is-invalid': submitted && f.Cantidad.errors }">
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" type="text" class="form-control" [tooltip]="tolTemplate" triggers="" (change)="ValidacionCero()" #customTooltip="bs-tooltip"
+                                placement="bottom" id="Cantidad" formControlName="Cantidad" [ngClass]="{ 'is-invalid': submitted && f.Cantidad.errors }">
                             <div *ngIf="submitted && f.Cantidad.errors" class="invalid-feedback">
                                 <div *ngIf="f.Cantidad.errors.required">Es requerido</div>
                             </div>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputEmail4">Valor</label>
-                            <input type="text" class="form-control" id="Valor" numbersOnly formControlName="Valor" [ngClass]="{ 'is-invalid': submitted && f.Valor.errors }">
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" class="form-control" id="Valor" formControlName="Valor" [ngClass]="{ 'is-invalid': submitted && f.Valor.errors }">
                             <div *ngIf="submitted && f.Valor.errors" class="invalid-feedback">
                                 <div *ngIf="f.Valor.errors.required">Es requerido</div>
                             </div>
@@ -190,10 +121,10 @@
                         <div class="form-group col-md-2">
                             <label for="inputEmail4">Última entrega</label>
                             <select name="" id="" class="form-control" formControlName="UltimaEntrega" [ngClass]="{ 'is-invalid': submitted && f.UltimaEntrega.errors }">
-                              <option value=""  [disabled]="modolectura"></option>
-                              <option value="Sí" [disabled]="modolectura">Sí</option>
-                              <option value="No"[disabled]="modolectura" >No</option>
-                          </select>
+                                <option value="" [disabled]="modolectura"></option>
+                                <option value="Sí" [disabled]="modolectura">Sí</option>
+                                <option value="No" [disabled]="modolectura">No</option>
+                            </select>
                             <div *ngIf="submitted && f.UltimaEntrega.errors" class="invalid-feedback">
                                 <div *ngIf="f.UltimaEntrega.errors.required">Es requerido</div>
                             </div>
@@ -204,7 +135,7 @@
                         </div>
                     </div>
                     <div class="row" *ngIf="OrdenEstadistica === true">
-                        <div class="col-md-6">
+                        <div class="col-md-6" *ngIf="ObjItemsDescripcion.length > 0">
                             <input type="file" name="" id="Adjunto" (change)="adjuntarArchivoBienes($event)">
                         </div>
                     </div>
@@ -223,7 +154,7 @@
                                         <th scope="col">Descripción</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">Valor</th>
-                                        <th scope="col">Ultima entrega</th>
+                                        <th scope="col">Última entrega</th>
                                         <th scope="col">Fecha recepción</th>
                                         <th scope="col">Comentario</th>
                                         <th scope="col">Adjunto</th>
@@ -234,7 +165,7 @@
                                     <tr *ngFor="let item of ObjRecepcionBienes.reverse()">
                                         <td>{{item.descripcion}}</td>
                                         <td>{{item.cantidad}}</td>
-                                        <td>{{item.valor}}</td>
+                                        <td>{{item.valor | number}}</td>
                                         <td>
                                             <div *ngIf="item.ultimaEntrega == true">
                                                 Sí
@@ -246,7 +177,8 @@
                                         <td>{{item.fechaRecepcion | date:'dd/MM/yyyy'}}</td>
                                         <td>{{item.comentario}}</td>
                                         <td>
-                                            <a *ngIf="item.adjunto !== null" href="{{item.adjunto}}" target="_blank">Ver adjunto</a>
+                                            <a *ngIf="item.adjunto !== null" href="{{item.adjunto}}" target="_blank">Ver
+                                                adjunto</a>
                                         </td>
                                         <td>
                                             <button class="btn btn-danger btnAcciones" *ngIf="item.estadoRB === 'No confirmado'" (click)="Eliminar(item)">Eliminar</button>
@@ -262,8 +194,11 @@
     </div>
 </div>
 <div class="row espacioBotones">
-    <!-- <button type="button" class="btn btn-primary btn-lg botonera">Guardar</button> -->
-    <button type="button" class="btn btn-success btn-lg botonera" *ngIf="showBtnConfirmar === false" (click)="Confirmar()">Confirmar y salir</button>
+    <button type="button" class="btn btn-success btn-lg botonera" *ngIf="showBtnConfirmar === false" (click)="Confirmar()">Confirmar
+        y salir</button>
     <button type="button" class="btn btn-primary btn-lg botonera" (click)="Salir()">Salir</button>
 </div>
-<div class="row footerPagina"></div>
+
+<ngx-spinner>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>

@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../aprobar-sondeo/condicionesTecnicasBienes';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CondicionTecnicaServicios } from '../aprobar-sondeo/condicionesTecnicasServicios';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ItemAddResult } from 'sp-pnp-js';
 import { Usuario } from '../dominio/usuario';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
-
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Solicitud } from '../dominio/solicitud';
 
 @Component({
   selector: 'app-aprobar-sondeo',
@@ -25,6 +26,7 @@ export class AprobarSondeoComponent implements OnInit {
   fechaDeseada: Date;
   solicitante: string;
   tipoSolicitud: string;
+  panelOpenState = false;
   codigoAriba: string;
   numeroOrdenEstadistico: string;
   ordenadorGasto: string;
@@ -51,20 +53,72 @@ export class AprobarSondeoComponent implements OnInit {
   ComentarioSondeo: string;
   justificacionSondeo: string;
   historial: string;
+  contratoMarco: string;
   comentarioSondeo: string;
   usuario: Usuario;
   loading: boolean;
   paisId: any;
-  ObResProceso: responsableProceso[]=[];
+  ObResProceso: responsableProceso[] = [];
   CompradorId: any;
+  existeCondicionesTecnicasBienes: boolean;
+  existeCondicionesTecnicasServicios: boolean;
+  ResponsableProceso: number;
+  estadoSolicitud: string;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
-  constructor(private servicio: SPServicio, private formBuilder: FormBuilder, public toastr: ToastrManager,private activarRoute: ActivatedRoute, private router: Router) {
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
-    this.loading = false;
+  constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();    
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
+    this.existeCondicionesTecnicasBienes = false;
+    this.existeCondicionesTecnicasServicios = false;
   }
 
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para aprobar sondeo");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por aprobar sondeo'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
+  }
 
   GuardarRevSondeo() {
+    this.spinner.show();
     let fecha = new Date();
     let dia = ("0" + fecha.getDate()).slice(-2);
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
@@ -73,110 +127,145 @@ export class AprobarSondeoComponent implements OnInit {
 
     let ObjSondeo;
     if (this.RDBsondeo === undefined) {
-      this.mostrarAdvertencia('Debe seleccionar una acción')
+      this.mostrarAdvertencia('Debe seleccionar una acción');
+      this.spinner.hide();
     }
+
+    if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
+      this.comentarioSondeo = "Comentarios: ";
+    }
+    if (this.ComentarioSondeo == null || this.ComentarioSondeo == undefined) {
+      this.ComentarioSondeo = "Sin comentario.";
+    }
+
     if (this.RDBsondeo !== undefined) {
       if (this.RDBsondeo === 1 && this.ComentarioSondeo === undefined) {
-        this.tooltip.show();
-        setTimeout(() => {
-          this.tooltip.hide();
-        }, 3000);
-
-        return false;
+        return this.ValidarComentarios();
       }
       else if (this.RDBsondeo === 1) {
-        //Comprador
+        this.ResponsableProceso = this.CompradorId;
+        this.estadoSolicitud = 'Por sondear';
         ObjSondeo = {
-          ResponsableId: this.CompradorId,
-          Estado: "Por sondear",
+          ResponsableId: this.ResponsableProceso,
+          Estado: this.estadoSolicitud,
           ResultadoSondeo: "Sondeo adicional",
           Resondear: true,
           ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSondeo
         }
       }
       else if (this.RDBsondeo === 2 && this.justificacionSondeo === undefined) {
-        this.tooltip1.show();
-
-        setTimeout(() => {
-          this.tooltip1.hide();
-        }, 3000);
-
-        return false;
+        this.numeroSolpCm = '';
+        return this.validarJustificacion();
       }
       else if (this.RDBsondeo === 2) {
-
         if (this.ObjCondicionesTecnicas.length > 0) {
-          let Responsable = this.ObResProceso[0].porverificarMaterial;
+          this.ResponsableProceso = this.ObResProceso[0].porverificarMaterial;
+          this.estadoSolicitud = 'Por verificar material';
           ObjSondeo = {
             TipoSolicitud: "Solp",
-            ResponsableId: Responsable,
-            Estado: "Por verificar material",
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en SOLP",
             Justificacion: this.justificacionSondeo
           }
-        }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
-          let Responsable = this.ObResProceso[0].porRegistrarSolp;
+        } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
+          this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
+          this.estadoSolicitud = 'Por registrar solp sap';
           ObjSondeo = {
             TipoSolicitud: "Solp",
-            ResponsableId: Responsable,
-            Estado: "Por registrar solp sap",
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en SOLP",
             Justificacion: this.justificacionSondeo
           }
-        }        
+        }
       }
       else if (this.RDBsondeo === 3) {
+        this.estadoSolicitud = 'Solicitud descartada';
         ObjSondeo = {
-          ResponsableId: -1,
-          ResultadoSondeo: "Descartar",
+          ResponsableId: null,
+          Estado: this.estadoSolicitud,
+          ResultadoSondeo: "Descartar"
         }
       }
       if (this.RDBsondeo === 4 && this.justificacionSondeo === undefined) {
-        this.tooltip1.show();
-        setTimeout(() => {
-          this.tooltip1.hide();
-        }, 3000);
-
-        return false;
+        return this.validarJustificacion();
       }
       else if (this.RDBsondeo === 4) {
         if (this.ObjCondicionesTecnicas.length > 0) {
-          let Responsable = this.ObResProceso[0].porverificarMaterial;
+          this.ResponsableProceso = this.ObResProceso[0].porverificarMaterial;
+          this.estadoSolicitud = 'Por verificar material';
           ObjSondeo = {
-            TipoSolicitud: "CM",
-            ResponsableId: Responsable,
-            Estado: "Por verificar material",
+            TipoSolicitud: "Orden a CM",
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en CM",
             Justificacion: this.justificacionSondeo
           }
-        }else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
-          let Responsable = this.ObResProceso[0].porRegistrarSolp;
+        } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
+          this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
+          this.estadoSolicitud = 'Por registrar solp sap';
           ObjSondeo = {
-            TipoSolicitud: "CM",
-            ResponsableId: Responsable,
-            Estado: "Por registrar solp sap",
+            TipoSolicitud: "Orden a CM",
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en CM",
             Justificacion: this.justificacionSondeo
           }
-        } 
+        }
       }
+
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
         (resultado: ItemAddResult) => {
-          this.MostrarExitoso("La acción se ha guardado con éxito");
-          sessionStorage.removeItem("IdSolicitud");
-          setTimeout(() => {
-            this.salir();
-          }, 1000);         
+          let notificacion = {
+            IdSolicitud: this.IdSolicitud.toString(),
+            ResponsableId: this.ResponsableProceso,
+            Estado: this.estadoSolicitud
+          };
+
+          this.servicio.agregarNotificacion(notificacion).then(
+            (item: ItemAddResult) => {
+              this.MostrarExitoso("La acción se ha guardado con éxito");
+              sessionStorage.removeItem("IdSolicitud");
+              this.spinner.hide();
+              setTimeout(() => {
+                this.salir();
+              }, 1000);
+            }, err => {
+              this.mostrarError('Error agregando la notificación');
+              this.spinner.hide();
+            }
+          )
         }
       ).catch(
         (error) => {
           console.log(error);
+          this.spinner.hide();
         }
       )
     }
   }
 
+  private validarJustificacion() {
+    this.tooltip1.show();
+    setTimeout(() => {
+      this.tooltip1.hide();
+    }, 3000);
+    this.spinner.hide();
+    return false;
+  }
+
+  private ValidarComentarios() {
+    this.tooltip.show();
+    setTimeout(() => {
+      this.tooltip.hide();
+    }, 3000);
+    this.spinner.hide();
+    return false;
+  }
+
   ngOnInit() {
+    this.spinner.show();
     this.ObtenerUsuarioActual();
   }
 
@@ -187,6 +276,7 @@ export class AprobarSondeoComponent implements OnInit {
         this.ObtenerSolicitudBienesServicios();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
+        this.spinner.hide();
       }
     )
   }
@@ -211,6 +301,7 @@ export class AprobarSondeoComponent implements OnInit {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       solicitud => {
         this.tipoSolicitud = solicitud.TipoSolicitud;
+        this.contratoMarco = solicitud.CM;
         this.codigoAriba = solicitud.CodigoAriba;
         this.numeroOrdenEstadistico = solicitud.NumeroOrdenEstadistica;
         this.IdSolicitud = solicitud.Id;
@@ -225,27 +316,36 @@ export class AprobarSondeoComponent implements OnInit {
         this.subCategoria = solicitud.Categoria;
         this.comprador = solicitud.Comprador.Title;
         this.CompradorId = solicitud.Comprador.ID;
-        this.alcance = solicitud.Alcance;
-        this.comentarioSondeo = solicitud.ComentarioSondeo;
+        this.alcance = solicitud.Alcance;        
+        this.comentarioSondeo = (solicitud.ComentarioSondeo != undefined) ? solicitud.ComentarioSondeo : '';
         this.justificacion = solicitud.Justificacion;
 
-        if(solicitud.CondicionesContractuales != null){
+        if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
 
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
-            this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            if (RespuestaCondiciones.length > 0) {
+              this.existeCondicionesTecnicasBienes = true;
+              this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+            }
+            this.spinner.hide();
           }
         )
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           RespuestaCondicionesServicios => {
-            this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            if (RespuestaCondicionesServicios.length > 0) {
+              this.existeCondicionesTecnicasServicios = true;
+              this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+            }
+            this.spinner.hide();
           }
         )
         this.servicio.obtenerResponsableProcesos(this.paisId).subscribe(
-          (RespuestaProcesos)=>{
-              this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);              
+          (RespuestaProcesos) => {
+            this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);
+            this.spinner.hide();
           }
         )
       }

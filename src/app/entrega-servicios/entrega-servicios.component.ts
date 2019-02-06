@@ -8,6 +8,10 @@ import { RecepcionServicios } from '../entrega-servicios/recepcionServicios';
 import { ItemAddResult } from 'sp-pnp-js';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Contratos } from '../dominio/contrato';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: 'app-entrega-servicios',
@@ -52,32 +56,80 @@ export class EntregaServiciosComponent implements OnInit {
   ResponsableServicios: any;
   paisId: any;
   NumSolp: any;
+  CM: string;
   modolectura: boolean;
+  year: number;
+  contrato: any;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
-  constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager) {
+  constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager,private spinner: NgxSpinnerService) {
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();    
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
     this.ItemsAgregadosReciente = 0;
     this.showBtnConfirmar = false;
     this.ErrorCantidad = false;
-    //this.modolectura = true; 
+  }
+
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para entrega servicios");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por recepcionar'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   ngOnInit() {
-    this.loading = true;
+    this.spinner.show();
     let fecha = new Date();
-    let year = fecha.getFullYear();
+    this.year = fecha.getFullYear();
     this.AgregarElementoForm = this.formBuilder.group({
       Descripcion: ['', Validators.required],
       Valor: [''],
-      Cantidad: ['', Validators.required],
+      Cantidad: [0, Validators.required],
       Mes: ['', Validators.required],
-      Ano: [year, Validators.required],
+      Ano: [this.year, Validators.required],
       Ubicacion: ['', Validators.required],
       UltimaEntrega: ['', Validators.required],
       Comentario: ['']
     });
 
     this.ObjMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitudParms).subscribe(
       (solicitud) => {
         this.IdSolicitud = solicitud.Id;
@@ -95,12 +147,31 @@ export class EntregaServiciosComponent implements OnInit {
         this.justificacion = solicitud.Justificacion;
         this.CompraBienes = solicitud.CompraBienes;
         this.FaltaBienes = solicitud.FaltaRecepcionBienes;
-        this.NumSolp = solicitud.NumSolSAP;
-        this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        this.CM = solicitud.CM;
+
+        if (solicitud.CondicionesContractuales != null) {
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+        }
+
         let CantidadCT = 0;
         let TotalCantidadVerificar = 0;
         this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
           (RespuestaCTServicios) => {
+            this.servicio.obtenerContratoPorSolicitud(this.IdSolicitud).subscribe(
+              (respuesta) => {
+                this.contrato = Contratos.fromJsonList(respuesta);
+                if (this.contrato.length>0) {
+                  this.NumSolp = this.contrato[0].numeroContrato;              
+                }   
+                this.spinner.hide();
+              },
+              (error) => {
+                this.mostrarError("error consultando el contrato");
+                console.log(error);
+                this.spinner.hide();
+              }
+            )
+
             this.ObjCondicionesTecnicas = CondicionesTecnicasServicios.fromJsonList(RespuestaCTServicios);
 
             this.ObjCondicionesTecnicas.forEach(element => {
@@ -129,7 +200,7 @@ export class EntregaServiciosComponent implements OnInit {
                   (RespuestaProcesos)=>{
                     this.ObResProceso = responsableProceso.fromJsonList(RespuestaProcesos);                     
                     this.ResponsableServicios = this.ObResProceso[0].porRegistrarSapServicios;
-                    this.loading = false;
+                    this.spinner.hide();
                   },
                   (error)=>{
 
@@ -144,6 +215,7 @@ export class EntregaServiciosComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.spinner.hide();
       }
     );
   }
@@ -178,9 +250,9 @@ export class EntregaServiciosComponent implements OnInit {
     let comentario = this.AgregarElementoForm.controls['Comentario'].value;
 
     let ultimaEntregabool: boolean;
-    if (ultimaEntrega == "Sí") {
+    if (ultimaEntrega == "Sí" || cantidad === 0) {
       ultimaEntregabool = true;
-      if (cantidad === "0" && comentario === "") {
+      if (comentario === "") {
         this.mostrarAdvertencia("Por favor ingrese un comentario");
         return false;
       }
@@ -188,7 +260,7 @@ export class EntregaServiciosComponent implements OnInit {
     else {
       ultimaEntregabool = false;
     }
-
+    
     let IdServicio = this.ObjCondicionesTecnicas.findIndex(x => x.IdServicio === Objdescripcion.IdServicio);
     this.cantidadCTS = this.ObjCondicionesTecnicas[IdServicio].totalCantidad;
     this.cantidadRecibidaCTS = this.ObjCondicionesTecnicas[IdServicio].cantidadRecibida;
@@ -231,7 +303,8 @@ export class EntregaServiciosComponent implements OnInit {
 
     this.objRecepcionAgregar = new RecepcionServicios(Objdescripcion.IdServicio, Objdescripcion.descripcion, cantidad, valor, ultimaEntregabool, comentario, ubicacion, mes);
     this.objRecepcionAgregar["ano"]=ano;
-    this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud,this.ResponsableServicios).then(
+    this.spinner.show();
+    this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud,this.ResponsableServicios,this.NumSolp).then(
       (Respuesta: ItemAddResult) => {
         this.ItemsAgregadosReciente++;
         this.objRecepcionAgregar["IdRecepcionServicios"] = Respuesta.data.Id;
@@ -248,6 +321,7 @@ export class EntregaServiciosComponent implements OnInit {
           'Comentario': ''
         });
         this.submitted = false;
+        this.AgregarElementoForm.controls["Ano"].setValue(this.year);
         let cantidadRecibida;
         if (this.cantidadRecibidaCTS === 0) {
           cantidadRecibida = parseFloat(cantidad);
@@ -261,16 +335,17 @@ export class EntregaServiciosComponent implements OnInit {
         }
         this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(Objdescripcion.IdServicio, objActualizacionCTS).then(
           (resultado) => {
-
+            this.spinner.hide();
           }).catch(
             (error) => {
               console.log(error);
+              this.spinner.hide();
             }
           );
       }, (error) => {
         console.log(error);
+        this.spinner.hide();
       });
-
   }
 
   UltimaEntrega(ObjCTS) {
@@ -289,7 +364,7 @@ export class EntregaServiciosComponent implements OnInit {
       let objActualizacionCTS = {
         UltimaEntrega: true
       }
-      this.loading=true;
+      this.spinner.show();
       this.servicio.actualizarServiciosRecibidos(RecepcionServiciosID).then(
         (resultado) => {
           this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjCTS.IdServicio, objActualizacionCTS).then(
@@ -298,11 +373,11 @@ export class EntregaServiciosComponent implements OnInit {
               let indexServicio = this.ObjRecepcionServicios.findIndex(x => x.idServicio === ObjCTS.IdServicio);
               this.ObjRecepcionServicios[indexServicio]["ultimaEntrega"] = true;
               this.ObjItemsDescripcion.splice(indexServicio, 1);
-              this.loading=false;
+              this.spinner.hide();
             }).catch(
               (error) => {
                 console.log(error);
-                this.loading=false;
+                this.spinner.hide();
               }
             );
         }
@@ -318,11 +393,11 @@ export class EntregaServiciosComponent implements OnInit {
         CantidadRecibida: 0,
         UltimaEntrega: true
       }
-      this.loading=true;
+      this.spinner.show();
       this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjCTS.IdServicio, objActualizacionCTS).then(
         (resultado) => {
           this.objRecepcionAgregar = new RecepcionServicios(ObjCTS.IdServicio, ObjCTS.descripcion, 0, "0", true, "", "", "");
-          this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud,null).then(
+          this.servicio.GuardarServiciosRecibidos(this.objRecepcionAgregar, this.IdSolicitud,null, this.NumSolp).then(
             (resultadoBienes: ItemAddResult) => {
               this.ItemsAgregadosReciente++;
               this.objRecepcionAgregar["IdRecepcionServicios"] = resultadoBienes.data.Id;
@@ -331,7 +406,7 @@ export class EntregaServiciosComponent implements OnInit {
               this.ObjRecepcionServicios.push(this.objRecepcionAgregar);
               let indexServicio = this.ObjRecepcionServicios.findIndex(x=> x.idServicio === ObjCTS.IdServicio)
               this.ObjItemsDescripcion.splice(indexServicio,1);
-              this.loading = false;
+              this.spinner.hide();
             }
           )
         }).catch(
@@ -347,7 +422,7 @@ export class EntregaServiciosComponent implements OnInit {
     let IdServicio = this.ObjCondicionesTecnicas.findIndex(x => x.IdServicio === ObjRecepcionEliminar.idServicio);
     let TotalServicios = this.ObjCondicionesTecnicas[IdServicio]["totalCantidad"];
     let cantidadRecibida = this.ObjCondicionesTecnicas[IdServicio]["cantidadRecibida"];
-    this.loading=true;
+    this.spinner.show();
     this.servicio.eliminarServiciosRecibidos(ObjRecepcionEliminar.IdRecepcionServicios).then(
       (resultado) => {
         this.ItemsAgregadosReciente--;
@@ -372,13 +447,15 @@ export class EntregaServiciosComponent implements OnInit {
 
         this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(ObjRecepcionEliminar.idServicio, objActualizacionCTS).then(
           (resultado) => {
-            this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdServicio]);
-            this.ObjCondicionesTecnicas[IdServicio]["ultimaEntregaCTS"] = false;
-            this.loading=false;
+            if (ObjRecepcionEliminar.ultimaEntrega === true) {
+              this.ObjItemsDescripcion.push(this.ObjCondicionesTecnicas[IdServicio]);
+              this.ObjCondicionesTecnicas[IdServicio]["ultimaEntregaCTS"] = false;
+            }            
+            this.spinner.hide();
           }).catch(
             (error) => {
               console.log(error);
-              this.loading=false;
+              this.spinner.hide();
             }
           );
       }
@@ -399,7 +476,7 @@ export class EntregaServiciosComponent implements OnInit {
       if (element.estadoRS === "No confirmado") {
         element.estadoRS = "Confirmado";
         Confirmado = true;
-        this.loading=true;
+        this.spinner.show();
         this.servicio.ConfirmarEntregaServicios(element.IdRecepcionServicios).then(
           (resultado) => {
             numeroItems++;
@@ -438,7 +515,7 @@ export class EntregaServiciosComponent implements OnInit {
                       ).catch(
                         (error) => {
                           console.log(error);
-                          this.loading=false;
+                          this.spinner.hide();
                         })
                     }
                     else {
@@ -454,7 +531,7 @@ export class EntregaServiciosComponent implements OnInit {
                       ).catch(
                         (error) => {
                           console.log(error);
-                          this.loading=false;
+                          this.spinner.hide();
                         })
                     }
                   }
@@ -492,6 +569,11 @@ export class EntregaServiciosComponent implements OnInit {
 
   mostrarError(mensaje: string) {
     this.toastr.errorToastr(mensaje, "Oops!");
+  }
+
+  VerSolicitud(){
+    sessionStorage.setItem('solicitud', this.IdSolicitud);
+    this.router.navigate(['/ver-solicitud-tab']);
   }
 
 }

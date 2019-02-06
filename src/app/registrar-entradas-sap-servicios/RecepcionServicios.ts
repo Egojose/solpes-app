@@ -9,8 +9,9 @@ export class RecepcionServicios {
         public valor: string, 
         public comentario?: string, 
         public IdRecepcionServicios?: number, 
-        public ultimaEntregaCTB?: boolean,
-        public NumeroRecepcion?: string, 
+        public NumeroRecepcion?: string,
+        public autor?: string,
+        public numeroPedido?: string,
         public recibidoSap?: boolean) {}
 
     public static fromJson(element: any) {
@@ -23,8 +24,10 @@ export class RecepcionServicios {
             element.Ano,
             element.Valor, 
             element.Comentario, 
-            element.Id, 
-            element.NumeroRecepcion, 
+            element.Id,
+            element.NumeroRecepcion,
+            element.Author.Title,
+            element.NumeroPedido,
             element.recibidoSap);
     }
 
