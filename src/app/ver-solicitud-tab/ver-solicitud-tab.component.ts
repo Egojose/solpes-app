@@ -103,7 +103,6 @@ export class VerSolicitudTabComponent implements OnInit {
     this.ValidacionTabsPorEstado();
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
       solicitud => {
-        this.IdSolicitud = solicitud.Id;
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.moneda = solicitud.TipoMoneda;
         this.tipoSolicitud = solicitud.TipoSolicitud;
@@ -128,7 +127,6 @@ export class VerSolicitudTabComponent implements OnInit {
         this.estadoRegistrarSAP = solicitud.EstadoRegistrarSAP;
         this.numSolSAP = solicitud.NumSolSAP;
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
-        this.tieneContrato = solicitud.TieneContrato;
         if (solicitud.Attachments === true) {
           let ObjArchivos = solicitud.AttachmentFiles.results;
           ObjArchivos.forEach(element => {
@@ -161,8 +159,11 @@ export class VerSolicitudTabComponent implements OnInit {
           }
         );
         this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
-          RespuestaCondiciones => {
-            this.ObjContratos = Contratos.fromJsonList(RespuestaCondiciones);
+          RespuestaContratos => {
+            if(RespuestaContratos.length > 0 ){
+            this.ObjContratos = Contratos.fromJsonList(RespuestaContratos);
+            this.tieneContrato = true;
+          }
             this.spinner.hide();
           }
         );
@@ -319,10 +320,4 @@ export class VerSolicitudTabComponent implements OnInit {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     }
   }
-
-  redireccionarContratos() {
-    sessionStorage.setItem("solicitud", JSON.stringify(this.solicitudRecuperada));
-    this.router.navigate(["/contratos"])
-  }
-
 }
