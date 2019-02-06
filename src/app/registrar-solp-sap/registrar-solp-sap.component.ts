@@ -231,7 +231,8 @@ export class RegistrarSolpSapComponent implements OnInit {
           ResponsableId: this.ResponsableProceso,
           Estado: this.estadoSolicitud,
           EstadoRegistrarSAP: "Aprobado",
-          NumSolSAP: this.numeroSolpSap
+          NumSolSAP: this.numeroSolpSap,
+          ComentarioRegistrarSAP: this.ComentarioRegistrarSap
         }
       }
       else if (this.RDBOrdenadorGastos === 2 && this.ComentarioRegistrarSap === undefined) {
