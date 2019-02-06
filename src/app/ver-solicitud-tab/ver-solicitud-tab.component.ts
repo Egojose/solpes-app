@@ -210,7 +210,6 @@ export class VerSolicitudTabComponent implements OnInit {
         break;
       }
       case 'Por verificar material': {
-        this.ValidacionSondeo();
         this.HabilitarTabVerificarMaterial();
       }
     }
@@ -251,6 +250,8 @@ export class VerSolicitudTabComponent implements OnInit {
   }
 
   private HabilitarTabVerificarMaterial(){
+    this.HabilitarTabInformacionSolicitud();
+    this.ValidacionSondeo();
     this.staticTabs.tabs[3].disabled = false;
   }
 
