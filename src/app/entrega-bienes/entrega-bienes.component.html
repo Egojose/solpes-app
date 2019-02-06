@@ -58,8 +58,12 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Modelo</th>
                             <th scope="col">Fabricante</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Cantidad recibida</th>
                             <th scope="col">Cantidad restante</th>
+
                             <th scope="col"></th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -68,12 +72,15 @@
                             <td>{{item.descripcion}}</td>
                             <td>{{item.modelo}}</td>
                             <td>{{item.fabricante}}</td>
+                            <td>{{item.cantidad | number}}</td>
+                            <td>{{item.cantidadRecibida}}</td>
                             <td>{{item.totalCantidad | number}}</td>
                             <td>
                                 <div *ngIf="item.totalCantidad === 0 || item.UltimaEntregaCTB === true">
                                     Última entrega realizada
                                 </div>
                             </td>
+
                         </tr>
                     </tbody>
                 </table>
