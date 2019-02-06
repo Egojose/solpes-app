@@ -348,23 +348,7 @@ export class EntregaServiciosComponent implements OnInit {
           console.log(error);
           this.spinner.hide();
         }
-<<<<<<< HEAD
       );
-=======
-        this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(Objdescripcion.IdServicio, objActualizacionCTS).then(
-          (resultado) => {
-            this.spinner.hide();
-          }).catch(
-            (error) => {
-              console.log(error);
-              this.spinner.hide();
-            }
-          );
-      }, (error) => {
-        console.log(error);
-        this.spinner.hide();
-      });
->>>>>>> master
   }
 
   UltimaEntrega(ObjCTS) {
@@ -423,15 +407,9 @@ export class EntregaServiciosComponent implements OnInit {
               this.objRecepcionAgregar["estadoRS"] = "No confirmado";
               this.objRecepcionAgregar["fechaRecepcion"] = new Date();
               this.ObjRecepcionServicios.push(this.objRecepcionAgregar);
-<<<<<<< HEAD
-              let indexServicio = this.ObjRecepcionServicios.findIndex(x => x.idServicio === ObjCTS.IdServicio)
-              this.ObjItemsDescripcion.splice(indexServicio, 1);
-              this.loading = false;
-=======
               let indexServicio = this.ObjRecepcionServicios.findIndex(x=> x.idServicio === ObjCTS.IdServicio)
               this.ObjItemsDescripcion.splice(indexServicio,1);
               this.spinner.hide();
->>>>>>> master
             }
           )
         }).catch(
