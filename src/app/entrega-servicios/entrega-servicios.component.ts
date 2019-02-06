@@ -10,6 +10,8 @@ import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Contratos } from '../dominio/contrato';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: 'app-entrega-servicios',
@@ -58,16 +60,58 @@ export class EntregaServiciosComponent implements OnInit {
   modolectura: boolean;
   year: number;
   contrato: any;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
-  constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
-    if (this.IdSolicitudParms == null) {
-      this.mostrarAdvertencia("No se puede realizar esta acción");
-      this.router.navigate(['/mis-solicitudes']);
-    }
+  constructor(private servicio: SPServicio, private activarRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, public toastr: ToastrManager,private spinner: NgxSpinnerService) {
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();    
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
     this.ItemsAgregadosReciente = 0;
     this.showBtnConfirmar = false;
     this.ErrorCantidad = false;
+  }
+
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para entrega servicios");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por recepcionar'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   ngOnInit() {
@@ -174,7 +218,6 @@ export class EntregaServiciosComponent implements OnInit {
 
           }
         );
-
       }
     );
   }
@@ -305,7 +348,23 @@ export class EntregaServiciosComponent implements OnInit {
           console.log(error);
           this.spinner.hide();
         }
+<<<<<<< HEAD
       );
+=======
+        this.servicio.actualizarCondicionesTecnicasServiciosEntregaServicios(Objdescripcion.IdServicio, objActualizacionCTS).then(
+          (resultado) => {
+            this.spinner.hide();
+          }).catch(
+            (error) => {
+              console.log(error);
+              this.spinner.hide();
+            }
+          );
+      }, (error) => {
+        console.log(error);
+        this.spinner.hide();
+      });
+>>>>>>> master
   }
 
   UltimaEntrega(ObjCTS) {
@@ -364,9 +423,15 @@ export class EntregaServiciosComponent implements OnInit {
               this.objRecepcionAgregar["estadoRS"] = "No confirmado";
               this.objRecepcionAgregar["fechaRecepcion"] = new Date();
               this.ObjRecepcionServicios.push(this.objRecepcionAgregar);
+<<<<<<< HEAD
               let indexServicio = this.ObjRecepcionServicios.findIndex(x => x.idServicio === ObjCTS.IdServicio)
               this.ObjItemsDescripcion.splice(indexServicio, 1);
               this.loading = false;
+=======
+              let indexServicio = this.ObjRecepcionServicios.findIndex(x=> x.idServicio === ObjCTS.IdServicio)
+              this.ObjItemsDescripcion.splice(indexServicio,1);
+              this.spinner.hide();
+>>>>>>> master
             }
           )
         }).catch(

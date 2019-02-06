@@ -7,6 +7,9 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { Contratos } from '../recepcion-sap/contratos';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Usuario } from '../dominio/usuario';
+import { Grupo } from '../dominio/grupo';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registrar-entradas-sap-servicios',
@@ -27,6 +30,9 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   objContratos: Contratos[] = [];
   IdRecepcionServicios: number;
   IdUsuario: any;
+  PermisosRegistroEntradasServicios: boolean;
+  usuarioActual: Usuario;
+  grupos: Grupo[] = [];
 
   dataSource;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -35,12 +41,39 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
 
   displayedColumns: string[] = ['numeroPedido', 'autor', 'ubicacion', 'cantidad', 'mes', 'valor', 'comentario', 'NumeroRecepcion', 'Acciones'];
 
-  constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
+  constructor(private servicio: SPServicio, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.PermisosRegistroEntradasServicios = false;
+
+
   }
 
   ngOnInit() {
     this.spinner.show();
-    this.ObtenerRecepciones();
+    this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
+      (respuesta) => {
+        this.grupos = Grupo.fromJsonList(respuesta);
+        this.VerificarPermisosMenu();
+        if(this.PermisosRegistroEntradasServicios){
+          this.ObtenerRecepciones();
+        }else{
+          this.mostrarAdvertencia("No se puede realizar esta acción");
+          this.spinner.hide();
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }, err => {
+        console.log('Error obteniendo grupos de usuario: ' + err);
+        this.spinner.hide();
+      }
+    )
+  }
+
+  VerificarPermisosMenu(): any {
+    const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
+    let existeGrupoRegistroEntradasServicios = this.grupos.find(x => x.title == grupoRegistroEntradasServicios);
+    if (existeGrupoRegistroEntradasServicios != null) {
+      this.PermisosRegistroEntradasServicios = true;
+    }
   }
 
   private ObtenerRecepciones() {

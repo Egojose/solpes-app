@@ -85,8 +85,8 @@ export class SondeoComponent implements OnInit {
           console.log("perfilación correcta");
         }
         else {
-          // this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
-          // this.router.navigate(['/mis-solicitudes']);
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
         }
       }
       else {
@@ -143,7 +143,7 @@ export class SondeoComponent implements OnInit {
         this.pais = solicitud.Pais.Title;
         this.PaisId = solicitud.Pais.Id
         this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Categoria;
+        this.subCategoria = solicitud.Subcategoria;
         this.comprador = solicitud.Comprador.Title;
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;

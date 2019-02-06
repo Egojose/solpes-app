@@ -381,7 +381,7 @@
                 </p>
             </div>
             <div class="col-md-6">
-                <a href="{{RutaArchivo}}">
+                <a href="{{RutaArchivo}}" target="_blank">
                     <button type="button" class="btn btn-primary">Descargar aquí</button>
                 </a>
             </div>
@@ -466,7 +466,7 @@
                 <p><strong>Adjunto</strong> registro de activos fijos.</p>
             </div>
             <div class="col-md-6">
-                <a href="{{RegistroActivoArchivo}}">
+                <a href="{{RegistroActivoArchivo}}" target="_blank">
                     <button type="button" class="btn btn-primary">Descargar aquí</button>
                 </a>
             </div>
@@ -535,7 +535,7 @@
                     </div>
                     <div class="card-body">
 
-                        <div *ngIf="tieneContrato; else notieneContrato">
+                        <div *ngIf="tieneContrato == true; else notieneContrato">
                             <p>La solicitud tiene un contrato asignado</p>
                             <div class="table-wrapper-scroll-y">
                                 <table class="table table-striped">
@@ -543,7 +543,6 @@
                                         <tr>
                                             <th scope="col">Tipo contrato</th>
                                             <th scope="col">Objeto contrato</th>
-                                            <th scope="col">Fecha firma contrato</th>
                                             <th scope="col">Nombre Proveedor</th>
                                             <th scope="col">Solicitante</th>
                                             <th scope="col">Comprador</th>
@@ -553,7 +552,6 @@
                                         <tr *ngFor="let item of ObjContratos">
                                             <td>{{item.tipoContrato}}</td>
                                             <td>{{item.objContrato}}</td>
-                                            <td>{{item.fechafirmaContrato}}</td>
                                             <td>{{item.nomProveedor}}</td>
                                             <td>{{item.solicitante}}</td>
                                             <td>{{item.comprador}}</td>
@@ -561,13 +559,11 @@
                                     </tbody>
                                 </table>
                             </div>
-
-                            <a href="javascript:void(0)" (click)="redireccionarContratos()">Ver más </a>
                         </div>
 
                         <ng-template #notieneContrato>
                             <p>
-                                La solicitud no tiene contratos asignados.
+                                La solicitud no tiene contrato asignado.
                             </p>
                         </ng-template>
                     </div>

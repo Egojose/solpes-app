@@ -11,6 +11,8 @@ import { responsableProceso } from '../dominio/responsableProceso';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Contratos } from '../dominio/contrato';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: 'app-entrega-bienes',
@@ -70,13 +72,15 @@ export class EntregaBienesComponent implements OnInit {
   modolectura: boolean;
   contrato: Contratos[] = [];
   SwtichEsOrdenEstadistica: boolean;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
-    this.IdSolicitudParms = sessionStorage.getItem("IdSolicitud");
-    if (this.IdSolicitudParms == null) {
-      this.mostrarAdvertencia("No se puede realizar esta acción");
-      this.router.navigate(['/mis-solicitudes']);
-    }
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();    
+    this.IdSolicitudParms = this.solicitudRecuperada.id;
     this.ErrorCantidad = false;
     this.activarTool = true;
     this.IdSolicitud
@@ -87,6 +91,46 @@ export class EntregaBienesComponent implements OnInit {
     this.modolectura = false;
     this.SwtichEsOrdenEstadistica = false;
     this.spinner.hide();
+  }
+
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para entrega bienes");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por recepcionar'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   ngOnInit() {
@@ -138,7 +182,7 @@ export class EntregaBienesComponent implements OnInit {
     this.pais = solicitud.Pais.Title;
     this.paisId = solicitud.Pais.Id;
     this.categoria = solicitud.Categoria;
-    this.subCategoria = solicitud.Categoria;
+    this.subCategoria = solicitud.Subcategoria;
     this.comprador = solicitud.Comprador.Title;
     this.alcance = solicitud.Alcance;
     this.justificacion = solicitud.Justificacion;

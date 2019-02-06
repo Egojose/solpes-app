@@ -81,7 +81,7 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary btn-block" (click)="RegistrarContratos(element.id)">Ir
+            <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary btn-block" (click)="RegistrarContratos(element)">Ir
               a registrar contratos</button>
           </div>
         </div>
@@ -110,13 +110,13 @@
         <div class="filaBtn">
           <div class="col-md-12">
             <button *ngIf="element.estado =='Por recepcionar' && element.FaltaRecepcionBienes === true" class="btn btn-primary btn-block"
-              (click)="RegistrarEntregasBienes(element.id)">Recepcionar bienes</button>
+              (click)="RegistrarEntregasBienes(element)">Recepcionar bienes</button>
           </div>
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
             <button *ngIf="element.estado =='Por recepcionar' && element.FaltaRecepcionServicios === true" class="btn btn-primary btn-block"
-              (click)="RegistrarEntregasServicios(element.id)">Recepcionar servicios</button>
+              (click)="RegistrarEntregasServicios(element)">Recepcionar servicios</button>
           </div>
         </div>
         <div class="filaBtn">
