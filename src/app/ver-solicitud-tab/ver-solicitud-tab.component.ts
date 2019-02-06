@@ -262,12 +262,6 @@ export class VerSolicitudTabComponent implements OnInit {
     this.staticTabs.tabs[3].disabled = false;
   }
 
-<<<<<<< HEAD
-  private HabilitarTabVerificarMaterial(){
-    this.HabilitarTabInformacionSolicitud();
-    this.ValidacionSondeo();
-    this.staticTabs.tabs[3].disabled = false;
-=======
   private HabilitarTabRegistroActivos() {
     this.HabilitarTabVerificarMaterial();
     this.staticTabs.tabs[4].disabled = false;
@@ -281,7 +275,6 @@ export class VerSolicitudTabComponent implements OnInit {
   private HabilitarTabContratos() {
     this.HabilitarTabRegistrarSolpSAP();
     this.staticTabs.tabs[6].disabled = false;
->>>>>>> master
   }
 
   private HabilitarTabEntregas() {
