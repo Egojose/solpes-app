@@ -321,7 +321,7 @@ export class VerSolicitudTabComponent implements OnInit {
   }
 
   redireccionarContratos() {
-    sessionStorage.setItem('Idsolicitud', this.IdSolicitud);
+    sessionStorage.setItem("solicitud", JSON.stringify(this.solicitudRecuperada));
     this.router.navigate(["/contratos"])
   }
 

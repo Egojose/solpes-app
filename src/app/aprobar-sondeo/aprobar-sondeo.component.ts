@@ -226,7 +226,6 @@ export class AprobarSondeoComponent implements OnInit {
           this.servicio.agregarNotificacion(notificacion).then(
             (item: ItemAddResult) => {
               this.MostrarExitoso("La acción se ha guardado con éxito");
-              sessionStorage.removeItem("IdSolicitud");
               this.spinner.hide();
               setTimeout(() => {
                 this.salir();
@@ -313,7 +312,7 @@ export class AprobarSondeoComponent implements OnInit {
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Categoria;
+        this.subCategoria = solicitud.Subcategoria;
         this.comprador = solicitud.Comprador.Title;
         this.CompradorId = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;        
