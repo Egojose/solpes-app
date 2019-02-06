@@ -11,7 +11,6 @@ export class Bienes{
     campoAdjunto: string;
     campoComentarios: string;
 
-
     constructor(id: number, campoCodigo: string, campoDescripcion: string, campoModelo: string, campoFabricante: string, campoClaseSia: string, campoCantidad: string, campoValorEstimado: string, campoAdjunto: string, campoComentarios: string){
         this.id = id;
         this.campoCodigo = campoCodigo;

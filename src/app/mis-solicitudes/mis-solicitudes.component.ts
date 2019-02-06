@@ -22,7 +22,6 @@ export class MisSolicitudesComponent implements OnInit {
   empty: boolean;
   
   constructor( private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService) { 
-    this.spinner.hide();
   }
 
   displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Responsable', 'VerSolicitud']; 

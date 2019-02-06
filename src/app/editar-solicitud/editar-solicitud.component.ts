@@ -114,6 +114,7 @@ export class EditarSolicitudComponent implements OnInit {
   responsableProcesoEstado: responsableProceso[] = [];
   fueSondeo: boolean;
   perfilacion: boolean;
+  jsonCondicionesContractuales: string;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -160,8 +161,8 @@ export class EditarSolicitudComponent implements OnInit {
           console.log("perfilación correcta");
         }
         else {
-          // this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
-          // this.router.navigate(['/mis-solicitudes']);
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
         }
       }
       else {
@@ -406,7 +407,6 @@ export class EditarSolicitudComponent implements OnInit {
   cargarSolicitud(): any {
 
     this.cambiarNombresColumnas();
-
     if (this.solicitudRecuperada.tipoSolicitud != null) {
       if (this.solicitudRecuperada.tipoSolicitud === "Sondeo") {
         this.solpFormulario.controls["justificacion"].disable();
@@ -457,7 +457,7 @@ export class EditarSolicitudComponent implements OnInit {
             this.subcategoria = this.subcategorias.filter(x => x.nombre == this.solicitudRecuperada.subcategoria)[0];
             this.solpFormulario.controls["subcategoria"].setValue(this.subcategoria.id);
             if (this.solicitudRecuperada.condicionesContractuales != '' && this.solicitudRecuperada.condicionesContractuales != '{ "condiciones":]}') {
-              let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales);
+              let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales.replace(/(\r\n|\n|\r)/gm," "));
               if (jsonCondicionesContractuales != null) {
                 if (jsonCondicionesContractuales.condiciones != null) {
                   jsonCondicionesContractuales.condiciones.forEach(element => {
@@ -1373,7 +1373,8 @@ export class EditarSolicitudComponent implements OnInit {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
         if (textoCajon != null) {
           var json = textoCajon.replace(/[|&;$%@"<>()+,]/g, "");
-          this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + json + '"},');
+          this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r)/gm," ");
+          this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.jsonCondicionesContractuales + '"},');
         }
       });
       this.cadenaJsonCondicionesContractuales = this.cadenaJsonCondicionesContractuales.substring(0, this.cadenaJsonCondicionesContractuales.length - 1);

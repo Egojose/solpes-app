@@ -102,8 +102,8 @@ export class RegistrarSolpSapComponent implements OnInit {
           console.log("perfilación correcta");
         }
         else {
-          // this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
-          // this.router.navigate(['/mis-solicitudes']);
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
         }
       }
       else {
@@ -146,7 +146,7 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.pais = solicitud.Pais.Title;
         this.paisId = solicitud.Pais.Id;
         this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Categoria;
+        this.subCategoria = solicitud.Subcategoria;
         this.compradorNombre = solicitud.Comprador.Title;
         this.comprador = solicitud.Comprador.ID;
         this.alcance = solicitud.Alcance;
@@ -231,7 +231,8 @@ export class RegistrarSolpSapComponent implements OnInit {
           ResponsableId: this.ResponsableProceso,
           Estado: this.estadoSolicitud,
           EstadoRegistrarSAP: "Aprobado",
-          NumSolSAP: this.numeroSolpSap
+          NumSolSAP: this.numeroSolpSap,
+          ComentarioRegistrarSAP: this.ComentarioRegistrarSap
         }
       }
       else if (this.RDBOrdenadorGastos === 2 && this.ComentarioRegistrarSap === undefined) {

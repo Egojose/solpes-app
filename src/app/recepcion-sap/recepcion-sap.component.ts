@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RecepcionBienes } from '../recepcion-sap/RecepcionBienes'
 import { SPServicio } from '../servicios/sp-servicio';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -6,6 +6,10 @@ import { ItemAddResult } from 'sp-pnp-js';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Contratos } from '../recepcion-sap/contratos';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Usuario } from '../dominio/usuario';
+import { Grupo } from '../dominio/grupo';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recepcion-sap',
@@ -29,32 +33,74 @@ export class RecepcionSapComponent implements OnInit {
   fulldatos: any;
   numRecepcionValor: string;
 
-  constructor(private servicio: SPServicio, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
-    this.spinner.hide();
+  dataSource;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  empty: boolean;
+  PermisosRegistroEntradasBienes: boolean;
+  usuarioActual: Usuario;
+  grupos: Grupo[] = [];
+
+  displayedColumns: string[] = ['numeroPedido', 'autor', 'cantidad', 'valor', 'comentario', 'adjuntoEntregaBienes', 'NumeroRecepcion', 'Acciones'];
+
+  constructor(private servicio: SPServicio, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.PermisosRegistroEntradasBienes = false;
   }
 
   ngOnInit() {
     this.spinner.show();
-    this.servicio.ObtenerUsuarioActual().subscribe(
+    this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
       (respuesta) => {
-        this.IdUsuario = respuesta.Id;
-        this.servicio.ObtenerRecepcionesBienes(this.IdUsuario).subscribe(
-          (respuesta) => {
-            this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
-            console.log();
-            this.spinner.hide();
-          }, err => {
-            this.mostrarError('Error obteniendo las entradas de las recepciones de bienes');
-            this.spinner.hide();
-            console.log('Error obteniendo las entradas de las recepciones de bienes: ' + err);
-          }
-        );
+        this.grupos = Grupo.fromJsonList(respuesta);
+        this.VerificarPermisosMenu();
+        if(this.PermisosRegistroEntradasBienes){
+          this.ObtenerRecepciones();
+        }else{
+          this.mostrarAdvertencia("No se puede realizar esta acción");
+          this.spinner.hide();
+          this.router.navigate(['/mis-solicitudes']);
+        }
       }, err => {
-        this.mostrarError('Error obteniendo el usuario actual');
+        console.log('Error obteniendo grupos de usuario: ' + err);
         this.spinner.hide();
-        console.log('Error obteniendo el usuario actual: ' + err);
       }
     )
+  }
+
+  VerificarPermisosMenu(): any {
+    const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
+    let existeGrupoRegistroEntradasBienes = this.grupos.find(x => x.title == grupoRegistroEntradasBienes);
+    if (existeGrupoRegistroEntradasBienes != null) {
+      this.PermisosRegistroEntradasBienes = true;
+    }
+  }
+
+  private ObtenerRecepciones() {
+    this.servicio.ObtenerUsuarioActual().subscribe((respuesta) => {
+      this.IdUsuario = respuesta.Id;
+      this.servicio.ObtenerRecepcionesBienes(this.IdUsuario).subscribe((respuesta) => {
+        this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
+        if (this.ObjRecepcionBienes.length > 0) {
+          this.empty = false;
+          this.dataSource = new MatTableDataSource(this.ObjRecepcionBienes);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+        else {
+          this.empty = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.mostrarError('Error obteniendo las entradas de las recepciones de bienes');
+        this.spinner.hide();
+        console.log('Error obteniendo las entradas de las recepciones de bienes: ' + err);
+      });
+    }, err => {
+      this.mostrarError('Error obteniendo el usuario actual');
+      this.spinner.hide();
+      console.log('Error obteniendo el usuario actual: ' + err);
+    });
   }
 
   Guardar(item) {
@@ -65,7 +111,7 @@ export class RecepcionSapComponent implements OnInit {
       NumeroRecepcion: item.NumeroRecepcion,
       recibidoSap: true
     }
-    if (item.NumeroRecepcion == null) {
+    if (item.NumeroRecepcion == null || item.NumeroRecepcion == '') {
       this.mostrarAdvertencia('Debe suministrar el número de recepción');
       this.spinner.hide();
       return false;
@@ -75,7 +121,7 @@ export class RecepcionSapComponent implements OnInit {
       this.servicio.registrarRecepcionBienes(this.IdRecepcionBienes, objRegistrar).then(
         (resultado: ItemAddResult) => {
           this.MostrarExitoso('Recibido');
-          this.ObjRecepcionBienes.splice(index, 1);
+          this.ObtenerRecepciones();
           this.spinner.hide();
         }
       ).catch(
@@ -97,5 +143,9 @@ export class RecepcionSapComponent implements OnInit {
 
   mostrarError(mensaje: string) {
     this.toastr.errorToastr(mensaje, 'Oops!');
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

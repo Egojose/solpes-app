@@ -1,11 +1,27 @@
 export class CondicionesTecnicasServicios{
 
-    constructor(public IdServicio:number, public codigo:string, public descripcion:string, public cantidad:number, public cantidadRecibida:number, public totalCantidad:number, public ultimaEntregaCTS:boolean, public comentarios: string){
+    constructor(
+        public IdServicio:number, 
+        public codigo:string, 
+        public descripcion:string, 
+        public cantidad:number, 
+        public cantidadRecibida:number, 
+        public totalCantidad:number, 
+        public ultimaEntregaCTS:boolean, 
+        public comentarios: string){
 
     }
 
     public static fromJson(element: any) {
-        return new CondicionesTecnicasServicios(element.Id ,element.CodigoSondeo, element.Descripcion, element.CantidadSondeo, element.CantidadRecibida, element.CantidadSondeo-element.CantidadRecibida,element.UltimaEntrega, element.ComentarioSondeo);
+        return new CondicionesTecnicasServicios(
+            element.Id ,
+            element.CodigoSondeo, 
+            element.Descripcion, 
+            element.CantidadSondeo, 
+            element.CantidadRecibida, 
+            element.CantidadSondeo-element.CantidadRecibida,
+            element.UltimaEntrega, 
+            element.ComentarioSondeo);
     }
 
     public static fromJsonList(elements: any) {

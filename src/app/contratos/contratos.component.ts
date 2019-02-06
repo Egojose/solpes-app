@@ -13,6 +13,8 @@ import { CondicionContractual } from '../dominio/condicionContractual';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ItemAddResult } from 'sp-pnp-js';
+import { Solicitud } from '../dominio/solicitud';
+import { Usuario } from '../dominio/usuario';
 
 @Component({
   selector: 'app-contratos',
@@ -35,7 +37,7 @@ export class ContratosComponent implements OnInit {
   IdSolicitud: any;
   autor: any;
   loading: boolean;
-  idSolicitudParameter: string;
+  idSolicitudParameter: number;
   CompraBienes: any;
   CompraServicios: any;
   paisId: any;
@@ -71,14 +73,56 @@ export class ContratosComponent implements OnInit {
   OrdenEstadistica: any;
   numOrdenEstadistica: any;
   NumSolSAP: any;
+  solicitudRecuperada: Solicitud;
+  usuarioActual: Usuario;
+  perfilacion: boolean;
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
-    this.idSolicitudParameter = sessionStorage.getItem("IdSolicitud");
-    if(this.idSolicitudParameter == null){
+    this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
+    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.perfilacionEstado();  
+    this.idSolicitudParameter = this.solicitudRecuperada.id;
+    this.Guardado = false;
+  }
+
+  private perfilacionEstado() {
+    if (this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
     }
-    this.Guardado = false;
+    else {
+      this.perfilacion = this.verificarEstado();
+      if (this.perfilacion) {
+        this.perfilacion = this.verificarResponsable();
+        if (this.perfilacion) {
+          console.log("perfilación correcta");
+        }
+        else {
+          this.mostrarAdvertencia("Usted no está autorizado para esta acción: No es el responsable");
+          this.router.navigate(['/mis-solicitudes']);
+        }
+      }
+      else {
+        this.mostrarAdvertencia("La solicitud no se encuentra en el estado correcto para registrar contratos");
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    }
+  }
+
+  verificarEstado(): boolean {
+    if(this.solicitudRecuperada.estado == 'Por registrar contratos'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  verificarResponsable(): boolean{
+    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   comfirmasalir(template: TemplateRef<any>) {
@@ -316,7 +360,6 @@ export class ContratosComponent implements OnInit {
     this.modalRef.hide();
     this.router.navigate(["/mis-pendientes"]);
   }
-
   onSelect(event: any): void {
     console.log("Sfs");
     this.selectedOption = event.item;
