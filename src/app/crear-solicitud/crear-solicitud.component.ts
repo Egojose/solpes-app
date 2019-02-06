@@ -115,6 +115,7 @@ export class CrearSolicitudComponent implements OnInit {
   fueSondeo: boolean;
   PermisosCreacion: boolean;
   grupos: Grupo[] = [];
+  jsonCondicionesContractuales: string;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
@@ -173,30 +174,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
-    this.VerificarPermisosCreacion();
-    this.servicio.ObtenerGruposUsuario(this.usuarioActual.id).subscribe(
-      (respuesta) => {
-          this.grupos = Grupo.fromJsonList(respuesta);
-          // this.VerificarPermisosCreacion();
-      }, err => {
-        this.mostrarError('Error obteniendo grupos de usuario');
-        this.spinner.hide();
-        console.log('Error obteniendo grupos de usuario: ' + err);
-      }
-    )
-  }
-
-  
-  VerificarPermisosCreacion(): any {
-    const grupoCreacionSolicitud = "Solpes-Creacion-Solicitud";
-    let existeGrupoCreacion = this.grupos.find(x=> x.title == grupoCreacionSolicitud);
-    // if(existeGrupoCreacion != null){
-      this.obtenerTiposSolicitud();
-    // }else{
-    //   this.mostrarAdvertencia("Usted no está autorizado para crear solicitudes");
-    //   this.spinner.hide();
-    //   this.router.navigate(['/mis-solicitudes']);
-    // }
+    this.obtenerTiposSolicitud();
   }
 
   aplicarTemaCalendario() {
@@ -300,9 +278,6 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   obtenerTiposSolicitud() {
-
-
-
     this.servicio.ObtenerTiposSolicitud().subscribe(
       (respuesta) => {
         this.tiposSolicitud = TipoSolicitud.fromJsonList(respuesta);
@@ -774,7 +749,8 @@ export class CrearSolicitudComponent implements OnInit {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
         if (textoCajon != null) {
           var json = textoCajon.replace(/[|&;$%@"<>()+,]/g, "");
-          this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + json + '"},');
+          this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r)/gm,"");
+          this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.jsonCondicionesContractuales + '"},');
         }
       });
       this.cadenaJsonCondicionesContractuales = this.cadenaJsonCondicionesContractuales.substring(0, this.cadenaJsonCondicionesContractuales.length - 1);
