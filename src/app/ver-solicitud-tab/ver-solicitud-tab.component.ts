@@ -101,8 +101,6 @@ export class VerSolicitudTabComponent implements OnInit {
     this.spinner.show();
     console.log(this.solicitudRecuperada.estado);
     this.ValidacionTabsPorEstado();
-    //this.ValidacionSondeo();
-
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
       solicitud => {
         this.IdSolicitud = solicitud.Id;
@@ -211,6 +209,7 @@ export class VerSolicitudTabComponent implements OnInit {
       }
       case 'Por verificar material': {
         this.HabilitarTabVerificarMaterial();
+        break;
       }
       case 'Por registrar activos': {
         this.HabilitarTabRegistroActivos();
@@ -227,12 +226,6 @@ export class VerSolicitudTabComponent implements OnInit {
       case 'Por recepcionar': {
         this.HabilitarTabEntregas();
       }
-    }
-  }
-
-  private HabilitarTodosLosTabs() {
-    for (let i = 0; i < 8; i++) {
-      this.staticTabs.tabs[i].disabled = false;
     }
   }
 
