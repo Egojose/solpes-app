@@ -360,7 +360,6 @@ export class ContratosComponent implements OnInit {
     this.modalRef.hide();
     this.router.navigate(["/mis-pendientes"]);
   }
-
   onSelect(event: any): void {
     console.log("Sfs");
     this.selectedOption = event.item;
