@@ -227,12 +227,20 @@ export class VerSolicitudTabComponent implements OnInit {
       case 'Por recepcionar': {
         this.HabilitarTabEntregas();
       }
+      case 'Recibido': {
+        this.HabilitarTodosLosTabs();
+        this.ValidacionSondeo();      }
     }
   }
 
   private DeshabilitarTodosLosTabs() {
     for (let i = 0; i < 8; i++) {
       this.staticTabs.tabs[i].disabled = true;
+    }
+  }
+  private HabilitarTodosLosTabs() {
+    for (let i = 0; i < 8; i++) {
+      this.staticTabs.tabs[i].disabled = false;
     }
   }
 
