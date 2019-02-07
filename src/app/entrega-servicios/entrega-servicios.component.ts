@@ -245,7 +245,7 @@ export class EntregaServiciosComponent implements OnInit {
     this.spinner.show();
 
     let Objdescripcion = this.AgregarElementoForm.controls['Descripcion'].value;
-    let valor = this.AgregarElementoForm.controls['Valor'].value;
+    let valor = this.AgregarElementoForm.controls['Valor'].value.toString();
     let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
     let mes = this.AgregarElementoForm.controls['Mes'].value;
     let ano = this.AgregarElementoForm.controls['Ano'].value;
@@ -307,6 +307,7 @@ export class EntregaServiciosComponent implements OnInit {
     else {
       this.content = 'Cantidad disponible ' + this.cantidadCTS;
       this.activarTool = true;
+      this.spinner.hide();
       this.tooltip.show();
       setTimeout(() => {
         this.tooltip.hide();
@@ -578,7 +579,7 @@ export class EntregaServiciosComponent implements OnInit {
   }
 
   VerSolicitud() {
-    sessionStorage.setItem('solicitud', this.IdSolicitud);
+    sessionStorage.setItem('solicitud', JSON.stringify(this.solicitudRecuperada));
     this.router.navigate(['/ver-solicitud-tab']);
   }
 
