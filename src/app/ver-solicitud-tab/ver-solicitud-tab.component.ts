@@ -176,13 +176,13 @@ export class VerSolicitudTabComponent implements OnInit {
             this.spinner.hide();
           }
         );
-        this.servicio.ObtenerRecepcionesBienes(this.IdSolicitud).subscribe(
+        this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
           (respuesta) => {
             this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
             this.spinner.hide();
           }
         );
-        this.servicio.ObtenerRecepcionesServicios(this.IdSolicitud).subscribe(
+        this.servicio.ObtenerRecepcionesServicioEntregaServicio(this.IdSolicitud).subscribe(
           (respuesta) => {
             this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
             this.spinner.hide();

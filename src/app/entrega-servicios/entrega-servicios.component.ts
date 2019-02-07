@@ -578,7 +578,7 @@ export class EntregaServiciosComponent implements OnInit {
   }
 
   VerSolicitud() {
-    sessionStorage.setItem('solicitud', this.IdSolicitud);
+    sessionStorage.setItem('solicitud', JSON.stringify(this.solicitudRecuperada));
     this.router.navigate(['/ver-solicitud-tab']);
   }
 
