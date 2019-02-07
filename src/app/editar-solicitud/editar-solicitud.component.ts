@@ -457,7 +457,7 @@ export class EditarSolicitudComponent implements OnInit {
             this.subcategoria = this.subcategorias.filter(x => x.nombre == this.solicitudRecuperada.subcategoria)[0];
             this.solpFormulario.controls["subcategoria"].setValue(this.subcategoria.id);
             if (this.solicitudRecuperada.condicionesContractuales != '' && this.solicitudRecuperada.condicionesContractuales != '{ "condiciones":]}') {
-              let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales.replace(/(\r\n|\n|\r)/gm,""));
+              let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales.replace(/(\r\n|\n|\r)/gm," "));
               if (jsonCondicionesContractuales != null) {
                 if (jsonCondicionesContractuales.condiciones != null) {
                   jsonCondicionesContractuales.condiciones.forEach(element => {
@@ -1373,7 +1373,7 @@ export class EditarSolicitudComponent implements OnInit {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
         if (textoCajon != null) {
           var json = textoCajon.replace(/[|&;$%@"<>()+,]/g, "");
-          this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r)/gm,"");
+          this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r)/gm," ");
           this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.jsonCondicionesContractuales + '"},');
         }
       });
