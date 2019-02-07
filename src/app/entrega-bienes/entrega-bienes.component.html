@@ -98,7 +98,7 @@
             </div>
             <div class="card-body">
                 <form autocomplete="off" [formGroup]="AgregarElementoForm" (ngSubmit)="onSubmit()">
-                    <div class="row" *ngIf="ObjItemsDescripcion.length > 0">
+                    <div class="row">
                         <div class="form-group col-md-3">
                             <label for="inputEmail4">Descripción</label>
                             <select name="" id="" class="form-control" formControlName="Descripcion" [ngClass]="{ 'is-invalid': submitted && f.Descripcion.errors }">
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <div class="row" *ngIf="OrdenEstadistica === true">
-                        <div class="col-md-6" *ngIf="ObjItemsDescripcion.length > 0">
+                        <div class="col-md-6">
                             <input type="file" name="" id="Adjunto" (change)="adjuntarArchivoBienes($event)">
                         </div>
                     </div>
