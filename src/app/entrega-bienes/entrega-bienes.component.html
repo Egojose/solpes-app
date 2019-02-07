@@ -15,6 +15,8 @@
         <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
     </div>
 </div> -->
+<h1>RECEPCIONAR BIENES</h1>
+<hr>
 <div class="row">
     <div class="col-md-6">
         <div class="row">
@@ -29,14 +31,15 @@
                 <h5><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h5>
             </div>
         </div>
+        <br>
         <div class="row" *ngIf="tieneArchivo === true">
             <div class="col-md-12">
-                <a href="{{RutaArchivo}}" target="_blank">Descargar archivo de activos fijos</a>
+                <a href="{{RutaArchivo}}" target="_blank"><button type="button" class="btn btn-primary">Descargar archivo de activos fijos</button> </a>
             </div>
         </div>
     </div>
     <div class="col-md-6">
-        <button class="btn btn-primary" style="margin-top: 3%" (click)="VerSolicitud()">Ver solicitud</button>
+        <button class="derecha-boton btn btn-default" style="margin-top: 3%" (click)="VerSolicitud()">Ver solicitud</button>
     </div>
 </div>
 <br>
@@ -98,7 +101,7 @@
             </div>
             <div class="card-body">
                 <form autocomplete="off" [formGroup]="AgregarElementoForm" (ngSubmit)="onSubmit()">
-                    <div class="row" *ngIf="ObjItemsDescripcion.length > 0">
+                    <div class="row">
                         <div class="form-group col-md-3">
                             <label for="inputEmail4">Descripción</label>
                             <select name="" id="" class="form-control" formControlName="Descripcion" [ngClass]="{ 'is-invalid': submitted && f.Descripcion.errors }">
@@ -142,7 +145,7 @@
                         </div>
                     </div>
                     <div class="row" *ngIf="OrdenEstadistica === true">
-                        <div class="col-md-6" *ngIf="ObjItemsDescripcion.length > 0">
+                        <div class="col-md-6">
                             <input type="file" name="" id="Adjunto" (change)="adjuntarArchivoBienes($event)">
                         </div>
                     </div>

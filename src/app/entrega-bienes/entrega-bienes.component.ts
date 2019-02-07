@@ -75,6 +75,7 @@ export class EntregaBienesComponent implements OnInit {
   solicitudRecuperada: Solicitud;
   usuarioActual: Usuario;
   perfilacion: boolean;
+  Solicitud: any;
 
   constructor(private servicio: SPServicio, private formBuilder: FormBuilder, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -167,12 +168,13 @@ export class EntregaBienesComponent implements OnInit {
         if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
         }
-        this.RefrescarBienes();         
+        this.RefrescarBienes();
       }
     );
   }
 
   private ObtenerPropiedadesSolicitud(solicitud: any) {
+    this.Solicitud = solicitud;
     this.IdSolicitud = solicitud.Id;
     this.fechaDeseada = solicitud.FechaDeseadaEntrega;
     this.solicitante = solicitud.Solicitante;
@@ -270,6 +272,7 @@ export class EntregaBienesComponent implements OnInit {
     if (ultimaEntrega == "Sí" || cantidad === 0) {
       if (comentario === "") {
         this.mostrarAdvertencia("Por favor ingrese un comentario");
+        this.spinner.hide();
         return false;
       }
     }
@@ -312,7 +315,7 @@ export class EntregaBienesComponent implements OnInit {
             this.servicio.agregarAdjuntoActivosBienes(IdRecepcionBienes, nombreArchivo, this.ArchivoAdjunto).then(
               (Respuesta) => {
                 (<HTMLInputElement>document.getElementById("Adjunto")).value = null;
-                
+                this.ArchivoAdjunto = null;
                 this.ActualizarCondicionesTecnicasBienes(cantidad, ultimaEntregabool, Objdescripcion);
                 
                 
@@ -679,9 +682,8 @@ export class EntregaBienesComponent implements OnInit {
     this.toastr.errorToastr(mensaje, "Oops!");
   }
 
-  VerSolicitud() {
-    sessionStorage.setItem('solicitud', this.IdSolicitud);
-    // window.open("/ver-solicitud-tab", '_blank');
+  VerSolicitud() {    
+    sessionStorage.setItem('solicitud', JSON.stringify(this.solicitudRecuperada));
     this.router.navigate(['/ver-solicitud-tab']);
   }
 

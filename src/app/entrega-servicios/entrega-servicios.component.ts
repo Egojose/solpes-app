@@ -245,7 +245,7 @@ export class EntregaServiciosComponent implements OnInit {
     this.spinner.show();
 
     let Objdescripcion = this.AgregarElementoForm.controls['Descripcion'].value;
-    let valor = this.AgregarElementoForm.controls['Valor'].value;
+    let valor = this.AgregarElementoForm.controls['Valor'].value.toString();
     let cantidad = this.AgregarElementoForm.controls['Cantidad'].value;
     let mes = this.AgregarElementoForm.controls['Mes'].value;
     let ano = this.AgregarElementoForm.controls['Ano'].value;
@@ -257,6 +257,7 @@ export class EntregaServiciosComponent implements OnInit {
     if (ultimaEntrega == "Sí" || cantidad === 0) {
       if (comentario === "") {
         this.mostrarAdvertencia("Por favor ingrese un comentario");
+        this.spinner.hide();
         return false;
       }
     }
@@ -306,6 +307,7 @@ export class EntregaServiciosComponent implements OnInit {
     else {
       this.content = 'Cantidad disponible ' + this.cantidadCTS;
       this.activarTool = true;
+      this.spinner.hide();
       this.tooltip.show();
       setTimeout(() => {
         this.tooltip.hide();
@@ -479,7 +481,7 @@ export class EntregaServiciosComponent implements OnInit {
       if (element.estadoRS === "No confirmado") {
         element.estadoRS = "Confirmado";
         Confirmado = true;
-        this.spinner.show();
+        // this.spinner.show();
         this.servicio.ConfirmarEntregaServicios(element.IdRecepcionServicios).then(
           (resultado) => {
             numeroItems++;
@@ -529,6 +531,7 @@ export class EntregaServiciosComponent implements OnInit {
                       }
                       this.servicio.cambioEstadoRecepcionBienesServicios(this.IdSolicitud, objCT).then(
                         (respuesta) => {
+                          this.spinner.hide();
                           this.router.navigate(['/mis-solicitudes']);
                         }
                       ).catch(
@@ -539,6 +542,7 @@ export class EntregaServiciosComponent implements OnInit {
                     }
                   }
                   else {
+                    this.spinner.hide();
                     this.router.navigate(['/mis-solicitudes']);
                   }
                 },
@@ -575,7 +579,7 @@ export class EntregaServiciosComponent implements OnInit {
   }
 
   VerSolicitud() {
-    sessionStorage.setItem('solicitud', this.IdSolicitud);
+    sessionStorage.setItem('solicitud', JSON.stringify(this.solicitudRecuperada));
     this.router.navigate(['/ver-solicitud-tab']);
   }
 
