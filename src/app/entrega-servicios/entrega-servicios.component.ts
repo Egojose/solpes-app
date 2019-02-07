@@ -307,6 +307,7 @@ export class EntregaServiciosComponent implements OnInit {
     else {
       this.content = 'Cantidad disponible ' + this.cantidadCTS;
       this.activarTool = true;
+      this.spinner.hide();
       this.tooltip.show();
       setTimeout(() => {
         this.tooltip.hide();
