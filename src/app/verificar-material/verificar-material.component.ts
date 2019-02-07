@@ -445,7 +445,8 @@ export class VerificarMaterialComponent implements OnInit {
   }
 
 
-  RestaCantidadReserva() {
+  RestaCantidadReserva(evento) {
+    console.log(evento);
     let Existencia: number = this.verificarMaterialFormulario.controls["existenciasVerificar"].value;
     let Cantidad: number = this.verificarMaterialFormulario.controls["cantidadVerificar"].value;
 
