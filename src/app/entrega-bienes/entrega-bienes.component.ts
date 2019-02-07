@@ -270,6 +270,7 @@ export class EntregaBienesComponent implements OnInit {
     if (ultimaEntrega == "Sí" || cantidad === 0) {
       if (comentario === "") {
         this.mostrarAdvertencia("Por favor ingrese un comentario");
+        this.spinner.hide();
         return false;
       }
     }
@@ -312,7 +313,7 @@ export class EntregaBienesComponent implements OnInit {
             this.servicio.agregarAdjuntoActivosBienes(IdRecepcionBienes, nombreArchivo, this.ArchivoAdjunto).then(
               (Respuesta) => {
                 (<HTMLInputElement>document.getElementById("Adjunto")).value = null;
-                
+                this.ArchivoAdjunto = null;
                 this.ActualizarCondicionesTecnicasBienes(cantidad, ultimaEntregabool, Objdescripcion);
                 
                 
