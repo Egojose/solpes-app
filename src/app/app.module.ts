@@ -33,6 +33,7 @@ import { EditarSolicitudComponent } from './editar-solicitud/editar-solicitud.co
 import { RegistroActivosComponent } from './registro-activos/registro-activos.component';
 import { ReasignarComponent } from './reasignar/reasignar.component';
 import { VistaContratosComponent } from './vista-contratos/vista-contratos.component';
+import { ConsultaGeneralComponent } from './consulta-general/consulta-general.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { VistaContratosComponent } from './vista-contratos/vista-contratos.compo
     EditarSolicitudComponent,
     RegistroActivosComponent,
     ReasignarComponent,
-    VistaContratosComponent
+    VistaContratosComponent,
+    ConsultaGeneralComponent
   ],
   entryComponents: [ReasignarComponent],
   imports: [
@@ -105,7 +107,8 @@ import { VistaContratosComponent } from './vista-contratos/vista-contratos.compo
       {path:'verificar-material', component:VerificarMaterialComponent},
       {path:'ver-solicitud-tab', component: VerSolicitudTabComponent },
       {path:'registro-activos', component:RegistroActivosComponent},
-      {path:'vista-contratos', component:VistaContratosComponent}
+      {path:'vista-contratos', component:VistaContratosComponent},
+      {path:'consulta-general', component:ConsultaGeneralComponent}
     ])
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent],
