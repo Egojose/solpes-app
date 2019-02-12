@@ -380,6 +380,29 @@
           </div>
         </div>
         <div class="form-group">
+          <div class="row">
+            <div class="col-md-12">
+              <label for="ceco">CECO/OI</label>
+              <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control">
+                <option value="">Seleccione</option>
+                <option value="Centro de costos">Centro de costos</option>
+                <option value="Orden de inversión">Orden de inversión</option>
+              </select>
+            </div>
+          </div>
+        </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="Numero centro de costos/orden de inversion">Numero centro de costos/orden de inversion</label>
+              <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCico">
+            </div>
+            <div class="col-md-6">
+                <label for="Numero de cuenta">Número de cuenta</label>
+                <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuenta">
+              </div>
+          </div>
+          <br>
+        <div class="form-group">
           <label for="adjunto">Adjunto</label>
           <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event.target.files)" />
           <br>
