@@ -5,7 +5,7 @@ export class RecepcionBienes {
         public valor: string,
         public comentario?: string,
         public IdRecepcionBienes?: number,
-        public ultimaEntregaCTB?: boolean,
+        public ultimaEntrega?: boolean,
         public numrecepcion?: string) {
     }
 
