@@ -116,6 +116,7 @@ export class CrearSolicitudComponent implements OnInit {
   PermisosCreacion: boolean;
   grupos: Grupo[] = [];
   jsonCondicionesContractuales: string;
+  valorcompra: boolean;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
@@ -143,6 +144,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.compraOrdenEstadistica = false;
     this.emptyNumeroOrdenEstadistica = false;
     this.fueSondeo = false;
+    this.valorcompra = false;
   }
 
   MostrarExitoso(mensaje: string) {
