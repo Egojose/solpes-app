@@ -32,6 +32,8 @@ import { VerSolicitudTabComponent } from './ver-solicitud-tab/ver-solicitud-tab.
 import { EditarSolicitudComponent } from './editar-solicitud/editar-solicitud.component';
 import { RegistroActivosComponent } from './registro-activos/registro-activos.component';
 import { ReasignarComponent } from './reasignar/reasignar.component';
+import { VistaContratosComponent } from './vista-contratos/vista-contratos.component';
+import { ConsultaGeneralComponent } from './consulta-general/consulta-general.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { ReasignarComponent } from './reasignar/reasignar.component';
     VerSolicitudTabComponent,
     EditarSolicitudComponent,
     RegistroActivosComponent,
-    ReasignarComponent
+    ReasignarComponent,
+    VistaContratosComponent,
+    ConsultaGeneralComponent
   ],
   entryComponents: [ReasignarComponent],
   imports: [
@@ -102,7 +106,9 @@ import { ReasignarComponent } from './reasignar/reasignar.component';
       {path:'sondeo', component:SondeoComponent},
       {path:'verificar-material', component:VerificarMaterialComponent},
       {path:'ver-solicitud-tab', component: VerSolicitudTabComponent },
-      {path:'registro-activos', component:RegistroActivosComponent}
+      {path:'registro-activos', component:RegistroActivosComponent},
+      {path:'vista-contratos', component:VistaContratosComponent},
+      {path:'consulta-general', component:ConsultaGeneralComponent}
     ])
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent],

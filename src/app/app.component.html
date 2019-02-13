@@ -20,8 +20,11 @@
                     servicios</a>
             </li>
             <li *ngIf="PermisosEdicionContratos">
-                <a href="{{linkEdicionContratos}}" target="_blank">Edición Vista Contratos</a>
+                <a routerLink="/vista-contratos" routerLinkActive="active">Edición Vista Contratos</a>
             </li>
+             <li *ngIf="PermisosConsultaGeneral" >
+                <a routerLink="/consulta-general" routerLinkActive="active">Consulta general</a>
+            </li> 
         </ul>
 
         <div class="version-aplicacion">

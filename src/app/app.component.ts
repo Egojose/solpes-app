@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   PermisosEdicionContratos: boolean;
   PermisosRegistroEntradasBienes: boolean;
   PermisosRegistroEntradasServicios: boolean;
+  PermisosConsultaGeneral: boolean;
   linkEdicionContratos: string;
 
   constructor(private servicio: SPServicio, private compilador: Compiler) {
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     this.PermisosEdicionContratos = false;
     this.PermisosRegistroEntradasBienes = false;
     this.PermisosRegistroEntradasServicios = false;
+    this.PermisosConsultaGeneral = false;
     this.linkEdicionContratos = environment.urlWeb + environment.linkVistaEdicionContratos;
   }
 
