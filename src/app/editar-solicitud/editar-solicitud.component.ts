@@ -427,9 +427,9 @@ export class EditarSolicitudComponent implements OnInit {
       this.solpFormulario.controls["solicitante"].setValue(this.solicitudRecuperada.solicitante);
     }
 
-    if (this.solicitudRecuperada.empresa.ID != undefined) {
-      this.solpFormulario.controls["empresa"].setValue(this.solicitudRecuperada.empresa.ID);
-    }
+    // if (this.solicitudRecuperada.empresa.ID != undefined) {
+    //   this.solpFormulario.controls["empresa"].setValue(this.solicitudRecuperada.empresa.ID);
+    // }
 
     if (this.solicitudRecuperada.ordenadorGastos.ID != undefined) {
       this.valorUsuarioPorDefecto = this.solicitudRecuperada.ordenadorGastos.ID.toString();
