@@ -829,8 +829,7 @@ export class CrearSolicitudComponent implements OnInit {
     {
       adjunto =this.condicionTB.archivoAdjunto.name;          
     }   
-
-
+    
     if (this.textoBotonGuardarCTB == "Guardar") {
       this.condicionTB.indice = this.indiceCTB;
       this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
