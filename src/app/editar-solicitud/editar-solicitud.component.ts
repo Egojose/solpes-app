@@ -255,7 +255,10 @@ export class EditarSolicitudComponent implements OnInit {
       valorEstimadoCTB: [''],
       tipoMonedaCTB: [''],
       adjuntoCTB: [''],
-      comentariosCTB: ['']
+      comentariosCTB: [''],
+      cecoCTB: [''],
+      numCicoCTB: [''],
+      numCuentaCTB: ['']
     });
   }
 
@@ -267,7 +270,10 @@ export class EditarSolicitudComponent implements OnInit {
       valorEstimadoCTS: [''],
       tipoMonedaCTS: [''],
       adjuntoCTS: [''],
-      comentariosCTS: ['']
+      comentariosCTS: [''],
+      cecoCTS: [''],
+      numCicoCTS: [''],
+      numCuentaCTS: ['']
     });
   }
 

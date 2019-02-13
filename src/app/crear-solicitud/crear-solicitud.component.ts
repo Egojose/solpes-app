@@ -191,7 +191,10 @@ export class CrearSolicitudComponent implements OnInit {
       valorEstimadoCTS: [''],
       tipoMonedaCTS: [''],
       adjuntoCTS: [''],
-      comentariosCTS: ['']
+      comentariosCTS: [''],
+      cecoCTS: [''],
+      numCicoCTS: [''],
+      numCuentaCTS: ['']
     });
   }
 
@@ -205,7 +208,10 @@ export class CrearSolicitudComponent implements OnInit {
       valorEstimadoCTB: [''],
       tipoMonedaCTB: [''],
       adjuntoCTB: [''],
-      comentariosCTB: ['']
+      comentariosCTB: [''],
+      cecoCTB: [''],
+      numCicoCTB: [''],
+      numCuentaCTB: ['']
     });
   }
 
@@ -534,6 +540,7 @@ export class CrearSolicitudComponent implements OnInit {
     let justificacion = this.solpFormulario.controls["justificacion"].value;
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
+    
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
