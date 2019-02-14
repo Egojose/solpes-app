@@ -52,8 +52,8 @@ export class CondicionTecnicaServicios{
             adjuntoSondeo,
             adjuntoCreacion,
             element.ID,
-            element.costoInvesion,
-            element.numeroCostoInvesion,
+            element.costoInversion,
+            element.numeroCostoInversion,
             element.numeroCuenta);
     }
 

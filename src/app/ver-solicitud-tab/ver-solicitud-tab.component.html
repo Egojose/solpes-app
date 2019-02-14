@@ -156,7 +156,7 @@
                             <ng-template #elseTemplate>
                                 <td>{{item.costoInversion}}</td>
                                 <td>{{item.numeroCostoInversion}}</td>
-                                <td>{{numeroCuenta}}</td>
+                                <td>{{item.numeroCuenta}}</td>
                             </ng-template>
                             <td>
                                 <div *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
@@ -185,16 +185,9 @@
                             <th>Cantidad</th>
                             <th>Valor Estimado</th>
                             <th>Moneda</th>
-                            <ng-container *ngIf="OrdenEstadistica === true; else elseTemplate">
-                                <td>No aplica</td>
-                                <td>No aplica</td>
-                                <td>No aplica</td>
-                            </ng-container>
-                            <ng-template #elseTemplate>
-                                <td>{{item.costoInversion}}</td>
-                                <td>{{item.numeroCostoInversion}}</td>
-                                <td>{{numeroCuenta}}</td>
-                            </ng-template>
+                            <th>C. costo/O. inversión</th>
+                            <th>No. C. costo/O. inversión</th>
+                            <th>Número de cuenta</th>
                             <th>Adjunto</th>
                             <th>Comentario</th>
                         </tr>
@@ -206,6 +199,16 @@
                             <td>{{item.cantidad | number}}</td>
                             <td>{{item.valorEstimado | number}}</td>
                             <td>{{item.moneda}}</td>
+                            <ng-container *ngIf="OrdenEstadistica === true; else TemplateCostoInv">
+                                <td>No aplica</td>
+                                <td>No aplica</td>
+                                <td>No aplica</td>
+                            </ng-container>
+                            <ng-template #TemplateCostoInv>
+                                <td>{{item.costoInvesion}}</td>
+                                <td>{{item.numeroCostoInvesion}}</td>
+                                <td>{{item.numeroCuenta}}</td>
+                            </ng-template>
                             <td>
                                 <ng-container *ngIf="item.adjuntoCreacion != null; else nohaycreacion">
                                     <a href="{{item.adjuntoCreacion.url}}" target="_blank">

@@ -47,7 +47,7 @@ export class CondicionesTecnicasBienes {
 
         adjuntoSondeo = CondicionesTecnicasBienes.ObtenerAdjunto("sondeoBienes-", adjuntosBienes, adjuntoSondeo);
         adjuntoCreacion = CondicionesTecnicasBienes.ObtenerAdjunto("solp-", adjuntosBienes, adjuntoCreacion);
-        //adjuntoActivo = CondicionesTecnicasBienes.ObtenerAdjunto("ActivoVM-", adjuntosBienes, adjuntoActivo);
+        adjuntoActivo = CondicionesTecnicasBienes.ObtenerAdjunto("ActivoVM-", adjuntosBienes, adjuntoActivo);
 
         return new CondicionesTecnicasBienes(element.Id,
             element.Codigo,
@@ -71,6 +71,7 @@ export class CondicionesTecnicasBienes {
             element.MonedaSondeo,
             adjuntoSondeo,
             adjuntoCreacion,
+            adjuntoActivo,
             element.costoInversion,
             element.numeroCostoInversion,
             element.numeroCuenta);
