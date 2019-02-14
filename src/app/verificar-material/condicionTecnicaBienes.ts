@@ -28,7 +28,10 @@ export class CondicionesTecnicasBienes {
         public monedaSondeo?: string,
         public adjunto?:any,
         public adjuntoCreacion?:any,
-        public adjuntoActivo?: any) { }
+        public adjuntoActivo?: any,
+        public costoInversion?: string,
+        public numeroCostoInversion?: string,
+        public numeroCuenta?: string) { }
 
     public static fromJson(element: any) {
 
@@ -67,7 +70,10 @@ export class CondicionesTecnicasBienes {
             element.TipoMoneda,
             element.MonedaSondeo,
             adjuntoSondeo,
-            adjuntoCreacion);
+            adjuntoCreacion,
+            element.costoInversion,
+            element.numeroCostoInversion,
+            element.numeroCuenta);
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
