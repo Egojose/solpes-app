@@ -16,7 +16,9 @@ export class CondicionTecnicaServicios{
         public tipoMoneda?: string,
         public monedaSondeo?: string,
         public id?: number,
-        ) { }
+        public costoInversion?: string,
+        public numeroCostoInversion?: string,
+        public numeroCuenta?: string) { }
 
     public static fromJson(element: any) {
 
@@ -65,7 +67,10 @@ export class CondicionTecnicaServicios{
             Archivo,
             element.TipoMoneda,
             element.MonedaSondeo,
-            element.ID);
+            element.ID,
+            element.costoInversion,
+            element.numeroCostoInversion,
+            element.numeroCuenta);
     }
 
     public static fromJsonList(elements: any) {
