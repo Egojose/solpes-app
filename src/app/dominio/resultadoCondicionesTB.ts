@@ -1,51 +1,76 @@
+import { Adjunto } from "./adjunto";
+
 export class resultadoCondicionesTB {
 
-    constructor(public IdBienes: number,
-        public codigo: string,
+    constructor(
+        public IdBienes: number,
+        public codigoVerificar: string,
         public descripcion: string,
         public modelo: string,
         public fabricante: string,
-        public cantidad: string,        
+        public cantidad: string,
         public cantidadComprar?: number,
         public valorEstimado?: string,
         public precioSondeo?: string,
         public moneda?: string,
         public monedaSondeo?: string,
-        public adjunto?: string) { console.log(this.adjunto) }
+        public codigoBienes?: string,
+        public modeloBienes?: string,
+        public fabricanteBienes?: string,
+        public cantidadBienes?: number,
+        public comentariosBienes?: string,
+        public adjuntoCreacion?: any,
+        public adjuntoSondeo?: any) { }
 
     public static fromJson(element: any) {
 
-        let RutaArchivo = "";
-        if (element.Attachments ===true) {
-           let ObjArchivos = element.AttachmentFiles.results;
-            
-           ObjArchivos.forEach(element => {
-               let objSplit = element.FileName.split("-");
-               if (objSplit.length>0) {
-                   let TipoArchivo = objSplit[0]
-                   if (TipoArchivo==="sondeoBienes") {
-                        RutaArchivo=element.ServerRelativeUrl;
-                   }
-                   else {
-                    RutaArchivo == null; 
-                   }
-                
-               }
-           });
-        }        
+        let adjuntosBienes: Adjunto [] = [];
+        let adjuntoCreacion: Adjunto;
+        let adjuntoSondeo: Adjunto;
 
-        return new resultadoCondicionesTB(element.Id, 
-            element.CodigoVerificar, 
-            element.DescripcionVerificar, 
-            element.ModeloVerificar, 
-            element.Fabricante,
-            element.CantidadVerificar,             
-            element.CantidadReservaVerificar, 
-            element.ValorEstimado, 
-            element.PrecioSondeo, 
+        let arrayAdjuntos = element.AttachmentFiles.results;
+        for (let i = 0; i < arrayAdjuntos.length; i++){
+            adjuntosBienes.push(new Adjunto(element.Id, arrayAdjuntos[i].FileName, arrayAdjuntos[i].ServerRelativeUrl));
+        }
+
+        adjuntoSondeo = resultadoCondicionesTB.ObtenerAdjunto("sondeoBienes-", adjuntosBienes, adjuntoSondeo);
+        adjuntoCreacion = resultadoCondicionesTB.ObtenerAdjunto("solp-", adjuntosBienes, adjuntoCreacion);
+
+        return new resultadoCondicionesTB(element.Id,
+            element.CodigoVerificar,
+            element.DescripcionVerificar,
+            element.ModeloVerificar,
+            element.FabricanteVerificar,
+            element.CantidadVerificar,
+            element.CantidadReservaVerificar,
+            element.ValorEstimado,
+            element.PrecioSondeo,
             element.TipoMoneda,
             element.MonedaSondeo,
-            RutaArchivo);
+            element.Codigo,
+            element.Modelo,
+            element.Fabricante,
+            element.Cantidad,
+            element.Comentarios,
+            adjuntoCreacion, 
+            adjuntoSondeo);
+    }
+
+    private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
+        if (adjuntosBienes.length > 0) {
+            let adjuntoPorBuscar = adjuntosBienes.filter(a => a.filename.startsWith(identificadorAdjunto));
+            if (adjuntoPorBuscar.length > 0) {
+                let ultimaPosicion = adjuntoPorBuscar.length - 1;
+                adjuntoRetornar = adjuntoPorBuscar[ultimaPosicion];
+            }
+            else {
+                adjuntoRetornar = null;
+            }
+        }
+        else{
+            adjuntoRetornar = null;
+        }
+        return adjuntoRetornar;
     }
 
     public static fromJsonList(elements: any) {

@@ -49,12 +49,12 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="duplicarSolicitud">
+    <!-- <ng-container matColumnDef="duplicarSolicitud">
       <th mat-header-cell *matHeaderCellDef> Duplicar solicitud </th>
       <td mat-cell *matCellDef="let element">
         <button *ngIf="element.estado != 'Borrador' && element.estado != 'Inicial'" class="btn btn-primary" (click)="duplicarSolicitud(element)">Duplicar</button>
       </td>
-    </ng-container>
+    </ng-container> -->
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
