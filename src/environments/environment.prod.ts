@@ -1,12 +1,7 @@
 export const environment = {
   production: true,
-<<<<<<< HEAD
   urlRaiz: 'https://isaempresas.sharepoint.com',
   urlWeb:'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes', 
-=======
-  urlRaiz: 'https://enovelsoluciones.sharepoint.com',
-  urlWeb:'https://enovelsoluciones.sharepoint.com/sites/jam/solpes', 
->>>>>>> master
   urlReltativa: '/sites/jam/solpes',
   listaEmpresas: 'Empresas',
   listaPaises: 'Paises',
