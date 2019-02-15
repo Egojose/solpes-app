@@ -548,9 +548,9 @@ export class EditarSolicitudComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        this.mostrarError('Error obteniendo condiciones técnicas de bienes');
+        this.mostrarError('Error obteniendo condiciones técnicas de servicios');
         this.spinner.hide();
-        console.log('Error obteniendo condiciones técnicas de bienes: ' + err);
+        console.log('Error obteniendo condiciones técnicas de servicios: ' + err);
       }
     )
   }
@@ -566,9 +566,9 @@ export class EditarSolicitudComponent implements OnInit {
         }
         this.consultarCondicionesTecnicasServicios();
       }, err => {
-        this.mostrarError('Error obteniendo condiciones técnicas de servicios');
+        this.mostrarError('Error obteniendo condiciones técnicas de bienes');
         this.spinner.hide();
-        console.log('Error obteniendo condiciones técnicas de servicios: ' + err);
+        console.log('Error obteniendo condiciones técnicas de bienes: ' + err);
       }
     )
   }
