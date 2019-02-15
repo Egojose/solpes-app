@@ -13,18 +13,18 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ConsultaGeneralComponent implements OnInit {
 
-  usuarioActual : Usuario;
-  misSolicitudes: Solicitud[] = [];
+  usuarioActual: Usuario;
+  todasLasSolicitudes: Solicitud[] = [];
   dataSource;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   loading: boolean;
   empty: boolean;
-  
-  constructor( private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService) { 
+
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService) {
   }
 
-  displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Responsable', 'VerSolicitud']; 
+  displayedColumns: string[] = ['Consecutivo', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Responsable', 'CreadoPor', 'VerSolicitud'];
 
   ngOnInit() {
     this.spinner.show();
@@ -33,15 +33,14 @@ export class ConsultaGeneralComponent implements OnInit {
   }
 
   destruirSessionesSolicitudes(): any {
-     sessionStorage.removeItem("IdSolicitud");
-      sessionStorage.removeItem("solicitud");
+    sessionStorage.removeItem("solicitud");
   }
 
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (Response) => {
-        this.usuarioActual  = new Usuario(Response.Title, Response.email,Response.Id);
-        this.ObtenerMisSolicitudes();
+        this.usuarioActual = new Usuario(Response.Title, Response.email, Response.Id);
+        this.ObtenerSolicitudes();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
         this.spinner.hide();
@@ -49,29 +48,27 @@ export class ConsultaGeneralComponent implements OnInit {
     )
   }
 
-  ObtenerMisSolicitudes() {
-    
-    let idUsuario = this.usuarioActual.id;
+  ObtenerSolicitudes() {
     this.servicio.obtenerSolicitudes().subscribe(
       (respuesta) => {
-        this.misSolicitudes = Solicitud.fromJsonList(respuesta);
-        if (this.misSolicitudes.length > 0) {
+        this.todasLasSolicitudes = Solicitud.fromJsonList(respuesta);
+        if (this.todasLasSolicitudes.length > 0) {
           this.empty = false;
-          this.dataSource = new MatTableDataSource(this.misSolicitudes);
+          this.dataSource = new MatTableDataSource(this.todasLasSolicitudes);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-        }else{
+        } else {
           this.empty = true;
         }
         this.spinner.hide();
       }, error => {
-        console.log('Error obteniendo mis solicitudes: ' + error);
+        console.log('Error obteniendo las solicitudes: ' + error);
         this.spinner.hide();
       }
     )
   }
 
-  VerSolicitud(solicitud){
+  VerSolicitud(solicitud) {
     sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
     this.router.navigate(['/ver-solicitud-tab']);
   }

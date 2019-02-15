@@ -72,6 +72,7 @@ export class AppComponent implements OnInit {
     const grupoEdicionContratos = "Solpes-Edicion-Contratos";
     const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
     const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
+    const grupoConsultaGeneral = "Solpes-ConsultaGeneral";
 
     let existeGrupoEdicionContratos = this.grupos.find(x => x.title == grupoEdicionContratos);
     if (existeGrupoEdicionContratos != null) {
@@ -87,6 +88,12 @@ export class AppComponent implements OnInit {
     if (existeGrupoRegistroEntradasServicios != null) {
       this.PermisosRegistroEntradasServicios = true;
     }
+
+    let existeGrupoConsultaGeneral = this.grupos.find(x => x.title == grupoConsultaGeneral);
+    if (existeGrupoConsultaGeneral != null) {
+      this.PermisosConsultaGeneral = true;
+    }
+
   }
 
   public ngOnInit() {
