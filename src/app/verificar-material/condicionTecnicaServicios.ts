@@ -17,7 +17,10 @@ export class CondicionTecnicaServicios{
         public monedaSondeo?:string,
         public adjunto?:any,
         public adjuntoCreacion?:any,
-        public id?: number) { }
+        public id?: number,
+        public costoInvesion?: string,
+        public numeroCostoInvesion?: string,
+        public numeroCuenta?: string) { }
 
     public static fromJson(element: any) {
         let adjuntosServicios: Adjunto[] = [];
@@ -48,7 +51,10 @@ export class CondicionTecnicaServicios{
             element.MonedaSondeo,
             adjuntoSondeo,
             adjuntoCreacion,
-            element.ID);
+            element.ID,
+            element.costoInversion,
+            element.numeroCostoInversion,
+            element.numeroCuenta);
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {

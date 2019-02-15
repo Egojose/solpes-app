@@ -318,6 +318,9 @@
                                     <th>Cantidad</th>
                                     <th>Valor Estimado</th>
                                     <th>Moneda</th>
+                                    <th>C. costo/O. inversión</th>
+                                    <th>No. C. costo/O. inversión</th>
+                                    <th>Número de cuenta</th>
                                     <th>Adjunto</th>
                                     <th>Comentario</th>
                                 </tr>
@@ -331,6 +334,16 @@
                                     <td>{{item.cantidad | number}}</td>
                                     <td>{{item.valorEstimado | number}}</td>
                                     <td>{{item.moneda}}</td>
+                                    <ng-container *ngIf="OrdenEstadistica === true; else este">
+                                            <td>No aplica</td>
+                                            <td>No aplica</td>
+                                            <td>No aplica</td>
+                                        </ng-container>
+                                        <ng-template #este>
+                                            <td>{{item.costoInvesion}}</td>
+                                            <td>{{item.numeroCostoInvesion}}</td>
+                                            <td>{{item.numeroCuenta}}</td>
+                                        </ng-template>
                                     <td>
                                         <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                             <a href="{{item.adjuntoCreacion.url}}" target="_blank">
@@ -364,6 +377,9 @@
                                     <th>Cantidad</th>
                                     <th>Valor Estimado</th>
                                     <th>Moneda</th>
+                                    <th>C. costo/O. inversión</th>
+                                    <th>No. C. costo/O. inversión</th>
+                                    <th>Número de cuenta</th>
                                     <th>Adjunto</th>
                                     <th>Comentario</th>
                                 </tr>
@@ -375,6 +391,16 @@
                                     <td>{{item.cantidad | number}}</td>
                                     <td>{{item.valorEstimado | number}}</td>
                                     <td>{{item.tipoMoneda}}</td>
+                                    <ng-container *ngIf="OrdenEstadistica === true; else TemplateCostoInv">
+                                            <td>No aplica</td>
+                                            <td>No aplica</td>
+                                            <td>No aplica</td>
+                                        </ng-container>
+                                        <ng-template #TemplateCostoInv>
+                                            <td>{{item.costoInvesion}}</td>
+                                            <td>{{item.numeroCostoInvesion}}</td>
+                                            <td>{{item.numeroCuenta}}</td>
+                                        </ng-template>
                                     <td>
                                         <ng-container *ngIf="item.archivo !== ''; else nohayServicios">
                                             <a href="{{item.archivo}}" target="_blank">
