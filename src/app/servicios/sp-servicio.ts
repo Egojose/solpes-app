@@ -27,7 +27,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCIsImtpZCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTUwMDk2NDk4LCJuYmYiOjE1NTAwOTY0OTgsImV4cCI6MTU1MDEyNTU5OCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.brYHfoqlDa39bhMiljOU9EUKT3F2E2EdVd2mIQbk9YKTG3bzxkQDh1LQPHips1p8XpP2lutDIl595a7yxcrZr4FrEFE1K5Itceqe7k3n0OK9kjtwU7kXnpRjND0_aOjBzgkRi7vYcTCRoLtSg4mU4tA8aoVbYz746HIpk04l2pA9XhqDmG6020yyafdh8pOJgKRsFtDpuwIESh7fSaCXrHXUnUoEkKl_2NlAbS6-SHzhZRLreExle-WkmQ2M127wpUNEielPmEaiYeX3wf74YNe0ACg5Z6fJN_RPRT1Yzs5WlOgHlQbo_mM5b41LeKoo-gezm6IH_jGG2vlnY6_ScA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCIsImtpZCI6Ii1zeE1KTUxDSURXTVRQdlp5SjZ0eC1DRHh3MCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTUwMjQxMDU4LCJuYmYiOjE1NTAyNDEwNTgsImV4cCI6MTU1MDI3MDE1OCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.JUfcvsKLS12NC1aE9ERak1vY-Uwxvl82IJJzzROU7hryiLrhb6zoeqbAazRbZoOJYncSmGr6-_beosZzDrymnrhZcewRPYO7zs4neDLNaUzXT2VU6OBNqW-2B3CBilM2wR_23gTFWBGFYxyjS-BlvK1MOawZwdIa2REezMzdMNo_jUk6svxdHdfU2VKPF3Wft3YFr4lRnL_F8Zin7Q5xivI3YqFBIqFRjn-bYE8rPX9Bthw5L3lglA6TRn2TtYnA91Xs-1jpzXwZu5-MwAKcr8qFT3S0HrGRyEdLgt5ga7IvFTiyBl_Z3A7swYnvNl1FfWXebP8_m4z-S0slDlqBOw'
             }
         }, environment.urlWeb);
 
@@ -110,7 +110,7 @@ export class SPServicio {
             FaltaRecepcionServicios: solicitud.compraServicios,
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
-            NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica
+            NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
         });
     }
 
@@ -163,7 +163,11 @@ export class SPServicio {
             PrecioSondeo: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios,
             TipoMoneda: condicionTecnicaBienes.tipoMoneda,
-            MonedaSondeo: condicionTecnicaBienes.tipoMoneda
+            MonedaSondeo: condicionTecnicaBienes.tipoMoneda,
+            costoInversion: condicionTecnicaBienes.costoInversion,
+            numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
+            numeroCuenta: condicionTecnicaBienes.numeroCuenta
+
         });
     }
 
@@ -182,7 +186,10 @@ export class SPServicio {
             PrecioSondeo: condicionTecnicaBienes.valorEstimado,
             Comentarios: condicionTecnicaBienes.comentarios,
             TipoMoneda: condicionTecnicaBienes.tipoMoneda,
-            MonedaSondeo: condicionTecnicaBienes.tipoMoneda
+            MonedaSondeo: condicionTecnicaBienes.tipoMoneda,
+            costoInversion: condicionTecnicaBienes.costoInversion,
+            numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
+            numeroCuenta: condicionTecnicaBienes.numeroCuenta
         });
     }
 
@@ -234,7 +241,10 @@ export class SPServicio {
             PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
             MonedaSondeo: condicionTecnicaServicios.tipoMoneda,
-            Comentario: condicionTecnicaServicios.comentarios
+            Comentario: condicionTecnicaServicios.comentarios,
+            costoInversion: condicionTecnicaServicios.costoInversion,
+            numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta
         });
     }
 
@@ -251,7 +261,10 @@ export class SPServicio {
             PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
             MonedaSondeo: condicionTecnicaServicios.tipoMoneda,
-            Comentario: condicionTecnicaServicios.comentarios
+            Comentario: condicionTecnicaServicios.comentarios,
+            costoInversion: condicionTecnicaServicios.costoInversion,
+            numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta
         });
     }
 

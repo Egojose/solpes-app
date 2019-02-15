@@ -208,7 +208,7 @@ export class SondeoComponent implements OnInit {
             let nombreArchivo = "sondeoBienes-" + this.generarllaveSoporte() + "_" + this.ObjCondicionesTecnicasBienesGuardar[i].adjunto.name;
             this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.ObjCondicionesTecnicasBienesGuardar[i].IdBienes, nombreArchivo, this.ObjCondicionesTecnicasBienesGuardar[i].adjunto).then(
               (respuesta) => {
-                contador++
+                contador++;
                 if (contador === this.ObjCondicionesTecnicasBienesGuardar.length) {
                   this.MostrarExitoso("El sondeo de bienes se ha guardado correctamente");
                   if (this.ObjCondicionesTecnicasServiciosGuardar.length > 0) {
