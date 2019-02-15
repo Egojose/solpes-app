@@ -256,7 +256,7 @@ export class CrearSolicitudComponent implements OnInit {
       tipoSolicitud: [''],
       cm: [''],
       solicitante: [''],
-      empresa: [''],
+      // empresa: [''],
       ordenadorGastos: [''],
       pais: [''],
       categoria: [''],
@@ -519,7 +519,7 @@ export class CrearSolicitudComponent implements OnInit {
     let responsable;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
-    let empresa = this.solpFormulario.controls["empresa"].value;
+    let empresa = 1;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
     let valorPais = this.solpFormulario.controls["pais"].value;
     let pais = valorPais.nombre;
@@ -539,11 +539,11 @@ export class CrearSolicitudComponent implements OnInit {
       return false;
     }
 
-    if (this.EsCampoVacio(empresa)) {
-      this.mostrarAdvertencia("El campo Empresa es requerido");
-      this.spinner.hide();
-      return false;
-    }
+    // if (this.EsCampoVacio(empresa)) {
+    //   this.mostrarAdvertencia("El campo Empresa es requerido");
+    //   this.spinner.hide();
+    //   return false;
+    // }
 
     if (this.EsCampoVacio(ordenadorGastos)) {
       this.mostrarAdvertencia("El campo Ordenador de gastos es requerido");
@@ -829,8 +829,7 @@ export class CrearSolicitudComponent implements OnInit {
     {
       adjunto =this.condicionTB.archivoAdjunto.name;          
     }   
-
-
+    
     if (this.textoBotonGuardarCTB == "Guardar") {
       this.condicionTB.indice = this.indiceCTB;
       this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
@@ -1356,7 +1355,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.spinner.show();
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
-    let empresa = this.solpFormulario.controls["empresa"].value;
+    let empresa = 1;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
     let valorPais = this.solpFormulario.controls["pais"].value;
     let categoria = this.solpFormulario.controls["categoria"].value;
@@ -1385,7 +1384,7 @@ export class CrearSolicitudComponent implements OnInit {
       (tipoSolicitud != '') ? tipoSolicitud : '',
       (cm != '') ? cm : '',
       this.usuarioActual.nombre,
-      (empresa != '') ? empresa : null,
+      empresa,
       (ordenadorGastos != 'Seleccione') ? ordenadorGastos : null,
       (valorPais != '') ? valorPais.id : null,
       (categoria != null) ? categoria.nombre : '',

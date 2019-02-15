@@ -1,61 +1,67 @@
 <h2>Mis Solicitudes</h2>
 
 <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar solicitud">
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar solicitud">
 </mat-form-field>
 
 <mat-toolbar color="primary" [hidden]="!empty">No hay solicitudes</mat-toolbar>
 
 <div class="mat-elevation-z8" [hidden]="empty">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-        <ng-container matColumnDef="Consecutivo">
-            <th mat-header-cell *matHeaderCellDef> Consecutivo </th>
-            <td mat-cell *matCellDef="let element"> {{element.consecutivo}} </td>
-        </ng-container>
-    
+    <ng-container matColumnDef="Consecutivo">
+      <th mat-header-cell *matHeaderCellDef> Consecutivo </th>
+      <td mat-cell *matCellDef="let element"> {{element.consecutivo}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="Tiposolicitud">
-            <th mat-header-cell *matHeaderCellDef> Tipo de solicitud </th>
-            <td mat-cell *matCellDef="let element"> {{element.tipoSolicitud}} </td>
-        </ng-container>
-    
-        <ng-container matColumnDef="Alcance">
-            <th mat-header-cell *matHeaderCellDef> Alcance </th>
-            <td mat-cell *matCellDef="let element"> {{element.alcance}} </td>
-        </ng-container>
-    
 
-        <ng-container matColumnDef="fechaEntregaDeseada">
-            <th mat-header-cell *matHeaderCellDef> Fecha entrega deseada </th>
-            <td mat-cell *matCellDef="let element"> {{element.fechaEntregaDeseada | date: 'dd/MM/yyyy'}} </td>
-        </ng-container>
-    
-       
-        <ng-container matColumnDef="Estado">
-            <th mat-header-cell *matHeaderCellDef> Estado </th>
-            <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
-        </ng-container>
+    <ng-container matColumnDef="Tiposolicitud">
+      <th mat-header-cell *matHeaderCellDef> Tipo de solicitud </th>
+      <td mat-cell *matCellDef="let element"> {{element.tipoSolicitud}} </td>
+    </ng-container>
 
-        <ng-container matColumnDef="Responsable">
-            <th mat-header-cell *matHeaderCellDef> Responsable </th>
-            <td mat-cell *matCellDef="let element"> {{element.nombreResponsable}} </td>
-        </ng-container>
-    
-        <ng-container matColumnDef="VerSolicitud">
-            <th mat-header-cell *matHeaderCellDef> Ver solicitud </th>
-            <td mat-cell *matCellDef="let element">
-                <button class="btn btn-success" (click)="VerSolicitud(element)">Ver</button>
-            </td>
-        </ng-container>
-    
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+    <ng-container matColumnDef="Alcance">
+      <th mat-header-cell *matHeaderCellDef> Alcance </th>
+      <td mat-cell *matCellDef="let element"> {{element.alcance}} </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="fechaEntregaDeseada">
+      <th mat-header-cell *matHeaderCellDef> Fecha entrega deseada </th>
+      <td mat-cell *matCellDef="let element"> {{element.fechaEntregaDeseada | date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="Estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Responsable">
+      <th mat-header-cell *matHeaderCellDef> Responsable </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombreResponsable}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="VerSolicitud">
+      <th mat-header-cell *matHeaderCellDef> Ver solicitud </th>
+      <td mat-cell *matCellDef="let element">
+        <button class="btn btn-success" (click)="VerSolicitud(element)">Ver</button>
+      </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="duplicarSolicitud">
+      <th mat-header-cell *matHeaderCellDef> Duplicar solicitud </th>
+      <td mat-cell *matCellDef="let element">
+        <button *ngIf="element.estado != 'Borrador' && element.estado != 'Inicial'" class="btn btn-primary" (click)="duplicarSolicitud(element)">Duplicar</button>
+      </td>
+    </ng-container> -->
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
 </div>
 
 <ngx-spinner>
-        <p style="font-size: 20px; color: white">PROCESANDO...</p>
-    </ngx-spinner>
-
+  <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>

@@ -97,17 +97,17 @@ export class SondeoComponent implements OnInit {
   }
 
   verificarEstado(): boolean {
-    if(this.solicitudRecuperada.estado == 'Por sondear'){
+    if (this.solicitudRecuperada.estado == 'Por sondear') {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  verificarResponsable(): boolean{
-    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+  verificarResponsable(): boolean {
+    if (this.solicitudRecuperada.responsable.ID == this.usuarioActual.id) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -223,6 +223,14 @@ export class SondeoComponent implements OnInit {
               }
             )
           }
+          else {
+            this.MostrarExitoso("El sondeo de bienes se ha guardado correctamente");
+            if (this.ObjCondicionesTecnicasServiciosGuardar.length > 0) {
+              this.GuardarSondeoServicios();
+            } else {
+              this.guardarComentarioEstado();
+            }
+          }
         }
       ).catch(
         (error) => {
@@ -262,14 +270,6 @@ export class SondeoComponent implements OnInit {
           return respuesta;
 
         }
-
-        if (this.ObjCondicionesTecnicasBienesGuardar[i].adjunto === null) {
-          this.mostrarAdvertencia("Debe adjuntar el archivo del sondeo para cada bien");
-          this.spinner.hide();
-          respuesta = false;
-          return respuesta;
-
-        }
       }
 
       for (let i = 0; i < this.ObjCondicionesTecnicasServiciosGuardar.length; i++) {
@@ -290,13 +290,6 @@ export class SondeoComponent implements OnInit {
 
         if (this.EsCampoVacio(this.ObjCondicionesTecnicasServiciosGuardar[i].codigo)) {
           this.mostrarAdvertencia("Hay algún código sin llenar en condiciones de servicios");
-          this.spinner.hide();
-          respuesta = false;
-          return respuesta;
-        }
-
-        if (this.ObjCondicionesTecnicasServiciosGuardar[i].adjunto === null) {
-          this.mostrarAdvertencia("Debe adjuntar el archivo del sondeo para cada servicio");
           this.spinner.hide();
           respuesta = false;
           return respuesta;
@@ -327,13 +320,6 @@ export class SondeoComponent implements OnInit {
           respuesta = false;
           return respuesta;
         }
-
-        if (this.ObjCondicionesTecnicasBienesGuardar[i].adjunto === null) {
-          this.mostrarAdvertencia("Debe adjuntar el archivo del sondeo para cada bien");
-          this.spinner.hide();
-          respuesta = false;
-          return respuesta;
-        }
       }
 
     } else {
@@ -356,13 +342,6 @@ export class SondeoComponent implements OnInit {
 
         if (this.EsCampoVacio(this.ObjCondicionesTecnicasServiciosGuardar[i].codigo)) {
           this.mostrarAdvertencia("Hay algún código sin llenar en condiciones de servicios");
-          this.spinner.hide();
-          respuesta = false;
-          return respuesta;
-        }
-
-        if (this.ObjCondicionesTecnicasServiciosGuardar[i].adjunto === null) {
-          this.mostrarAdvertencia("Debe adjuntar el archivo del sondeo para cada servicio");
           this.spinner.hide();
           respuesta = false;
           return respuesta;
@@ -402,6 +381,10 @@ export class SondeoComponent implements OnInit {
                 this.spinner.hide();
               }
             )
+          }
+          else{
+            this.MostrarExitoso("El sondeo de servicios se ha guardado correctamente");
+            this.guardarComentarioEstado();
           }
         }
       ).catch(

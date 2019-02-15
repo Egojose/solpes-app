@@ -230,7 +230,7 @@ export class EditarSolicitudComponent implements OnInit {
       tipoSolicitud: [''],
       cm: [''],
       solicitante: [''],
-      empresa: [''],
+      // empresa: [''],
       ordenadorGastos: [''],
       pais: [''],
       categoria: [''],
@@ -427,9 +427,9 @@ export class EditarSolicitudComponent implements OnInit {
       this.solpFormulario.controls["solicitante"].setValue(this.solicitudRecuperada.solicitante);
     }
 
-    if (this.solicitudRecuperada.empresa.ID != undefined) {
-      this.solpFormulario.controls["empresa"].setValue(this.solicitudRecuperada.empresa.ID);
-    }
+    // if (this.solicitudRecuperada.empresa.ID != undefined) {
+    //   this.solpFormulario.controls["empresa"].setValue(this.solicitudRecuperada.empresa.ID);
+    // }
 
     if (this.solicitudRecuperada.ordenadorGastos.ID != undefined) {
       this.valorUsuarioPorDefecto = this.solicitudRecuperada.ordenadorGastos.ID.toString();
@@ -1388,7 +1388,7 @@ export class EditarSolicitudComponent implements OnInit {
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
     let solicitante = this.solpFormulario.controls["solicitante"].value;
-    let empresa = this.solpFormulario.controls["empresa"].value;
+    let empresa = 1;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
     let valorPais = this.solpFormulario.controls["pais"].value;
     let valorCategoria;
@@ -1430,7 +1430,7 @@ export class EditarSolicitudComponent implements OnInit {
       (tipoSolicitud != '') ? tipoSolicitud : '',
       (cm != '') ? cm : '',
       (solicitante != '') ? solicitante : '',
-      (empresa != '') ? empresa : null,
+      empresa,
       (ordenadorGastos != 'Seleccione') ? ordenadorGastos : null,
       (valorPais != '') ? valorPais : null,
       (valorCategoria != null) ? valorCategoria : null,
@@ -1471,7 +1471,7 @@ export class EditarSolicitudComponent implements OnInit {
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let solicitante = this.solpFormulario.controls["solicitante"].value;
     let cm = this.solpFormulario.controls["cm"].value;
-    let empresa = this.solpFormulario.controls["empresa"].value;
+    let empresa = 1;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
     let valorPais = this.solpFormulario.controls["pais"].value;
     let categoria = this.solpFormulario.controls["categoria"].value;
@@ -1490,11 +1490,11 @@ export class EditarSolicitudComponent implements OnInit {
       return false;
     }
 
-    if (this.EsCampoVacio(empresa)) {
-      this.mostrarAdvertencia("El campo Empresa es requerido");
-      this.spinner.hide();
-      return false;
-    }
+    // if (this.EsCampoVacio(empresa)) {
+    //   this.mostrarAdvertencia("El campo Empresa es requerido");
+    //   this.spinner.hide();
+    //   return false;
+    // }
 
     if (this.EsCampoVacio(ordenadorGastos)) {
       this.mostrarAdvertencia("El campo Ordenador de gastos es requerido");

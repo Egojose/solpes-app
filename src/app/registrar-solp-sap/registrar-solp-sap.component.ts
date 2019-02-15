@@ -60,7 +60,6 @@ export class RegistrarSolpSapComponent implements OnInit {
   paisId: any;
   ObResProceso: responsableProceso[] = [];
   Autor: any;
-  ObjCTVerificar: any[];
   dataSource;
   dataSourceTS;
   CTS: boolean;
@@ -173,14 +172,11 @@ export class RegistrarSolpSapComponent implements OnInit {
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
             if (RespuestaCondiciones.length > 0) {
+              this.CTB = true;
               this.existenBienes = true;
               this.ObjCondicionesTecnicasBienesLectura = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
               this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
               this.ObjResultadosondeo = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-              this.ObjCTVerificar = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
-              if (this.ObjCTVerificar.length > 0) {
-                this.CTB = true;
-              }
               this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
               this.dataSource.paginator = this.paginator;
             }
