@@ -379,31 +379,45 @@
             </div>
           </div>
         </div>
-        <!-- <ng-container *ngIf="valorOrdenEstadistica == false"> -->
+
+        <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
+
           <div class="form-group">
             <div class="row">
               <div class="col-md-12">
                 <label for="ceco">Centro de costos / Orden de inversión</label>
-                <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control">
+                <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" 
+                [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }"> 
                   <option value="">Seleccione</option>
                   <option value="Centro de costos">Centro de costos</option>
                   <option value="Orden de inversión">Orden de inversión</option>
                 </select>
+                <div *ngIf="ctbSubmitted && f.cecoCTB.errors" class="invalid-feedback">
+                  <div *ngIf="f.cecoCTB.errors.required">Este campo es requerido</div>
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
-              <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB">
+              <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }">
+              <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
+                <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
+              </div>
             </div>
             <div class="col-md-6">
               <label for="Numero de cuenta">Número de cuenta</label>
-              <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTB">
+              <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCuentaCTB.errors }">
+              <div *ngIf="ctbSubmitted && f.numCuentaCTB.errors" class="invalid-feedback">
+                <div *ngIf="f.numCuentaCTB.errors.required">Este campo es requerido</div>
+              </div>
             </div>
           </div>
           <br>
-        <!-- </ng-container> -->
+
+        </div>
+        
         <div class="form-group">
           <label for="adjunto">Adjunto</label>
           <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event.target.files)" />
@@ -482,31 +496,43 @@
             </div>
           </div>
         </div>
-        <!-- <ng-container *ngIf="valorOrdenEstadistica == false"> -->
+        
+        <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
           <div class="form-group">
             <div class="row">
               <div class="col-md-12">
                 <label for="ceco">Centro de costos / Orden de inversión</label>
-                <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control">
+                <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control"
+                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }">
                   <option value="">Seleccione</option>
                   <option value="Centro de costos">Centro de costos</option>
                   <option value="Orden de inversión">Orden de inversión</option>
                 </select>
+                <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">
+                  <div *ngIf="f2.cecoCTS.errors.required">Este campo es requerido</div>
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
-              <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS">
+              <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }">
+              <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
+                <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
+              </div>
             </div>
             <div class="col-md-6">
               <label for="Numero de cuenta">Número de cuenta</label>
-              <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS">
+              <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }">
+              <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
+                <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
+              </div>
             </div>
           </div>
           <br>
-        <!-- </ng-container> -->
+        </div>
+
         <div class="form-group">
           <label for="adjunto">Adjunto</label>
           <input id="adjuntoCTS" name="adjuntoCTS" formControlName="adjuntoCTS" type="file" class="form-control" (change)="subirAdjuntoCTS($event.target.files)" />

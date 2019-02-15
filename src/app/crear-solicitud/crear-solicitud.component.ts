@@ -117,6 +117,7 @@ export class CrearSolicitudComponent implements OnInit {
   grupos: Grupo[] = [];
   jsonCondicionesContractuales: string;
   valorcompra: boolean;
+  mostrarDatosContables: boolean;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
@@ -145,6 +146,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.emptyNumeroOrdenEstadistica = false;
     this.fueSondeo = false;
     this.valorcompra = false;
+    this.mostrarDatosContables = false;
   }
 
   MostrarExitoso(mensaje: string) {
@@ -176,7 +178,32 @@ export class CrearSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
+    this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
+  }
+
+  AsignarRequeridosDatosContables(): any {
+    this.ctbFormulario.controls["cecoCTB"].setValidators(Validators.required);
+    this.ctbFormulario.controls["numCicoCTB"].setValidators(Validators.required);
+    this.ctbFormulario.controls["numCuentaCTB"].setValidators(Validators.required);
+    this.ctbFormulario.controls["cecoCTB"].setValue('');
+    this.ctbFormulario.controls["numCicoCTB"].setValue('');
+    this.ctbFormulario.controls["numCuentaCTB"].setValue('');
+    this.ctsFormulario.controls["cecoCTS"].setValidators(Validators.required);
+    this.ctsFormulario.controls["numCicoCTS"].setValidators(Validators.required);
+    this.ctsFormulario.controls["numCuentaCTS"].setValidators(Validators.required);
+    this.ctsFormulario.controls["cecoCTS"].setValue('');
+    this.ctsFormulario.controls["numCicoCTS"].setValue('');
+    this.ctsFormulario.controls["numCuentaCTS"].setValue('');
+  }
+
+  removerRequeridosDatosContables(){
+    this.ctbFormulario.controls["cecoCTB"].clearValidators();
+    this.ctbFormulario.controls["numCicoCTB"].clearValidators();
+    this.ctbFormulario.controls["numCuentaCTB"].clearValidators();
+    this.ctsFormulario.controls["cecoCTS"].clearValidators();
+    this.ctsFormulario.controls["numCicoCTS"].clearValidators();
+    this.ctsFormulario.controls["numCuentaCTS"].clearValidators();
   }
 
   aplicarTemaCalendario() {
@@ -821,7 +848,6 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     this.spinner.show();
-
     let codigo = this.ctbFormulario.controls["codigoCTB"].value;
     let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
     let modelo = this.ctbFormulario.controls["modeloCTB"].value;
@@ -839,9 +865,8 @@ export class CrearSolicitudComponent implements OnInit {
     }      
     if(this.condicionTB.archivoAdjunto != null)
     {
-      adjunto =this.condicionTB.archivoAdjunto.name;          
+      adjunto = this.condicionTB.archivoAdjunto.name;          
     }   
-
 
     if (this.textoBotonGuardarCTB == "Guardar") {
       this.condicionTB.indice = this.indiceCTB;
@@ -909,9 +934,8 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     if (this.textoBotonGuardarCTB == "Actualizar") {
-      
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -1064,6 +1088,9 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["tipoMonedaCTB"].setValue('');
     this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
     this.ctbFormulario.controls["comentariosCTB"].setValue('');
+    this.ctbFormulario.controls["cecoCTB"].setValue('');
+    this.ctbFormulario.controls["numCicoCTB"].setValue('');
+    this.ctbFormulario.controls["numCuentaCTB"].setValue('');
   }
 
   subirAdjuntoCTB(files: FileList) {
@@ -1102,7 +1129,7 @@ export class CrearSolicitudComponent implements OnInit {
 
     if (this.textoBotonGuardarCTS == "Guardar") {
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTS, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta);
         this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
           (item: ItemAddResult) => {
             this.condicionTS.id = item.data.Id;
@@ -1138,7 +1165,6 @@ export class CrearSolicitudComponent implements OnInit {
             this.condicionTS.id = item.data.Id;
             this.servicio.agregarAdjuntoCondicionesTecnicasServicios(this.condicionTS.id, nombreArchivo, this.condicionTS.archivoAdjunto).then(
               (respuesta) => {
-                console.log(respuesta);
                 this.condicionTS.rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                 this.condicionesTS.push(this.condicionTS);
                 this.indiceCTS++;
@@ -1164,7 +1190,7 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.textoBotonGuardarCTS == "Actualizar") {
       
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
           (item: ItemAddResult) => {
@@ -1304,11 +1330,13 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["tipoMonedaCTS"].setValue('');
     this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
     this.ctsFormulario.controls["comentariosCTS"].setValue('');
+    this.ctsFormulario.controls["cecoCTS"].setValue('');
+    this.ctsFormulario.controls["numCicoCTS"].setValue('');
+    this.ctsFormulario.controls["numCuentaCTS"].setValue('');
   }
 
-
-
   editarBienes(element, template: TemplateRef<any>) {
+    console.log(element);
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
     if (element.archivoAdjunto != null) {
@@ -1330,6 +1358,9 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["tipoMonedaCTB"].setValue(element.tipoMoneda);
     this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
     this.ctbFormulario.controls["comentariosCTB"].setValue(element.comentarios);
+    this.ctbFormulario.controls["cecoCTB"].setValue(element.costoInversion);
+    this.ctbFormulario.controls["numCicoCTB"].setValue(element.numeroCostoInversion);
+    this.ctbFormulario.controls["numCuentaCTB"].setValue(element.numeroCuenta);
     this.tituloModalCTB = "Actualizar bien";
     this.textoBotonGuardarCTB = "Actualizar";
     this.modalRef = this.modalServicio.show(
@@ -1490,9 +1521,25 @@ export class CrearSolicitudComponent implements OnInit {
   mostrarNumeroOrdenEstadistica(valorOrdenEstadistica) {
     if (valorOrdenEstadistica == "SI") {
       this.emptyNumeroOrdenEstadistica = true;
+      this.esconderDatosContables();
     } else {
+      this.mostrarDivDatosContables();
       this.emptyNumeroOrdenEstadistica = false;
       this.solpFormulario.controls["numeroOrdenEstadistica"].setValue("");
+      
     }
   }
+
+  mostrarDivDatosContables(): any {
+    this.mostrarDatosContables = false;
+    this.AsignarRequeridosDatosContables();
+  }
+
+  esconderDatosContables(): any {
+    this.mostrarDatosContables = true;
+    this.removerRequeridosDatosContables();
+  }
+
+
+
 }

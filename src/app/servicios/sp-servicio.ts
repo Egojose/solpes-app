@@ -236,7 +236,10 @@ export class SPServicio {
             PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
             MonedaSondeo: condicionTecnicaServicios.tipoMoneda,
-            Comentario: condicionTecnicaServicios.comentarios
+            Comentario: condicionTecnicaServicios.comentarios,
+            costoInversion: condicionTecnicaServicios.costoInversion,
+            numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta
         });
     }
 
@@ -253,7 +256,10 @@ export class SPServicio {
             PrecioSondeo: condicionTecnicaServicios.valorEstimado,
             TipoMoneda: condicionTecnicaServicios.tipoMoneda,
             MonedaSondeo: condicionTecnicaServicios.tipoMoneda,
-            Comentario: condicionTecnicaServicios.comentarios
+            Comentario: condicionTecnicaServicios.comentarios,
+            costoInversion: condicionTecnicaServicios.costoInversion,
+            numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta
         });
     }
 
