@@ -830,6 +830,9 @@ export class CrearSolicitudComponent implements OnInit {
     let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
     let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
     let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
+    let costoInversion = this.ctbFormulario.controls["cecoCTB"].value;
+    let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
+    let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
     if (this.condicionTB == null) {
       this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
@@ -854,6 +857,9 @@ export class CrearSolicitudComponent implements OnInit {
       this.condicionTB.valorEstimado = valorEstimado.toString();
       this.condicionTB.tipoMoneda = tipoMoneda;
       this.condicionTB.comentarios = comentarios;
+      this.condicionTB.costoInversion = costoInversion;
+      this.condicionTB.numeroCostoInversion = numeroCostoInversion;
+      this.condicionTB.numeroCuenta = numeroCuenta;
       if (adjunto != null) {
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
         this.servicio.agregarCondicionesTecnicasBienes(this.condicionTB).then(
@@ -919,6 +925,9 @@ export class CrearSolicitudComponent implements OnInit {
             this.condicionesTB[objIndex].valorEstimado = this.condicionTB.valorEstimado;
             this.condicionesTB[objIndex].tipoMoneda = this.condicionTB.tipoMoneda;
             this.condicionesTB[objIndex].comentarios = this.condicionTB.comentarios;
+            this.condicionesTB[objIndex].costoInversion = this.condicionTB.costoInversion;
+            this.condicionesTB[objIndex].numeroCostoInversion = this.condicionTB.numeroCostoInversion;
+            this.condicionesTB[objIndex].numeroCuenta = this.condicionTB.numeroCuenta;
             this.condicionesTB[objIndex].id = this.condicionTB.id;
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
@@ -944,6 +953,9 @@ export class CrearSolicitudComponent implements OnInit {
         this.condicionTB.cantidad = cantidad;
         this.condicionTB.valorEstimado = valorEstimado.toString();
         this.condicionTB.comentarios = comentarios;
+        this.condicionTB.costoInversion = costoInversion;
+        this.condicionTB.numeroCostoInversion = numeroCostoInversion;
+        this.condicionTB.numeroCuenta = numeroCuenta;
         this.condicionTB.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
         let nombreArchivoBorrar = this.rutaAdjuntoCTB.split('/');
@@ -963,6 +975,9 @@ export class CrearSolicitudComponent implements OnInit {
                   this.condicionesTB[objIndex].valorEstimado = this.condicionTB.valorEstimado;
                   this.condicionesTB[objIndex].tipoMoneda = this.condicionTB.tipoMoneda;
                   this.condicionesTB[objIndex].comentarios = this.condicionTB.comentarios;
+                  this.condicionesTB[objIndex].costoInversion = this.condicionTB.costoInversion;
+                  this.condicionesTB[objIndex].numeroCostoInversion = this.condicionTB.numeroCostoInversion;
+                  this.condicionesTB[objIndex].numeroCuenta = this.condicionTB.numeroCuenta;
                   this.condicionesTB[objIndex].archivoAdjunto = this.condicionTB.archivoAdjunto;
                   this.condicionesTB[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                   this.condicionesTB[objIndex].id = this.condicionTB.id;
@@ -1001,6 +1016,9 @@ export class CrearSolicitudComponent implements OnInit {
                       this.condicionesTB[objIndex].valorEstimado = this.condicionTB.valorEstimado;
                       this.condicionesTB[objIndex].tipoMoneda = this.condicionTB.tipoMoneda;
                       this.condicionesTB[objIndex].comentarios = this.condicionTB.comentarios;
+                      this.condicionesTB[objIndex].costoInversion = this.condicionTB.costoInversion;
+                      this.condicionesTB[objIndex].numeroCostoInversion = this.condicionTB.numeroCostoInversion;
+                      this.condicionesTB[objIndex].numeroCuenta = this.condicionTB.numeroCuenta;
                       this.condicionesTB[objIndex].archivoAdjunto = this.condicionTB.archivoAdjunto;
                       this.condicionesTB[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                       this.condicionesTB[objIndex].id = this.condicionTB.id;
@@ -1070,6 +1088,9 @@ export class CrearSolicitudComponent implements OnInit {
     let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
     let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
     let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
+    let costoInversion = this.ctsFormulario.controls["cecoCTS"].value;
+    let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
+    let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
     let adjunto = null;
     if(this.condicionTS != null)
     {
@@ -1107,6 +1128,9 @@ export class CrearSolicitudComponent implements OnInit {
         this.condicionTS.cantidad = cantidad;
         this.condicionTS.valorEstimado = valorEstimado.toString();
         this.condicionTS.comentarios = comentarios;
+        this.condicionTS.costoInversion = costoInversion;
+        this.condicionTS.numeroCostoInversion = numeroCostoInversion;
+        this.condicionTS.numeroCuenta = numeroCuenta;
         this.condicionTS.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
         this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
@@ -1152,6 +1176,9 @@ export class CrearSolicitudComponent implements OnInit {
             this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
             this.condicionesTS[objIndex].tipoMoneda = this.condicionTS.tipoMoneda;
             this.condicionesTS[objIndex].comentarios = this.condicionTS.comentarios;
+            this.condicionesTS[objIndex].costoInversion = this.condicionTS.costoInversion;
+            this.condicionesTS[objIndex].numeroCostoInversion = this.condicionTS.numeroCostoInversion;
+            this.condicionesTS[objIndex].numeroCuenta = this.condicionTS.numeroCuenta;
             this.condicionesTS[objIndex].id = this.condicionTS.id;
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
@@ -1174,6 +1201,9 @@ export class CrearSolicitudComponent implements OnInit {
         this.condicionTS.cantidad = cantidad;
         this.condicionTS.valorEstimado = valorEstimado.toString();
         this.condicionTS.comentarios = comentarios;
+        this.condicionTS.costoInversion = costoInversion;
+        this.condicionTS.numeroCostoInversion = numeroCostoInversion;
+        this.condicionTS.numeroCuenta = numeroCuenta;
         this.condicionTS.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
         if (this.rutaAdjuntoCTS != '') {
@@ -1193,6 +1223,9 @@ export class CrearSolicitudComponent implements OnInit {
                       this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
                       this.condicionesTS[objIndex].tipoMoneda = this.condicionTS.tipoMoneda;
                       this.condicionesTS[objIndex].comentarios = this.condicionTS.comentarios;
+                      this.condicionesTS[objIndex].costoInversion = this.condicionTS.costoInversion;
+                      this.condicionesTS[objIndex].numeroCostoInversion = this.condicionTS.numeroCostoInversion;
+                      this.condicionesTS[objIndex].numeroCuenta = this.condicionTS.numeroCuenta;
                       this.condicionesTS[objIndex].archivoAdjunto = this.condicionTS.archivoAdjunto;
                       this.condicionesTS[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                       this.condicionesTS[objIndex].id = this.condicionTS.id;
@@ -1231,6 +1264,9 @@ export class CrearSolicitudComponent implements OnInit {
                   this.condicionesTS[objIndex].valorEstimado = this.condicionTS.valorEstimado;
                   this.condicionesTS[objIndex].tipoMoneda = this.condicionTS.tipoMoneda;
                   this.condicionesTS[objIndex].comentarios = this.condicionTS.comentarios;
+                  this.condicionesTS[objIndex].costoInversion = this.condicionTS.costoInversion;
+                  this.condicionesTS[objIndex].numeroCostoInversion = this.condicionTS.numeroCostoInversion;
+                  this.condicionesTS[objIndex].numeroCuenta = this.condicionTS.numeroCuenta;
                   this.condicionesTS[objIndex].archivoAdjunto = this.condicionTS.archivoAdjunto;
                   this.condicionesTS[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                   this.condicionesTS[objIndex].id = this.condicionTS.id;
@@ -1321,6 +1357,9 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["tipoMonedaCTS"].setValue(element.tipoMoneda);
     this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
     this.ctsFormulario.controls["comentariosCTS"].setValue(element.comentarios);
+    this.ctsFormulario.controls["cecoCTS"].setValue(element.costoInversion);
+    this.ctsFormulario.controls["numCicoCTS"].setValue(element.numeroCostoInversion);
+    this.ctsFormulario.controls["numCuentaCTS"].setValue(element.numeroCuenta);
     this.tituloModalCTS = "Actualizar servicio";
     this.textoBotonGuardarCTS = "Actualizar";
     this.modalRef = this.modalServicio.show(

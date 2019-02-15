@@ -11,7 +11,10 @@ export class CondicionTecnicaServicios{
         public archivoAdjunto?: File,
         public rutaAdjunto?: string,
         public tipoMoneda?: string,
-        public id?: number) { }
+        public id?: number,
+        public costoInversion?: string,
+        public numeroCostoInversion?: string,
+        public numeroCuenta?: string) { }
 
     public static fromJson(element: any) {
         return new CondicionTecnicaServicios(
@@ -26,7 +29,10 @@ export class CondicionTecnicaServicios{
             element.AttachmentFiles,
             element.AttachmentFiles,
             element.TipoMoneda,
-            element.ID);
+            element.ID,
+            element.costoInversion,
+            element.numeroCostoInversion,
+            element.numeroCuenta);
     }
 
     public static fromJsonList(elements: any) {
