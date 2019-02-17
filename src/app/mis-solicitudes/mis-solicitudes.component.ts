@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ItemAddResult } from 'sp-pnp-js';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios';
+import { CondicionTecnicaBienes } from '../dominio/condicionTecnicaBienes';
 
 @Component({
   selector: 'app-mis-solicitudes',
@@ -15,7 +17,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 })
 
 export class MisSolicitudesComponent implements OnInit {
-  usuarioActual : Usuario;
+  usuarioActual: Usuario;
   misSolicitudes: Solicitud[] = [];
   solicitud: Solicitud;
   dataSource;
@@ -23,12 +25,16 @@ export class MisSolicitudesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   loading: boolean;
   empty: boolean;
-  
-  constructor( private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService,  public toastr: ToastrManager) { 
+  consecutivoActual: number;
+  condicionesTB: CondicionTecnicaBienes[] = [];
+  condicionTB: CondicionTecnicaBienes;
+  condicionesTS: CondicionTecnicaServicios[] = [];
+  condicionTS: CondicionTecnicaServicios;
+
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) {
   }
 
-  //displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Responsable', 'VerSolicitud', 'duplicarSolicitud']; 
-  displayedColumns: string[] = ['Consecutivo','Tiposolicitud', 'Alcance', 'fechaEntregaDeseada','Estado', 'Responsable', 'VerSolicitud']; 
+  displayedColumns: string[] = ['Consecutivo', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Responsable', 'VerSolicitud', 'duplicarSolicitud'];
 
   ngOnInit() {
     this.spinner.show();
@@ -37,14 +43,14 @@ export class MisSolicitudesComponent implements OnInit {
   }
 
   destruirSessionesSolicitudes(): any {
-     sessionStorage.removeItem("IdSolicitud");
-      sessionStorage.removeItem("solicitud");
+    sessionStorage.removeItem("IdSolicitud");
+    sessionStorage.removeItem("solicitud");
   }
 
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (Response) => {
-        this.usuarioActual  = new Usuario(Response.Title, Response.email,Response.Id);
+        this.usuarioActual = new Usuario(Response.Title, Response.email, Response.Id);
         this.ObtenerMisSolicitudes();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
@@ -54,7 +60,6 @@ export class MisSolicitudesComponent implements OnInit {
   }
 
   ObtenerMisSolicitudes() {
-    
     let idUsuario = this.usuarioActual.id;
     this.servicio.obtenerMisSolicitudes(idUsuario).subscribe(
       (respuesta) => {
@@ -64,7 +69,7 @@ export class MisSolicitudesComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.misSolicitudes);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-        }else{
+        } else {
           this.empty = true;
         }
         this.spinner.hide();
@@ -75,7 +80,7 @@ export class MisSolicitudesComponent implements OnInit {
     )
   }
 
-  VerSolicitud(solicitud){
+  VerSolicitud(solicitud) {
     sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
     this.router.navigate(['/ver-solicitud-tab']);
   }
@@ -84,50 +89,114 @@ export class MisSolicitudesComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  duplicarSolicitud(solicitud){
-    console.log("duplicar la solicitud");
-    console.log(solicitud);
+  duplicarSolicitud(solicitud) {
     this.agregarSolicitud(solicitud);
   }
 
-  agregarSolicitud(solicitud): any {
+  agregarSolicitud(solicitudDuplicar): any {
     this.spinner.show();
     this.solicitud = new Solicitud(
-      'Solicitud Solpes: ' + new Date(), '', 
-      solicitud.cm, 
-      solicitud.solicitante, 
-      1,  
-      solicitud.ordenadorGastos.ID, 
-      solicitud.pais.ID, 
-      solicitud.categoria, 
-      solicitud.subcategoria, 
-      solicitud.comprador.ID, 
-      solicitud.codigoAriba, 
-      solicitud.fechaEntregaDeseada,
-      solicitud.alcance, 
-      solicitud.justificacion, 
-      solicitud.condicionesContractuales, 
-      'Borrador', solicitud.responsable.ID, 
-      solicitud.compraBienes, 
-      solicitud.compraServicios,
-      null, this.usuarioActual.id, 
-      solicitud.nombreResponsable, 
-      solicitud.compraOrdenEstadistica, 
-      solicitud.numeroOrdenEstadistica,
-      null, solicitud.FaltaRecepcionBienes, 
-      solicitud.FaltaRecepcionServicios, 
-      solicitud.FueSondeo);
+      'Solicitud Solpes: ' + new Date(),
+      solicitudDuplicar.tipoSolicitud,
+      solicitudDuplicar.cm,
+      solicitudDuplicar.solicitante,
+      1,
+      solicitudDuplicar.ordenadorGastos.ID,
+      solicitudDuplicar.pais.ID,
+      solicitudDuplicar.categoria,
+      solicitudDuplicar.subcategoria,
+      solicitudDuplicar.comprador.ID,
+      solicitudDuplicar.codigoAriba,
+      solicitudDuplicar.fechaEntregaDeseada,
+      solicitudDuplicar.alcance,
+      solicitudDuplicar.justificacion,
+      solicitudDuplicar.condicionesContractuales,
+      'Borrador',
+      this.usuarioActual.id,
+      solicitudDuplicar.compraBienes,
+      solicitudDuplicar.compraServicios,
+      null,
+      this.usuarioActual.id,
+      solicitudDuplicar.nombreResponsable,
+      solicitudDuplicar.compraOrdenEstadistica,
+      solicitudDuplicar.numeroOrdenEstadistica,
+      null,
+      solicitudDuplicar.FaltaRecepcionBienes,
+      solicitudDuplicar.FaltaRecepcionServicios,
+      solicitudDuplicar.FueSondeo);
 
     this.servicio.agregarSolicitud(this.solicitud).then(
       (item: ItemAddResult) => {
-        console.log("SE DUPLICA LA SOLICITUD");
         let idSolicitudGuardada = item.data.Id;
-        this.MostrarExitoso("La solicitud se ha duplicado correctamente");
-        this.spinner.hide();
+        this.agregarCondicionesTecnicasBienes(solicitudDuplicar.id, idSolicitudGuardada);
       }, err => {
-        this.mostrarError('Error en la creación de la solicitud en estado inicial');
+        this.mostrarError('Error en la duplicación de la solicitud');
         this.spinner.hide();
-        console.log('Error en la creación de la solicitud en estado inicial: ' + err);
+        console.log('Error en la duplicación de la solicitud: ' + err);
+      }
+    )
+  }
+
+  agregarCondicionesTecnicasBienes(idSolicitudObtener: number, idSolicitudGuardar: number): any {
+    let contadorBienes = 0;
+    this.servicio.ObtenerCondicionesTecnicasBienes(idSolicitudObtener).subscribe(
+      (respuesta) => {
+        this.condicionesTB = CondicionTecnicaBienes.fromJsonList(respuesta);
+        if (this.condicionesTB.length > 0) {
+          this.condicionesTB.forEach(element => {
+            this.condicionTB = new CondicionTecnicaBienes(element.indice, element.titulo, idSolicitudGuardar, element.codigo, element.descripcion, element.modelo, element.fabricante, element.cantidad, element.valorEstimado, element.comentarios, null, '', element.tipoMoneda);
+            this.servicio.agregarCondicionesTecnicasBienes(this.condicionTB).then(
+              (item: ItemAddResult) => {
+                contadorBienes++;
+                if (contadorBienes === this.condicionesTB.length) {
+                  this.agregarCondicionesTecnicasServicios(idSolicitudObtener,idSolicitudGuardar);
+                }
+              }, err => {
+                this.mostrarError('Error en la creación de la condición técnica de bienes');
+                this.spinner.hide();
+              }
+            )
+          });
+        } else {
+          this.agregarCondicionesTecnicasServicios(idSolicitudObtener, idSolicitudGuardar);
+        }
+      }, err => {
+        this.mostrarError('Error obteniendo condiciones técnicas de bienes');
+        this.spinner.hide();
+        console.log('Error obteniendo condiciones técnicas de bienes: ' + err);
+      }
+    )
+  }
+
+  agregarCondicionesTecnicasServicios(idSolicitudObtener: number, idSolicitudGuardar: number): any {
+    let contadorServicios = 0;
+    this.servicio.ObtenerCondicionesTecnicasServicios(idSolicitudObtener).subscribe(
+      (respuesta) => {
+        this.condicionesTS = CondicionTecnicaServicios.fromJsonList(respuesta);
+        if (this.condicionesTS.length > 0) {
+          this.condicionesTS.forEach(element => {
+            this.condicionTS = new CondicionTecnicaServicios(element.indice, element.titulo, idSolicitudGuardar, element.codigo, element.descripcion, element.cantidad, element.valorEstimado, element.comentarios, null, '', element.tipoMoneda);
+            this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
+              (item: ItemAddResult) => {
+                contadorServicios++;
+                if (contadorServicios === this.condicionesTS.length) {
+                  this.MostrarExitoso("La solicitud se duplicó correctamente");
+                  this.spinner.hide();
+                }
+              }, err => {
+                this.mostrarError('Error en la creación de la condición técnica de servicios');
+                this.spinner.hide();
+              }
+            )
+          });
+        } else {
+          this.MostrarExitoso("La solicitud se duplicó correctamente");
+          this.spinner.hide();
+        }
+      }, err => {
+        this.mostrarError('Error obteniendo condiciones técnicas de servicios');
+        this.spinner.hide();
+        console.log('Error obteniendo condiciones técnicas de servicios: ' + err);
       }
     )
   }

@@ -28,7 +28,10 @@ export class CondicionesTecnicasBienes {
         public monedaSondeo?: string,
         public adjunto?:any,
         public adjuntoCreacion?:any,
-        public adjuntoActivo?: any) { }
+        public adjuntoActivo?: any,
+        public costoInversion?: string,
+        public numeroCostoInversion?: string,
+        public numeroCuenta?: string) { }
 
     public static fromJson(element: any) {
 
@@ -44,7 +47,7 @@ export class CondicionesTecnicasBienes {
 
         adjuntoSondeo = CondicionesTecnicasBienes.ObtenerAdjunto("sondeoBienes-", adjuntosBienes, adjuntoSondeo);
         adjuntoCreacion = CondicionesTecnicasBienes.ObtenerAdjunto("solp-", adjuntosBienes, adjuntoCreacion);
-        //adjuntoActivo = CondicionesTecnicasBienes.ObtenerAdjunto("ActivoVM-", adjuntosBienes, adjuntoActivo);
+        adjuntoActivo = CondicionesTecnicasBienes.ObtenerAdjunto("ActivoVM-", adjuntosBienes, adjuntoActivo);
 
         return new CondicionesTecnicasBienes(element.Id,
             element.Codigo,
@@ -67,7 +70,11 @@ export class CondicionesTecnicasBienes {
             element.TipoMoneda,
             element.MonedaSondeo,
             adjuntoSondeo,
-            adjuntoCreacion);
+            adjuntoCreacion,
+            adjuntoActivo,
+            element.costoInversion,
+            element.numeroCostoInversion,
+            element.numeroCuenta);
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
