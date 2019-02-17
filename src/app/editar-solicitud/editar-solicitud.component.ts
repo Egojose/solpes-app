@@ -1086,7 +1086,7 @@ export class EditarSolicitudComponent implements OnInit {
     if (this.textoBotonGuardarCTB == "Actualizar") {
 
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -1544,6 +1544,8 @@ export class EditarSolicitudComponent implements OnInit {
 
 
   enviarSolicitud() {
+    console.log(this.condicionesTB);
+    console.log(this.condicionesTS);
     this.spinner.show();
     let respuesta;
     let estado;
@@ -1646,12 +1648,24 @@ export class EditarSolicitudComponent implements OnInit {
 
     if (this.condicionesTB.length > 0) {
       this.compraBienes = true;
+      respuesta = this.validarCondicionesTBdatosContables();
+      if (respuesta == false) {
+        this.spinner.hide();
+        return respuesta;
+      }
+  
     }
     if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
+      respuesta = this.validarCondicionesTSdatosContables();
+      if (respuesta == false) {
+        this.spinner.hide();
+        return respuesta;
+      }
     }
     if (valorcompraOrdenEstadistica == "SI") {
       this.compraOrdenEstadistica = true;
+      
     }
 
     let valorCategoria;
@@ -1763,6 +1777,31 @@ export class EditarSolicitudComponent implements OnInit {
         this.spinner.hide();
       }
     )
+  }
+  private validarCondicionesTSdatosContables(): boolean {
+   let respuesta = true;
+   let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
+   let indexNumeroCostoInversion =this.condicionesTS.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
+   let indexNumeroCuenta =this.condicionesTS.map(function(e) { return e.numeroCuenta; }).indexOf(null);
+   let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+   if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+    this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+    respuesta = false;
+   }
+   return respuesta;
+  }
+  private validarCondicionesTBdatosContables(): boolean {
+   
+   let respuesta = true;
+   let indexCostoInversion =this.condicionesTB.map(function(e) { return e.costoInversion; }).indexOf(null);
+   let indexNumeroCostoInversion =this.condicionesTB.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
+   let indexNumeroCuenta =this.condicionesTB.map(function(e) { return e.numeroCuenta; }).indexOf(null);
+   let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+   if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+    this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
+    respuesta = false;
+   }
+   return respuesta; 
   }
 
   limpiarSession(): any {
