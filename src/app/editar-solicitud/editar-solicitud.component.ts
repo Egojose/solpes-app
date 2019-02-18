@@ -216,6 +216,8 @@ export class EditarSolicitudComponent implements OnInit {
     this.RegistrarFormularioSolp();
     this.RegistrarFormularioCTB();
     this.RegistrarFormularioCTS();
+    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
+    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
     this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
   }
@@ -1544,8 +1546,7 @@ export class EditarSolicitudComponent implements OnInit {
 
 
   enviarSolicitud() {
-    console.log(this.condicionesTB);
-    console.log(this.condicionesTS);
+
     this.spinner.show();
     let respuesta;
     let estado;
