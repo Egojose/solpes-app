@@ -301,6 +301,7 @@ export class AprobarSondeoComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("prueba")
     this.spinner.show();
     this.ObtenerUsuarioActual();
   }
