@@ -176,7 +176,7 @@ export class MisSolicitudesComponent implements OnInit {
         this.condicionesTS = CondicionTecnicaServicios.fromJsonList(respuesta);
         if (this.condicionesTS.length > 0) {
           this.condicionesTS.forEach(element => {
-            this.condicionTS = new CondicionTecnicaServicios(element.indice, element.titulo, idSolicitudGuardar, element.codigo, element.descripcion, element.cantidad, element.valorEstimado, element.comentarios, null, '', element.tipoMoneda);
+            this.condicionTS = new CondicionTecnicaServicios(element.indice, element.titulo, idSolicitudGuardar, element.codigo, element.descripcion, element.cantidad, element.valorEstimado, element.comentarios, null, '', element.tipoMoneda, null, element.costoInversion, element.numeroCostoInversion, element.numeroCuenta);
             this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
               (item: ItemAddResult) => {
                 contadorServicios++;
