@@ -310,7 +310,7 @@ export class EditarSolicitudComponent implements OnInit {
     const tipoMonedaControl = this.ctbFormulario.get('tipoMonedaCTB');
     this.ctbFormulario.get('valorEstimadoCTB').valueChanges.subscribe(
       (valor: string) => {
-        if (valor != '') {
+        if (valor != '' && valor != "0") {
           this.emptyasteriscoCTB = true;
           tipoMonedaControl.setValidators([Validators.required]);
         }
@@ -326,7 +326,7 @@ export class EditarSolicitudComponent implements OnInit {
     const tipoMonedaControl = this.ctsFormulario.get('tipoMonedaCTS');
     this.ctsFormulario.get('valorEstimadoCTS').valueChanges.subscribe(
       (valor: string) => {
-        if (valor != '') {
+        if (valor != '' && valor != "0") {
           this.emptyasteriscoCTs = true;
           tipoMonedaControl.setValidators([Validators.required]);
         }
