@@ -223,13 +223,8 @@ export class SPServicio {
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
-<<<<<<< HEAD
     borrarAdjuntoCondicionesTecnicasBienes(idCondicion: number, nombreArchivo: string){
         let item = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
-=======
-    borrarAdjuntoCondicionesTecnicasBienes(idCondicion, nombreArchivo){
-        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion);
->>>>>>> master
         return item.attachmentFiles.getByName(nombreArchivo).delete();
     }
 
