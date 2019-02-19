@@ -269,11 +269,11 @@ export class AprobarSondeoComponent implements OnInit {
         objCt =>{
         if(objCt.adjunto !== null)
         { 
-          this.servicio.borrarAdjuntoCondicionesTecnicasServicios(objCt.adjunto.id, objCt.adjunto.filename).then(
+          this.servicio.borrarAdjuntoCondicionesTecnicasServicios(objCt.id, objCt.adjunto).then(
             (respuesta) => {
               console.log('Se ha borrado el adjunto del sondeo Servicios');
             }, err => {
-              console.log('Error al borrar el adjunto de bienes: ' + err);
+              console.log('Error al borrar el adjunto de servicios: ' + err);
             }
           )
         }  
