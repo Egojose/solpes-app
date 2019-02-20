@@ -1,5 +1,5 @@
-export class CondicionTecnicaServicios{
-    constructor(        
+export class CondicionTecnicaServicios {
+    constructor(
         public titulo: string,
         public idSolicitud: any,
         public codigoSondeo: string,
@@ -9,7 +9,7 @@ export class CondicionTecnicaServicios{
         public comentarioSondeo: string,
         public adjunto?: any,
         public id?: number,
-        public RutaArchivo?:string,
+        public RutaArchivo?: string,
         public archivo?: any,
         public Codigo?: string,
         public Cantidad?: number,
@@ -20,34 +20,30 @@ export class CondicionTecnicaServicios{
 
     public static fromJson(element: any) {
         let RutaArchivo = "";
-        if (element.Attachments ===true) {
-           let ObjArchivos = element.AttachmentFiles.results;
-            
-           ObjArchivos.forEach(element => {
-               let objSplit = element.FileName.split("-");
-               if (objSplit.length>0) {
-                   let TipoArchivo = objSplit[0]
-                   if (TipoArchivo==="sondeoServicios") {
-                        RutaArchivo=element.ServerRelativeUrl;
-                   }                
-               }
-           });
-        }       
-
         let Archivo = "";
-        if (element.Attachments ===true) {
-           let ObjArchivos = element.AttachmentFiles.results;
-            
-           ObjArchivos.forEach(element => {
-               let objSplit = element.FileName.split("-");
-               if (objSplit.length>0) {
-                   let TipoArchivo = objSplit[0]
-                   if (TipoArchivo==="solp") {
-                        Archivo=element.ServerRelativeUrl;
-                   }                
-               }
-           });
-        }       
+        let Adjunto = "";
+
+        if (element.Attachments === true) {
+            let ObjArchivos = element.AttachmentFiles.results;
+
+            ObjArchivos.forEach(element => {
+                let objSplit = element.FileName.split("-");
+                if (objSplit.length > 0) {
+                    let TipoArchivo = objSplit[0]
+                    if (TipoArchivo === "sondeoServicios") {
+                        RutaArchivo = element.ServerRelativeUrl;
+
+                    }
+                    else if (TipoArchivo === "solp") {
+                        Archivo = element.ServerRelativeUrl;
+                    }
+                    Adjunto = element.FileName;
+                }
+            });
+        }
+
+
+       
 
         return new CondicionTecnicaServicios(
             element.Title,
@@ -57,7 +53,7 @@ export class CondicionTecnicaServicios{
             element.CantidadSondeo,
             element.PrecioSondeo,
             element.ComentarioSondeo,
-            null,
+            Adjunto,
             element.Id,
             RutaArchivo,
             Archivo,
@@ -76,4 +72,7 @@ export class CondicionTecnicaServicios{
         }
         return list;
     }
+
+
+
 }
