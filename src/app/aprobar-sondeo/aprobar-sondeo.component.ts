@@ -152,6 +152,7 @@ export class AprobarSondeoComponent implements OnInit {
           Resondear: true,
           ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSondeo
         }
+      this.limpiarAdjuntosSolicitud();
       }
       else if (this.RDBsondeo === 2 && this.justificacionSondeo === undefined) {
         this.numeroSolpCm = '';
@@ -243,6 +244,42 @@ export class AprobarSondeoComponent implements OnInit {
         }
       )
     }
+  }
+  limpiarAdjuntosSolicitud() {
+    
+    if(this.existeCondicionesTecnicasBienes){
+
+      this.ObjCondicionesTecnicas.forEach(
+        objCt =>{
+          if(objCt.adjunto !== null)
+          {                            
+            this.servicio.borrarAdjuntoCondicionesTecnicasBienes(objCt.adjunto.id, objCt.adjunto.filename).then(
+              (respuesta) => {
+                console.log('Se ha borrado el adjunto del sondeo Bienes');
+              }, err => {
+                console.log('Error al borrar el adjunto de bienes: ' + err);
+              }
+            )
+          }
+        }
+      );      
+    }
+    if(this.existeCondicionesTecnicasServicios){
+      this.ObjCondicionesTecnicasServicios.forEach(
+        objCt =>{
+        if(objCt.adjunto !== null)
+        { 
+          this.servicio.borrarAdjuntoCondicionesTecnicasServicios(objCt.id, objCt.adjunto).then(
+            (respuesta) => {
+              console.log('Se ha borrado el adjunto del sondeo Servicios');
+            }, err => {
+              console.log('Error al borrar el adjunto de servicios: ' + err);
+            }
+          )
+        }  
+      });
+    }
+  
   }
 
   private validarJustificacion() {
