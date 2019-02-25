@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   PermisosRegistroEntradasServicios: boolean;
   PermisosConsultaGeneral: boolean;
   linkEdicionContratos: string;
+  nombreGrupoConsultaGeneral: string;
 
   constructor(private servicio: SPServicio, private compilador: Compiler) {
     this.compilador.clearCache();
@@ -47,6 +48,11 @@ export class AppComponent implements OnInit {
     });
   }
 
+  public ngOnInit() {
+    this.abrirCerrarMenu();
+    this.ObtenerUsuarioActual();
+  }
+
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
       (respuesta) => {
@@ -56,7 +62,7 @@ export class AppComponent implements OnInit {
         this.servicio.ObtenerGruposUsuario(this.usuario.id).subscribe(
           (respuesta) => {
             this.grupos = Grupo.fromJsonList(respuesta);
-            this.VerificarPermisosMenu();
+            this.obtenerParametrosConfiguracion();
           }, err => {
             console.log('Error obteniendo grupos de usuario: ' + err);
           }
@@ -67,12 +73,23 @@ export class AppComponent implements OnInit {
     )
   }
 
+  obtenerParametrosConfiguracion() {
+    this.servicio.obtenerParametrosConfiguracion().subscribe(
+      (respuesta) => {
+        this.nombreGrupoConsultaGeneral = respuesta[0].GrupoConsultaGeneral;
+        this.VerificarPermisosMenu();
+      }, err => {
+        console.log('Error obteniendo parametros de configuración: ' + err);
+      }
+    )
+  }
+
   VerificarPermisosMenu(): any {
 
     const grupoEdicionContratos = "Solpes-Edicion-Contratos";
     const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
     const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
-    const grupoConsultaGeneral = "Solpes-ConsultaGeneral";
+    let grupoConsultaGeneral = this.nombreGrupoConsultaGeneral;
 
     let existeGrupoEdicionContratos = this.grupos.find(x => x.title == grupoEdicionContratos);
     if (existeGrupoEdicionContratos != null) {
@@ -96,8 +113,5 @@ export class AppComponent implements OnInit {
 
   }
 
-  public ngOnInit() {
-    this.abrirCerrarMenu();
-    this.ObtenerUsuarioActual();
-  }
+  
 }
