@@ -25,6 +25,7 @@ import { responsableProceso } from '../dominio/responsableProceso';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as $ from 'jquery';
 import { Grupo } from '../dominio/grupo';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -254,7 +255,7 @@ export class CrearSolicitudComponent implements OnInit {
     const tipoMonedaControl = this.ctsFormulario.get('tipoMonedaCTS');
     this.ctsFormulario.get('valorEstimadoCTS').valueChanges.subscribe(
       (valor: string) => {
-        if (valor != '') {
+        if (valor != '' && valor != "0") {
           this.emptyasteriscoCTs = true;
           tipoMonedaControl.setValidators([Validators.required]);
         }
@@ -270,7 +271,7 @@ export class CrearSolicitudComponent implements OnInit {
     const tipoMonedaControl = this.ctbFormulario.get('tipoMonedaCTB');
     this.ctbFormulario.get('valorEstimadoCTB').valueChanges.subscribe(
       (valor: string) => {
-        if (valor != '') {
+        if (valor != '' && valor != "0") {
           this.emptyasteriscoCTB = true;
           tipoMonedaControl.setValidators([Validators.required]);
         }
