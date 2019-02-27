@@ -145,7 +145,8 @@ export class VerSolicitudTabComponent implements OnInit {
           });
         }
         if (solicitud.CondicionesContractuales != null) {
-          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales.replace(/(\r\n|\n|\r)/gm, "")).condiciones;
+          
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales.replace(/(\r\n|\n|\r|\t)/gm, "")).condiciones;
         }
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
           RespuestaCondiciones => {
