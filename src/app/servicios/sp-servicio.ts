@@ -362,7 +362,7 @@ export class SPServicio {
     }
 
     ObtenerRecepcionesServicios(IdResponsable:number){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("recibidoSap eq '0' and Cantidad ne '0' and Estado eq 'Confirmado' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles","Author/Title").expand("AttachmentFiles", "Author").get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionServicios).items.filter("recibidoSap eq '0' and Cantidad ne '0' and Estado eq 'Confirmado'").select("*","AttachmentFiles","Author/Title").expand("AttachmentFiles", "Author").get());
         return respuesta;
     }
 
