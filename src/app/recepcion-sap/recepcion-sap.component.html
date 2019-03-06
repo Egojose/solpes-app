@@ -20,6 +20,11 @@
             <td mat-cell *matCellDef="let element"> {{element.autor}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef> Descripción </th>
+            <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="cantidad">
             <th mat-header-cell *matHeaderCellDef> Cantidad </th>
             <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>

@@ -27,7 +27,8 @@ export class Solicitud {
         public id?: number,
         public FaltaRecepcionBienes?: boolean,
         public FaltaRecepcionServicios?: boolean,
-        public FueSondeo?: boolean) { }
+        public FueSondeo?: boolean,
+        public fechaCreacion?: Date) { }
 
     public static fromJson(element: any) {
         return new Solicitud(
@@ -58,7 +59,8 @@ export class Solicitud {
             element.ID,
             element.FaltaRecepcionBienes,
             element.FaltaRecepcionServicios,
-            element.FueSondeo);
+            element.FueSondeo,
+            element.FechaDeCreacion);
     }
 
     public static fromJsonList(elements: any) {

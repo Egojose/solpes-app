@@ -119,6 +119,7 @@ export class CrearSolicitudComponent implements OnInit {
   jsonCondicionesContractuales: string;
   valorcompra: boolean;
   mostrarDatosContables: boolean;
+  FechaDeCreacion: any;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
@@ -568,6 +569,7 @@ export class CrearSolicitudComponent implements OnInit {
     let justificacion = this.solpFormulario.controls["justificacion"].value;
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
+    let FechaDeCreacion = new Date();
     
 
     if (this.EsCampoVacio(tipoSolicitud)) {
@@ -710,7 +712,8 @@ export class CrearSolicitudComponent implements OnInit {
                 null,
                 this.compraBienes,
                 this.compraServicios,
-                this.fueSondeo);
+                this.fueSondeo,
+                FechaDeCreacion);
 
               this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {
