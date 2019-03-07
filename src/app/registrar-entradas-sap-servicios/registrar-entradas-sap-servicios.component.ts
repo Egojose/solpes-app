@@ -39,7 +39,7 @@ export class RegistrarEntradasSapServiciosComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   empty: boolean;
 
-  displayedColumns: string[] = ['numeroPedido', 'autor', 'ubicacion', 'cantidad', 'mes', 'valor', 'comentario', 'NumeroRecepcion', 'Acciones'];
+  displayedColumns: string[] = ['numeroPedido', 'autor', 'descripcion', 'cantidad', 'mes', 'valor', 'comentario', 'NumeroRecepcion', 'Acciones'];
 
   constructor(private servicio: SPServicio, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));

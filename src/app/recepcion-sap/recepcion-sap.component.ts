@@ -41,7 +41,7 @@ export class RecepcionSapComponent implements OnInit {
   usuarioActual: Usuario;
   grupos: Grupo[] = [];
 
-  displayedColumns: string[] = ['numeroPedido', 'autor', 'cantidad', 'valor', 'comentario', 'adjuntoEntregaBienes', 'NumeroRecepcion', 'Acciones'];
+  displayedColumns: string[] = ['numeroPedido', 'autor', 'descripcion','cantidad', 'valor', 'comentario', 'adjuntoEntregaBienes', 'NumeroRecepcion', 'Acciones'];
 
   constructor(private servicio: SPServicio, private router: Router, public toastr: ToastrManager, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
