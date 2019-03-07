@@ -357,7 +357,8 @@ export class AprobarSondeoComponent implements OnInit {
         this.justificacion = solicitud.Justificacion;
 
         if (solicitud.CondicionesContractuales != null) {
-          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+          // this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales.replace(/(\r\n|\n|\r|\t)/gm, "")).condiciones;
         }
 
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
