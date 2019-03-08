@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ExcelService } from "../servicios/excel.service";
 
 @Component({
   selector: 'app-reportar-solicitud',
@@ -8,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportarSolicitudComponent implements OnInit {
 
-  constructor() { }
+  constructor(private servicioExcel: ExcelService) { }
 
   ngOnInit() {
   }
 
 }
+
