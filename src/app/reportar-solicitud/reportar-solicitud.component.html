@@ -1,3 +1,31 @@
-<p>
-  reportar-solicitud works!
-</p>
+<br>
+<div class="container">
+  <div class="card">
+    <div class="card-header text-center">
+      <h3 class="card-title">Reporte de solicitudes</h3>
+    </div>
+    <div class="card-body">
+      <p class="card-text text-center">Utilice los campos de abajo para filtrar por las fechas en que desea ver el reporte</p>
+      <div class="row text-center">
+          <div class="col">
+            <!-- <label for="fecha-entrega-deseada">Fecha desde</label><span class="asterisco-obligatorio">*</span> -->
+            <input formControlName="fechaDesde" id="fechaDesde" name="fechaDesde" type="text" [minDate]="minDate"
+              autocomplete="off" placeholder="Fecha desde (requerido)" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig"
+              bsDatepicker>
+          </div>
+          <div class="col">
+            <!-- <label for="fecha-entrega-deseada">Fecha hasta</label><span class="asterisco-obligatorio">*</span> -->
+            <input formControlName="fechaHasta" id="fechaHasta" name="fechaHasta" type="text" [minDate]="minDate"
+              autocomplete="off" placeholder="Fecha hasta (requerido)" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig"
+              bsDatepicker>
+          </div>
+        </div>
+      <br>
+      <div class="row">
+        <div class="col text-center">
+          <button class="btn btn-success btn-lg">Generar reporte</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
