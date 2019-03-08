@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/public_api';
+
 
 @Component({
   selector: 'app-reportar-solicitud',
