@@ -36,6 +36,7 @@ import { VistaContratosComponent } from './vista-contratos/vista-contratos.compo
 import { ConsultaGeneralComponent } from './consulta-general/consulta-general.component';
 import { ReportarContratosComponent } from './reportar-contratos/reportar-contratos.component';
 import { ReportarSolicitudComponent } from './reportar-solicitud/reportar-solicitud.component';
+import { ExcelService } from './servicios/excel.service';
 
 @NgModule({
   declarations: [
