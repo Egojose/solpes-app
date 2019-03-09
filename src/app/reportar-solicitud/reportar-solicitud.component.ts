@@ -8,6 +8,7 @@ import { ExcelService } from '../servicios/excel.service';
   styleUrls: ['./reportar-solicitud.component.css']
 })
 export class ReportarSolicitudComponent implements OnInit {
+  bsValue = new Date();
   minDate: Date;
   maxDate: Date;
   rangoFecha: Date[];
@@ -17,6 +18,7 @@ export class ReportarSolicitudComponent implements OnInit {
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate());
     this.maxDate.setDate(this.maxDate.getDate());
+    this.rangoFecha = [this.bsValue, this.maxDate];
   }
 
   ngOnInit() {
