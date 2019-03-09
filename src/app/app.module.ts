@@ -118,7 +118,7 @@ import { ExcelService } from './servicios/excel.service';
       {path:'reportar-solicitud', component:ReportarSolicitudComponent}
     ])
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent, ExcelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
