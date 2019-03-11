@@ -221,7 +221,8 @@ export class AprobarSondeoComponent implements OnInit {
           let notificacion = {
             IdSolicitud: this.IdSolicitud.toString(),
             ResponsableId: this.ResponsableProceso,
-            Estado: this.estadoSolicitud
+            Estado: this.estadoSolicitud,
+            FechaRevisarSondeo: fecha
           };
 
           this.servicio.agregarNotificacion(notificacion).then(
