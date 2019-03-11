@@ -303,8 +303,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerReporteSolicitud(){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","Estado","NumSolSAP","CM","OrdenadorGastos","Comprador","Categoria","Alcance","Pais/Title","FueSondeo","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor").expand("OrdenadorGastos","Comprador","Pais").get());
+    ObtenerReporteSolicitud(fechaInico: Date, fechaFin: Date){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","Estado","NumSolSAP","CM","OrdenadorGastos/Title","OrdenadorGastos/ID","Comprador/Title","Comprador/ID","Categoria","Alcance","Pais/Title","Pais/ID","FueSondeo","FechaDeCreacion","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor").expand("OrdenadorGastos","Comprador","Pais").filter("FechaDeCreacion ge datetime'"+fechaInico.toISOString()+"' and FechaDeCreacion le datetime'"+fechaFin.toISOString()+"'").get());
         return respuesta;
     }
 
