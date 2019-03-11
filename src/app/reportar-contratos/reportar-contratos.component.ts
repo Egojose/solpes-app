@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExcelService } from '../servicios/excel.service';
+import { SPServicio } from '../servicios/sp-servicio';
 
 @Component({
   selector: 'app-reportar-contratos',
@@ -12,7 +13,7 @@ export class ReportarContratosComponent implements OnInit {
   maxDate: Date;
   rangoFecha: Date[];
 
-  constructor(private servicioExcel: ExcelService) { 
+  constructor(private servicioExcel: ExcelService, private servicio: SPServicio) { 
     this.minDate = new Date("01/01/2019");
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate());
