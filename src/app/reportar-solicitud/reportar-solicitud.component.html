@@ -20,9 +20,17 @@
       </div>
       <div class="row">
         <div class="col text-center">
-          <button class="btn btn-success btn-lg" (click)="generarReporte();">Generar reporte</button>
+          <button class="btn btn-success btn-lg" (click)="generarReporte(templateDescarga);">Generar reporte</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #templateDescarga>
+  <div class="modal-body text-center">
+    <p>Desea descargar el reporte?</p>
+    <button type="button" class="btn btn-default" (click)="confirmarDescarga()" >Yes</button>
+    <button type="button" class="btn btn-primary" (click)="declinarDescarga()" >No</button>
+  </div>
+</ng-template>

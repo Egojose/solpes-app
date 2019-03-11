@@ -17,7 +17,8 @@ export class ReporteSolicitud {
         public fechaRegistrarActivo: Date,
         public fechaRegistrarSolpSap: Date,
         public fechaRegistrarContrato: Date,
-        public fechaEnvioProveedor: Date) {}
+        public fechaEnvioProveedor: Date,
+        public departamento?: string) {}
 
         
         public static fromJson(element: any) {
@@ -25,11 +26,11 @@ export class ReporteSolicitud {
                 element.Consecutivo,
                 element.NumSolSAP,
                 element.CM,
-                element.OrdenadorGastos,
-                element.Comprador,
+                element.OrdenadorGastos.Title,
+                element.Comprador.Title,
                 element.Categoria,
                 element.Subcategoria,
-                element.Pais,
+                element.Pais.Title,
                 element.Alcance,
                 element.FueSondeo,
                 element.FechaDeCreacion,
@@ -39,7 +40,8 @@ export class ReporteSolicitud {
                 element.FechaRegistrarActivo,
                 element.FechaRegistrarSolpsap,
                 element.FechaRegistrarContrato,
-                element.FechaEnvioProveedor)
+                element.FechaEnvioProveedor, 
+                element.Author.Department)
         }
 
         public static fromJsonList(elements: any) {

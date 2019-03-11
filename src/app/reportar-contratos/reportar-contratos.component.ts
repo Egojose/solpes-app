@@ -26,8 +26,13 @@ export class ReportarContratosComponent implements OnInit {
   ngOnInit() {
   }
 
-  generarReporte(){
-    console.log(this.rangoFecha);
-  }
+  // generarReporte(){
+  //   console.log(this.rangoFecha);
+  //   this.servicio.ObtenerReporteContratos(this.minDate, this.maxDate).subscribe(
+  //     (respuesta) => {
+  //       console.log(respuesta);
+
+  //     });
+  // }
 
 }
