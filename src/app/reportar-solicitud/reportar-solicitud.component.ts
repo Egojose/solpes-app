@@ -18,7 +18,7 @@ export class ReportarSolicitudComponent implements OnInit {
   solicitudesReportes: ReporteSolicitud[] = [];
   modalRef: BsModalRef;
 
-  constructor(private servicioExcel: ExcelService, private servicio: SPServicio,public toastr: ToastrManager,private modalService: BsModalService) { 
+  constructor(private servicioExcel: ExcelService, private servicio: SPServicio, public toastr: ToastrManager,private modalService: BsModalService) { 
     this.minDate = new Date("01/01/2019");
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate());
@@ -65,7 +65,7 @@ export class ReportarSolicitudComponent implements OnInit {
           this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, `Reporte de solicitudes ${this.rangoFecha}`);
           this.modalRef.hide();
         }else{
-          this.mostrarAdvertencia("No hay datos que mostrar para este reporte");
+          this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
           this.modalRef.hide();
         }
       });

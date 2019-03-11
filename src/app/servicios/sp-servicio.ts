@@ -308,8 +308,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerReporteContratos(fechaCreacion){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("Created eq " + fechaCreacion).top(1).get());
+    ObtenerReporteContratos(fechaInico: Date, fechaFin: Date){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.select("*").filter("FechaDeCreacion ge datetime'"+fechaInico.toISOString()+"' and FechaDeCreacion le datetime'"+fechaFin.toISOString()+"'").get());
         return respuesta;
     }
 
