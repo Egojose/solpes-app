@@ -22,7 +22,19 @@ export class ReporteContratos {
         public descripcionCalculoAhorro: string,
         public vigenciaContrato: string,
         public requiereSST: boolean,
-        public requierePoliza: boolean) {}
+        public requierePoliza: boolean,
+        public fechaEntregaPoliza: Date,
+        public fechaEntregaRealPoliz: Date,
+        public fechaEstadoPoliza:Date,
+        public condicionPoliza: string,
+        public acreedor: string,
+        public digitoVerifiacion: string,
+        public nombreProveedor: string,
+        public emailProveedor: string,
+        public solicitante: string,
+        public comprador: string,
+        public observacionesAdicionales: string,
+        public solicitud: any) {}
 
         public static fromJson(element: any) {
             return new ReporteContratos(element.Title,
@@ -48,7 +60,19 @@ export class ReporteContratos {
                 element.DescripcionCalculoAhorroGenerado,
                 element.VigenciaContrato,
                 element.RequiereSST,
-                element.RequierePoliza)
+                element.RequierePoliza,
+                element.FechaEntregaPoliza,
+                element.FechaEntregaRealPoliza,
+                element.FechaEstadoPoliza,
+                element.CondicionPoliza,
+                element.Acreedor,
+                element.DigitoVerificacion,
+                element.NombreProveedor,
+                element.EmailProveedor,
+                element.Solicitante,
+                element.Comprador,
+                element.ObservacionesAdicionales,
+                element.Solicitud.Id)
             }
 
         public static fromJsonList(elements: any) {
