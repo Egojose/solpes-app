@@ -1,6 +1,7 @@
 export class ReporteSolicitud {
-    constructor(public estado: string,
+    constructor(
         public consecutivo: string,
+        public estado: string,
         public numeroSolpSap: string,
         public solicitante: string,
         public cm: string,
@@ -23,8 +24,9 @@ export class ReporteSolicitud {
 
         
         public static fromJson(element: any) {
-            return new ReporteSolicitud(element.Estado,
+            return new ReporteSolicitud(
                 element.Consecutivo,
+                element.Estado,
                 element.NumSolSAP,
                 element.Solicitante,
                 element.CM,
