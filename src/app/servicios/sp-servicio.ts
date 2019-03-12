@@ -368,7 +368,7 @@ export class SPServicio {
     } 
 
     actualizarFechaContratos(IdSolicitud){
-        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
             {
                 FechaRegistrarContrato: new Date()
             }
