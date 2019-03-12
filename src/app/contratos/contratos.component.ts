@@ -328,7 +328,7 @@ export class ContratosComponent implements OnInit {
               IdSolicitud: this.IdSolicitud.toString(),
               ResponsableId: this.autor,
               Estado: 'Por recepcionar',
-              FechaDeCreacion: fechaContrato
+              
             };
             this.servicio.agregarNotificacion(notificacion).then(
               (item: ItemAddResult) => {
