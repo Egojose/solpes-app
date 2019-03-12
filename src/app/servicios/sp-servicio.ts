@@ -366,6 +366,14 @@ export class SPServicio {
             objeto
         );
     } 
+
+    actualizarFechaContratos(IdSolicitud){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+            {
+                FechaRegistrarContrato: new Date()
+            }
+        );
+    } 
     
     ObtenerCondicionesTecnicasServicios(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());

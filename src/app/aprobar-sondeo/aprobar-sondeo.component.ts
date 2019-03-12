@@ -150,7 +150,8 @@ export class AprobarSondeoComponent implements OnInit {
           Estado: this.estadoSolicitud,
           ResultadoSondeo: "Sondeo adicional",
           Resondear: true,
-          ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSondeo
+          ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSondeo,
+          FechaRevisarSondeo: fecha
         }
       this.limpiarAdjuntosSolicitud();
       }
@@ -167,7 +168,8 @@ export class AprobarSondeoComponent implements OnInit {
             ResponsableId: this.ResponsableProceso,
             Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en SOLP",
-            Justificacion: this.justificacionSondeo
+            Justificacion: this.justificacionSondeo,
+            FechaRevisarSondeo: fecha
           }
         } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
@@ -177,7 +179,8 @@ export class AprobarSondeoComponent implements OnInit {
             ResponsableId: this.ResponsableProceso,
             Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en SOLP",
-            Justificacion: this.justificacionSondeo
+            Justificacion: this.justificacionSondeo,
+            FechaRevisarSondeo: fecha
           }
         }
       }
@@ -186,7 +189,8 @@ export class AprobarSondeoComponent implements OnInit {
         ObjSondeo = {
           ResponsableId: null,
           Estado: this.estadoSolicitud,
-          ResultadoSondeo: "Descartar"
+          ResultadoSondeo: "Descartar",
+          FechaRevisarSondeo: fecha
         }
       }
       if (this.RDBsondeo === 4 && this.justificacionSondeo === undefined) {
@@ -201,7 +205,8 @@ export class AprobarSondeoComponent implements OnInit {
             ResponsableId: this.ResponsableProceso,
             Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en CM",
-            Justificacion: this.justificacionSondeo
+            Justificacion: this.justificacionSondeo,
+            FechaRevisarSondeo: fecha
           }
         } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
@@ -211,7 +216,8 @@ export class AprobarSondeoComponent implements OnInit {
             ResponsableId: this.ResponsableProceso,
             Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en CM",
-            Justificacion: this.justificacionSondeo
+            Justificacion: this.justificacionSondeo,
+            FechaRevisarSondeo: fecha
           }
         }
       }
@@ -221,8 +227,7 @@ export class AprobarSondeoComponent implements OnInit {
           let notificacion = {
             IdSolicitud: this.IdSolicitud.toString(),
             ResponsableId: this.ResponsableProceso,
-            Estado: this.estadoSolicitud,
-            FechaRevisarSondeo: fecha
+            Estado: this.estadoSolicitud
           };
 
           this.servicio.agregarNotificacion(notificacion).then(
