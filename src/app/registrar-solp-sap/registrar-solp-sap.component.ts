@@ -209,6 +209,7 @@ export class RegistrarSolpSapComponent implements OnInit {
 
   GuardarSolSAP() {
     this.spinner.show();
+    let fechaSolpSap = new Date();
     let ObjSolpSap;
     if (this.RDBOrdenadorGastos === undefined) {
       this.mostrarAdvertencia("Debe seleccionar una acción en ordenador de gastos");
@@ -228,7 +229,8 @@ export class RegistrarSolpSapComponent implements OnInit {
           Estado: this.estadoSolicitud,
           EstadoRegistrarSAP: "Aprobado",
           NumSolSAP: this.numeroSolpSap,
-          ComentarioRegistrarSAP: this.ComentarioRegistrarSap
+          ComentarioRegistrarSAP: this.ComentarioRegistrarSap,
+          FechaRegistrarSolpsap: fechaSolpSap
         }
       }
       else if (this.RDBOrdenadorGastos === 2 && this.ComentarioRegistrarSap === undefined) {
@@ -241,7 +243,8 @@ export class RegistrarSolpSapComponent implements OnInit {
           ResponsableId: this.ResponsableProceso,
           Estado: this.estadoSolicitud,
           EstadoRegistrarSAP: "Rechazado",
-          ComentarioRegistrarSAP: this.ComentarioRegistrarSap
+          ComentarioRegistrarSAP: this.ComentarioRegistrarSap,
+          FechaRegistrarSolpsap: fechaSolpSap
         }
       }
       else if (this.RDBOrdenadorGastos === 3 && this.ComentarioRegistrarSap === undefined) {
@@ -254,7 +257,8 @@ export class RegistrarSolpSapComponent implements OnInit {
           ResponsableId: this.ResponsableProceso,
           Estado: this.estadoSolicitud,
           EstadoRegistrarSAP: "No tiene presupuesto disponible",
-          ComentarioRegistrarSAP: this.ComentarioRegistrarSap
+          ComentarioRegistrarSAP: this.ComentarioRegistrarSap,
+          FechaRegistrarSolpsap: fechaSolpSap
         }
       }
       this.servicio.guardarSOLPSAP(this.IdSolicitud, ObjSolpSap).then(

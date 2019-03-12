@@ -303,6 +303,16 @@ export class SPServicio {
         return respuesta;
     }
 
+    ObtenerReporteSolicitud(fechaInico: Date, fechaFin: Date){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","Estado","NumSolSAP","CM","OrdenadorGastos/Title","Solicitante","Author/Department","OrdenadorGastos/ID","Comprador/Title","Comprador/ID","Categoria","Subcategoria","Alcance","Pais/Title","Pais/ID","FueSondeo","FechaDeCreacion","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor").expand("OrdenadorGastos","Comprador","Pais", "Author").filter("FechaDeCreacion ge datetime'"+fechaInico.toISOString()+"' and FechaDeCreacion le datetime'"+fechaFin.toISOString()+"'").get());
+        return respuesta;
+    }
+
+    ObtenerReporteContratos(fechaInico: Date, fechaFin: Date){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.select("*","Solicitud/Id").filter("FechaDeCreacion ge datetime'"+fechaInico.toISOString()+"' and FechaDeCreacion le datetime'"+fechaFin.toISOString()+"'").expand("Solicitud").get());
+        return respuesta;
+    }
+
     ObtenerCondicionesTecnicasBienes(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
         return respuesta;

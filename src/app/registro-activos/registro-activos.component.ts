@@ -110,6 +110,7 @@ export class RegistroActivosComponent implements OnInit {
 
   GuardarActivos() {
     this.spinner.show();
+    let fechaActivos = new Date();
     let coment;
     let comentarios = this.ComentarioRegistroActivos;
     this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarSolp;
@@ -130,7 +131,8 @@ export class RegistroActivosComponent implements OnInit {
           let notificacion = {
             IdSolicitud: this.IdSolicitud.toString(),
             ResponsableId: this.ResponsableProceso,
-            Estado: this.estadoSolicitud
+            Estado: this.estadoSolicitud,
+            FechaRegistrarActivo: fechaActivos
           };
           this.servicio.agregarNotificacion(notificacion).then(
             (item: ItemAddResult) => {

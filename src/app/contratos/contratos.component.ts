@@ -241,6 +241,7 @@ export class ContratosComponent implements OnInit {
       return;
     }
     this.spinner.show();
+    let fechaContrato = new Date();
     let TipoContrato = this.ContratosForm.controls["TipoContrato"].value;
     let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
     let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
@@ -326,7 +327,8 @@ export class ContratosComponent implements OnInit {
             let notificacion = {
               IdSolicitud: this.IdSolicitud.toString(),
               ResponsableId: this.autor,
-              Estado: 'Por recepcionar'
+              Estado: 'Por recepcionar',
+              FechaDeCreacion: fechaContrato
             };
             this.servicio.agregarNotificacion(notificacion).then(
               (item: ItemAddResult) => {

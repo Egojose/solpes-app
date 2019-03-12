@@ -1,0 +1,36 @@
+<br>
+<div class="container">
+  <div class="card">
+    <div class="card-header text-center">
+      <h3 class="card-title">Reporte de contratos</h3>
+    </div>
+    <div class="card-body">
+      <p class="card-text text-center">Utilice el campo de abajo para filtrar por las fechas <b>desde</b> y <b>hasta</b> en
+        las que desea ver el reporte</p>
+      <div class="row text-center">
+        <div class="col-md-6 offset-3 text-center">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1"><img src="assets/images/calendar.png"></span>
+            </div>
+            <input class="form-control" #drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="rangoFecha"
+              [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha desde(requerido) - Fecha hasta(requerido)">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <button class="btn btn-success btn-lg" (click)="generarReporte(templateDescarga);">Generar reporte</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #templateDescarga>
+  <div class="modal-body text-center">
+    <p>Desea descargar el reporte?</p>
+    <button type="button" class="btn btn-success" (click)="confirmarDescarga()" >Sí</button>
+    <button type="button" class="btn btn-danger" (click)="declinarDescarga()" >No</button>
+  </div>
+</ng-template>

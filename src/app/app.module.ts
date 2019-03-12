@@ -34,6 +34,9 @@ import { RegistroActivosComponent } from './registro-activos/registro-activos.co
 import { ReasignarComponent } from './reasignar/reasignar.component';
 import { VistaContratosComponent } from './vista-contratos/vista-contratos.component';
 import { ConsultaGeneralComponent } from './consulta-general/consulta-general.component';
+import { ReportarContratosComponent } from './reportar-contratos/reportar-contratos.component';
+import { ReportarSolicitudComponent } from './reportar-solicitud/reportar-solicitud.component';
+import { ExcelService } from './servicios/excel.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +59,9 @@ import { ConsultaGeneralComponent } from './consulta-general/consulta-general.co
     RegistroActivosComponent,
     ReasignarComponent,
     VistaContratosComponent,
-    ConsultaGeneralComponent
+    ConsultaGeneralComponent,
+    ReportarContratosComponent,
+    ReportarSolicitudComponent
   ],
   entryComponents: [ReasignarComponent],
   imports: [
@@ -108,10 +113,12 @@ import { ConsultaGeneralComponent } from './consulta-general/consulta-general.co
       {path:'ver-solicitud-tab', component: VerSolicitudTabComponent },
       {path:'registro-activos', component:RegistroActivosComponent},
       {path:'vista-contratos', component:VistaContratosComponent},
-      {path:'consulta-general', component:ConsultaGeneralComponent}
+      {path:'consulta-general', component:ConsultaGeneralComponent},
+      {path:'reportar-contratos', component:ReportarContratosComponent},
+      {path:'reportar-solicitud', component:ReportarSolicitudComponent}
     ])
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent, ExcelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
