@@ -83,7 +83,7 @@ export class ContratosComponent implements OnInit {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     console.log(this.solicitudRecuperada);
-    this.perfilacionEstado();  
+    this.perfilacionEstado();
     this.idSolicitudParameter = this.solicitudRecuperada.id;
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
@@ -116,17 +116,17 @@ export class ContratosComponent implements OnInit {
   }
 
   verificarEstado(): boolean {
-    if(this.solicitudRecuperada.estado == 'Por registrar contratos'){
+    if (this.solicitudRecuperada.estado == 'Por registrar contratos') {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  verificarResponsable(): boolean{
-    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+  verificarResponsable(): boolean {
+    if (this.solicitudRecuperada.responsable.ID == this.usuarioActual.id) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -316,6 +316,7 @@ export class ContratosComponent implements OnInit {
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter
+
       }
     }
 
@@ -342,6 +343,7 @@ export class ContratosComponent implements OnInit {
                 this.spinner.hide();
               }
             )
+
           }
         ).catch(
           (error) => {
@@ -360,9 +362,9 @@ export class ContratosComponent implements OnInit {
   ValidarIva() {
     let Moneda = this.ContratosForm.controls["MonedaContrato"].value;
     const IvaContrato = this.ContratosForm.get('IvaContrato');
-   
+
     IvaContrato.setValidators([Validators.required]);
-    
+
     IvaContrato.updateValueAndValidity();
   }
 
