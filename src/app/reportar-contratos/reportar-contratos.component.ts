@@ -69,10 +69,15 @@ export class ReportarContratosComponent implements OnInit {
     return [year, month, day].join('-');
     } 
 
+    
   confirmarDescarga(){
 
     let fechaIni = this.ObtenerFormatoFecha(this.rangoFecha[0]);
     let fechaFin = this.ObtenerFormatoFecha(this.rangoFecha[1]);
+
+    // if(fechaIni.length === 0 || fechaFin.length === 0) {
+    //   this.mostrarAdvertencia("Debe seleccionar las fechas en las que desea ver el reporte");
+    // }
 
     this.servicio.ObtenerReporteContratos(fechaIni, fechaFin).subscribe(
       (respuesta) => {

@@ -14,7 +14,7 @@
               <span class="input-group-text" id="basic-addon1"><img src="assets/images/calendar.png"></span>
             </div>
             <input class="form-control" #drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="rangoFecha"
-              [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha desde(requerido) - Fecha hasta(requerido)">
+              [minDate]="minDate" [maxDate]="maxDate" placeholder="Fecha desde(requerido) - Fecha hasta(requerido)" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
           </div>
         </div>
       </div>
