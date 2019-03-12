@@ -62,7 +62,7 @@ export class ReportarSolicitudComponent implements OnInit {
         console.log(respuesta)
         this.solicitudesReportes = ReporteSolicitud.fromJsonList(respuesta);
         if(this.solicitudesReportes.length > 0){
-          this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, `Reporte de solicitudes ${this.rangoFecha}`);
+          this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');
           this.modalRef.hide();
         }else{
           this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
