@@ -1,4 +1,5 @@
 export class Solicitud {
+    
     constructor(
         public titulo: string,
         public tipoSolicitud: string,
