@@ -27,7 +27,7 @@
                 <a routerLink="/reportar-contratos" routerLinkActive="active">Reporte de administración de contratos</a>
             </li>
 
-            <li>
+            <li *ngIf="PermisosReporteSolicitud">
                 <a routerLink="/reportar-solicitud" routerLinkActive="active">Reporte de estado de solicitudes</a>
             </li>
             <!-- <li *ngIf="PermisosConsultaGeneral" > -->
