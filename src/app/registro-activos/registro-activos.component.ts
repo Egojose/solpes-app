@@ -123,7 +123,8 @@ export class RegistroActivosComponent implements OnInit {
       coment = {
         Estado: this.estadoSolicitud,
         ResponsableId: this.ResponsableProceso,
-        ComentarioRegistroActivos: comentarios
+        ComentarioRegistroActivos: comentarios,
+        FechaRegistrarActivo: fechaActivos
       };
       this.servicio.guardarComentario(this.IdSolicitud, coment).then((resultado: ItemAddResult) => {
         let nombreArchivo = "RegistroActivo-" + this.generarllaveSoporte() + "_" + this.ArchivoAdjunto.name;
@@ -132,7 +133,6 @@ export class RegistroActivosComponent implements OnInit {
             IdSolicitud: this.IdSolicitud.toString(),
             ResponsableId: this.ResponsableProceso,
             Estado: this.estadoSolicitud,
-            FechaRegistrarActivo: fechaActivos
           };
           this.servicio.agregarNotificacion(notificacion).then(
             (item: ItemAddResult) => {
