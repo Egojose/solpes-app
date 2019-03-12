@@ -290,7 +290,8 @@ export class ContratosComponent implements OnInit {
         Solicitante: Solicitante,
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
-        SolicitudId: this.idSolicitudParameter
+        SolicitudId: this.idSolicitudParameter,
+        FechaDeCreacion: fechaContrato
       }
     } else {
       ObjContrato = {
@@ -315,7 +316,8 @@ export class ContratosComponent implements OnInit {
         Solicitante: Solicitante,
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
-        SolicitudId: this.idSolicitudParameter
+        SolicitudId: this.idSolicitudParameter,
+        FechaDeCreacion: fechaContrato
 
       }
     }
