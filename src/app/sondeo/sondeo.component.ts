@@ -416,7 +416,8 @@ export class SondeoComponent implements OnInit {
     ObjSondeo = {
       ResponsableId: this.autorId,
       Estado: estado,
-      ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
+      ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante,
+      FechaSondeo: fechaSondeo
     }
 
     this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
@@ -426,7 +427,6 @@ export class SondeoComponent implements OnInit {
           IdSolicitud: this.IdSolicitud.toString(),
           ResponsableId: this.autorId,
           Estado: estado,
-          FechaSondeo: fechaSondeo
         };
 
         this.servicio.agregarNotificacion(notificacion).then(
