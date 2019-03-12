@@ -59,7 +59,7 @@ export class ReportarSolicitudComponent implements OnInit {
   confirmarDescarga(){
     this.servicio.ObtenerReporteSolicitud(this.rangoFecha[0], this.rangoFecha[1]).subscribe(
       (respuesta) => {
-        console.log(respuesta)
+        // console.log(respuesta)
         this.solicitudesReportes = ReporteSolicitud.fromJsonList(respuesta);
         if(this.solicitudesReportes.length > 0){
           this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');

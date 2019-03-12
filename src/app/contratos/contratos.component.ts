@@ -325,25 +325,30 @@ export class ContratosComponent implements OnInit {
         this.Guardado = true;
         this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
           (resultado) => {
-            let notificacion = {
-              IdSolicitud: this.IdSolicitud.toString(),
-              ResponsableId: this.autor,
-              Estado: 'Por recepcionar',
-              
-            };
-            this.servicio.agregarNotificacion(notificacion).then(
-              (item: ItemAddResult) => {
-                this.MostrarExitoso("El contrato se ha guardado correctamente");
-                this.spinner.hide();
-                setTimeout(() => {
-                  this.router.navigate(["/mis-pendientes"]);
-                }, 1000);
-              }, err => {
-                this.mostrarError('Error agregando la notificación');
-                this.spinner.hide();
-              }
-            )
-
+            this.servicio.actualizarFechaContratos(this.IdSolicitud).then(
+              ()=> {
+                let notificacion = {
+                  IdSolicitud: this.IdSolicitud.toString(),
+                  ResponsableId: this.autor,
+                  Estado: 'Por recepcionar'                  
+                }
+                this.servicio.agregarNotificacion(notificacion).then(
+                  (item: ItemAddResult) => {
+                    this.MostrarExitoso("El contrato se ha guardado correctamente");
+                    this.spinner.hide();
+                    setTimeout(() => {
+                      this.router.navigate(["/mis-pendientes"]);
+                    }, 1000);
+                  }, err => {
+                    this.mostrarError('Error agregando la notificación');
+                    this.spinner.hide();
+                  }
+                )
+              },
+              (error)=>{
+                console.error(error);
+              }              
+            ) 
           }
         ).catch(
           (error) => {
