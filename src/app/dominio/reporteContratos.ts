@@ -39,7 +39,7 @@ export class ReporteContratos {
         public static fromJson(element: any) {
             return new ReporteContratos(
                 element.TipoContrato,
-                element.NumSolpSap,
+                element.NumSolpSAP,
                 element.CM,
                 element.RequiereNumOrdenInicio,
                 element.ObjContrato,
