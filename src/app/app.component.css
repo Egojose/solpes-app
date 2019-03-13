@@ -2,6 +2,6 @@
     color: grey;
 }
 
-div#wrapper li {
-    margin-right: 25px;
+div#sidebar-wrapper li {
+    padding-right: 25px;
 }
