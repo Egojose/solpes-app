@@ -2,6 +2,10 @@
     color: grey;
 }
 
+/* div#sidebar-wrapper {
+    width: 280px;
+} */
+
 div#sidebar-wrapper li {
-    padding-right: 25px;
+   font-size: 13px;
 }
