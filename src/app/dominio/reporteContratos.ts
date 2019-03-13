@@ -72,7 +72,7 @@ export class ReporteContratos {
                 element.Solicitante,
                 element.Comprador,
                 element.ObservacionesAdicionales,
-                element.Consecutivo.Consecutivo)
+                element.Solicitud.Consecutivo)
             }
 
         public static fromJsonList(elements: any) {
