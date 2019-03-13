@@ -290,7 +290,8 @@ export class ContratosComponent implements OnInit {
         Solicitante: Solicitante,
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
-        SolicitudId: this.idSolicitudParameter
+        SolicitudId: this.idSolicitudParameter,
+        FechaDeCreacion: fechaContrato
       }
     } else {
       ObjContrato = {
@@ -315,7 +316,8 @@ export class ContratosComponent implements OnInit {
         Solicitante: Solicitante,
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
-        SolicitudId: this.idSolicitudParameter
+        SolicitudId: this.idSolicitudParameter,
+        FechaDeCreacion: fechaContrato
 
       }
     }
@@ -326,12 +328,12 @@ export class ContratosComponent implements OnInit {
         this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
           (resultado) => {
             this.servicio.actualizarFechaContratos(this.IdSolicitud).then(
-              (resultado) => {
+              ()=> {
                 let notificacion = {
                   IdSolicitud: this.IdSolicitud.toString(),
                   ResponsableId: this.autor,
-                  Estado: 'Por recepcionar',
-                };
+                  Estado: 'Por recepcionar'                  
+                }
                 this.servicio.agregarNotificacion(notificacion).then(
                   (item: ItemAddResult) => {
                     this.MostrarExitoso("El contrato se ha guardado correctamente");
@@ -344,9 +346,11 @@ export class ContratosComponent implements OnInit {
                     this.spinner.hide();
                   }
                 )
-              }
-            )
-
+              },
+              (error)=>{
+                console.error(error);
+              }              
+            ) 
           }
         ).catch(
           (error) => {

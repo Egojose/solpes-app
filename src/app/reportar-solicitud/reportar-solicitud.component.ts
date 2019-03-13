@@ -56,10 +56,25 @@ export class ReportarSolicitudComponent implements OnInit {
     this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
+  ObtenerFormatoFecha(date) {
+    var d = new Date(date),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+    
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+    } 
+
   confirmarDescarga(){
-    this.servicio.ObtenerReporteSolicitud(this.rangoFecha[0], this.rangoFecha[1]).subscribe(
+
+    let fechaIni = this.ObtenerFormatoFecha(this.rangoFecha[0]);
+    let fechaFin = this.ObtenerFormatoFecha(this.rangoFecha[1]);
+
+    this.servicio.ObtenerReporteSolicitud(fechaIni, fechaFin).subscribe(
       (respuesta) => {
-        console.log(respuesta)
+        // console.log(respuesta)
         this.solicitudesReportes = ReporteSolicitud.fromJsonList(respuesta);
         if(this.solicitudesReportes.length > 0){
           this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');

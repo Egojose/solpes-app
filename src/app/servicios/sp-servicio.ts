@@ -27,7 +27,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik4tbEMwbi05REFMcXdodUhZbkhRNjNHZUNYYyIsImtpZCI6Ik4tbEMwbi05REFMcXdodUhZbkhRNjNHZUNYYyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTUxOTc1NzA1LCJuYmYiOjE1NTE5NzU3MDUsImV4cCI6MTU1MjAwNDgwNSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.EKpq3uNTK9r3wrM30NY3SdIelQkmOlWZvSGRCsbbZjFO_5OtpkrqxcYgGefq97xFNWpoGfQZcpmpFmhSwBPLdHeTPa63vliX8At09v5_4t7b5W1BnNXmbvpFB27AgEXWca75cQPmXm7KeUzUqwFPpq2Fv8hMKTfqtSTazZ3bfzEBYhpY2RIhFA6oiBYZewdkPj0tONrKdpO5f6d2xdIQ12p53GnW4eMC7oJK-qrr6v8qBfVyaaHcHCcEQmWepAoRJcJrs9vndPWvVEP8zZRvtK4IrDou_e7rVu5y9tkq5tRgkmK4nNk30e9_G6EiGqCloP_2Cm9kXsvNZ02n2_rm3w'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik4tbEMwbi05REFMcXdodUhZbkhRNjNHZUNYYyIsImtpZCI6Ik4tbEMwbi05REFMcXdodUhZbkhRNjNHZUNYYyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTUyNDI1MTgwLCJuYmYiOjE1NTI0MjUxODAsImV4cCI6MTU1MjQ1NDI4MCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.oBfL77qQepJmuLGm--fDWMwr2SZ-e6Z79glEpqFBTqfwuFN0sGVLsshRb34PfxkyCisvtl1VAMPVkDNhjC0M9_QrPUuEAIsCKYgZB-lVAOtXwgOKUlpVeJOu5-6pzyMh6cdafkvBTPiW1JXCVBVmRZlQfdMgYJHOmKHX7XgdgYug_vU2Z0xnAlFd5ZIDxZDxoGOo77QkDtHdUY4QAaIiV3uUdd2LtQqfnimO5TFvTnYHQUB3N3a2qobFbSGWNlaCAdqATNTP6ch3N6cIuPzPO8LJ1UOM1raRosEO9JBUp_Js_KaMSbD2E5OsLd2pA3RM1txprTW6BTGLQ6-Di_22dw'
             }
         }, environment.urlWeb);
 
@@ -303,13 +303,13 @@ export class SPServicio {
         return respuesta;
     }
 
-    ObtenerReporteSolicitud(fechaInico: Date, fechaFin: Date){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","Estado","NumSolSAP","CM","OrdenadorGastos/Title","Solicitante","Author/Department","OrdenadorGastos/ID","Comprador/Title","Comprador/ID","Categoria","Subcategoria","Alcance","Pais/Title","Pais/ID","FueSondeo","FechaDeCreacion","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor").expand("OrdenadorGastos","Comprador","Pais", "Author").filter("FechaDeCreacion ge datetime'"+fechaInico.toISOString()+"' and FechaDeCreacion le datetime'"+fechaFin.toISOString()+"'").get());
+    ObtenerReporteSolicitud(fechaInico, fechaFin){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","Estado","NumSolSAP","CM","OrdenadorGastos/Title","Solicitante","Author/Department","OrdenadorGastos/ID","Comprador/Title","Comprador/ID","Categoria","Subcategoria","Alcance","Pais/Title","Pais/ID","FueSondeo","FechaDeCreacion","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor").expand("OrdenadorGastos","Comprador","Pais", "Author").filter("FechaDeCreacion ge datetime'"+fechaInico+"T00:00:00.00Z' and FechaDeCreacion le datetime'"+fechaFin+"T23:59:59.00Z'").get());
         return respuesta;
     }
 
-    ObtenerReporteContratos(fechaInico: Date, fechaFin: Date){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.select("*","Solicitud/Id").filter("FechaDeCreacion ge datetime'"+fechaInico.toISOString()+"' and FechaDeCreacion le datetime'"+fechaFin.toISOString()+"'").expand("Solicitud").get());
+    ObtenerReporteContratos(fechaInico, fechaFin){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.select("*","Solicitud/Id").filter("FechaDeCreacion ge datetime'"+fechaInico+"T00:00:00.00Z' and FechaDeCreacion le datetime'"+fechaFin+"T23:59:59.00Z'").expand("Solicitud").get());
         return respuesta;
     }
 

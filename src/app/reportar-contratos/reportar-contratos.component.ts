@@ -58,8 +58,28 @@ export class ReportarContratosComponent implements OnInit {
     this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
+  ObtenerFormatoFecha(date) {
+    var d = new Date(date),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+    
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+    } 
+
+    
   confirmarDescarga(){
-    this.servicio.ObtenerReporteContratos(this.rangoFecha[0], this.rangoFecha[1]).subscribe(
+
+    let fechaIni = this.ObtenerFormatoFecha(this.rangoFecha[0]);
+    let fechaFin = this.ObtenerFormatoFecha(this.rangoFecha[1]);
+
+    // if(fechaIni.length === 0 || fechaFin.length === 0) {
+    //   this.mostrarAdvertencia("Debe seleccionar las fechas en las que desea ver el reporte");
+    // }
+
+    this.servicio.ObtenerReporteContratos(fechaIni, fechaFin).subscribe(
       (respuesta) => {
         console.log(respuesta)
         this.solicitudesReportes = ReporteContratos.fromJsonList(respuesta);

@@ -1,5 +1,5 @@
 export class ReporteContratos {
-    constructor(public titulo: string,
+    constructor(
         public tipoContrato: string,
         public numSolpSap: string,
         public contrato: string,
@@ -37,7 +37,7 @@ export class ReporteContratos {
         public solicitud: any) {}
 
         public static fromJson(element: any) {
-            return new ReporteContratos(element.Title,
+            return new ReporteContratos(
                 element.TipoContrato,
                 element.NumSolpSap,
                 element.CM,
