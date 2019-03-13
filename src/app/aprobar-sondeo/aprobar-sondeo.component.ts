@@ -200,23 +200,27 @@ export class AprobarSondeoComponent implements OnInit {
         if (this.ObjCondicionesTecnicas.length > 0) {
           this.ResponsableProceso = this.ObResProceso[0].porverificarMaterial;
           this.estadoSolicitud = 'Por verificar material';
+          this.numeroSolpCm = this.numeroSolpCm.valueOf();
           ObjSondeo = {
             TipoSolicitud: "Orden a CM",
             ResponsableId: this.ResponsableProceso,
             Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en CM",
             Justificacion: this.justificacionSondeo,
+            CM: this.numeroSolpCm,
             FechaRevisarSondeo: fecha
           }
         } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
           this.estadoSolicitud = 'Por registrar solp sap';
+          this.numeroSolpCm = this.numeroSolpCm.valueOf();
           ObjSondeo = {
             TipoSolicitud: "Orden a CM",
             ResponsableId: this.ResponsableProceso,
             Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en CM",
             Justificacion: this.justificacionSondeo,
+            CM: this.numeroSolpCm,
             FechaRevisarSondeo: fecha
           }
         }
