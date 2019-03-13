@@ -2,8 +2,10 @@ export class ReporteSolicitud {
     constructor(
         public consecutivo: string,
         public estado: string,
+        public tipoSolicitud: string,
         public numeroSolpSap: string,
         public solicitante: string,
+        public numeroContrato: string,
         public cm: string,
         public ordenadorGastos: any,
         public comprador: any,
@@ -27,8 +29,10 @@ export class ReporteSolicitud {
             return new ReporteSolicitud(
                 element.Consecutivo,
                 element.Estado,
+                element.TipoSolicitud,
                 element.NumSolSAP,
                 element.Solicitante,
+                element.NumeroDeContrato,
                 element.CM,
                 element.OrdenadorGastos.Title,
                 element.Comprador.Title,

@@ -327,8 +327,10 @@ export class ContratosComponent implements OnInit {
         this.Guardado = true;
         this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
           (resultado) => {
-            this.servicio.actualizarFechaContratos(this.IdSolicitud).then(
+           
+            this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
               ()=> {
+
                 let notificacion = {
                   IdSolicitud: this.IdSolicitud.toString(),
                   ResponsableId: this.autor,
