@@ -52,7 +52,7 @@ export class ReporteContratos {
                 element.TMRSAP,
                 element.IvaContrato,
                 element.ValorContractual,
-                element.ValorFinalSinIVa,
+                element.ValorFinalSinIva,
                 element.ValorFinal,
                 element.Referencia,
                 element.LineaBaseContrato,

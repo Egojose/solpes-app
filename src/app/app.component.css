@@ -1,3 +1,7 @@
  p.texto-version{
     color: grey;
 }
+
+div#sidebar-wrapper li {
+    padding-right: 25px;
+}
