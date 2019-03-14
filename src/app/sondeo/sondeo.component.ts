@@ -404,6 +404,7 @@ export class SondeoComponent implements OnInit {
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
     let estado = "Por aprobar sondeo";
+    let fechaSondeo = new Date();
 
     if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
       this.comentarioSondeo = "Comentarios: ";
@@ -415,7 +416,8 @@ export class SondeoComponent implements OnInit {
     ObjSondeo = {
       ResponsableId: this.autorId,
       Estado: estado,
-      ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante
+      ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante,
+      FechaSondeo: fechaSondeo
     }
 
     this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
@@ -424,7 +426,7 @@ export class SondeoComponent implements OnInit {
         let notificacion = {
           IdSolicitud: this.IdSolicitud.toString(),
           ResponsableId: this.autorId,
-          Estado: estado
+          Estado: estado,
         };
 
         this.servicio.agregarNotificacion(notificacion).then(

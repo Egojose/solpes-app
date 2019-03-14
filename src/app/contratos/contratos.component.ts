@@ -83,7 +83,7 @@ export class ContratosComponent implements OnInit {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     console.log(this.solicitudRecuperada);
-    this.perfilacionEstado();  
+    this.perfilacionEstado();
     this.idSolicitudParameter = this.solicitudRecuperada.id;
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
@@ -116,17 +116,17 @@ export class ContratosComponent implements OnInit {
   }
 
   verificarEstado(): boolean {
-    if(this.solicitudRecuperada.estado == 'Por registrar contratos'){
+    if (this.solicitudRecuperada.estado == 'Por registrar contratos') {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  verificarResponsable(): boolean{
-    if(this.solicitudRecuperada.responsable.ID == this.usuarioActual.id){
+  verificarResponsable(): boolean {
+    if (this.solicitudRecuperada.responsable.ID == this.usuarioActual.id) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -241,6 +241,7 @@ export class ContratosComponent implements OnInit {
       return;
     }
     this.spinner.show();
+    let fechaContrato = new Date();
     let TipoContrato = this.ContratosForm.controls["TipoContrato"].value;
     let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
     let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
@@ -289,7 +290,8 @@ export class ContratosComponent implements OnInit {
         Solicitante: Solicitante,
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
-        SolicitudId: this.idSolicitudParameter
+        SolicitudId: this.idSolicitudParameter,
+        FechaDeCreacion: fechaContrato
       }
     } else {
       ObjContrato = {
@@ -314,7 +316,9 @@ export class ContratosComponent implements OnInit {
         Solicitante: Solicitante,
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
-        SolicitudId: this.idSolicitudParameter
+        SolicitudId: this.idSolicitudParameter,
+        FechaDeCreacion: fechaContrato
+
       }
     }
 
@@ -323,23 +327,32 @@ export class ContratosComponent implements OnInit {
         this.Guardado = true;
         this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
           (resultado) => {
-            let notificacion = {
-              IdSolicitud: this.IdSolicitud.toString(),
-              ResponsableId: this.autor,
-              Estado: 'Por recepcionar'
-            };
-            this.servicio.agregarNotificacion(notificacion).then(
-              (item: ItemAddResult) => {
-                this.MostrarExitoso("El contrato se ha guardado correctamente");
-                this.spinner.hide();
-                setTimeout(() => {
-                  this.router.navigate(["/mis-pendientes"]);
-                }, 1000);
-              }, err => {
-                this.mostrarError('Error agregando la notificación');
-                this.spinner.hide();
-              }
-            )
+           
+            this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
+              ()=> {
+
+                let notificacion = {
+                  IdSolicitud: this.IdSolicitud.toString(),
+                  ResponsableId: this.autor,
+                  Estado: 'Por recepcionar'                  
+                }
+                this.servicio.agregarNotificacion(notificacion).then(
+                  (item: ItemAddResult) => {
+                    this.MostrarExitoso("El contrato se ha guardado correctamente");
+                    this.spinner.hide();
+                    setTimeout(() => {
+                      this.router.navigate(["/mis-pendientes"]);
+                    }, 1000);
+                  }, err => {
+                    this.mostrarError('Error agregando la notificación');
+                    this.spinner.hide();
+                  }
+                )
+              },
+              (error)=>{
+                console.error(error);
+              }              
+            ) 
           }
         ).catch(
           (error) => {
@@ -358,9 +371,9 @@ export class ContratosComponent implements OnInit {
   ValidarIva() {
     let Moneda = this.ContratosForm.controls["MonedaContrato"].value;
     const IvaContrato = this.ContratosForm.get('IvaContrato');
-   
+
     IvaContrato.setValidators([Validators.required]);
-    
+
     IvaContrato.updateValueAndValidity();
   }
 

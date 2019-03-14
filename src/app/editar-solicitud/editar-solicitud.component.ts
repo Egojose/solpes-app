@@ -1566,6 +1566,7 @@ export class EditarSolicitudComponent implements OnInit {
     let justificacion = this.solpFormulario.controls["justificacion"].value;
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
+    let FechaDeCreacion = new Date();
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
@@ -1733,7 +1734,8 @@ export class EditarSolicitudComponent implements OnInit {
                 null,
                 this.compraBienes,
                 this.compraServicios,
-                this.fueSondeo);
+                this.fueSondeo,
+                FechaDeCreacion);
 
               this.servicio.actualizarSolicitud(this.solicitudRecuperada.id, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {

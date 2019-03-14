@@ -204,6 +204,7 @@ export class VerificarMaterialComponent implements OnInit {
 
   GuardarComentario() {
     this.spinner.show();
+    let fechaVerificar = new Date();
     let coment;
     let comentarios = this.ComentarioVerificarMaterial;
     if (this.SwtichOrdenEstadistica === true) {
@@ -219,7 +220,8 @@ export class VerificarMaterialComponent implements OnInit {
         Estado: this.estadoSolicitud,
         ResponsableId: this.ResponsableProceso,
         ComentarioVerificarMaterial: comentarios,
-        FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes
+        FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes,
+        FechaVerificarMaterial: fechaVerificar
       }
     } else {
       this.ResponsableProceso = this.ObjResponsableProceso[0].porRegistrarSolp;
@@ -229,7 +231,8 @@ export class VerificarMaterialComponent implements OnInit {
         Estado: this.estadoSolicitud,
         ResponsableId: this.ResponsableProceso,
         ComentarioVerificarMaterial: comentarios,
-        FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes
+        FaltaRecepcionBienes: this.SwtichFaltaRecepcionBienes,
+        FechaVerificarMaterial: fechaVerificar
       }
     }
     let cantidad = this.ObjCTVerificar.filter(x => x.MaterialVerificado === true).length;

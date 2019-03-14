@@ -1,5 +1,6 @@
 <div id="wrapper">
-    <div id="sidebar-wrapper">
+    <div class="container-fluid">
+    <div id="sidebar-wrapper" class="text-left">
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
             </li>
@@ -22,6 +23,14 @@
             <li *ngIf="PermisosEdicionContratos">
                 <a routerLink="/vista-contratos" routerLinkActive="active">Edición Vista Contratos</a>
             </li>
+
+            <li *ngIf="PermisosEdicionContratos">
+                <a routerLink="/reportar-contratos" routerLinkActive="active">Reporte de administración de contratos</a>
+            </li>
+
+            <li *ngIf="PermisosReporteSolicitud">
+                <a routerLink="/reportar-solicitud" routerLinkActive="active">Reporte de estado de solicitudes</a>
+            </li>
             <!-- <li *ngIf="PermisosConsultaGeneral" > -->
             <li>
                 <a routerLink="/consulta-general" routerLinkActive="active">Consulta general</a>
@@ -31,6 +40,7 @@
         <div class="version-aplicacion">
             <p class="texto-version">Versión 2.2</p>
         </div>
+    </div>
     </div>
     <div id="page-content-wrapper">
         <div class="container-fluid">
