@@ -58,6 +58,7 @@ export class SPServicio {
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaEmpresas).items.getAll());
         return respuesta;
     }
+    
 
     ObtenerPaises() {
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaPaises).items.getAll());
