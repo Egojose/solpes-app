@@ -788,8 +788,13 @@ export class CrearSolicitudComponent implements OnInit {
       this.condicionesContractuales.forEach(condicionContractual => {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
         if (textoCajon != null) {
-          var json = textoCajon.replace(/[|&;$%@"<>()+,]/g, "");
-          this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r)/gm," ");
+          var json = textoCajon.replace(/["]/g, "\"");
+           json = json.replace(/[{]/g, "[");
+           json = json.replace(/[}]/g, "]");
+           json = json.replace(/[\t]/g, "\t");
+           json = json.replace(/[\n]/g, "\n");
+           this.jsonCondicionesContractuales = json 
+          // this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r|\t)/gm," ");
           this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.jsonCondicionesContractuales + '"},');
         }
       });
