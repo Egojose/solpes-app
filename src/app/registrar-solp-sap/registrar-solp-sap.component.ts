@@ -166,7 +166,9 @@ export class RegistrarSolpSapComponent implements OnInit {
         }
 
         if (solicitud.CondicionesContractuales != null) {
+         console.log(solicitud.CondicionesContractuales);
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+          console.log(this.condicionesContractuales);
         }
 
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
