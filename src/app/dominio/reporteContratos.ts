@@ -5,11 +5,11 @@ export class ReporteContratos {
         public contrato: string,
         public requiereNumOrdenInicio: boolean,
         public objContrato: string,
-        public fechaFirmaContrato: Date,
+        public fechaFirmaContrato: string,
         public contratoObra: boolean,
-        public fechaEntregaCSC: Date,
-        public fechaEnvioProveedor: Date,
-        public fechaDevolucionProveedor: Date,
+        public fechaEntregaCSC: string,
+        public fechaEnvioProveedor: string,
+        public fechaDevolucionProveedor: string,
         public monedaContrato: string,
         public TMRSAP: any,
         public ivaContrato: string,
@@ -23,9 +23,9 @@ export class ReporteContratos {
         public vigenciaContrato: string,
         public requiereSST: boolean,
         public requierePoliza: boolean,
-        public fechaEntregaPoliza: Date,
-        public fechaEntregaRealPoliz: Date,
-        public fechaEstadoPoliza:Date,
+        public fechaEntregaPoliza: string,
+        public fechaEntregaRealPoliz: string,
+        public fechaEstadoPoliza:string,
         public condicionPoliza: string,
         public acreedor: string,
         public digitoVerifiacion: string,
@@ -43,11 +43,11 @@ export class ReporteContratos {
                 element.CM,
                 element.RequiereNumOrdenInicio,
                 element.ObjContrato,
-                element.FechaFirmaContrato,
+                element.FechaFirmaContrato !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaFirmaContrato)) : "",
                 element.ContratoObra,
-                element.FechaEntregaCSC,
-                element.FechaEnvioProveedor,
-                element.FechaDevolucionProveedor,
+                element.FechaEntregaCSC !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaEntregaCSC)) : "",
+                element.FechaEnvioProveedor !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaEnvioProveedor)) : "",
+                element.FechaDevolucionProveedor !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaDevolucionProveedor)) : "",
                 element.MonedaContrato,
                 element.TMRSAP,
                 element.IvaContrato,
@@ -61,9 +61,9 @@ export class ReporteContratos {
                 element.VigenciaContrato,
                 element.RequiereSST,
                 element.RequierePoliza,
-                element.FechaEntregaPoliza,
-                element.FechaEntregaRealPoliza,
-                element.FechaEstadoPoliza,
+                element.FechaEntregaPoliza !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaEntregaPoliza)) : "",
+                element.FechaEntregaRealPoliza !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaEntregaRealPoliza)) : "",
+                element.FechaEstadoPoliza !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaEstadoPoliza)) : "",
                 element.CondicionPoliza,
                 element.Acreedor,
                 element.DigitoVerificacion,
@@ -81,5 +81,16 @@ export class ReporteContratos {
                 list.push(this.fromJson(elements[i]));
             }
             return list;
+        } 
+
+        public static ObtenerFormatoFecha(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            return [year, month, day].join('-');
         } 
 }
