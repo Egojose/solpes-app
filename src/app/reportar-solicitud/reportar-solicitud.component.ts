@@ -75,32 +75,45 @@ export class ReportarSolicitudComponent implements OnInit {
     this.servicio.ObtenerReporteSolicitud(fechaIni, fechaFin).subscribe(
       (respuesta) => {
         // console.log(respuesta)
-        let arrayRespuesta = respuesta.results
-        if (respuesta.hasNext) {
-          respuesta.getNext().then(
-            (p2) => {
-              console.log(JSON.stringify(p2.results, null, 4));
-              arrayRespuesta = arrayRespuesta.concat(p2.results)
-              this.solicitudesReportes = arrayRespuesta;
-              if (this.solicitudesReportes.length > 0) {
-                this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');
-                this.modalRef.hide();
-              } else {
-                this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
-                this.modalRef.hide();
-              }
-            });
-        } else {
-          this.solicitudesReportes = ReporteSolicitud.fromJsonList(respuesta.results);
-          if (this.solicitudesReportes.length > 0) {
-            this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');
-            this.modalRef.hide();
-          } else {
-            this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
-            this.modalRef.hide();
-          }
+        this.solicitudesReportes = ReporteSolicitud.fromJsonList(respuesta);
+        if(this.solicitudesReportes.length > 0){
+          this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');
+          this.modalRef.hide();
+        }else{
+          this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
+          this.modalRef.hide();
         }
       });
+
+    // this.servicio.ObtenerReporteSolicitud(fechaIni, fechaFin).subscribe(
+    //   (respuesta) => {
+    //     // console.log(respuesta)
+    //     let arrayRespuesta = respuesta.results
+    //     if (respuesta.hasNext) {
+    //       respuesta.getNext().then(
+    //         (p2) => {
+    //           console.log(JSON.stringify(p2.results, null, 4));
+    //           arrayRespuesta = arrayRespuesta.concat(p2.results)
+    //           this.solicitudesReportes = arrayRespuesta;
+    //           if (this.solicitudesReportes.length > 0) {
+    //             this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');
+    //             this.modalRef.hide();
+    //           } else {
+    //             this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
+    //             this.modalRef.hide();
+    //           }
+    //         });
+    //     } else {
+    //       this.solicitudesReportes = ReporteSolicitud.fromJsonList(respuesta.results);
+    //       if (this.solicitudesReportes.length > 0) {
+    //         this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');
+    //         this.modalRef.hide();
+    //       } else {
+    //         this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
+    //         this.modalRef.hide();
+    //       }
+    //     }
+    //   });
   }
 
   declinarDescarga() {
