@@ -2,6 +2,7 @@ export class ReporteSolicitud {
     constructor(
         public consecutivo: string,
         public estado: string,
+        public Responsable: string,
         public tipoSolicitud: string,
         public numeroSolpSap: string,
         public solicitante: string,
@@ -21,14 +22,14 @@ export class ReporteSolicitud {
         public fechaRegistrarSolpSap: string,
         public fechaRegistrarContrato: string,
         public fechaEnvioProveedor: string,
-        public departamento?: string,
-        public Responsable?: string) {}
+        public departamento?: string) {}
 
         
         public static fromJson(element: any) {
             return new ReporteSolicitud(
                 element.Consecutivo,
                 element.Estado,
+                element.Responsable.Title,
                 element.TipoSolicitud,
                 element.NumSolSAP,
                 element.Solicitante,
@@ -48,8 +49,7 @@ export class ReporteSolicitud {
                 element.FechaRegistrarSolpsap !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarSolpsap)) : "",
                 element.FechaRegistrarContrato !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarContrato)) : "",
                 element.FechaEnvioProveedor !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaEnvioProveedor)) : "", 
-                element.Author.Department,
-                element.Responsable.Title)
+                element.Author.Department)
         }
 
         public static fromJsonList(elements: any) {
