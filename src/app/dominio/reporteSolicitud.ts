@@ -21,7 +21,8 @@ export class ReporteSolicitud {
         public fechaRegistrarSolpSap: string,
         public fechaRegistrarContrato: string,
         public fechaEnvioProveedor: string,
-        public departamento?: string) {}
+        public departamento?: string,
+        public Responsable?: string) {}
 
         
         public static fromJson(element: any) {
@@ -47,7 +48,8 @@ export class ReporteSolicitud {
                 element.FechaRegistrarSolpsap !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarSolpsap)) : "",
                 element.FechaRegistrarContrato !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarContrato)) : "",
                 element.FechaEnvioProveedor !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaEnvioProveedor)) : "", 
-                element.Author.Department)
+                element.Author.Department,
+                element.Responsable.Title)
         }
 
         public static fromJsonList(elements: any) {
