@@ -25,6 +25,7 @@ export class VerSolicitudTabComponent implements OnInit {
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
   fechaDeseada: Date;
+  fechaEnvio: Date;
   dataSource;
   contratoMarco: string;
   moneda: string;
@@ -104,6 +105,7 @@ export class VerSolicitudTabComponent implements OnInit {
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
       solicitud => {
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+        this.fechaEnvio = solicitud.FechaDeCreacion;
         this.moneda = solicitud.TipoMoneda;
         this.tipoSolicitud = solicitud.TipoSolicitud;
         this.solicitante = solicitud.Solicitante;
