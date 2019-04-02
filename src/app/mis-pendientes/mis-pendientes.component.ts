@@ -45,7 +45,7 @@ export class MisPendientesComponent implements OnInit {
     sessionStorage.removeItem("solicitud");
   }
 
-  displayedColumns: string[] = ['Consecutivo', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Acciones'];
+  displayedColumns: string[] = ['Consecutivo', 'Pais', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Acciones'];
 
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
