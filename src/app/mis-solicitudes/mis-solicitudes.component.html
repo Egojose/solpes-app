@@ -54,7 +54,14 @@
       <td mat-cell *matCellDef="let element">
         <button *ngIf="element.estado != 'Borrador' && element.estado != 'Inicial'" class="btn btn-primary" (click)="duplicarSolicitud(element)">Duplicar</button>
       </td>
-    </ng-container> 
+    </ng-container>
+    
+    <ng-container matColumnDef="descartarSolicitud">
+        <th mat-header-cell *matHeaderCellDef> Descartar solicitud </th>
+        <td mat-cell *matCellDef="let element">
+          <button *ngIf="element.estado != 'Borrador' || element.estado != 'Inicial' || element.estado != 'Por recepcionar' || element.estado != 'Finalizado' || element.estado != 'Solicitud descartada' || element.estado != 'Recibido' || element.estado != 'Rechazado' " class="btn btn-warning">Descartar</button>
+        </td>
+      </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
