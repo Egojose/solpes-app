@@ -78,6 +78,8 @@ export class ContratosComponent implements OnInit {
   fueSondeo: boolean;
   existeCondicionesTecnicasBienes: boolean;
   existeCondicionesTecnicasServicios: boolean;
+  adjunto: any; 
+ 
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -233,6 +235,16 @@ export class ContratosComponent implements OnInit {
     )
   }
 
+  adjuntarArchivo(event, item) {
+    let archivoAdjunto = event.target.files[0];
+    if (archivoAdjunto != null) {
+      item.adjunto = archivoAdjunto;
+    } else {
+      item.adjunto = null;
+    }
+
+  }
+
   get f() { return this.ContratosForm.controls; }
 
   onSubmit() {
@@ -265,6 +277,7 @@ export class ContratosComponent implements OnInit {
     let Comprador = this.ContratosForm.controls["Comprador"].value;
     let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value;
     let ObjContrato;
+    let adjunto;
 
     if (this.Pais === "Colombia") {
       ObjContrato = {
@@ -291,7 +304,8 @@ export class ContratosComponent implements OnInit {
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter,
-        FechaDeCreacion: fechaContrato
+        FechaDeCreacion: fechaContrato,
+        
       }
     } else {
       ObjContrato = {
@@ -317,8 +331,8 @@ export class ContratosComponent implements OnInit {
         Comprador: Comprador,
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter,
-        FechaDeCreacion: fechaContrato
-
+        FechaDeCreacion: fechaContrato,
+       
       }
     }
 

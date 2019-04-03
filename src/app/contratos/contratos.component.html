@@ -386,6 +386,9 @@
         <div class="col-md-12">
             <div class="botonera">
                 <div>
+                    <input type="file" name="adjunto" formControlName="Adjunto" (change)="adjuntarArchivo($event, item)">
+                </div>
+                <div>
                     <button type="submit" class="derecha-boton btn btn-success"
                         [hidden]="Guardado === true">Enviar</button>
                 </div>
