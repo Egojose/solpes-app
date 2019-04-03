@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
@@ -9,6 +9,7 @@ import { ItemAddResult } from 'sp-pnp-js';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios';
 import { CondicionTecnicaBienes } from '../dominio/condicionTecnicaBienes';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-mis-solicitudes',
@@ -30,8 +31,11 @@ export class MisSolicitudesComponent implements OnInit {
   condicionTB: CondicionTecnicaBienes;
   condicionesTS: CondicionTecnicaServicios[] = [];
   condicionTS: CondicionTecnicaServicios;
+  modalRef: BsModalRef;
+  IdSolicitud: any;
+  autorId: any;
 
-  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) {
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService) {
   }
 
   displayedColumns: string[] = ['Consecutivo', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Responsable', 'VerSolicitud', 'duplicarSolicitud', 'descartarSolicitud'];
@@ -208,6 +212,55 @@ export class MisSolicitudesComponent implements OnInit {
 
   MostrarExitoso(mensaje: string) {
     this.toastr.successToastr(mensaje, 'Confirmación!');
+  }
+
+  confirmarDescarte(template: TemplateRef<any>) {
+
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+  }
+
+  declinar() {
+    this.modalRef.hide();
+  }
+
+  aceptarDescarte() {
+    let ObjSondeo;
+    let estado = 'Solicitud descartada'
+    ObjSondeo = {
+      ResponsableId: null,
+      Estado: estado,
+    }
+
+    this.servicio.descartarSolicitud(this.IdSolicitud, ObjSondeo).then(
+      (respuesta) => {
+
+        let notificacion = {
+          IdSolicitud: this.IdSolicitud.toString(),
+          ResponsableId: this.autorId,
+          Estado: estado,
+        };
+
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.spinner.hide();
+            this.salir();
+            sessionStorage.removeItem("IdSolicitud");
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        )
+      }
+    ).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+      }
+    )
+  }
+
+  salir() {
+    this.router.navigate(["/mis-pendientes"]);
   }
 
 }
