@@ -488,6 +488,11 @@ export class SPServicio {
         return respuesta;
     }
 
+    descartarSolicitud(IdSolicitud, ObjCont){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjCont);
+        return respuesta;
+    }
+
     guardarSOLPSAP(IdSolicitud, ObjSolpSap){
         let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjSolpSap);
         return respuesta;
