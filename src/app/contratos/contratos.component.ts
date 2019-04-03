@@ -235,14 +235,13 @@ export class ContratosComponent implements OnInit {
     )
   }
 
-  adjuntarArchivo(event, item) {
+  adjuntarArchivo(event) {
     let archivoAdjunto = event.target.files[0];
     if (archivoAdjunto != null) {
-      item.adjunto = archivoAdjunto;
+      this.adjunto = archivoAdjunto;
     } else {
-      item.adjunto = null;
+      this.adjunto = null;
     }
-
   }
 
   get f() { return this.ContratosForm.controls; }
