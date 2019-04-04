@@ -276,7 +276,6 @@ export class ContratosComponent implements OnInit {
     let Comprador = this.ContratosForm.controls["Comprador"].value;
     let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value;
     let ObjContrato;
-    let adjunto;
 
     if (this.Pais === "Colombia") {
       ObjContrato = {
@@ -336,15 +335,17 @@ export class ContratosComponent implements OnInit {
     }
 
     this.servicio.GuardarContrato(ObjContrato).then(
-      (resultado) => {
+      (item: ItemAddResult) => {
         this.Guardado = true;
         this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
           (resultado) => {
            
             this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
               ()=> {
-
-                let notificacion = {
+                let idContrato = item.data.Id;
+                let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
+                this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
+                  let notificacion = {
                   IdSolicitud: this.IdSolicitud.toString(),
                   ResponsableId: this.autor,
                   Estado: 'Por recepcionar'                  
@@ -361,6 +362,7 @@ export class ContratosComponent implements OnInit {
                     this.spinner.hide();
                   }
                 )
+                })
               },
               (error)=>{
                 console.error(error);
@@ -396,6 +398,12 @@ export class ContratosComponent implements OnInit {
   }
   onSelect(event: any): void {
     this.selectedOption = event.item;
+  }
+
+  generarllaveSoporte(): string {
+    var fecha = new Date();
+    var valorprimitivo = fecha.valueOf().toString();
+    return valorprimitivo;
   }
 
   MostrarExitoso(mensaje: string) {
