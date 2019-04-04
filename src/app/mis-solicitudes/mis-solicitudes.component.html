@@ -59,13 +59,13 @@
     <ng-container matColumnDef="descartarSolicitud">
         <th mat-header-cell *matHeaderCellDef> Descartar solicitud </th>
         <td mat-cell *matCellDef="let element">
-          <button *ngIf="element.estado != 'Borrador' && element.estado != 'Inicial' && element.estado != 'Por recepcionar' && element.estado != 'Finalizado' && element.estado != 'Solicitud descartada' && element.estado != 'Rechazado' " class="btn btn-danger" (click)="confirmarDescarte(templateDescarga)">Descartar</button>
+          <button *ngIf="element.estado != 'Borrador' && element.estado != 'Inicial' && element.estado != 'Por recepcionar' && element.estado != 'Recibido' && element.estado != 'Finalizado' && element.estado != 'Solicitud descartada' && element.estado != 'Rechazado' " class="btn btn-danger" (click)="confirmarDescarte(templateDescarte, element)">Descartar</button>
         </td>
       </ng-container>
 
-      <ng-template #templateDescarga>
+      <ng-template #templateDescarte>
           <div class="modal-body text-center">
-            <p>¿Está seguro que desea descartar esta solicitud?</p>
+            <p>¿Está seguro de que desea descartar esta solicitud?</p>
             <button type="button" class="btn btn-danger btn-lg" (click)="aceptarDescarte()" >Sí</button>
             <button type="button" class="btn btn-primary btn-lg" (click)="declinar()" >No</button>
           </div>
