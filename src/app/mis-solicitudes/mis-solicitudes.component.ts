@@ -34,6 +34,7 @@ export class MisSolicitudesComponent implements OnInit {
   modalRef: BsModalRef;
   IdSolicitud: any;
   autorId: any;
+  responsableId: any;
 
   constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService) {
   }
@@ -214,8 +215,9 @@ export class MisSolicitudesComponent implements OnInit {
     this.toastr.successToastr(mensaje, 'Confirmación!');
   }
 
-  confirmarDescarte(template: TemplateRef<any>) {
-
+  confirmarDescarte(template: TemplateRef<any>, element) {
+    this.IdSolicitud = element.id;
+    this.responsableId = element.responsable.ID;
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
   }
 
@@ -224,25 +226,28 @@ export class MisSolicitudesComponent implements OnInit {
   }
 
   aceptarDescarte() {
-    let ObjSondeo;
+    console.log(this.IdSolicitud);
+    console.log(this.autorId);
+    let ObjCont;
     let estado = 'Solicitud descartada'
-    ObjSondeo = {
+    ObjCont = {
       ResponsableId: null,
       Estado: estado,
     }
 
-    this.servicio.descartarSolicitud(this.IdSolicitud, ObjSondeo).then(
+    this.servicio.descartarSolicitud(this.IdSolicitud, ObjCont).then(
       (respuesta) => {
 
         let notificacion = {
           IdSolicitud: this.IdSolicitud.toString(),
-          ResponsableId: this.autorId,
+          ResponsableId: this.responsableId,
           Estado: estado,
         };
 
         this.servicio.agregarNotificacion(notificacion).then(
           (item: ItemAddResult) => {
-            this.spinner.hide();
+            this.MostrarExitoso("La solicitud se ha descartado con éxito");
+            this.modalRef.hide();
             this.salir();
             sessionStorage.removeItem("IdSolicitud");
           }, err => {
