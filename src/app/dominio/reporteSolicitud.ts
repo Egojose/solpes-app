@@ -2,6 +2,7 @@ export class ReporteSolicitud {
     constructor(
         public consecutivo: string,
         public estado: string,
+         public Responsable: string,
         public tipoSolicitud: string,
         public numeroSolpSap: string,
         public solicitante: string,
@@ -13,14 +14,14 @@ export class ReporteSolicitud {
         public pais: any,
         public alcance: string,
         public fueSondeo: boolean,
-        public fechaSolicitud: Date,
-        public fechaSondeo: Date,
-        public fechaRevisarSodeo: Date,
-        public fechaVerificarMaterial: Date,
-        public fechaRegistrarActivo: Date,
-        public fechaRegistrarSolpSap: Date,
-        public fechaRegistrarContrato: Date,
-        public fechaEnvioProveedor: Date,
+        public fechaSolicitud: string,
+        public fechaSondeo: string,
+        public fechaRevisarSodeo: string,
+        public fechaVerificarMaterial: string,
+        public fechaRegistrarActivo: string,
+        public fechaRegistrarSolpSap: string,
+        public fechaRegistrarContrato: string,
+        public fechaEnvioProveedor: string,
         public departamento?: string) {}
 
         
@@ -28,6 +29,7 @@ export class ReporteSolicitud {
             return new ReporteSolicitud(
                 element.Consecutivo,
                 element.Estado,
+                element.Responsable.Title,
                 element.TipoSolicitud,
                 element.NumSolSAP,
                 element.Solicitante,
@@ -39,14 +41,14 @@ export class ReporteSolicitud {
                 element.Pais.Title,
                 element.Alcance,
                 element.FueSondeo,
-                element.FechaDeCreacion,
-                element.FechaSondeo,
-                element.FechaRevisarSondeo,
-                element.FechaVerificarMaterial,
-                element.FechaRegistrarActivo,
-                element.FechaRegistrarSolpsap,
-                element.FechaRegistrarContrato,
-                element.FechaEnvioProveedor, 
+                element.FechaDeCreacion !== null? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaDeCreacion)) : "",
+                element.FechaSondeo !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaSondeo)) : "",
+                element.FechaRevisarSondeo !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRevisarSondeo)) : "",
+                element.FechaVerificarMaterial !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaVerificarMaterial)) : "",
+                element.FechaRegistrarActivo !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarActivo)) : "",
+                element.FechaRegistrarSolpsap !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarSolpsap)) : "",
+                element.FechaRegistrarContrato !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarContrato)) : "",
+                element.FechaEnvioProveedor !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaEnvioProveedor)) : "", 
                 element.Author.Department)
         }
 
@@ -57,4 +59,15 @@ export class ReporteSolicitud {
             }
             return list;
         }
+
+        public static ObtenerFormatoFecha(date) {
+            var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+            
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            return [year, month, day].join('-');
+            } 
 }

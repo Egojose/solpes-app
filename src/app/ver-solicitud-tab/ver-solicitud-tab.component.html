@@ -5,6 +5,16 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
+                        <strong>Fecha de envio de solicitud</strong>
+                    </div>
+                    <div class="card-body">
+                        {{fechaEnvio | date:'dd/MM/yyyy'}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
                         <strong>Fecha deseada de entrega</strong>
                     </div>
                     <div class="card-body">
@@ -67,6 +77,7 @@
                                 <strong>Código ariba: </strong>{{codAriba}}
                             </div>
                             <div class="col-md-4">
+                                <strong>Dirección: </strong>{{direccion}}
                             </div>
                         </div>
                     </div>
@@ -533,6 +544,16 @@
                     </div>
                     <div class="card-body">
                         {{numSolSAP}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Fecha de registro</strong>
+                    </div>
+                    <div class="card-body">
+                        {{fechaRegistroSolpSap | date:'dd/MM/yyyy'}}
                     </div>
                 </div>
             </div>

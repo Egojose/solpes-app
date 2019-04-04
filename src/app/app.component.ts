@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   PermisosRegistroEntradasServicios: boolean;
   PermisosConsultaGeneral: boolean;
   PermisosReporteSolicitud: boolean;
+  PermisosReporteContratos: boolean;
   linkEdicionContratos: string;
   nombreGrupoConsultaGeneral: string;
 
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
     this.PermisosRegistroEntradasServicios = false;
     this.PermisosConsultaGeneral = false;
     this.PermisosReporteSolicitud = false;
+    this.PermisosReporteContratos = false;
     this.linkEdicionContratos = environment.urlWeb + environment.linkVistaEdicionContratos;
   }
 
@@ -92,11 +94,17 @@ export class AppComponent implements OnInit {
     const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
     const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
     const grupoReporteSolicitudes = "Solpes-Reporte-Solicitudes"
+    const grupoReporteContratos = "Solpes-Reporte-Contratos"
     let grupoConsultaGeneral = this.nombreGrupoConsultaGeneral;
 
     let existeGrupoEdicionContratos = this.grupos.find(x => x.title == grupoEdicionContratos);
     if (existeGrupoEdicionContratos != null) {
       this.PermisosEdicionContratos = true;
+    }
+
+    let existeGrupoReporteContratos = this.grupos.find(x => x.title == grupoReporteContratos);
+    if (existeGrupoReporteContratos != null) {
+      this.PermisosReporteContratos = true;
     }
 
     let existeGrupoRegistroEntradasBienes = this.grupos.find(x => x.title == grupoRegistroEntradasBienes);
