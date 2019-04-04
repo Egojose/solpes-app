@@ -352,11 +352,20 @@ export class ContratosComponent implements OnInit {
                 }
                 this.servicio.agregarNotificacion(notificacion).then(
                   (item: ItemAddResult) => {
-                    this.MostrarExitoso("El contrato se ha guardado correctamente");
-                    this.spinner.hide();
-                    setTimeout(() => {
-                      this.router.navigate(["/mis-pendientes"]);
-                    }, 1000);
+                    if (this.adjunto) {
+                      this.MostrarExitoso(`El contrato se ha guardado correctamente con el adjunto ${this.adjunto.name}`);
+                      this.spinner.hide();
+                      setTimeout(() => {
+                        this.router.navigate(["/mis-pendientes"]);
+                      }, 2000);
+                    }
+                    else {
+                      this.MostrarExitoso("El contrato se ha guardado correctamente sin archivos adjuntos");
+                      this.spinner.hide();
+                      setTimeout(() => {
+                        this.router.navigate(["/mis-pendientes"]);
+                      }, 1000);
+                    }
                   }, err => {
                     this.mostrarError('Error agregando la notificación');
                     this.spinner.hide();
