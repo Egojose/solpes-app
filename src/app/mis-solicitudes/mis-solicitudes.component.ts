@@ -226,8 +226,6 @@ export class MisSolicitudesComponent implements OnInit {
   }
 
   aceptarDescarte() {
-    console.log(this.IdSolicitud);
-    console.log(this.autorId);
     let ObjCont;
     let estado = 'Solicitud descartada'
     ObjCont = {
