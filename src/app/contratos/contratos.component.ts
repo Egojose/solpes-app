@@ -303,7 +303,7 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter,
         FechaDeCreacion: fechaContrato,
-        
+
       }
     } else {
       ObjContrato = {
@@ -330,84 +330,110 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter,
         FechaDeCreacion: fechaContrato,
-       
+
       }
     }
-
-    this.servicio.GuardarContrato(ObjContrato).then(
-      (item: ItemAddResult) => {
-        this.Guardado = true;
-        this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
-          (resultado) => {
-           
-            this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
-              ()=> {
-                if(this.adjunto){
-                let idContrato = item.data.Id;
-                let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
-                this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
-                  let notificacion = {
-                  IdSolicitud: this.IdSolicitud.toString(),
-                  ResponsableId: this.autor,
-                  Estado: 'Por recepcionar'                  
-                }
-                this.servicio.agregarNotificacion(notificacion).then(
-                  (item: ItemAddResult) => {
-                    if (this.adjunto) {
-                      this.MostrarExitoso(`El contrato se ha guardado correctamente con el adjunto ${this.adjunto.name}`);
-                      this.spinner.hide();
-                      setTimeout(() => {
-                        this.router.navigate(["/mis-pendientes"]);
-                      }, 2000);
-                    }
-                    
-                  }, err => {
-                    this.mostrarError('Error agregando la notificación');
-                    this.spinner.hide();
-                  }
-                )
-                })
-              }
-              else {
-                let notificacion = {
-                  IdSolicitud: this.IdSolicitud.toString(),
-                  ResponsableId: this.autor,
-                  Estado: 'Por recepcionar'                  
-                }
-                this.servicio.agregarNotificacion(notificacion).then(
-                  (item: ItemAddResult) => {
-                    
-                    this.MostrarExitoso("El contrato se ha guardado correctamente sin archivos adjuntos");
-                    this.spinner.hide();
-                    setTimeout(() => {
-                      this.router.navigate(["/mis-pendientes"]);
-                    }, 1000);
-                  
-                    
-                  }, err => {
-                    this.mostrarError('Error agregando la notificación');
-                    this.spinner.hide();
+    if (this.adjunto) {
+      if (this.adjunto.size > 0) {
+        this.servicio.GuardarContrato(ObjContrato).then(
+          (item: ItemAddResult) => {
+            this.Guardado = true;
+            this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+              (resultado) => {
+                this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
+                  () => {
+                    let idContrato = item.data.Id;
+                    let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
+                    this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
+                      let notificacion = {
+                        IdSolicitud: this.IdSolicitud.toString(),
+                        ResponsableId: this.autor,
+                        Estado: 'Por recepcionar'
+                      }
+                      this.servicio.agregarNotificacion(notificacion).then(
+                        (item: ItemAddResult) => {
+                          this.MostrarExitoso(`Se adjuntó el archivo ${this.adjunto.name}`)
+                          setTimeout(() => {
+                            this.MostrarExitoso("El contrato se ha guardado correctamente");
+                          this.spinner.hide();
+                          }, 2000);
+                          setTimeout(() => {
+                            this.router.navigate(["/mis-pendientes"]);
+                          }, 2000);
+                        }, err => {
+                          this.mostrarError('Error agregando la notificación');
+                          this.spinner.hide();
+                        }
+                      )
+                    })
+                  },
+                  (error) => {
+                    console.error(error);
                   }
                 )
               }
-            },
-              (error)=>{
-                console.error(error);
-              }              
-            ) 
+            ).catch(
+              (error) => {
+                console.log(error);
+                this.spinner.hide();
+              }
+            );
           }
         ).catch(
           (error) => {
             console.log(error);
             this.spinner.hide();
-          }
-        );
+          });
       }
-    ).catch(
-      (error) => {
-        console.log(error);
+      else {
+        this.mostrarError('Oops! Ha habido un problema con el archivo adjunto. Por favor vuelva a adjuntarlo');
         this.spinner.hide();
-      });
+      }
+    }
+    else {
+      this.servicio.GuardarContrato(ObjContrato).then(
+        (item: ItemAddResult) => {
+          this.Guardado = true;
+          this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+            (resultado) => {
+              this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
+                () => {
+                  let notificacion = {
+                    IdSolicitud: this.IdSolicitud.toString(),
+                    ResponsableId: this.autor,
+                    Estado: 'Por recepcionar'
+                  }
+                  this.servicio.agregarNotificacion(notificacion).then(
+                    (item: ItemAddResult) => {
+                      this.MostrarExitoso("El contrato se ha guardado correctamente sin archivos adjuntos");
+                      this.spinner.hide();
+                      setTimeout(() => {
+                        this.router.navigate(["/mis-pendientes"]);
+                      }, 1000);
+                    }, err => {
+                      this.mostrarError('Error agregando la notificación');
+                      this.spinner.hide();
+                    }
+                  )
+                },
+                (error) => {
+                  console.error(error);
+                }
+              )
+            }
+          ).catch(
+            (error) => {
+              console.log(error);
+              this.spinner.hide();
+            }
+          );
+        }
+      ).catch(
+        (error) => {
+          console.log(error);
+          this.spinner.hide();
+        });
+    }
   }
 
   ValidarIva() {
