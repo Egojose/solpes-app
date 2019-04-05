@@ -39,7 +39,7 @@ export class MisSolicitudesComponent implements OnInit {
   constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService) {
   }
 
-  displayedColumns: string[] = ['Consecutivo', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Responsable', 'VerSolicitud', 'duplicarSolicitud', 'descartarSolicitud'];
+  displayedColumns: string[] = ['Consecutivo', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Responsable', 'VerSolicitud', 'Acciones'];
 
   ngOnInit() {
     this.spinner.show();
