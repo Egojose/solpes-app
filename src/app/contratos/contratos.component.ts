@@ -342,6 +342,7 @@ export class ContratosComponent implements OnInit {
            
             this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
               ()=> {
+                if(this.adjunto){
                 let idContrato = item.data.Id;
                 let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
                 this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
@@ -359,20 +360,37 @@ export class ContratosComponent implements OnInit {
                         this.router.navigate(["/mis-pendientes"]);
                       }, 2000);
                     }
-                    else {
-                      this.MostrarExitoso("El contrato se ha guardado correctamente sin archivos adjuntos");
-                      this.spinner.hide();
-                      setTimeout(() => {
-                        this.router.navigate(["/mis-pendientes"]);
-                      }, 1000);
-                    }
+                    
                   }, err => {
                     this.mostrarError('Error agregando la notificación');
                     this.spinner.hide();
                   }
                 )
                 })
-              },
+              }
+              else {
+                let notificacion = {
+                  IdSolicitud: this.IdSolicitud.toString(),
+                  ResponsableId: this.autor,
+                  Estado: 'Por recepcionar'                  
+                }
+                this.servicio.agregarNotificacion(notificacion).then(
+                  (item: ItemAddResult) => {
+                    
+                    this.MostrarExitoso("El contrato se ha guardado correctamente sin archivos adjuntos");
+                    this.spinner.hide();
+                    setTimeout(() => {
+                      this.router.navigate(["/mis-pendientes"]);
+                    }, 1000);
+                  
+                    
+                  }, err => {
+                    this.mostrarError('Error agregando la notificación');
+                    this.spinner.hide();
+                  }
+                )
+              }
+            },
               (error)=>{
                 console.error(error);
               }              
