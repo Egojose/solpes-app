@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
+import { EdSolicitud } from '../dominio/EdSolicitud';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { SPServicio } from '../servicios/sp-servicio';
@@ -18,7 +19,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class MisPendientesComponent implements OnInit {
 
   usuarioActual: Usuario;
-  misSolicitudes: Solicitud[] = [];
+  misSolicitudes: EdSolicitud[] = [];
   dataSource;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -45,7 +46,7 @@ export class MisPendientesComponent implements OnInit {
     sessionStorage.removeItem("solicitud");
   }
 
-  displayedColumns: string[] = ['Consecutivo', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Acciones'];
+  displayedColumns: string[] = ['Consecutivo', 'Pais', 'Tiposolicitud', 'Alcance', 'fechaEntregaDeseada', 'Estado', 'Acciones'];
 
   ObtenerUsuarioActual() {
     this.servicio.ObtenerUsuarioActual().subscribe(
@@ -63,7 +64,7 @@ export class MisPendientesComponent implements OnInit {
     let idUsuario = this.usuarioActual.id;
     this.servicio.ObtenerMisPendientes(idUsuario).subscribe(
       (respuesta) => {
-        this.misSolicitudes = Solicitud.fromJsonList(respuesta);
+        this.misSolicitudes = EdSolicitud.fromJsonList(respuesta);
         if (this.misSolicitudes.length > 0) {
           this.empty = false;
           this.dataSource = new MatTableDataSource(this.misSolicitudes);

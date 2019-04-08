@@ -5,6 +5,16 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
+                        <strong>Fecha de envío de solicitud</strong>
+                    </div>
+                    <div class="card-body">
+                        {{fechaEnvio | date:'dd/MM/yyyy'}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
                         <strong>Fecha deseada de entrega</strong>
                     </div>
                     <div class="card-body">
@@ -43,7 +53,7 @@
                                 <strong>Ordenador del Gasto: </strong>{{ordenadorGasto}}
                             </div>
                             <div class="col-md-4">
-                                <strong>Empresa: </strong>{{empresa}}
+                                <strong>Dirección: </strong>{{direccion}}
                             </div>
                         </div>
                         <br>
@@ -66,8 +76,7 @@
                             <div class="col-md-4">
                                 <strong>Código ariba: </strong>{{codAriba}}
                             </div>
-                            <div class="col-md-4">
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -101,7 +110,7 @@
                 <tbody>
                     <tr *ngFor="let item of condicionesContractuales">
                         <td>{{item.campo}}</td>
-                        <td>{{item.descripcion}}</td>
+                        <td><textarea class="form-control" id="exampleFormControlTextarea1"  readonly>{{item.descripcion}}</textarea></td>
                     </tr>
                 </tbody>
             </table>
@@ -519,7 +528,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Estado registrar Sol SAP</strong>
+                        <strong>Estado registrar Solp SAP</strong>
                     </div>
                     <div class="card-body">
                         {{estadoRegistrarSAP}}
@@ -533,6 +542,16 @@
                     </div>
                     <div class="card-body">
                         {{numSolSAP}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Fecha de registro</strong>
+                    </div>
+                    <div class="card-body">
+                        {{fechaRegistroSolpSap | date:'dd/MM/yyyy'}}
                     </div>
                 </div>
             </div>

@@ -18,7 +18,7 @@ export class ReportarSolicitudComponent implements OnInit {
   solicitudesReportes: ReporteSolicitud[] = [];
   modalRef: BsModalRef;
 
-  constructor(private servicioExcel: ExcelService, private servicio: SPServicio, public toastr: ToastrManager,private modalService: BsModalService) { 
+  constructor(private servicioExcel: ExcelService, private servicio: SPServicio, public toastr: ToastrManager, private modalService: BsModalService) {
     this.minDate = new Date("01/01/2019");
     this.maxDate = new Date();
     this.minDate.setDate(this.minDate.getDate());
@@ -30,10 +30,10 @@ export class ReportarSolicitudComponent implements OnInit {
 
   }
 
-  generarReporte(template: TemplateRef<any>){
+  generarReporte(template: TemplateRef<any>) {
 
-    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
-    
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+
   }
 
   MostrarExitoso(mensaje: string) {
@@ -57,17 +57,17 @@ export class ReportarSolicitudComponent implements OnInit {
   }
 
   ObtenerFormatoFecha(date) {
-    var d = new Date(date),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear();
-    
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    return [year, month, day].join('-');
-    } 
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
 
-  confirmarDescarga(){
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+  }
+
+  confirmarDescarga() {
 
     let fechaIni = this.ObtenerFormatoFecha(this.rangoFecha[0]);
     let fechaFin = this.ObtenerFormatoFecha(this.rangoFecha[1]);
@@ -84,9 +84,39 @@ export class ReportarSolicitudComponent implements OnInit {
           this.modalRef.hide();
         }
       });
+
+    // this.servicio.ObtenerReporteSolicitud(fechaIni, fechaFin).subscribe(
+    //   (respuesta) => {
+    //     // console.log(respuesta)
+    //     let arrayRespuesta = respuesta.results
+    //     if (respuesta.hasNext) {
+    //       respuesta.getNext().then(
+    //         (p2) => {
+    //           console.log(JSON.stringify(p2.results, null, 4));
+    //           arrayRespuesta = arrayRespuesta.concat(p2.results)
+    //           this.solicitudesReportes = arrayRespuesta;
+    //           if (this.solicitudesReportes.length > 0) {
+    //             this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');
+    //             this.modalRef.hide();
+    //           } else {
+    //             this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
+    //             this.modalRef.hide();
+    //           }
+    //         });
+    //     } else {
+    //       this.solicitudesReportes = ReporteSolicitud.fromJsonList(respuesta.results);
+    //       if (this.solicitudesReportes.length > 0) {
+    //         this.servicioExcel.exportAsExcelFile(this.solicitudesReportes, 'Reporte de solicitudes');
+    //         this.modalRef.hide();
+    //       } else {
+    //         this.mostrarAdvertencia("No hay reporte que mostrar para estas fechas");
+    //         this.modalRef.hide();
+    //       }
+    //     }
+    //   });
   }
 
-  declinarDescarga(){
+  declinarDescarga() {
     this.modalRef.hide();
   }
 
