@@ -216,7 +216,7 @@ export class SPServicio {
     }
 
     agregarAdjuntoContratos(IdContrato: number, nombreArchivo: string, archivo: File) {
-        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.getById(IdContrato);
+        let item = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.getById(IdContrato);
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
@@ -494,7 +494,7 @@ export class SPServicio {
     }
 
     descartarSolicitud(IdSolicitud, ObjCont){
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjCont);
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(ObjCont);
         return respuesta;
     }
 
