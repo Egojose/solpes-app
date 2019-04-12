@@ -34,7 +34,8 @@ export class EdSolicitud {
         public suspendida?: boolean,
         public reactivada?: boolean,
         public fechaSuspension?: Date,
-        public fechaReactivacion?: Date) { }
+        public fechaReactivacion?: Date,
+        public motivoDeSuspension?: string) { }
 
     public static fromJson(element: any) {
         return new EdSolicitud(
@@ -71,7 +72,8 @@ export class EdSolicitud {
             element.Suspendida,
             element.Reactivada,
             element.FechaSuspension,
-            element.FechaReactivacion);
+            element.FechaReactivacion,
+            element.MotivoDeSuspension);
     }
 
     public static fromJsonList(elements: any) {
