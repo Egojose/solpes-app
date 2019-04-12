@@ -31,6 +31,8 @@ export class MisPendientesComponent implements OnInit {
   ObjResponsableProceso: any;
   IdPais: any;
   motivoSuspension: MotivoSuspension[] = [];
+  fechaSuspension: any;
+  fechaReactivacion: any;
 
   constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService) {
     this.dataSource = new MatTableDataSource();
