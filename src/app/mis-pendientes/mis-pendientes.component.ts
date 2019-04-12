@@ -10,6 +10,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ReasignarComponent } from '../reasignar/reasignar.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MotivoSuspension } from '../dominio/motivoSuspension';
 
 @Component({
   selector: 'app-mis-pendientes',
@@ -29,6 +30,7 @@ export class MisPendientesComponent implements OnInit {
   empty: boolean;
   ObjResponsableProceso: any;
   IdPais: any;
+  motivoSuspension: MotivoSuspension[] = [];
 
   constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService) {
     this.dataSource = new MatTableDataSource();
@@ -70,6 +72,7 @@ export class MisPendientesComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.misSolicitudes);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          this.obtenerMotivoSuspension();
         }
         else {
           this.empty = true;
@@ -80,6 +83,13 @@ export class MisPendientesComponent implements OnInit {
         this.spinner.hide();
       }
     )
+  }
+  obtenerMotivoSuspension() {
+   this.servicio.obtenerMotivoSuspension().subscribe(
+     (respuesta) => {
+       this.motivoSuspension = MotivoSuspension.fromJsonList(respuesta);
+     }
+   );
   }
 
   ObtenerResponsableProceso(PaisId, IdSolicitud) {
@@ -244,6 +254,11 @@ export class MisPendientesComponent implements OnInit {
       height: '360px',
       width: '600px',
     });
+  }
+
+  suspender(template: TemplateRef<any>, element) {
+    this.idSolicitud = element.id;
+    this.modalRef = this.modalServicio.show(template, { class: 'modal-md' });
   }
 
 }

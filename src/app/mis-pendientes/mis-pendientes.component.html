@@ -130,6 +130,16 @@
               a registrar activos</button>
           </div>
         </div>
+        <div class="filaBtn">
+          <div class="col-md-12">
+            <button  class="btn btn-warning btn-block" (click)="suspender(templateSuspenderSolicitud,element.id)">Suspender solicitud</button>
+          </div>
+        </div>
+        <div class="filaBtn">
+          <div class="col-md-12">
+            <button *ngIf="element.estado =='Suspendida'" class="btn btn-success btn-block" (click)="templateReactivarSolicitud">Reactivar</button>
+          </div>
+        </div>
       </td>
     </ng-container>
 
@@ -163,6 +173,25 @@
     <button type="button" class="btn btn-danger" (click)="declinarDescartar()">Cancelar</button>
   </div>
 </ng-template>
+
+<ng-template #templateSuspenderSolicitud>
+  <div class="modal-body text-center">
+    <p>Por favor indique el motivo de la suspensión</p>
+    <select name="suspender" id="suspender" class="form-control">
+      <option value="Seleccione">Seleccione</option>
+      <option *ngFor="let motivo of motivoSuspension" [ngValue]="motivo.nombre" [text]="motivo.nombre">{{motivo.nombre}}</option>
+    </select>
+      <br>
+      <button type="button" class="btn btn-danger">Aceptar</button>
+      <button type="button" class="btn btn-primary" (click)="declinarDescartar()">Cancelar</button>
+  </div>
+  
+
+</ng-template>
+
+<ng-template #templateReactivarSolicitud></ng-template>
+
+
 
 <ngx-spinner>
   <p style="font-size: 20px; color: white">PROCESANDO...</p>
