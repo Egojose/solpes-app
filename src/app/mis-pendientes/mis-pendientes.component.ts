@@ -11,6 +11,7 @@ import { responsableProceso } from '../dominio/responsableProceso';
 import { ReasignarComponent } from '../reasignar/reasignar.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MotivoSuspension } from '../dominio/motivoSuspension';
+import { element } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-mis-pendientes',
@@ -261,6 +262,29 @@ export class MisPendientesComponent implements OnInit {
   suspender(template: TemplateRef<any>, element) {
     this.idSolicitud = element.id;
     this.modalRef = this.modalServicio.show(template, { class: 'modal-md' });
+  }
+
+  confirmarSuspension() {
+    let ObjSus;
+    let estado = 'Suspendida'
+    this.fechaSuspension = new Date()
+    
+    ObjSus = {
+      Estado: estado,
+      FechaSuspension: this.fechaSuspension,
+      MotivoDeSuspension: this.motivoSuspension,
+      Suspendida: true
+    }
+    this.servicio.suspenderSolicitud(this.idSolicitud, ObjSus).then(
+      (respuesta) => {
+        this.modalRef.hide();
+      }
+    ).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+      }
+    )
   }
 
 }

@@ -9,6 +9,7 @@
 <div class="mat-elevation-z8" [hidden]="empty">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Position Column -->
+
     <ng-container matColumnDef="Consecutivo">
       <th mat-header-cell *matHeaderCellDef> Consecutivo </th>
       <td mat-cell *matCellDef="let element"> {{element.consecutivo}} </td>
@@ -132,7 +133,7 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button  class="btn btn-warning btn-block" (click)="suspender(templateSuspenderSolicitud,element.id)">Suspender solicitud</button>
+            <button  class="btn btn-warning btn-block" (click)="suspender(templateSuspenderSolicitud,element)">Suspender solicitud</button>
           </div>
         </div>
         <div class="filaBtn">
@@ -182,7 +183,7 @@
       <option *ngFor="let motivo of motivoSuspension" [ngValue]="motivo.nombre" [text]="motivo.nombre">{{motivo.nombre}}</option>
     </select>
       <br>
-      <button type="button" class="btn btn-danger">Aceptar</button>
+      <button type="button" class="btn btn-danger" (click)="confirmarSuspension(element)">Aceptar</button>
       <button type="button" class="btn btn-primary" (click)="declinarDescartar()">Cancelar</button>
   </div>
   
