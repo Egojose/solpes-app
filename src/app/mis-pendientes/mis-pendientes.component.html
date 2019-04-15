@@ -138,7 +138,7 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button *ngIf="element.estado =='Suspendida' && element.reactivada == false" class="btn btn-success btn-block" (click)="reactivar(templateReactivarSolicitud,element)">Reactivar</button>
+            <button *ngIf="element.estado =='Suspendida' && element.reactivada == 'false'" class="btn btn-success btn-block" (click)="reactivar(templateReactivarSolicitud,element)">Reactivar</button>
           </div>
         </div>
       </td>
