@@ -30,7 +30,12 @@ export class EdSolicitud {
         public FaltaRecepcionBienes?: boolean,
         public FaltaRecepcionServicios?: boolean,
         public FueSondeo?: boolean,
-        public fechaCreacion?: Date) { }
+        public fechaCreacion?: Date,
+        public suspendida?: boolean,
+        public reactivada?: boolean,
+        public fechaSuspension?: Date,
+        public fechaReactivacion?: Date,
+        public motivoDeSuspension?: string) { }
 
     public static fromJson(element: any) {
         return new EdSolicitud(
@@ -63,7 +68,12 @@ export class EdSolicitud {
             element.FaltaRecepcionBienes,
             element.FaltaRecepcionServicios,
             element.FueSondeo,
-            element.FechaDeCreacion);
+            element.FechaDeCreacion,
+            element.Suspendida,
+            element.Reactivada,
+            element.FechaSuspension,
+            element.FechaReactivacion,
+            element.MotivoDeSuspension);
     }
 
     public static fromJsonList(elements: any) {

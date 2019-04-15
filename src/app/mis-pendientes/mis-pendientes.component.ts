@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, forwardRef } from '@angular/core';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
 import { EdSolicitud } from '../dominio/EdSolicitud';
@@ -10,11 +10,14 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { responsableProceso } from '../dominio/responsableProceso';
 import { ReasignarComponent } from '../reasignar/reasignar.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MotivoSuspension } from '../dominio/motivoSuspension';
+import { element } from '@angular/core/src/render3';
+import { FormGroup, FormBuilder, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-mis-pendientes',
   templateUrl: './mis-pendientes.component.html',
-  styleUrls: ['./mis-pendientes.component.css']
+  styleUrls: ['./mis-pendientes.component.css'],
 })
 export class MisPendientesComponent implements OnInit {
 
@@ -29,10 +32,17 @@ export class MisPendientesComponent implements OnInit {
   empty: boolean;
   ObjResponsableProceso: any;
   IdPais: any;
+  motivoSuspension: MotivoSuspension[] = [];
+  fechaSuspension: any;
+  fechaReactivacion: any;
+  suspenderForm: FormGroup;
+  motivoSuspender: any;
+  nombreSuspension: any;
 
-  constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService) {
+  constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService, private formBuilder: FormBuilder) {
     this.dataSource = new MatTableDataSource();
     this.dataSource.data = this.misSolicitudes;
+    this.motivoSuspender = ''
   }
 
   ngOnInit() {
@@ -40,6 +50,7 @@ export class MisPendientesComponent implements OnInit {
     this.destruirSessionesSolicitudes();
     this.ObtenerUsuarioActual();
   }
+
 
   destruirSessionesSolicitudes(): any {
     sessionStorage.removeItem("IdSolicitud");
@@ -70,6 +81,7 @@ export class MisPendientesComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.misSolicitudes);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          this.obtenerMotivoSuspension();
         }
         else {
           this.empty = true;
@@ -80,6 +92,13 @@ export class MisPendientesComponent implements OnInit {
         this.spinner.hide();
       }
     )
+  }
+  obtenerMotivoSuspension() {
+   this.servicio.obtenerMotivoSuspension().subscribe(
+     (respuesta) => {
+       this.motivoSuspension = MotivoSuspension.fromJsonList(respuesta);
+     }
+   );
   }
 
   ObtenerResponsableProceso(PaisId, IdSolicitud) {
@@ -244,6 +263,66 @@ export class MisPendientesComponent implements OnInit {
       height: '360px',
       width: '600px',
     });
+  }
+
+  suspender(template: TemplateRef<any>, element) {
+    this.idSolicitud = element.id;
+    this.modalRef = this.modalServicio.show(template, { class: 'modal-md' });
+  }
+
+  confirmarSuspension() {
+    let ObjSus;
+    let estado = 'Suspendida'
+    let motivo = this.nombreSuspension;
+    
+    this.fechaSuspension = new Date()
+    
+    ObjSus = {
+      Estado: estado,
+      FechaSuspension: this.fechaSuspension,
+      MotivoDeSuspension: motivo,
+      Suspendida: true
+    }
+    this.servicio.suspenderSolicitud(this.idSolicitud, ObjSus).then(
+      (respuesta) => {
+        this.modalRef.hide();
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    ).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+      }
+    )
+  }
+
+  reactivar(template: TemplateRef<any>, element) {
+    this.idSolicitud = element.id;
+    this.modalRef = this.modalServicio.show(template, { class: 'modal-md' });
+  }
+
+  confirmarReactivar() {
+    let objReac;
+    let estado = "Por registrar contratos";
+    let fechaReactivacion = new Date();
+    
+    objReac = {
+      Reactivada: true,
+      FechaReactivacion: fechaReactivacion,
+      Estado: estado
+    }
+    this.servicio.reactivarSolicitud(this.idSolicitud, objReac).then(
+      (respuesta) => {
+        this.modalRef.hide();
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    ).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+      }
+    )
+
   }
 
 }
