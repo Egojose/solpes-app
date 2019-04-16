@@ -231,6 +231,10 @@ export class VerSolicitudTabComponent implements OnInit {
         this.HabilitarTabContratos();
         break;
       }
+      case 'Suspendida': {
+        this.HabilitarTabContratos();
+        break;
+      }
       case 'Por recepcionar': {
         this.HabilitarTabEntregas();
       }
