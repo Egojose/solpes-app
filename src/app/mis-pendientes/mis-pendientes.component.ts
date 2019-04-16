@@ -271,6 +271,11 @@ export class MisPendientesComponent implements OnInit {
   }
 
   confirmarSuspension() {
+    if(this.nombreSuspension === 'Seleccione' || this.nombreSuspension === "" || this.nombreSuspension === null || this.nombreSuspension === undefined) {
+      this.mostrarAdvertencia('Debe seleccionar un motivo de suspensión')
+      return false
+    }
+    else {
     let ObjSus;
     let estado = 'Suspendida'
     let motivo = this.nombreSuspension;
@@ -294,6 +299,7 @@ export class MisPendientesComponent implements OnInit {
         this.spinner.hide();
       }
     )
+    }
   }
 
   reactivar(template: TemplateRef<any>, element) {
