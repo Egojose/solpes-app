@@ -179,7 +179,7 @@
   <div class="modal-body text-center">
     <p>Por favor indique el motivo de la suspensión</p>
     <select name="suspender" id="suspender" class="form-control" [(ngModel)]="nombreSuspension">
-      <option value="">Seleccione</option>
+      <option value="" selected="selected">Seleccione</option>
       <option *ngFor="let motivo of motivoSuspension" [ngValue]="motivo.nombre">{{motivo.nombre}}</option>
     </select>
     <br>
