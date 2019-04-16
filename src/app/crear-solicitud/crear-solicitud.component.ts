@@ -182,6 +182,15 @@ export class CrearSolicitudComponent implements OnInit {
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
     this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
+    
+  }
+
+  validarCodigosBrasil() {
+    if (this.solpFormulario.controls["tipoSolicitud"].value === "Solp" || this.solpFormulario.controls["tipoSolicitud"].value === "Orden CM") {
+      if (this.solpFormulario.controls["pais"].value === "Brasil") {
+       this.MostrarExitoso('Es brasil')
+      }
+    }
   }
 
   AsignarRequeridosDatosContables(): any {
@@ -856,6 +865,8 @@ export class CrearSolicitudComponent implements OnInit {
       return;
     }
 
+   
+
     this.spinner.show();
     let codigo = this.ctbFormulario.controls["codigoCTB"].value;
     let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
@@ -877,6 +888,7 @@ export class CrearSolicitudComponent implements OnInit {
       adjunto = this.condicionTB.archivoAdjunto.name;          
     }   
     if (this.textoBotonGuardarCTB == "Guardar") {
+      this.validarCodigosBrasil();
       this.condicionTB.indice = this.indiceCTB;
       this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
       this.condicionTB.idSolicitud = this.idSolicitudGuardada;
