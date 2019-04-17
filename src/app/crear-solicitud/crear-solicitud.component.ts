@@ -884,7 +884,6 @@ export class CrearSolicitudComponent implements OnInit {
       return;
     }
     
-
     this.spinner.show();
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
