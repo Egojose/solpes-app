@@ -185,11 +185,14 @@ export class CrearSolicitudComponent implements OnInit {
     
   }
 
-  validarCodigosBrasil() {
-    if (this.solpFormulario.controls["tipoSolicitud"].value === "Solp" || this.solpFormulario.controls["tipoSolicitud"].value === "Orden CM") {
-      if (this.solpFormulario.controls["pais"].value === "Brasil") {
-       this.MostrarExitoso('Es brasil')
-      }
+  validarCodigosBrasilCTB() {
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let codigoValidar =  this.ctbFormulario.controls["codigoCTB"].value
+    if (solicitudTipo === "Solp" || solicitudTipo === "Orden CM" && paisValidar === "Brasil") {
+       if(codigoValidar === "" || codigoValidar === null || codigoValidar === undefined) {
+         this.mostrarError('El código de bienes es obligatorio para Brasil')
+       }
     }
   }
 
@@ -838,6 +841,13 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   abrirModalCTB(template: TemplateRef<any>) {
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
+      return false;
+    }
+    else {
     this.mostrarAdjuntoCTB = false;
     this.limpiarControlesCTB();
     this.tituloModalCTB = "Agregar bien";
@@ -846,9 +856,17 @@ export class CrearSolicitudComponent implements OnInit {
       template,
       Object.assign({}, { class: 'gray modal-lg' })
     );
+    }
   }
 
   abrirModalCTS(template: TemplateRef<any>) {
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
+      return false;
+    }
+    else {
     this.mostrarAdjuntoCTS = false;
     this.limpiarControlesCTS();
     this.tituloModalCTS = "Agregar servicio";
@@ -857,6 +875,7 @@ export class CrearSolicitudComponent implements OnInit {
       template,
       Object.assign({}, { class: 'gray modal-lg' })
     );
+    }
   }
 
   ctbOnSubmit() {
@@ -864,10 +883,11 @@ export class CrearSolicitudComponent implements OnInit {
     if (this.ctbFormulario.invalid) {
       return;
     }
-
-   
+    
 
     this.spinner.show();
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
     let codigo = this.ctbFormulario.controls["codigoCTB"].value;
     let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
     let modelo = this.ctbFormulario.controls["modeloCTB"].value;
@@ -880,6 +900,13 @@ export class CrearSolicitudComponent implements OnInit {
     let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
     let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
+
+    if(solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM' && paisValidar === 'Brasil' && codigo === "" || codigo === null || codigo === undefined) {
+      this.mostrarError('El código de bienes es obligatorio para Brasil')
+      this.spinner.hide();
+      return false;
+    }
+
     if (this.condicionTB == null) {
       this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
     }      
@@ -888,7 +915,7 @@ export class CrearSolicitudComponent implements OnInit {
       adjunto = this.condicionTB.archivoAdjunto.name;          
     }   
     if (this.textoBotonGuardarCTB == "Guardar") {
-      this.validarCodigosBrasil();
+      
       this.condicionTB.indice = this.indiceCTB;
       this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
       this.condicionTB.idSolicitud = this.idSolicitudGuardada;
@@ -954,6 +981,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
 
     if (this.textoBotonGuardarCTB == "Actualizar") {
+      // this.validarCodigosBrasil();
       if (adjunto == null) {
         this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta);
         this.condicionTB.id = this.idCondicionTBGuardada;
