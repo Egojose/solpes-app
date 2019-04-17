@@ -185,16 +185,16 @@ export class CrearSolicitudComponent implements OnInit {
     
   }
 
-  validarCodigosBrasilCTB() {
-    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
-    let codigoValidar =  this.ctbFormulario.controls["codigoCTB"].value
-    if (solicitudTipo === "Solp" || solicitudTipo === "Orden CM" && paisValidar === "Brasil") {
-       if(codigoValidar === "" || codigoValidar === null || codigoValidar === undefined) {
-         this.mostrarError('El código de bienes es obligatorio para Brasil')
-       }
-    }
-  }
+  // validarCodigosBrasilCTB() {
+  //   let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+  //   let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+  //   let codigoValidar =  this.ctbFormulario.controls["codigoCTB"].value
+  //   if (solicitudTipo === "Solp" || solicitudTipo === "Orden CM" && paisValidar === "Brasil") {
+  //      if(codigoValidar === "" || codigoValidar === null || codigoValidar === undefined) {
+  //        this.mostrarError('El código de bienes es obligatorio para Brasil')
+  //      }
+  //   }
+  // }
 
   AsignarRequeridosDatosContables(): any {
     this.ctbFormulario.controls["cecoCTB"].setValidators(Validators.required);
