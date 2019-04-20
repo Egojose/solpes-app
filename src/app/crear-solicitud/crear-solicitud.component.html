@@ -301,6 +301,7 @@
 <ng-template #templateCondicionesTecnicasBienes>
   <div class="modal-header">
     <h4 class="modal-title pull-left">{{tituloModalCTB}}</h4>
+    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar listado de bienes a solicitar</button>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -443,6 +444,7 @@
 <ng-template #templateCondicionesTecnicasServicios>
   <div class="modal-header">
     <h4 class="modal-title pull-left">{{tituloModalCTS}}</h4>
+    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar listado de servicios a solicitar</button>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -564,6 +566,33 @@
       <button type="button" class="btn btn-primary" (click)="declinarDescartar()" >No</button>
     </div>
   </ng-template>
+
+  <ng-template #templateCargarListaBienes>
+    <div class="modal-body text-center">
+      <h5>Cargue los bienes en un archivo CSV según la planilla estándar</h5>
+      <br>
+      <button class="btn btn-primary">Descargar la plantilla estándar</button>
+      <br>
+      <br>
+      <label for="archivoCsv">Cargue el archivo con los bienes a solicitar</label>
+      <input type="file" name="archivoCsv" id="archivoCsv" class="form-control">
+      <br>
+    </div>
+  </ng-template>
+
+  <ng-template #templateCargarListaServicios>
+    <div class="modal-body text-center">
+      <h5>Cargue los servicios en un archivo CSV según la planilla estándar</h5>
+      <br>
+      <button class="btn btn-primary">Descargar la plantilla estándar</button>
+      <br>
+      <br>
+      <label for="archivoCsv">Cargue el archivo con los servicios a solicitar</label>
+      <input type="file" name="archivoCsv" id="archivoCsv" class="form-control">
+      <br>
+    </div>
+  </ng-template>
+  
 
   <ngx-spinner>
       <p style="font-size: 20px; color: white">PROCESANDO...</p>

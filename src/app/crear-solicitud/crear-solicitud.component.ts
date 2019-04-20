@@ -878,6 +878,20 @@ export class CrearSolicitudComponent implements OnInit {
     }
   }
 
+  abrirModalArchivoCsvBienes(template: TemplateRef<any>) {
+    this.modalRef = this.modalServicio.show(
+      template,
+      Object.assign({}, {class: 'gray modal-lg'})
+    )
+  }
+
+  abrirModalArchivoCsvServicios(template: TemplateRef<any>) {
+    this.modalRef = this.modalServicio.show(
+      template,
+      Object.assign({}, {class: 'gray modal-lg'})
+    )
+  }
+
   ctbOnSubmit() {
     this.ctbSubmitted = true;
     if (this.ctbFormulario.invalid) {
