@@ -163,6 +163,7 @@
         <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
         <div class="btn-agregar-condiciones-bienes">
           <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
+          <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes a solicitar desde archivo</button>
         </div>
         <br/>
         <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
@@ -229,6 +230,7 @@
         <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
         <div class="btn-agregar-condiciones-servicios">
           <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
+          <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios a solicitar desde archivo</button>
         </div>
         <br/>
         <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
@@ -301,7 +303,6 @@
 <ng-template #templateCondicionesTecnicasBienes>
   <div class="modal-header">
     <h4 class="modal-title pull-left">{{tituloModalCTB}}</h4>
-    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar listado de bienes a solicitar</button>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -444,7 +445,6 @@
 <ng-template #templateCondicionesTecnicasServicios>
   <div class="modal-header">
     <h4 class="modal-title pull-left">{{tituloModalCTS}}</h4>
-    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar listado de servicios a solicitar</button>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
