@@ -7,6 +7,7 @@ import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
 import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 import { RecepcionBienes } from "../entrega-bienes/recepcionBienes";
 import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
+import { promised } from "q";
 
 @Injectable()
 export class SPServicio {
@@ -322,7 +323,7 @@ export class SPServicio {
     ObtenerCondicionesTecnicasBienes(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
         return respuesta;
-    }
+    }    
 
     ObtenerRecepcionesBienes(IdResponsable : number){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and Estado eq 'Confirmado' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles", "Author/Title").expand("AttachmentFiles", "Author").get());
@@ -474,7 +475,7 @@ export class SPServicio {
     }
 
     ObtenerContratos(IdSolicitud: number){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq " + IdSolicitud).top(1).get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq " + IdSolicitud).getAll());
         return respuesta;
     }
 
@@ -551,6 +552,34 @@ export class SPServicio {
 
     obtenerMotivoSuspension() {
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaMotivoSuspension).items.get());
+        return respuesta;
+    }
+
+    guardarIdContratoBienes(idBienes, idContrato){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
+            {
+                IdContrato: idContrato
+            }
+        );
+        return respuesta;
+    }
+
+    guardarIdContratoServicios(idBienes, idContrato){
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
+            {
+                IdContrato: idContrato
+            }
+        );            
+        return respuesta;                
+    }
+
+    ObtenerCondicionesTecnicasBienesxContrato(IdContrato){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("IdContrato eq " + IdContrato).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
+        return respuesta;
+    }
+
+    ObtenerCondicionesTecnicasServiciosxContrato(IdContrato){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("IdContrato eq " + IdContrato).select("*","AttachmentFiles").expand("AttachmentFiles").get());
         return respuesta;
     }
 

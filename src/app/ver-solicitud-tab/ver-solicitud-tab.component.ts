@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
@@ -10,8 +10,11 @@ import { Contratos } from '../dominio/contrato';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Solicitud } from '../dominio/solicitud';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
+import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
 
 @Component({
   selector: 'app-ver-solicitud-tab',
@@ -21,6 +24,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 
 export class VerSolicitudTabComponent implements OnInit {
   @ViewChild('staticTabs') staticTabs: any;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   panelOpenState = false;
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
@@ -29,6 +33,8 @@ export class VerSolicitudTabComponent implements OnInit {
   fechaRegistroSolpSap: Date; 
   direccion:string
   dataSource;
+  DSBienesxContrato;
+  DSServiciosxContrato;
   contratoMarco: string;
   moneda: string;
   RutaArchivo: string;
@@ -71,19 +77,17 @@ export class VerSolicitudTabComponent implements OnInit {
   submitted = false;
   solicitudRecuperada: Solicitud;
   fueSondeo: boolean;
-  paginator: any;
   displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
-  displayedColumns: string[] = [
-    "codigo",
-    "descripcion",
-    "modelo",
-    "fabricante",
-    "cantidad",
-    "valorEstimado",
-    "moneda"
-  ];
+  displayedColumnsService: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda"];
+  displayedColumnsBienes: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda"];
+  modalRef: BsModalRef;
+  numeroContraro: any;
+  ObjCondicionesTS: resultadoCondicionesTS[] = [];
+  ObjCondicionesTB: resultadoCondicionesTB[] = [];
+  CTS: boolean;
+  CTB: boolean;
 
-  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) {
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService,) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     if (this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
@@ -198,6 +202,38 @@ export class VerSolicitudTabComponent implements OnInit {
         this.spinner.hide();
       }
     );
+  }
+
+  abrirBienesServicios(template: TemplateRef<any>, idContrato){
+    this.spinner.show();
+    this.numeroContraro = idContrato;
+    this.DSServiciosxContrato = "";
+    this.DSBienesxContrato = "";
+    this.CTB = false; 
+    this.CTS = false;
+    this.servicio.ObtenerCondicionesTecnicasBienesxContrato(idContrato.toString()).subscribe(
+      RespuestaCondiciones => {
+        if (RespuestaCondiciones.length > 0) {            
+          this.CTB = true;        
+          let ObjCondicionesTB = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
+          this.DSBienesxContrato = new MatTableDataSource(ObjCondicionesTB);
+          this.DSBienesxContrato.paginator = this.paginator;
+        }
+        this.servicio.ObtenerCondicionesTecnicasServiciosxContrato(idContrato.toString()).subscribe(
+          RespuestaCondicionesServicios => {
+            if (RespuestaCondicionesServicios.length > 0) {  
+              this.CTS = true;
+              let ObjCondicionesTS= resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
+              this.DSServiciosxContrato = new MatTableDataSource(ObjCondicionesTS);
+              this.DSServiciosxContrato.paginator = this.paginator;
+            }
+            this.spinner.hide();
+            this.modalRef = this.modalService.show(template, { class: 'gray modal-lg' });            
+          }
+        );        
+      }
+    );
+      
   }
 
   ValidacionTabsPorEstado(): any {

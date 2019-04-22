@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule, MatPaginatorModule, MatExpansionModule, MatDialogModule, MatSelectModule } from '@angular/material';
+import { MatRadioModule, MatFormFieldModule, MatAutocompleteModule, MatOptionModule, MatInputModule, MatTableModule, MatListModule, MatToolbarModule, MatPaginatorModule, MatExpansionModule, MatDialogModule, MatSelectModule, MatCheckboxModule } from '@angular/material';
 import { Select2Module } from "ng-select2-component";
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ng6-toastr-notifications';
@@ -82,6 +82,7 @@ import { ExcelService } from './servicios/excel.service';
     MatInputModule,
     MatDialogModule,
     MatExpansionModule,
+    MatCheckboxModule,
     AlertModule.forRoot(),
     NgxCurrencyModule,
     AccordionModule.forRoot(),

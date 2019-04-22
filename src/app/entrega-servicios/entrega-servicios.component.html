@@ -1,11 +1,6 @@
 <h1>RECEPCIONAR SERVICIOS</h1>
 <hr>
 <div class="row">
-    <div class="col-md-6">
-        <div  >
-            <h5><strong>Número de pedido: </strong>{{NumSolp}}</h5>
-        </div>
-    </div>
     <div class="col-md-4 offset-md-2">
         <button class="derecha-boton btn btn-default" (click)="VerSolicitud()">Ver solicitud</button>
     </div>
@@ -18,6 +13,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th scope="col">Número de contrato</th>
                             <th scope="col">Código</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Cantidad</th>
@@ -28,6 +24,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of ObjCondicionesTecnicas">
+                            <td>{{item.idContrato}}</td>
                             <td>{{item.codigo}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.cantidad}}</td>

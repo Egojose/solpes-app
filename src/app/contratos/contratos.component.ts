@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { responsableProceso } from '../dominio/responsableProceso';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatCheckboxModule} from '@angular/material';
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
 import { CondicionTecnicaServicios } from '../verificar-material/condicionTecnicaServicios';
 import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
@@ -43,16 +43,16 @@ export class ContratosComponent implements OnInit {
   paisId: any;
   ObResProceso: responsableProceso[];
   NombreSolicitante: string;
-  displayedColumns: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
-  displayedColumnsTS: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda", "adjunto"];
-  ObjCondicionesTecnicas: CondicionesTecnicasBienes[] = [];
+  displayedColumns: string[] = ["seleccionar","codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
+  displayedColumnsTS: string[] = ["seleccionar","codigo", "descripcion", "cantidad", "valorEstimado", "moneda", "adjunto"];
+  ObjCondicionesTecnicas: resultadoCondicionesTB[] = [];
   dataSource;
   dataSourceTS;
   panelOpenState = false;
   panelOpenState1 = false;
   panelOpenState2 = false;
   ObjResponsableProceso: any[];
-  ObjCondicionesTecnicasServicios: CondicionTecnicaServicios[] = [];
+  ObjCondicionesTecnicasServicios: resultadoCondicionesTS[] = [];
   CTS: boolean;
   CTB: boolean;
   fechaDeseada: any;
@@ -79,6 +79,10 @@ export class ContratosComponent implements OnInit {
   existeCondicionesTecnicasBienes: boolean;
   existeCondicionesTecnicasServicios: boolean;
   adjunto: any; 
+  BienesSeleccionados: any[]=[];
+  ServiciosSeleccionados: any[]=[];
+  CantidadBienesServicios: number = 0;
+  CantidadBienesServiciosConContrato: number = 0;
  
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
@@ -216,6 +220,9 @@ export class ContratosComponent implements OnInit {
                 this.existeCondicionesTecnicasBienes = true;
                 this.CTB = true;
               }
+              this.CantidadBienesServicios = this.CantidadBienesServicios + this.ObjCondicionesTecnicas.length;             
+              let cantidad = this.ObjCondicionesTecnicas.filter(x=> x.idContrato ==="" || x.idContrato === null).length;
+              this.CantidadBienesServiciosConContrato = this.CantidadBienesServiciosConContrato + cantidad;              
               this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
               this.dataSource.paginator = this.paginator;
               this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(RespuestaCondicionesServicios => {
@@ -224,6 +231,9 @@ export class ContratosComponent implements OnInit {
                   this.existeCondicionesTecnicasServicios = true;
                   this.CTS = true;
                 }
+                this.CantidadBienesServicios = this.CantidadBienesServicios + this.ObjCondicionesTecnicasServicios.length; 
+                let cantidad = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato ==="" || x.idContrato === null).length;
+                this.CantidadBienesServiciosConContrato = this.CantidadBienesServiciosConContrato + cantidad;
                 this.dataSourceTS = new MatTableDataSource(this.ObjCondicionesTecnicasServicios);
                 this.dataSourceTS.paginator = this.paginator;
                 this.spinner.hide();
@@ -249,7 +259,17 @@ export class ContratosComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     if (this.ContratosForm.invalid) {
+      let cantidad = this.BienesSeleccionados.length + this.ServiciosSeleccionados.length;
+      if (cantidad === 0) {
+        this.mostrarAdvertencia("Por favor seleccione uno o varios bienes y/o servicios");
+        return false;
+      }
       return;
+    }
+    let cantidad = this.BienesSeleccionados.length + this.ServiciosSeleccionados.length;
+    if (cantidad === 0) {
+      this.mostrarAdvertencia("Por favor seleccione uno o varios bienes y/o servicios");
+      return false;
     }
     this.spinner.show();
     let fechaContrato = new Date();
@@ -338,46 +358,90 @@ export class ContratosComponent implements OnInit {
         this.servicio.GuardarContrato(ObjContrato).then(
           (item: ItemAddResult) => {
             this.Guardado = true;
-            this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
-              (resultado) => {
-                this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
-                  () => {
-                    let idContrato = item.data.Id;
-                    let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
-                    this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
-                      let notificacion = {
-                        IdSolicitud: this.IdSolicitud.toString(),
-                        ResponsableId: this.autor,
-                        Estado: 'Por recepcionar'
+            let idContrato = item.data.Id;
+            if (this.BienesSeleccionados.length > 0) {
+              this.ActualizarBienes(idContrato.toString());
+            }  
+            if (this.ServiciosSeleccionados.length > 0) {
+              this.ActualizarServicios(idContrato.toString());
+            }
+            let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
+            let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
+            if (cantidadBienes === 0 && cantidadServicios === 0) {
+                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+                  (resultado) => {
+                    this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
+                      () => {
+                        let idContrato = item.data.Id;
+                        let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
+                        this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
+                          let notificacion = {
+                            IdSolicitud: this.IdSolicitud.toString(),
+                            ResponsableId: this.autor,
+                            Estado: 'Por recepcionar'
+                          }
+                          this.servicio.agregarNotificacion(notificacion).then(
+                            (item: ItemAddResult) => {
+                              this.MostrarExitoso(`Se adjuntó el archivo ${this.adjunto.name}`)
+                              setTimeout(() => {
+                                this.MostrarExitoso("El contrato se ha guardado correctamente");
+                              this.spinner.hide();
+                              }, 2000);
+                              setTimeout(() => {
+                                this.router.navigate(["/mis-pendientes"]);
+                              }, 2000);
+                            }, err => {
+                              this.mostrarError('Error agregando la notificación');
+                              this.spinner.hide();
+                            }
+                          )
+                        })
+                      },
+                      (error) => {
+                        console.error(error);
                       }
-                      this.servicio.agregarNotificacion(notificacion).then(
-                        (item: ItemAddResult) => {
-                          this.MostrarExitoso(`Se adjuntó el archivo ${this.adjunto.name}`)
-                          setTimeout(() => {
-                            this.MostrarExitoso("El contrato se ha guardado correctamente");
-                          this.spinner.hide();
-                          }, 2000);
-                          setTimeout(() => {
-                            this.router.navigate(["/mis-pendientes"]);
-                          }, 2000);
-                        }, err => {
-                          this.mostrarError('Error agregando la notificación');
-                          this.spinner.hide();
-                        }
-                      )
-                    })
-                  },
-                  (error) => {
-                    console.error(error);
+                    )
                   }
-                )
-              }
-            ).catch(
-              (error) => {
-                console.log(error);
-                this.spinner.hide();
-              }
-            );
+                ).catch(
+                  (error) => {
+                    console.log(error);
+                    this.spinner.hide();
+                  }
+                );
+            }else{
+              this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
+                () => {
+                  let idContrato = item.data.Id;
+                  let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
+                  this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
+                    let notificacion = {
+                      IdSolicitud: this.IdSolicitud.toString(),
+                      ResponsableId: this.autor,
+                      Estado: 'Por recepcionar'
+                    }
+                    this.servicio.agregarNotificacion(notificacion).then(
+                      (item: ItemAddResult) => {
+                        this.MostrarExitoso(`Se adjuntó el archivo ${this.adjunto.name}`)
+                        setTimeout(() => {
+                          this.MostrarExitoso("El contrato se ha guardado correctamente");
+                        this.spinner.hide();
+                        }, 2000);
+                        setTimeout(() => {
+                          this.router.navigate(["/mis-pendientes"]);
+                        }, 2000);
+                      }, err => {
+                        this.mostrarError('Error agregando la notificación');
+                        this.spinner.hide();
+                      }
+                    )
+                  })
+                },
+                (error) => {
+                  console.error(error);
+                }
+              )
+            }         
+            
           }
         ).catch(
           (error) => {
@@ -394,8 +458,51 @@ export class ContratosComponent implements OnInit {
       this.servicio.GuardarContrato(ObjContrato).then(
         (item: ItemAddResult) => {
           this.Guardado = true;
-          this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
-            (resultado) => {
+          let idContrato = item.data.Id;
+            if (this.BienesSeleccionados.length > 0) {
+              this.ActualizarBienes(idContrato.toString());
+            }  
+            if (this.ServiciosSeleccionados.length > 0) {
+              this.ActualizarServicios(idContrato.toString());
+            }
+            let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
+            let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
+            if (cantidadBienes === 0 && cantidadServicios === 0) {
+                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+                    (resultado) => {
+                      this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
+                        () => {
+                          let notificacion = {
+                            IdSolicitud: this.IdSolicitud.toString(),
+                            ResponsableId: this.autor,
+                            Estado: 'Por recepcionar'
+                          }
+                          this.servicio.agregarNotificacion(notificacion).then(
+                            (item: ItemAddResult) => {
+                              this.MostrarExitoso("El contrato se ha guardado correctamente sin archivos adjuntos");
+                              this.spinner.hide();
+                              setTimeout(() => {
+                                this.router.navigate(["/mis-pendientes"]);
+                              }, 1000);
+                            }, err => {
+                              this.mostrarError('Error agregando la notificación');
+                              this.spinner.hide();
+                            }
+                          )
+                        },
+                        (error) => {
+                          console.error(error);
+                        }
+                      )
+                    }
+                  ).catch(
+                    (error) => {
+                      console.log(error);
+                      this.spinner.hide();
+                    }
+                  );
+            }
+            else{
               this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
                 () => {
                   let notificacion = {
@@ -421,12 +528,7 @@ export class ContratosComponent implements OnInit {
                 }
               )
             }
-          ).catch(
-            (error) => {
-              console.log(error);
-              this.spinner.hide();
-            }
-          );
+          
         }
       ).catch(
         (error) => {
@@ -434,6 +536,36 @@ export class ContratosComponent implements OnInit {
           this.spinner.hide();
         });
     }
+  }
+  ActualizarBienes(idContrato){
+    this.BienesSeleccionados.forEach(
+      (elemento,index)=>{
+        let indexBienes=this.ObjCondicionesTecnicas.findIndex(x=> x.IdBienes === parseInt(elemento));
+        this.ObjCondicionesTecnicas[indexBienes].idContrato= idContrato;
+        this.servicio.guardarIdContratoBienes(elemento,idContrato).then(
+          (resultado)=>{ }
+        ).catch(
+          (error)=>{
+            this.mostrarError("ha ocurrido un error al guardar");
+          }
+        );        
+      }
+    )
+  }
+  ActualizarServicios(idContrato){
+     this.ServiciosSeleccionados.forEach(
+       (elemento,index)=>{
+         let indexBienes=this.ObjCondicionesTecnicasServicios.findIndex(x=> x.IdBienes === parseInt(elemento));
+         this.ObjCondicionesTecnicasServicios[indexBienes].idContrato= idContrato;
+         this.servicio.guardarIdContratoServicios(elemento,idContrato).then(
+           (result)=>{ }
+         ).catch(
+             (error)=>{
+               this.mostrarError("ha ocurrido un error al guardar");
+             }
+           );               
+       }
+     )
   }
 
   ValidarIva() {
@@ -487,6 +619,30 @@ export class ContratosComponent implements OnInit {
 
   Salir() {
     this.router.navigate(['/mis-solicitudes']);
+  }
+
+  seleccionarBienes(evento){
+    if (evento.checked === true) {
+        let idElemento = evento.source.value;
+        this.BienesSeleccionados.push(idElemento);
+    }
+    else{
+      let idElemento = evento.source.value;
+      let index =this.BienesSeleccionados.findIndex(x=> x === idElemento);
+      this.BienesSeleccionados.splice(index, 1);
+    }    
+  }
+
+  seleccionarServicios(evento){    
+    if (evento.checked === true) {
+        let idElemento = evento.source.value;
+        this.ServiciosSeleccionados.push(idElemento);
+    }
+    else{
+      let idElemento = evento.source.value;
+      let index =this.ServiciosSeleccionados.findIndex(x=> x === idElemento);
+      this.ServiciosSeleccionados.splice(index, 1);
+    }    
   }
 
 }

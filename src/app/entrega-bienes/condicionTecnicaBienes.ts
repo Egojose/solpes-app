@@ -10,7 +10,8 @@ export class CondicionesTecnicasBienes {
         public cantidad:number, 
         public cantidadRecibida:number,
         public totalCantidad:number, 
-        public UltimaEntregaCTB:boolean){
+        public UltimaEntregaCTB:boolean,
+        public idContrato?: string){
 
     }
 
@@ -24,7 +25,8 @@ export class CondicionesTecnicasBienes {
             element.CantidadReservaVerificar, 
             element.CantidadRecibida, 
             element.CantidadReservaVerificar-element.CantidadRecibida,
-            element.UltimaEntrega);
+            element.UltimaEntrega,
+            element.IdContrato);
     }
 
     public static fromJsonList(elements: any) {
