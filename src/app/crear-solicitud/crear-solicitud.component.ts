@@ -203,18 +203,27 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   procesarArchivo(file) {
-    console.log(3)
+   if(file === "") {
+     this.mostrarError('No se pudo cargar el archivo. Por favor intente nuevamente.');
+     return false;
+   }
     let todasLasLineas = file.split(/\r\n|\n/);
     let lineas = [];
     for (let i = 0; i < todasLasLineas.length; i++) {
+      console.log(todasLasLineas[0])
       let row = todasLasLineas[i].split(';');
       let col = [];
       for (let j = 0; j < row.length; j++) {
         col.push(row[j]);
       }
       lineas.push(col);
+      if(lineas[0][0] !== 'Bienes') {
+        this.mostrarAdvertencia('Este archivo no es para cargar bienes. Por favor cargue el archivo correcto')
+        return false;
+      }
     }
     console.log(lineas)
+
   }
 
 
