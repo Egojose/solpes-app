@@ -26,6 +26,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import * as $ from 'jquery';
 import { Grupo } from '../dominio/grupo';
 import { DecimalPipe } from '@angular/common';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -120,6 +121,7 @@ export class CrearSolicitudComponent implements OnInit {
   valorcompra: boolean;
   mostrarDatosContables: boolean;
   FechaDeCreacion: any;
+  fileString: any;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     setTheme('bs4');
@@ -184,6 +186,38 @@ export class CrearSolicitudComponent implements OnInit {
     this.obtenerTiposSolicitud();
     
   }
+
+  changeListener($event): void {
+    this.leerArchivo($event.target);
+}
+
+  leerArchivo(inputValue: any): void {
+    let file: File = inputValue.files[0];
+    let myReader: FileReader = new FileReader();
+    // let fileType = inputValue.parentElement.id;
+    myReader.onloadend = (e) => {
+      return console.log(myReader.result);
+    };
+    myReader.readAsText(file);
+    this.procesarArchivo(myReader.result);
+  }
+
+  procesarArchivo(file) {
+    console.log(3)
+    let todasLasLineas = file.split(/\r\n|\n/);
+    let lineas = [];
+    for (let i = 0; i < todasLasLineas.length; i++) {
+      let row = todasLasLineas[i].split(';');
+      let col = [];
+      for (let j = 0; j < row.length; j++) {
+        col.push(row[j]);
+      }
+      lineas.push(col);
+    }
+    console.log(lineas)
+  }
+
+
 
   // validarCodigosBrasilCTB() {
   //   let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
@@ -863,7 +897,7 @@ export class CrearSolicitudComponent implements OnInit {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
-      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
       return false;
     }
     else {
@@ -892,6 +926,12 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
+  // handleFiles(files) {
+  //   if(window.FileReader) {
+  //     getAsText(files[0])
+  //   }
+  // }
+
   ctbOnSubmit() {
     this.ctbSubmitted = true;
     if (this.ctbFormulario.invalid) {
@@ -914,7 +954,7 @@ export class CrearSolicitudComponent implements OnInit {
     let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
 
-    if(solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM' && paisValidar === 'Brasil' && codigo === "" || codigo === null || codigo === undefined) {
+    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
       this.mostrarError('El código de bienes es obligatorio para Brasil')
       this.spinner.hide();
       return false;
