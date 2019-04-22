@@ -556,7 +556,7 @@ export class SPServicio {
     }
 
     guardarIdContratoBienes(idBienes, idContrato){
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
             {
                 IdContrato: idContrato
             }
@@ -565,7 +565,7 @@ export class SPServicio {
     }
 
     guardarIdContratoServicios(idBienes, idContrato){
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
             {
                 IdContrato: idContrato
             }
