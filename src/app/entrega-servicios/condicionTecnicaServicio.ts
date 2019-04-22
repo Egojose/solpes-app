@@ -8,7 +8,8 @@ export class CondicionesTecnicasServicios{
         public cantidadRecibida:number, 
         public totalCantidad:number, 
         public ultimaEntregaCTS:boolean, 
-        public comentarios: string){
+        public comentarios: string,
+        public idContrato?: string){
 
     }
 
@@ -21,7 +22,8 @@ export class CondicionesTecnicasServicios{
             element.CantidadRecibida, 
             element.CantidadSondeo-element.CantidadRecibida,
             element.UltimaEntrega, 
-            element.ComentarioSondeo);
+            element.ComentarioSondeo,
+            element.IdContrato);
     }
 
     public static fromJsonList(elements: any) {
