@@ -213,14 +213,16 @@ export class CrearSolicitudComponent implements OnInit {
       console.log(todasLasLineas[0])
       let row = todasLasLineas[i].split(';');
       let col = [];
-      for (let j = 0; j < row.length; j++) {
-        col.push(row[j]);
-      }
-      lineas.push(col);
-      if (lineas[0][0] !== 'Bienes') {
-        this.mostrarAdvertencia('Este archivo no es para cargar bienes. Por favor cargue el archivo correcto')
-        return false;
-      }
+      if(row.length === 11){
+        for (let j = 0; j < row.length; j++) {
+          col.push(row[j]);
+        }
+        lineas.push(col);
+        if (lineas[0][0] !== 'Bienes') {
+          this.mostrarAdvertencia('Este archivo no es para cargar bienes. Por favor cargue el archivo correcto')
+          return false;
+        }
+      }      
     }
     console.log(lineas)
 
