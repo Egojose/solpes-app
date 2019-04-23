@@ -1279,7 +1279,7 @@ procesarArchivoServicios(file) {
     let adjunto = null;
 
     if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
-      this.mostrarError('El código de bienes es obligatorio para Brasil')
+      this.mostrarError('El código de servicios es obligatorio para Brasil')
       this.spinner.hide();
       return false;
     }
