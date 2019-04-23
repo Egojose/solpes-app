@@ -1265,7 +1265,8 @@ procesarArchivoServicios(file) {
     }
 
     this.spinner.show();
-    
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
     let codigo = this.ctsFormulario.controls["codigoCTS"].value;
     let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
     let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
@@ -1276,6 +1277,13 @@ procesarArchivoServicios(file) {
     let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
     let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
     let adjunto = null;
+
+    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
+      this.mostrarError('El código de bienes es obligatorio para Brasil')
+      this.spinner.hide();
+      return false;
+    }
+
     if(this.condicionTS != null)
     {
       if(this.condicionTS.archivoAdjunto != null)
