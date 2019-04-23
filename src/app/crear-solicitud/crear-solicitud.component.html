@@ -163,7 +163,7 @@
         <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
         <div class="btn-agregar-condiciones-bienes">
           <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
-          <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes a solicitar desde archivo</button>
+          <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes desde archivo</button>
         </div>
         <br/>
         <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
@@ -230,7 +230,7 @@
         <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
         <div class="btn-agregar-condiciones-servicios">
           <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
-          <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios a solicitar desde archivo</button>
+          <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button>
         </div>
         <br/>
         <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
@@ -588,7 +588,7 @@
       <br>
       <br>
       <label for="archivoCsv">Cargue el archivo con los servicios a solicitar</label>
-      <input type="file" name="archivoCsv" id="archivoCsv" class="form-control">
+      <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListenerServicios($event)">
       <br>
     </div>
   </ng-template>
