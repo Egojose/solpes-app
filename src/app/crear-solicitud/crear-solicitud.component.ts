@@ -209,8 +209,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
     let todasLasLineas = file.split(/\r\n|\n/);
     let lineas = [];
-    for (let i = 0; i < todasLasLineas.length; i++) {
-      console.log(todasLasLineas[0])
+    for (let i = 0; i < todasLasLineas.length; i++) {      console.log(todasLasLineas[0])
       let row = todasLasLineas[i].split(';');
       let col = [];
       for (let j = 0; j < row.length; j++) {
@@ -225,6 +224,44 @@ export class CrearSolicitudComponent implements OnInit {
     console.log(lineas)
 
   }
+
+  changeListenerServicios($event): void {
+    this.leerArchivo($event.target);
+}
+
+leerArchivoServicios(inputValue: any): void {
+  let file: File = inputValue.files[0];
+  let myReader: FileReader = new FileReader();
+  // let fileType = inputValue.parentElement.id;
+  myReader.onloadend = (e) => {
+    return console.log(myReader.result);
+  };
+  myReader.readAsText(file);
+  this.procesarArchivoServicios(myReader.result);
+}
+
+procesarArchivoServicios(file) {
+  if (file === "") {
+    this.mostrarError('No se pudo cargar el archivo. Por favor intente nuevamente.');
+    return false;
+  }
+  let todasLasLineas = file.split(/\r\n|\n/);
+  let lineas = [];
+  for (let i = 0; i < todasLasLineas.length; i++) {      console.log(todasLasLineas[0])
+    let row = todasLasLineas[i].split(';');
+    let col = [];
+    for (let j = 0; j < row.length; j++) {
+      col.push(row[j]);
+    }
+    lineas.push(col);
+    if (lineas[0][0] !== 'Servicios') {
+      this.mostrarAdvertencia('Este archivo no es para cargar servicios. Por favor cargue el archivo correcto')
+      return false;
+    }
+  }
+  console.log(lineas)
+
+}
 
 
 
@@ -922,24 +959,34 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   abrirModalArchivoCsvBienes(template: TemplateRef<any>) {
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
+      return false;
+    }
+    else {
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, {class: 'gray modal-lg'})
     )
+    }
   }
 
   abrirModalArchivoCsvServicios(template: TemplateRef<any>) {
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
+      return false;
+    }
+    else{
     this.modalRef = this.modalServicio.show(
       template,
       Object.assign({}, {class: 'gray modal-lg'})
     )
+    }
   }
-
-  // handleFiles(files) {
-  //   if(window.FileReader) {
-  //     getAsText(files[0])
-  //   }
-  // }
 
   ctbOnSubmit() {
     this.ctbSubmitted = true;
