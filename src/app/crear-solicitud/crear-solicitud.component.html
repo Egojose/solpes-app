@@ -556,7 +556,7 @@
         <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListener($event)">
         <br>
         <div *ngIf="cantidadErrorFile > 0">
-            <h3>Incidentes encontrados en el archivo</h3>
+            <h3>Por favor diligencie los siguientes campos en el archivo</h3>
             <ul class="text-left">
                 <li *ngFor="let item of ArrayErrorFile">
                     {{item.error}}
@@ -578,7 +578,7 @@
         <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListenerServicios($event)">
         <br>
         <div *ngIf="cantidadErrorFileCTS > 0">
-            <h3>Incidentes encontrados en el archivo</h3>
+            <h3>Por favor diligencie los siguientes campos en el archivo</h3>
             <ul class="text-left">
                 <li *ngFor="let item of ArrayErrorFileCTS">
                     {{item.error}}
