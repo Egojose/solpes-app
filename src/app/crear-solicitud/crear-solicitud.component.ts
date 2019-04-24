@@ -197,8 +197,8 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   changeListener($event): void {
-    this.leerArchivo($event.target); 
-}
+    this.leerArchivo($event.target);
+  }
 
   leerArchivo(inputValue: any): void {
     this.spinner.show();
@@ -348,7 +348,7 @@ export class CrearSolicitudComponent implements OnInit {
 
   changeListenerServicios($event): void {
     this.leerArchivoServicios($event.target);
-}
+  }
 
 leerArchivoServicios(inputValue: any): void {
     this.spinner.show();
