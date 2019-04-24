@@ -28,7 +28,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkhCeGw5bUFlNmd4YXZDa2NvT1UyVEhzRE5hMCIsImtpZCI6IkhCeGw5bUFlNmd4YXZDa2NvT1UyVEhzRE5hMCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTU2MDMyMDA4LCJuYmYiOjE1NTYwMzIwMDgsImV4cCI6MTU1NjA2MTEwOCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.h972tgNguv0s6Mm7gYnZW-LbhoHeb1PyMD2Tfo2u5MtH-XvyrQ3AcMemp9ZZ3uvs6fWUxVzQyKu4stp3D6JQSPLdJHOVGX-C7kSfsseM7mqf7YFRIbf51z-Urg9Qtu1RuEUKptljnadAJEGO8Ww89IpPJyTPe4Q9O7mqptFBWf8JvSKD8YFTcWqYzwyKATy9M0K2l0m1WP3-uVKW1YvDxd6Z2SNSsxNQ8jm9ppCr9Jw-nTImKVcoHLD7b-xXQS00qW5s7G76IPzoI04GBcuuj2Lkb27KBViM7ykXQlgQKmOfLuJV6Gaw3SpIjeOZLxGcKfc5Q6GpEuk9fplIXy0MwA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkhCeGw5bUFlNmd4YXZDa2NvT1UyVEhzRE5hMCIsImtpZCI6IkhCeGw5bUFlNmd4YXZDa2NvT1UyVEhzRE5hMCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTU2MTI2MTM3LCJuYmYiOjE1NTYxMjYxMzcsImV4cCI6MTU1NjE1NTIzNywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.dX4EBoMKnedqki98_0nJOKrgZRmjm4w9D8MSQ2D6QWz4j40CbPLknIj7hLV-r32nHK683TuWPYzGpUkOBy31iamh5cSw-j8twXWWiOp4UJXGI7rCnPKiZlwlIMgDVa1gGwl01b62FiFG0S9EE0RbH6pk1sSAmN50sQNMPVD8qGqrn8rWnPVj-QqcuW8A1kMo3VrQCysdlDbmtjm7BOpm7b1nESbjuztF9UX5m1wrWC_MgzUQfboqFBKsqrSU-RZXsCZCkRhE0PqOvzgnDId5iNee-tUjc8_v2-aOgLJ0WgVsooWF9wK5xcWPTHNn6uUqpg4hryDKvBIcG69pmaybHg'
             }
         }, environment.urlWeb);
 
@@ -151,6 +151,10 @@ export class SPServicio {
         });
     }
 
+    agregarCondicionesTecnicasBienesExcel(condicionTecnicaBienes) {
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.add(condicionTecnicaBienes);
+    }
+
     agregarCondicionesTecnicasBienes(condicionTecnicaBienes: CondicionTecnicaBienes) {
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.add({
             Title: condicionTecnicaBienes.titulo,
@@ -170,10 +174,9 @@ export class SPServicio {
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
             numeroCuenta: condicionTecnicaBienes.numeroCuenta
-
         });
     }
-
+    
     actualizarCondicionesTecnicasBienes(idCondicionTecnicaBienes: number, condicionTecnicaBienes: CondicionTecnicaBienes){
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).update({
             Title: condicionTecnicaBienes.titulo,
@@ -259,6 +262,10 @@ export class SPServicio {
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
             numeroCuenta: condicionTecnicaServicios.numeroCuenta
         });
+    }
+
+    agregarCondicionesTecnicasServiciosExcel(condicionTecnicaServicios) {
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.add(condicionTecnicaServicios);
     }
 
     actualizarCondicionesTecnicasServicios(idCondicionTecnicaServicios: number, condicionTecnicaServicios: CondicionTecnicaServicios){
