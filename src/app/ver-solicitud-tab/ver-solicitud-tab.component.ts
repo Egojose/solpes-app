@@ -80,6 +80,15 @@ export class VerSolicitudTabComponent implements OnInit {
   displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
   displayedColumnsService: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda"];
   displayedColumnsBienes: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda"];
+  displayedColumns: string[] = [
+    "codigo",
+    "descripcion",
+    "modelo",
+    "fabricante",
+    "cantidad",
+    "valorEstimado",
+    "moneda"
+  ];
   modalRef: BsModalRef;
   numeroContraro: any;
   ObjCondicionesTS: resultadoCondicionesTS[] = [];
