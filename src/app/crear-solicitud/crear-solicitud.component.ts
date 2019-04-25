@@ -283,6 +283,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
   }
   ValidarVaciosCTB(row, i){
+    let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let codigo = row[0];
     let descripcion = row[1];
     let modelo = row[2];
@@ -294,56 +295,127 @@ export class CrearSolicitudComponent implements OnInit {
     let numeroCostoInversion = row[8];
     let numeroCuenta = row[9];
     let comentarios = row[10];
-    if (descripcion === "" || descripcion === null) {
-      this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+
+    if(valorcompraOrdenEstadistica === "NO") {
+      if (descripcion === "" || descripcion === null) {
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+      }
+      if(modelo === "" || modelo === null){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Modelo en la columna C fila "+ (i+1)})
+      }
+      if(fabricante === "" || fabricante === null){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo fabricante en la columna D fila "+ (i+1)})
+      }
+      if(cantidad === "" || cantidad === null){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
+      }
+  
+      if(costoInversion === "" || costoInversion === null || costoInversion === undefined){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
+      }
+      if(numeroCostoInversion === "" || numeroCostoInversion === null) {
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error: "El campo número de centro de costos/ Orden de inversión en la columna I fila"+ (i+1)})
+      }
+  
+      if(numeroCuenta === "" || numeroCuenta === null){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Número de cuenta en la columna J fila "+ (i+1)})
+      }
+    
+      if(this.cantidadErrorFile === 0){
+        valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+        let Obj ={
+          Title: "Condición Técnicas Bienes " + new Date().toDateString(),
+          SolicitudId: this.idSolicitudGuardada,
+          Codigo: codigo.toString(),
+          CodigoSondeo: codigo.toString(),
+          Descripcion: descripcion.toString(),
+          Modelo: modelo.toString(),
+          Fabricante: fabricante.toString(),
+          Cantidad: cantidad,
+          CantidadSondeo: cantidad,
+          ValorEstimado: valorEstimado.toString(),
+          PrecioSondeo: valorEstimado.toString(),
+          Comentarios: comentarios.toString(),
+          TipoMoneda: tipoMoneda.toString(),
+          MonedaSondeo: tipoMoneda.toString(),
+          costoInversion: costoInversion.toString(),
+          numeroCostoInversion: numeroCostoInversion.toString(),
+          numeroCuenta: numeroCuenta.toString()
+      }
+          return Obj;         
+      } 
+      else{
+        return "";
+      }   
     }
-    if(modelo === "" || modelo === null){
-      this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Modelo en la columna C fila "+ (i+1)})
+    else {
+      if (descripcion === "" || descripcion === null) {
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+      }
+      if(modelo === "" || modelo === null){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Modelo en la columna C fila "+ (i+1)})
+      }
+      if(fabricante === "" || fabricante === null){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo fabricante en la columna D fila "+ (i+1)})
+      }
+      if(cantidad === "" || cantidad === null){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
+      }
+  
+      // if(costoInversion === "" || costoInversion === null){
+      //   this.cantidadErrorFile++;
+      //   this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
+      // }
+      // if(numeroCostoInversion === "" || numeroCostoInversion === null) {
+      //   this.cantidadErrorFile++;
+      //   this.ArrayErrorFile.push({error: "El campo Centro de costos/ Orden de inversión en la columna I fila"+ (i+1)})
+      // }
+  
+      // if(numeroCuenta === "" || numeroCuenta === null){
+      //   this.cantidadErrorFile++;
+      //   this.ArrayErrorFile.push({error:"El campo Número de cuenta en la columna J fila "+ (i+1)})
+      // }
+    
+      if(this.cantidadErrorFile === 0){
+        valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+        let Obj ={
+          Title: "Condición Técnicas Bienes " + new Date().toDateString(),
+          SolicitudId: this.idSolicitudGuardada,
+          Codigo: codigo.toString(),
+          CodigoSondeo: codigo.toString(),
+          Descripcion: descripcion.toString(),
+          Modelo: modelo.toString(),
+          Fabricante: fabricante.toString(),
+          Cantidad: cantidad,
+          CantidadSondeo: cantidad,
+          ValorEstimado: valorEstimado.toString(),
+          PrecioSondeo: valorEstimado.toString(),
+          Comentarios: comentarios.toString(),
+          TipoMoneda: tipoMoneda.toString(),
+          MonedaSondeo: tipoMoneda.toString(),
+          costoInversion: "",
+          numeroCostoInversion: "",
+          numeroCuenta: ""
+      }
+          return Obj;         
+      } 
+      else{
+        return "";
+      }   
     }
-    if(fabricante === "" || fabricante === null){
-      this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo fabricante en la columna D fila "+ (i+1)})
-    }
-    if(cantidad === "" || cantidad === null){
-      this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
-    }
-    if(costoInversion === "" || costoInversion === null){
-      this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
-    }
-    if(numeroCuenta === "" || numeroCuenta === null){
-      this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Número de cuenta en la columna J fila "+ (i+1)})
-    }
-    if(this.cantidadErrorFile === 0){
-      valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
-      let Obj ={
-        Title: "Condición Técnicas Bienes " + new Date().toDateString(),
-        SolicitudId: this.idSolicitudGuardada,
-        Codigo: codigo.toString(),
-        CodigoSondeo: codigo.toString(),
-        Descripcion: descripcion.toString(),
-        Modelo: modelo.toString(),
-        Fabricante: fabricante.toString(),
-        Cantidad: cantidad,
-        CantidadSondeo: cantidad,
-        ValorEstimado: valorEstimado.toString(),
-        PrecioSondeo: valorEstimado.toString(),
-        Comentarios: comentarios.toString(),
-        TipoMoneda: tipoMoneda.toString(),
-        MonedaSondeo: tipoMoneda.toString(),
-        costoInversion: costoInversion.toString(),
-        numeroCostoInversion: numeroCostoInversion.toString(),
-        numeroCuenta: numeroCuenta.toString()
-    }
-        return Obj;         
-    } 
-    else{
-      return "";
-    }   
+
+   
   } 
 
   changeListenerServicios($event): void {
@@ -433,7 +505,7 @@ procesarArchivoServicios(file) {
   }
 }
   ValidarVaciosCTS(row: any, i: number): any {
-   
+    let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let codigo = row[0];
     let descripcion = row[1];
     let cantidad = row[2];
@@ -444,55 +516,108 @@ procesarArchivoServicios(file) {
     let numeroCuenta = row[7];
     let comentarios = row[8];
 
-    if (descripcion === "" || descripcion === null) {
-      this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
-    }
-    if(cantidad === "" || cantidad === null){
-      this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
-    }
-    if(valorEstimado === "" || valorEstimado === null){
-      this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
-    }
-    if(costoInversion === "" || costoInversion === null){
-      this.cantidadErrorFile++;
-      this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
-    }
-    if(numeroCostoInversion === "" || costoInversion === null){
-      this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
-    }
-    if(numeroCuenta === "" || numeroCuenta === null){
-      this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
-    }
-    if(this.cantidadErrorFileCTS === 0){
-      valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
-
-      let Obj ={
-        Title: "Condición Técnicas Servicios" + new Date().toDateString(),
-        SolicitudId: this.idSolicitudGuardada,
-        Codigo: codigo.toString(),
-        CodigoSondeo: codigo.toString(),
-        Descripcion: descripcion.toString(),
-        Cantidad: cantidad,
-        CantidadSondeo: cantidad,
-        ValorEstimado: valorEstimado.toString(),
-        PrecioSondeo: valorEstimado.toString(),
-        TipoMoneda: tipoMoneda.toString(),
-        MonedaSondeo: tipoMoneda.toString(),
-        Comentario: comentarios.toString(),
-        costoInversion: costoInversion.toString(),
-        numeroCostoInversion: numeroCostoInversion.toString(),
-        numeroCuenta: numeroCuenta.toString()
+    if(valorcompraOrdenEstadistica === "NO") {
+      if (descripcion === "" || descripcion === null) {
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
       }
-        return Obj;         
-    } 
-    else{
-      return "";
+      if(cantidad === "" || cantidad === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
+      }
+      if(valorEstimado === "" || valorEstimado === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+      }
+      if(costoInversion === "" || costoInversion === null){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
+      }
+      if(numeroCostoInversion === "" || costoInversion === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+      }
+      if(numeroCuenta === "" || numeroCuenta === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
+      }
+      if(this.cantidadErrorFileCTS === 0){
+        valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+  
+        let Obj ={
+          Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+          SolicitudId: this.idSolicitudGuardada,
+          Codigo: codigo.toString(),
+          CodigoSondeo: codigo.toString(),
+          Descripcion: descripcion.toString(),
+          Cantidad: cantidad,
+          CantidadSondeo: cantidad,
+          ValorEstimado: valorEstimado.toString(),
+          PrecioSondeo: valorEstimado.toString(),
+          TipoMoneda: tipoMoneda.toString(),
+          MonedaSondeo: tipoMoneda.toString(),
+          Comentario: comentarios.toString(),
+          costoInversion: costoInversion.toString(),
+          numeroCostoInversion: numeroCostoInversion.toString(),
+          numeroCuenta: numeroCuenta.toString()
+        }
+          return Obj;         
+      } 
+      else{
+        return "";
+      }
     }
+    else{
+      if (descripcion === "" || descripcion === null) {
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+      }
+      if(cantidad === "" || cantidad === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
+      }
+      if(valorEstimado === "" || valorEstimado === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+      }
+      // if(costoInversion === "" || costoInversion === null){
+      //   this.cantidadErrorFile++;
+      //   this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
+      // }
+      // if(numeroCostoInversion === "" || costoInversion === null){
+      //   this.cantidadErrorFileCTS++;
+      //   this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+      // }
+      // if(numeroCuenta === "" || numeroCuenta === null){
+      //   this.cantidadErrorFileCTS++;
+      //   this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
+      // }
+      if(this.cantidadErrorFileCTS === 0){
+        valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+  
+        let Obj ={
+          Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+          SolicitudId: this.idSolicitudGuardada,
+          Codigo: codigo.toString(),
+          CodigoSondeo: codigo.toString(),
+          Descripcion: descripcion.toString(),
+          Cantidad: cantidad,
+          CantidadSondeo: cantidad,
+          ValorEstimado: valorEstimado.toString(),
+          PrecioSondeo: valorEstimado.toString(),
+          TipoMoneda: tipoMoneda.toString(),
+          MonedaSondeo: tipoMoneda.toString(),
+          Comentario: comentarios.toString(),
+          costoInversion: "",
+          numeroCostoInversion:"",
+          numeroCuenta: ""
+        }
+          return Obj;         
+      } 
+      else{
+        return "";
+      }
+    }  
   }
 
 
