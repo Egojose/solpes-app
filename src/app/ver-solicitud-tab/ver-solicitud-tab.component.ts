@@ -218,9 +218,7 @@ export class VerSolicitudTabComponent implements OnInit {
 
     this.spinner.show();
     this.contratoId = idContrato;
-    console.log(this.contratoId);
-    this.numeroContrato = this.ObjContratos[0].numeroContrato;
-    console.log(this.numeroContrato.toString())
+    this.numeroContrato = this.ObjContratos.filter(x => x.IdContratos == this.contratoId)[0].numeroContrato
     this.DSServiciosxContrato = "";
     this.DSBienesxContrato = "";
     this.CTB = false; 
