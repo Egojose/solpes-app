@@ -387,8 +387,8 @@ export class EditarSolicitudComponent implements OnInit {
         this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
       }
       if(numeroCostoInversion === "" || costoInversion === null){
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
       }
       if(numeroCuenta === "" || numeroCuenta === null){
         this.cantidadErrorFile++;
@@ -592,7 +592,7 @@ export class EditarSolicitudComponent implements OnInit {
 
     if(valorcompraOrdenEstadistica === "NO") {
       if (descripcion === "" || descripcion === null) {
-        this.cantidadErrorFile++;
+        this.cantidadErrorFileCTS++;
         this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
       }
       if(cantidad === "" || cantidad === null){
@@ -604,7 +604,7 @@ export class EditarSolicitudComponent implements OnInit {
         this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
       }
       if(costoInversion === "" || costoInversion === null){
-        this.cantidadErrorFile++;
+        this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
       }
       if(numeroCostoInversion === "" || numeroCostoInversion === null){
@@ -643,7 +643,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
     else{
       if (descripcion === "" || descripcion === null) {
-        this.cantidadErrorFile++;
+        this.cantidadErrorFileCTS++;
         this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
       }
       if(cantidad === "" || cantidad === null){
