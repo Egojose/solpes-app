@@ -1337,7 +1337,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.spinner.show();
 
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let paisValidar = this.solpFormulario.controls["pais"].value
     let codigo = this.ctbFormulario.controls["codigoCTB"].value;
     let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
     let modelo = this.ctbFormulario.controls["modeloCTB"].value;
@@ -1351,7 +1351,7 @@ export class EditarSolicitudComponent implements OnInit {
     let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
 
-    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
+    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 3 && (codigo === "" || codigo === null || codigo === undefined)) {
       this.mostrarError('El código de servicios es obligatorio para Brasil')
       this.spinner.hide();
       return false;
@@ -1693,7 +1693,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   abrirModalCTB(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let paisValidar = this.solpFormulario.controls["pais"].value
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
       return false;
@@ -1728,7 +1728,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   abrirModalCTS(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let paisValidar = this.solpFormulario.controls["pais"].value
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
       return false;
@@ -1747,7 +1747,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   abrirModalArchivoCsvBienes(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let paisValidar = this.solpFormulario.controls["pais"].value
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
       return false;
@@ -1762,7 +1762,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   abrirModalArchivoCsvServicios(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let paisValidar = this.solpFormulario.controls["pais"].value
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
       return false;

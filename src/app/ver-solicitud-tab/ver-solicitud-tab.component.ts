@@ -77,6 +77,7 @@ export class VerSolicitudTabComponent implements OnInit {
   submitted = false;
   solicitudRecuperada: Solicitud;
   fueSondeo: boolean;
+  contratoId: any;
   displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
   displayedColumnsService: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda"];
   displayedColumnsBienes: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda"];
@@ -90,7 +91,7 @@ export class VerSolicitudTabComponent implements OnInit {
     "moneda"
   ];
   modalRef: BsModalRef;
-  numeroContraro: any;
+  numeroContrato: any;
   ObjCondicionesTS: resultadoCondicionesTS[] = [];
   ObjCondicionesTB: resultadoCondicionesTB[] = [];
   CTS: boolean;
@@ -214,13 +215,17 @@ export class VerSolicitudTabComponent implements OnInit {
   }
 
   abrirBienesServicios(template: TemplateRef<any>, idContrato){
+
     this.spinner.show();
-    this.numeroContraro = idContrato;
+    this.contratoId = idContrato;
+    console.log(this.contratoId);
+    this.numeroContrato = this.ObjContratos[0].numeroContrato;
+    console.log(this.numeroContrato.toString())
     this.DSServiciosxContrato = "";
     this.DSBienesxContrato = "";
     this.CTB = false; 
     this.CTS = false;
-    this.servicio.ObtenerCondicionesTecnicasBienesxContrato(idContrato.toString()).subscribe(
+    this.servicio.ObtenerCondicionesTecnicasBienesxContrato(this.contratoId.toString()).subscribe(
       RespuestaCondiciones => {
         if (RespuestaCondiciones.length > 0) {            
           this.CTB = true;        
@@ -228,7 +233,7 @@ export class VerSolicitudTabComponent implements OnInit {
           this.DSBienesxContrato = new MatTableDataSource(ObjCondicionesTB);
           this.DSBienesxContrato.paginator = this.paginator;
         }
-        this.servicio.ObtenerCondicionesTecnicasServiciosxContrato(idContrato.toString()).subscribe(
+        this.servicio.ObtenerCondicionesTecnicasServiciosxContrato(this.contratoId.toString()).subscribe(
           RespuestaCondicionesServicios => {
             if (RespuestaCondicionesServicios.length > 0) {  
               this.CTS = true;

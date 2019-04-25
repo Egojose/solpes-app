@@ -596,7 +596,7 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let item of ObjContratos">
-                                            <td>{{item.IdContratos}}</td>
+                                            <td>{{item.numeroContrato}}</td>
                                             <td>{{item.tipoContrato}}</td>
                                             <td>{{item.objContrato}}</td>
                                             <td>{{item.nomProveedor}}</td>
@@ -725,7 +725,7 @@
 
 <ng-template #template>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Bienes y/o servicios para el contrato N° <strong>{{numeroContraro}}</strong></h4>
+        <h4 class="modal-title pull-left">Bienes y/o servicios para el contrato N° <strong>{{numeroContrato}}</strong></h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">&times;</span>
           </button>
