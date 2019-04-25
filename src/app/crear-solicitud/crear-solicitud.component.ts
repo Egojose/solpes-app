@@ -533,7 +533,7 @@ procesarArchivoServicios(file) {
         this.cantidadErrorFile++;
         this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
       }
-      if(numeroCostoInversion === "" || costoInversion === null){
+      if(numeroCostoInversion === "" || numeroCostoInversion === null){
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
       }
