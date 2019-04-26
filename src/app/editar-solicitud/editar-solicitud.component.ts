@@ -513,8 +513,8 @@ export class EditarSolicitudComponent implements OnInit {
           let Obj ={
             Title: "Condición Técnicas Bienes " + new Date().toDateString(),
             SolicitudId: this.IdSolicitud,
-            Codigo: codigo.toString(),
-            CodigoSondeo: codigo.toString(),
+            Codigo: "",
+            CodigoSondeo: "",
             Descripcion: descripcion.toString(),
             Modelo: modelo.toString(),
             Fabricante: fabricante.toString(),
