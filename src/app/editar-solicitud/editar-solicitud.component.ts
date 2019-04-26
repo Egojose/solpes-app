@@ -206,6 +206,7 @@ export class EditarSolicitudComponent implements OnInit {
       return false;
     }
     return true;
+
   }
 
   MostrarExitoso(mensaje: string) {
