@@ -409,7 +409,7 @@ export class EditarSolicitudComponent implements OnInit {
             CantidadSondeo: cantidad,
             ValorEstimado: valorEstimado.toString(),
             PrecioSondeo: valorEstimado.toString(),
-            Comentarios: comentarios.toString(),
+            Comentarios: comentarios,
             TipoMoneda: tipoMoneda.toString(),
             MonedaSondeo: tipoMoneda.toString(),
             costoInversion: costoInversion.toString(),
@@ -466,7 +466,7 @@ export class EditarSolicitudComponent implements OnInit {
               CantidadSondeo: cantidad,
               ValorEstimado: valorEstimado.toString(),
               PrecioSondeo: valorEstimado.toString(),
-              Comentarios: comentarios.toString(),
+              Comentarios: comentarios,
               TipoMoneda: tipoMoneda.toString(),
               MonedaSondeo: tipoMoneda.toString(),
               costoInversion: costoInversion.toString(),
@@ -520,7 +520,7 @@ export class EditarSolicitudComponent implements OnInit {
             CantidadSondeo: cantidad,
             ValorEstimado: valorEstimado.toString(),
             PrecioSondeo: valorEstimado.toString(),
-            Comentarios: comentarios.toString(),
+            Comentarios: comentarios,
             TipoMoneda: tipoMoneda.toString(),
             MonedaSondeo: tipoMoneda.toString(),
             costoInversion: "",
@@ -573,7 +573,7 @@ export class EditarSolicitudComponent implements OnInit {
           CantidadSondeo: cantidad,
           ValorEstimado: valorEstimado.toString(),
           PrecioSondeo: valorEstimado.toString(),
-          Comentarios: comentarios.toString(),
+          Comentarios: comentarios,
           TipoMoneda: tipoMoneda.toString(),
           MonedaSondeo: tipoMoneda.toString(),
           costoInversion: "",
@@ -756,10 +756,10 @@ export class EditarSolicitudComponent implements OnInit {
             PrecioSondeo: valorEstimado.toString(),
             TipoMoneda: tipoMoneda.toString(),
             MonedaSondeo: tipoMoneda.toString(),
-            Comentario: comentarios.toString(),
-            costoInversion: "",
-            numeroCostoInversion: "",
-            numeroCuenta: ""
+            Comentario: comentarios,
+            costoInversion: costoInversion.toString(),
+            numeroCostoInversion: numeroCostoInversion.toString(),
+            numeroCuenta: numeroCuenta.toString()
           }
             return Obj;         
         } 
@@ -807,7 +807,7 @@ export class EditarSolicitudComponent implements OnInit {
               PrecioSondeo: valorEstimado.toString(),
               TipoMoneda: tipoMoneda.toString(),
               MonedaSondeo: tipoMoneda.toString(),
-              Comentario: comentarios.toString(),
+              Comentario: comentarios,
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
               numeroCuenta: numeroCuenta.toString()
@@ -860,7 +860,7 @@ export class EditarSolicitudComponent implements OnInit {
             PrecioSondeo: valorEstimado.toString(),
             TipoMoneda: tipoMoneda.toString(),
             MonedaSondeo: tipoMoneda.toString(),
-            Comentario: comentarios.toString(),
+            Comentario: comentarios,
             costoInversion: "",
             numeroCostoInversion: "",
             numeroCuenta: ""
@@ -911,7 +911,7 @@ export class EditarSolicitudComponent implements OnInit {
           PrecioSondeo: valorEstimado.toString(),
           TipoMoneda: tipoMoneda.toString(),
           MonedaSondeo: tipoMoneda.toString(),
-          Comentario: comentarios.toString(),
+          Comentario: comentarios,
           costoInversion: "",
           numeroCostoInversion: "",
           numeroCuenta: ""
