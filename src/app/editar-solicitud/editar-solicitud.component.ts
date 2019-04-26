@@ -446,7 +446,7 @@ export class EditarSolicitudComponent implements OnInit {
           }
           if(numeroCostoInversion === "" || numeroCostoInversion === null){
             this.cantidadErrorFile++;
-            this.ArrayErrorFile.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+            this.ArrayErrorFile.push({error:"El campo Número centro de costos/ Orden de inversión en la columna I fila "+ (i+1)})
           }
           if(numeroCuenta === "" || numeroCuenta === null){
             this.cantidadErrorFile++;
