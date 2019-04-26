@@ -609,7 +609,8 @@ procesarArchivoServicios(file) {
                         }
                       )
                   }                    
-                }, err => {
+                }, 
+                (err) => {
                   this.mostrarError('Error en la creación de la condición técnica de bienes');
                   this.spinner.hide();
                 }
