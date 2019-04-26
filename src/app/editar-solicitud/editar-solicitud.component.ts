@@ -365,7 +365,7 @@ export class EditarSolicitudComponent implements OnInit {
     let numeroCuenta = row[9];
     let comentarios = row[10];
 
-    if(valorcompraOrdenEstadistica === "NO" && codigo === "" || codigo === null) {
+    if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
       
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFile++;
@@ -498,14 +498,7 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
         }
-        // if(costoInversion === "" || costoInversion === null){
-        //   this.cantidadErrorFile++;
-        //   this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
-        // }
-        // if(numeroCuenta === "" || numeroCuenta === null){
-        //   this.cantidadErrorFile++;
-        //   this.ArrayErrorFile.push({error:"El campo Número de cuenta en la columna J fila "+ (i+1)})
-        // }
+        
         if(this.cantidadErrorFile === 0){
           valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
           let Obj ={
@@ -551,14 +544,7 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
       }
-      // if(costoInversion === "" || costoInversion === null){
-      //   this.cantidadErrorFile++;
-      //   this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
-      // }
-      // if(numeroCuenta === "" || numeroCuenta === null){
-      //   this.cantidadErrorFile++;
-      //   this.ArrayErrorFile.push({error:"El campo Número de cuenta en la columna J fila "+ (i+1)})
-      // }
+      
       if(this.cantidadErrorFile === 0){
         valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj ={
@@ -715,7 +701,7 @@ export class EditarSolicitudComponent implements OnInit {
     let numeroCuenta = row[7];
     let comentarios = row[8];
 
-    if(valorcompraOrdenEstadistica === "NO" && codigo === "" || codigo === null) {
+    if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
      
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFileCTS++;
@@ -833,18 +819,7 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
         }
-        // if(costoInversion === "" || costoInversion === null){
-        //   this.cantidadErrorFile++;
-        //   this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
-        // }
-        // if(numeroCostoInversion === "" || costoInversion === null){
-        //   this.cantidadErrorFileCTS++;
-        //   this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
-        // }
-        // if(numeroCuenta === "" || numeroCuenta === null){
-        //   this.cantidadErrorFileCTS++;
-        //   this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
-        // }
+       
         if(this.cantidadErrorFileCTS === 0){
           valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
     
@@ -884,18 +859,7 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
       }
-      // if(costoInversion === "" || costoInversion === null){
-      //   this.cantidadErrorFile++;
-      //   this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
-      // }
-      // if(numeroCostoInversion === "" || costoInversion === null){
-      //   this.cantidadErrorFileCTS++;
-      //   this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
-      // }
-      // if(numeroCuenta === "" || numeroCuenta === null){
-      //   this.cantidadErrorFileCTS++;
-      //   this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
-      // }
+     
       if(this.cantidadErrorFileCTS === 0){
         valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
   
