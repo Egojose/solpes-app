@@ -508,7 +508,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="Numero de cuenta">Número de cuenta</label>
-                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" (keypress)="numberOnly($event)>
+                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" (keypress)="numberOnly($event)">
                             <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
                             </div>
