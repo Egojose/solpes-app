@@ -365,8 +365,8 @@ export class EditarSolicitudComponent implements OnInit {
     let numeroCuenta = row[9];
     let comentarios = row[10];
 
-    if(valorcompraOrdenEstadistica === "NO") {
-      if(codigo === "" || codigo === null) {
+    if(valorcompraOrdenEstadistica === "NO" && codigo === "" || codigo === null) {
+      
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
@@ -422,8 +422,8 @@ export class EditarSolicitudComponent implements OnInit {
           return "";
         }   
       }
-      else if(valorcompraOrdenEstadistica === "NO") {
-        if(codigo !== "" || codigo !== null) {
+      else if(valorcompraOrdenEstadistica === "NO" && (codigo !== "" || codigo !== null)) {
+       
           if (descripcion === "" || descripcion === null) {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
@@ -479,11 +479,9 @@ export class EditarSolicitudComponent implements OnInit {
             return "";
           }   
         }
-      }
      
-    }
-    else if(valorcompraOrdenEstadistica === "SI") {
-      if(codigo === "" || codigo === null) {
+    else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === null)) {
+    
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
@@ -534,7 +532,6 @@ export class EditarSolicitudComponent implements OnInit {
         else{
           return "";
         }   
-      }
     }
     else {
       
@@ -605,6 +602,20 @@ export class EditarSolicitudComponent implements OnInit {
     }
   }
 
+  validarCodigosBrasilCTS(codigoValidar, i) {  
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value
+    //let codigoValidar =  this.ctbFormulario.controls["codigoCTB"].value
+    if ((solicitudTipo === "Solp" || solicitudTipo === "Orden a CM") && paisValidar === 3) {
+        if(codigoValidar === "" || codigoValidar === null || codigoValidar === undefined) {
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error:"El código es obligatorio para Brasil, por favor valide el código de material en la columna A fila "+ (i+1)});
+          // this.mostrarError('El código es obligatorio para Brasil, por favor valide el código de material en la columna A de la fila '+ (i+1));
+          // return false;
+        }
+    }
+  }
+
   changeListenerServicios($event): void {
     this.leerArchivoServicios($event.target);
   }
@@ -639,7 +650,7 @@ export class EditarSolicitudComponent implements OnInit {
           for (let i = 2; i < file.length; i++) {
             let row = file[i];
             let codigo = row[0];            
-            this.validarCodigosBrasilCTB(codigo, i);           
+            this.validarCodigosBrasilCTS(codigo, i);           
             let obj = this.ValidarVaciosCTS(row, i); 
             if (obj != "") {
               this.ObjCTS.push(obj);
@@ -704,11 +715,11 @@ export class EditarSolicitudComponent implements OnInit {
     let numeroCuenta = row[7];
     let comentarios = row[8];
 
-    if(valorcompraOrdenEstadistica === "NO") {
-      if(codigo === "" || codigo === null) {
+    if(valorcompraOrdenEstadistica === "NO" && codigo === "" || codigo === null) {
+     
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFileCTS++;
-          this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+          this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
         }
         if(cantidad === "" || cantidad === null){
           this.cantidadErrorFileCTS++;
@@ -719,10 +730,10 @@ export class EditarSolicitudComponent implements OnInit {
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
         }
         if(costoInversion === "" || costoInversion === null){
-          this.cantidadErrorFileCTS++;
+          this.cantidadErrorFile++;
           this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
         }
-        if(numeroCostoInversion === "" || numeroCostoInversion === null){
+        if(numeroCostoInversion === "" || costoInversion === null){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
         }
@@ -737,7 +748,7 @@ export class EditarSolicitudComponent implements OnInit {
             Title: "Condición Técnicas Servicios" + new Date().toDateString(),
             SolicitudId: this.IdSolicitud,
             Codigo: "",
-            CodigoSondeo: "",
+            CodigoSondeo:"",
             Descripcion: descripcion.toString(),
             Cantidad: cantidad,
             CantidadSondeo: cantidad,
@@ -746,22 +757,20 @@ export class EditarSolicitudComponent implements OnInit {
             TipoMoneda: tipoMoneda.toString(),
             MonedaSondeo: tipoMoneda.toString(),
             Comentario: comentarios.toString(),
-            costoInversion: costoInversion.toString(),
-            numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuenta.toString()
+            costoInversion: "",
+            numeroCostoInversion: "",
+            numeroCuenta: ""
           }
             return Obj;         
         } 
         else{
           return "";
-        }
-      }
+        } 
     }
-      else if(valorcompraOrdenEstadistica === "NO") {
-        if(codigo !== "" || codigo !== null) {
+      else if(valorcompraOrdenEstadistica === "NO" && (codigo !== "" || codigo !== null)) {
           if (descripcion === "" || descripcion === null) {
             this.cantidadErrorFileCTS++;
-            this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+            this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
           }
           if(cantidad === "" || cantidad === null){
             this.cantidadErrorFileCTS++;
@@ -808,14 +817,13 @@ export class EditarSolicitudComponent implements OnInit {
           else{
             return "";
           }
-        }
       }
-     
-    else if(valorcompraOrdenEstadistica === "SI"){
-      if(codigo === "" || codigo === null) {
+    
+    else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === null)) {
+      
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFileCTS++;
-          this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+          this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
         }
         if(cantidad === "" || cantidad === null){
           this.cantidadErrorFileCTS++;
@@ -861,14 +869,12 @@ export class EditarSolicitudComponent implements OnInit {
         } 
         else{
           return "";
-        } 
-      }
+        }
     }
-      else{
-
+      else {
       if (descripcion === "" || descripcion === null) {
         this.cantidadErrorFileCTS++;
-        this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+        this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
       }
       if(cantidad === "" || cantidad === null){
         this.cantidadErrorFileCTS++;
@@ -916,8 +922,7 @@ export class EditarSolicitudComponent implements OnInit {
         return "";
       }
     }
-
-   
+ 
   }
 
   RegistrarFormularioSolp() {
