@@ -459,7 +459,7 @@
                             <label for="Numero de cuenta">Número de cuenta</label>
                             <input type="text" placeholder="ingrese el número de cuenta" class="form-control"
                                 formControlName="numCuentaCTB"
-                                [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCuentaCTB.errors }">
+                                [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCuentaCTB.errors }" (keypress)="numberOnly($event)>
                             <div *ngIf="ctbSubmitted && f.numCuentaCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCuentaCTB.errors.required">Este campo es requerido</div>
                             </div>
@@ -595,7 +595,7 @@
                             <label for="Numero de cuenta">Número de cuenta</label>
                             <input type="text" placeholder="ingrese el número de cuenta" class="form-control"
                                 formControlName="numCuentaCTS"
-                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" numbersOnly>
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" (keypress)="numberOnly($event)>
                             <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
                             </div>
