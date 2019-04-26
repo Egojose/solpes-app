@@ -365,7 +365,7 @@ export class EditarSolicitudComponent implements OnInit {
     let numeroCuenta = row[9];
     let comentarios = row[10];
 
-    if(valorcompraOrdenEstadistica === "NO" && codigo === "" || codigo === null) {
+    if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
       
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFile++;
@@ -715,7 +715,7 @@ export class EditarSolicitudComponent implements OnInit {
     let numeroCuenta = row[7];
     let comentarios = row[8];
 
-    if(valorcompraOrdenEstadistica === "NO" && codigo === "" || codigo === null) {
+    if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
      
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFileCTS++;
