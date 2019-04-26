@@ -305,8 +305,8 @@ export class CrearSolicitudComponent implements OnInit {
     let numeroCuenta = row[9];
     let comentarios = row[10];
 
-    if(valorcompraOrdenEstadistica === "NO") {
-      if(codigo === "" || codigo === null) {
+    if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
+      
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
@@ -365,8 +365,8 @@ export class CrearSolicitudComponent implements OnInit {
           return "";
         }   
       }
-      else if(valorcompraOrdenEstadistica === "NO"){
-        if(codigo !== "" || codigo !== null) {
+      else if(valorcompraOrdenEstadistica === "NO" && (codigo !== "" || codigo !== null)){
+       
           if (descripcion === "" || descripcion === null) {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
@@ -424,12 +424,11 @@ export class CrearSolicitudComponent implements OnInit {
           else{
             return "";
           }   
-        }
-      }
+        
       
     }
-    else if(valorcompraOrdenEstadistica === "SI"){
-      if(codigo === "" || codigo === null) {
+    else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === null)){
+      
         if (descripcion === "" || descripcion === null) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
@@ -487,7 +486,6 @@ export class CrearSolicitudComponent implements OnInit {
         else{
           return "";
         }   
-      }
     }
     else {
       
@@ -585,7 +583,7 @@ procesarArchivoServicios(file) {
         for (let i = 2; i < file.length; i++) {
           let row = file[i];
           let codigo = row[0];            
-          this.validarCodigosBrasilCTB(codigo, i);           
+          this.validarCodigosBrasilCTS(codigo, i);           
           let obj = this.ValidarVaciosCTS(row, i); 
           if (obj != "") {
             this.ObjCTS.push(obj);
@@ -637,76 +635,77 @@ procesarArchivoServicios(file) {
     }
   }
 }
-  ValidarVaciosCTS(row: any, i: number): any {
-    let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
-    let codigo = row[0];
-    let descripcion = row[1];
-    let cantidad = row[2];
-    let valorEstimado = row[3];
-    let tipoMoneda = row[4];    
-    let costoInversion = row[5];
-    let numeroCostoInversion = row[6];
-    let numeroCuenta = row[7];
-    let comentarios = row[8];
 
-    if(valorcompraOrdenEstadistica === "NO") {
-      if(codigo === "" || codigo === null) {
-        if (descripcion === "" || descripcion === null) {
-          this.cantidadErrorFile++;
-          this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
-        }
-        if(cantidad === "" || cantidad === null){
-          this.cantidadErrorFileCTS++;
-          this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
-        }
-        if(valorEstimado === "" || valorEstimado === null){
-          this.cantidadErrorFileCTS++;
-          this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
-        }
-        if(costoInversion === "" || costoInversion === null){
-          this.cantidadErrorFile++;
-          this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
-        }
-        if(numeroCostoInversion === "" || numeroCostoInversion === null){
-          this.cantidadErrorFileCTS++;
-          this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
-        }
-        if(numeroCuenta === "" || numeroCuenta === null){
-          this.cantidadErrorFileCTS++;
-          this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
-        }
-        if(this.cantidadErrorFileCTS === 0){
-          valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+ValidarVaciosCTS(row: any, i: number): any {
+  let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+  let codigo = row[0];
+  let descripcion = row[1];
+  let cantidad = row[2];
+  let valorEstimado = row[3];
+  let tipoMoneda = row[4];    
+  let costoInversion = row[5];
+  let numeroCostoInversion = row[6];
+  let numeroCuenta = row[7];
+  let comentarios = row[8];
+
+  if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
     
-          let Obj ={
-            Title: "Condición Técnicas Servicios" + new Date().toDateString(),
-            SolicitudId: this.idSolicitudGuardada,
-            Codigo: "",
-            CodigoSondeo: "",
-            Descripcion: descripcion.toString(),
-            Cantidad: cantidad,
-            CantidadSondeo: cantidad,
-            ValorEstimado: valorEstimado.toString(),
-            PrecioSondeo: valorEstimado.toString(),
-            TipoMoneda: tipoMoneda.toString(),
-            MonedaSondeo: tipoMoneda.toString(),
-            Comentario: comentarios.toString(),
-            costoInversion: costoInversion.toString(),
-            numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuenta.toString()
-          }
-            return Obj;         
-        } 
-        else{
-          return "";
-        }
+      if (descripcion === "" || descripcion === null) {
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
       }
-    }
-    else if(valorcompraOrdenEstadistica === "NO") {
-      if(codigo !== "" || codigo !== null) {
+      if(cantidad === "" || cantidad === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
+      }
+      if(valorEstimado === "" || valorEstimado === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+      }
+      if(costoInversion === "" || costoInversion === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
+      }
+      if(numeroCostoInversion === "" || numeroCostoInversion === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+      }
+      if(numeroCuenta === "" || numeroCuenta === null){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
+      }
+      if(this.cantidadErrorFileCTS === 0){
+        valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+  
+        let Obj ={
+          Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+          SolicitudId: this.idSolicitudGuardada,
+          Codigo: "",
+          CodigoSondeo:"",
+          Descripcion: descripcion.toString(),
+          Cantidad: cantidad,
+          CantidadSondeo: cantidad,
+          ValorEstimado: valorEstimado.toString(),
+          PrecioSondeo: valorEstimado.toString(),
+          TipoMoneda: tipoMoneda.toString(),
+          MonedaSondeo: tipoMoneda.toString(),
+          Comentario: comentarios.toString(),
+          costoInversion: costoInversion.toString(),
+          numeroCostoInversion: numeroCostoInversion.toString(),
+          numeroCuenta: numeroCuenta.toString()
+        }
+          return Obj;         
+      } 
+      else{
+        return "";
+      } 
+    
+  }
+    else if(valorcompraOrdenEstadistica === "NO" && (codigo !== "" || codigo !== null)) {
+      
         if (descripcion === "" || descripcion === null) {
-          this.cantidadErrorFile++;
-          this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
         }
         if(cantidad === "" || cantidad === null){
           this.cantidadErrorFileCTS++;
@@ -717,7 +716,7 @@ procesarArchivoServicios(file) {
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
         }
         if(costoInversion === "" || costoInversion === null){
-          this.cantidadErrorFile++;
+          this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
         }
         if(numeroCostoInversion === "" || numeroCostoInversion === null){
@@ -753,66 +752,14 @@ procesarArchivoServicios(file) {
         else{
           return "";
         }
-      }
-     
+      
     }
-    else if(valorcompraOrdenEstadistica === "SI"){
-      if(codigo === "" || codigo === null) {
-        if (descripcion === "" || descripcion === null) {
-          this.cantidadErrorFile++;
-          this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
-        }
-        if(cantidad === "" || cantidad === null){
-          this.cantidadErrorFileCTS++;
-          this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
-        }
-        if(valorEstimado === "" || valorEstimado === null){
-          this.cantidadErrorFileCTS++;
-          this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
-        }
-        // if(costoInversion === "" || costoInversion === null){
-        //   this.cantidadErrorFile++;
-        //   this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
-        // }
-        // if(numeroCostoInversion === "" || costoInversion === null){
-        //   this.cantidadErrorFileCTS++;
-        //   this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
-        // }
-        // if(numeroCuenta === "" || numeroCuenta === null){
-        //   this.cantidadErrorFileCTS++;
-        //   this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
-        // }
-        if(this.cantidadErrorFileCTS === 0){
-          valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
-    
-          let Obj ={
-            Title: "Condición Técnicas Servicios" + new Date().toDateString(),
-            SolicitudId: this.idSolicitudGuardada,
-            Codigo: "",
-            CodigoSondeo: "",
-            Descripcion: descripcion.toString(),
-            Cantidad: cantidad,
-            CantidadSondeo: cantidad,
-            ValorEstimado: valorEstimado.toString(),
-            PrecioSondeo: valorEstimado.toString(),
-            TipoMoneda: tipoMoneda.toString(),
-            MonedaSondeo: tipoMoneda.toString(),
-            Comentario: comentarios.toString(),
-            costoInversion: "",
-            numeroCostoInversion:"",
-            numeroCuenta: ""
-          }
-            return Obj;         
-        } 
-        else{
-          return "";
-        }  
-      }
-    }
-    else{
+  
+  else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === null)) {
+   
       if (descripcion === "" || descripcion === null) {
-        this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
       }
       if(cantidad === "" || cantidad === null){
         this.cantidadErrorFileCTS++;
@@ -840,8 +787,8 @@ procesarArchivoServicios(file) {
         let Obj ={
           Title: "Condición Técnicas Servicios" + new Date().toDateString(),
           SolicitudId: this.idSolicitudGuardada,
-          Codigo: codigo.toString(),
-          CodigoSondeo: codigo.toString(),
+          Codigo: "",
+          CodigoSondeo: "",
           Descripcion: descripcion.toString(),
           Cantidad: cantidad,
           CantidadSondeo: cantidad,
@@ -851,7 +798,7 @@ procesarArchivoServicios(file) {
           MonedaSondeo: tipoMoneda.toString(),
           Comentario: comentarios.toString(),
           costoInversion: "",
-          numeroCostoInversion:"",
+          numeroCostoInversion: "",
           numeroCuenta: ""
         }
           return Obj;         
@@ -859,8 +806,286 @@ procesarArchivoServicios(file) {
       else{
         return "";
       }
-    }  
+    
   }
+    else {
+    if (descripcion === "" || descripcion === null) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+    }
+    if(cantidad === "" || cantidad === null){
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
+    }
+    if(valorEstimado === "" || valorEstimado === null){
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+    }
+    // if(costoInversion === "" || costoInversion === null){
+    //   this.cantidadErrorFile++;
+    //   this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
+    // }
+    // if(numeroCostoInversion === "" || costoInversion === null){
+    //   this.cantidadErrorFileCTS++;
+    //   this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+    // }
+    // if(numeroCuenta === "" || numeroCuenta === null){
+    //   this.cantidadErrorFileCTS++;
+    //   this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
+    // }
+    if(this.cantidadErrorFileCTS === 0){
+      valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+
+      let Obj ={
+        Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+        SolicitudId: this.idSolicitudGuardada,
+        Codigo: codigo.toString(),
+        CodigoSondeo: codigo.toString(),
+        Descripcion: descripcion.toString(),
+        Cantidad: cantidad,
+        CantidadSondeo: cantidad,
+        ValorEstimado: valorEstimado.toString(),
+        PrecioSondeo: valorEstimado.toString(),
+        TipoMoneda: tipoMoneda.toString(),
+        MonedaSondeo: tipoMoneda.toString(),
+        Comentario: comentarios.toString(),
+        costoInversion: "",
+        numeroCostoInversion: "",
+        numeroCuenta: ""
+      }
+        return Obj;         
+    } 
+    else{
+      return "";
+    }
+  }
+
+}
+
+  // ValidarVaciosCTS(row: any, i: number): any {
+  //   let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+  //   let codigo = row[0];
+  //   let descripcion = row[1];
+  //   let cantidad = row[2];
+  //   let valorEstimado = row[3];
+  //   let tipoMoneda = row[4];    
+  //   let costoInversion = row[5];
+  //   let numeroCostoInversion = row[6];
+  //   let numeroCuenta = row[7];
+  //   let comentarios = row[8];
+
+  //   if(valorcompraOrdenEstadistica === "NO") {
+  //     if(codigo === "" || codigo === null) {
+  //       if (descripcion === "" || descripcion === null) {
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+  //       }
+  //       if(cantidad === "" || cantidad === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
+  //       }
+  //       if(valorEstimado === "" || valorEstimado === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+  //       }
+  //       if(costoInversion === "" || costoInversion === null){
+  //         this.cantidadErrorFile++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
+  //       }
+  //       if(numeroCostoInversion === "" || numeroCostoInversion === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+  //       }
+  //       if(numeroCuenta === "" || numeroCuenta === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
+  //       }
+  //       if(this.cantidadErrorFileCTS === 0){
+  //         valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+    
+  //         let Obj ={
+  //           Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+  //           SolicitudId: this.idSolicitudGuardada,
+  //           Codigo: "",
+  //           CodigoSondeo: "",
+  //           Descripcion: descripcion.toString(),
+  //           Cantidad: cantidad,
+  //           CantidadSondeo: cantidad,
+  //           ValorEstimado: valorEstimado.toString(),
+  //           PrecioSondeo: valorEstimado.toString(),
+  //           TipoMoneda: tipoMoneda.toString(),
+  //           MonedaSondeo: tipoMoneda.toString(),
+  //           Comentario: comentarios.toString(),
+  //           costoInversion: costoInversion.toString(),
+  //           numeroCostoInversion: numeroCostoInversion.toString(),
+  //           numeroCuenta: numeroCuenta.toString()
+  //         }
+  //           return Obj;         
+  //       } 
+  //       else{
+  //         return "";
+  //       }
+  //     }
+  //   }
+  //   else if(valorcompraOrdenEstadistica === "NO") {
+  //     if(codigo !== "" || codigo !== null) {
+  //       if (descripcion === "" || descripcion === null) {
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+  //       }
+  //       if(cantidad === "" || cantidad === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
+  //       }
+  //       if(valorEstimado === "" || valorEstimado === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+  //       }
+  //       if(costoInversion === "" || costoInversion === null){
+  //         this.cantidadErrorFile++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
+  //       }
+  //       if(numeroCostoInversion === "" || numeroCostoInversion === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+  //       }
+  //       if(numeroCuenta === "" || numeroCuenta === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
+  //       }
+  //       if(this.cantidadErrorFileCTS === 0){
+  //         valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+    
+  //         let Obj ={
+  //           Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+  //           SolicitudId: this.idSolicitudGuardada,
+  //           Codigo: codigo.toString(),
+  //           CodigoSondeo: codigo.toString(),
+  //           Descripcion: descripcion.toString(),
+  //           Cantidad: cantidad,
+  //           CantidadSondeo: cantidad,
+  //           ValorEstimado: valorEstimado.toString(),
+  //           PrecioSondeo: valorEstimado.toString(),
+  //           TipoMoneda: tipoMoneda.toString(),
+  //           MonedaSondeo: tipoMoneda.toString(),
+  //           Comentario: comentarios.toString(),
+  //           costoInversion: costoInversion.toString(),
+  //           numeroCostoInversion: numeroCostoInversion.toString(),
+  //           numeroCuenta: numeroCuenta.toString()
+  //         }
+  //           return Obj;         
+  //       } 
+  //       else{
+  //         return "";
+  //       }
+  //     }
+     
+  //   }
+  //   else if(valorcompraOrdenEstadistica === "SI"){
+  //     if(codigo === "" || codigo === null) {
+  //       if (descripcion === "" || descripcion === null) {
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+  //       }
+  //       if(cantidad === "" || cantidad === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
+  //       }
+  //       if(valorEstimado === "" || valorEstimado === null){
+  //         this.cantidadErrorFileCTS++;
+  //         this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+  //       }
+  //       // if(costoInversion === "" || costoInversion === null){
+  //       //   this.cantidadErrorFile++;
+  //       //   this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
+  //       // }
+  //       // if(numeroCostoInversion === "" || costoInversion === null){
+  //       //   this.cantidadErrorFileCTS++;
+  //       //   this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+  //       // }
+  //       // if(numeroCuenta === "" || numeroCuenta === null){
+  //       //   this.cantidadErrorFileCTS++;
+  //       //   this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
+  //       // }
+  //       if(this.cantidadErrorFileCTS === 0){
+  //         valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+    
+  //         let Obj ={
+  //           Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+  //           SolicitudId: this.idSolicitudGuardada,
+  //           Codigo: "",
+  //           CodigoSondeo: "",
+  //           Descripcion: descripcion.toString(),
+  //           Cantidad: cantidad,
+  //           CantidadSondeo: cantidad,
+  //           ValorEstimado: valorEstimado.toString(),
+  //           PrecioSondeo: valorEstimado.toString(),
+  //           TipoMoneda: tipoMoneda.toString(),
+  //           MonedaSondeo: tipoMoneda.toString(),
+  //           Comentario: comentarios.toString(),
+  //           costoInversion: "",
+  //           numeroCostoInversion:"",
+  //           numeroCuenta: ""
+  //         }
+  //           return Obj;         
+  //       } 
+  //       else{
+  //         return "";
+  //       }  
+  //     }
+  //   }
+  //   else{
+  //     if (descripcion === "" || descripcion === null) {
+  //       this.cantidadErrorFileCTS++;
+  //       this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
+  //     }
+  //     if(cantidad === "" || cantidad === null){
+  //       this.cantidadErrorFileCTS++;
+  //       this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
+  //     }
+  //     if(valorEstimado === "" || valorEstimado === null){
+  //       this.cantidadErrorFileCTS++;
+  //       this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+  //     }
+  //     // if(costoInversion === "" || costoInversion === null){
+  //     //   this.cantidadErrorFile++;
+  //     //   this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
+  //     // }
+  //     // if(numeroCostoInversion === "" || costoInversion === null){
+  //     //   this.cantidadErrorFileCTS++;
+  //     //   this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+  //     // }
+  //     // if(numeroCuenta === "" || numeroCuenta === null){
+  //     //   this.cantidadErrorFileCTS++;
+  //     //   this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
+  //     // }
+  //     if(this.cantidadErrorFileCTS === 0){
+  //       valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+  
+  //       let Obj ={
+  //         Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+  //         SolicitudId: this.idSolicitudGuardada,
+  //         Codigo: codigo.toString(),
+  //         CodigoSondeo: codigo.toString(),
+  //         Descripcion: descripcion.toString(),
+  //         Cantidad: cantidad,
+  //         CantidadSondeo: cantidad,
+  //         ValorEstimado: valorEstimado.toString(),
+  //         PrecioSondeo: valorEstimado.toString(),
+  //         TipoMoneda: tipoMoneda.toString(),
+  //         MonedaSondeo: tipoMoneda.toString(),
+  //         Comentario: comentarios.toString(),
+  //         costoInversion: "",
+  //         numeroCostoInversion:"",
+  //         numeroCuenta: ""
+  //       }
+  //         return Obj;         
+  //     } 
+  //     else{
+  //       return "";
+  //     }
+  //   }  
+  // }
 
 
 validarCodigosBrasilCTB(codigoValidar, i) {  
@@ -871,6 +1096,20 @@ validarCodigosBrasilCTB(codigoValidar, i) {
       if(codigoValidar === "" || codigoValidar === null || codigoValidar === undefined) {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El código es obligatorio para Brasil, por favor valide el código de material en la columna A fila "+ (i+1)});
+        // this.mostrarError('El código es obligatorio para Brasil, por favor valide el código de material en la columna A de la fila '+ (i+1));
+        // return false;
+      }
+  }
+}
+
+validarCodigosBrasilCTS(codigoValidar, i) {  
+  let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+  let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+  //let codigoValidar =  this.ctbFormulario.controls["codigoCTB"].value
+  if ((solicitudTipo === "Solp" || solicitudTipo === "Orden a CM") && paisValidar === "Brasil") {
+      if(codigoValidar === "" || codigoValidar === null || codigoValidar === undefined) {
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El código es obligatorio para Brasil, por favor valide el código de material en la columna A fila "+ (i+1)});
         // this.mostrarError('El código es obligatorio para Brasil, por favor valide el código de material en la columna A de la fila '+ (i+1));
         // return false;
       }
