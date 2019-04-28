@@ -1311,12 +1311,33 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       return respuesta;
     }
 
+    // if (this.condicionesTB.length > 0) {
+    //   this.compraBienes = true;
+    // }
+
     if (this.condicionesTB.length > 0) {
       this.compraBienes = true;
+      respuesta = this.validarCondicionesTBdatosContables();
+      if (respuesta == false) {
+        this.spinner.hide();
+        return respuesta;
+      }
+  
     }
+
+    // if (this.condicionesTS.length > 0) {
+    //   this.compraServicios = true;
+    // }
+
     if (this.condicionesTS.length > 0) {
       this.compraServicios = true;
+      respuesta = this.validarCondicionesTSdatosContables();
+      if (respuesta == false) {
+        this.spinner.hide();
+        return respuesta;
+      }
     }
+
     if (valorcompraOrdenEstadistica == "SI") {
       this.compraOrdenEstadistica = true;
     }
@@ -1475,6 +1496,48 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 
     return respuesta;
   }
+
+  private validarCondicionesTSdatosContables(): boolean {
+    let respuesta = true;
+    let costoInversion = this.ctsFormulario.controls["cecoCTS"].value;
+    let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
+    let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
+    // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
+    // let indexNumeroCostoInversion =this.condicionesTS.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
+    // let indexNumeroCuenta =this.condicionesTS.map(function(e) { return e.numeroCuenta; }).indexOf(null);
+    let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+    if(valorOrdenEstadistica == "NO" && (costoInversion === "" || costoInversion === null || numeroCostoInversion === "" || numeroCostoInversion === null || numeroCuenta === "" || numeroCuenta === null)) {
+       this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+       respuesta = false;
+    }
+    // if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+    //  this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+    //  respuesta = false;
+    // }
+    return respuesta;
+   }
+
+
+   private validarCondicionesTBdatosContables(): boolean {
+   
+    let respuesta = true;
+    let costoInversion = this.ctbFormulario.controls["cecoCTB"].value;
+    let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
+    let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
+    // let indexCostoInversion =this.condicionesTB.map(function(e) { return e.costoInversion; }).indexOf(null);
+    // let indexNumeroCostoInversion =this.condicionesTB.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
+    // let indexNumeroCuenta =this.condicionesTB.map(function(e) { return e.numeroCuenta; }).indexOf(null);
+    let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+    if(valorOrdenEstadistica == "NO" && (costoInversion === null || costoInversion === "" || numeroCostoInversion === null || numeroCostoInversion === "" || numeroCuenta === "" || numeroCuenta === null)){
+      this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
+     respuesta = false;
+    }
+    // if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+    //  this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
+    //  respuesta = false;
+    // }
+    return respuesta; 
+   }
 
   EsCampoVacio(valorCampo: string) {
     if (valorCampo === "" || valorCampo == 'Seleccione' || valorCampo == null) {
