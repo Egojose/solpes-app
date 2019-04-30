@@ -288,7 +288,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   procesarArchivo(file) {
 
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar') {
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       return false;
@@ -689,7 +689,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   procesarArchivoServicios(file) {
 
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar') {
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       return false;
