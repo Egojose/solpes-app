@@ -288,12 +288,6 @@ export class EditarSolicitudComponent implements OnInit {
 
   procesarArchivo(file) {
 
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
-      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
-      this.spinner.hide();
-      return false;
-    }
-
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
       return false;
@@ -356,10 +350,15 @@ export class EditarSolicitudComponent implements OnInit {
         return false;
       }
     }
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
+      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
+      this.spinner.hide();
+      this.cantidadErrorFile = 0;
+      return false;
+    }
   }
 
   limpiarArrayErrorFile() {
-    this.cantidadErrorFile = 0
     this.modalRef.hide()
   }
 
@@ -689,12 +688,6 @@ export class EditarSolicitudComponent implements OnInit {
 
   procesarArchivoServicios(file) {
 
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
-      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
-      this.spinner.hide();
-      return false;
-    }
-
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
       return false;
@@ -748,8 +741,6 @@ export class EditarSolicitudComponent implements OnInit {
           this.mostrarError('No se encontraron registros para subir');
           return false;
         }
-       
-        
       } 
       else {
         this.spinner.hide();
@@ -757,11 +748,16 @@ export class EditarSolicitudComponent implements OnInit {
         return false;
       }
     }
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
+      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
+      this.spinner.hide();
+      this.cantidadErrorFileCTS = 0;
+      return false;
+    }
   }
 
   limpiarArrayErrorFileCTS() {
-    this.cantidadErrorFileCTS = 0
-    this.modalRef.hide()
+      this.modalRef.hide()
   }
 
   ValidarVaciosCTS(row: any, i: number): any {
@@ -846,7 +842,7 @@ export class EditarSolicitudComponent implements OnInit {
         else{
           setTimeout(() => {
             this.limpiarArrayErrorFileCTS()
-          }, 8000);
+          }, 20000);
           return "";
         } 
     }
