@@ -64,6 +64,7 @@ export class VerSolicitudTabComponent implements OnInit {
   ArchivoAdjunto: boolean;
   ArchivoAdjuntoActivos: boolean;
   numSolSAP: number;
+  consecutivo: number;
   comentarioRegistrarSAP: string;
   tieneContrato: Boolean;
   ObjCondicionesContractuales: any;
@@ -146,6 +147,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.estadoRegistrarSAP = solicitud.EstadoRegistrarSAP;
         this.numSolSAP = solicitud.NumSolSAP;
+        this.consecutivo = solicitud.Consecutivo;
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
         if (solicitud.Attachments === true) {
           let ObjArchivos = solicitud.AttachmentFiles.results;
