@@ -657,14 +657,8 @@ procesarArchivoServicios(file) {
                         }
                       )
                   }                    
-<<<<<<< HEAD
-                }, 
-                (err) => {
-                  this.mostrarError('Error en la creación de la condición técnica de bienes');
-=======
                 }, err => {
                   this.mostrarError('Error en la creación de la condición técnica de servicios');
->>>>>>> master
                   this.spinner.hide();
                 }
               )
