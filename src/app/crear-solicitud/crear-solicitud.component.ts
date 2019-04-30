@@ -228,6 +228,12 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   procesarArchivo(file) {
+
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar') {
+      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
+      this.spinner.hide();
+      return false;
+    }
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
       return false;
@@ -286,11 +292,17 @@ export class CrearSolicitudComponent implements OnInit {
       }
       else {
         this.spinner.hide();
-        this.mostrarError('El archivo no es el correcto, por favor verifiquelo');
+        this.mostrarError('El archivo no es el correcto, por favor verifiquelo o descargue la plantilla estándar');
         return false;
       }
     }
   }
+
+  limpiarArrayErrorFile() {
+    this.cantidadErrorFile = 0
+    this.modalRef.hide()
+  }
+
   ValidarVaciosCTB(row, i){
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let codigo = row[0];
@@ -304,6 +316,20 @@ export class CrearSolicitudComponent implements OnInit {
     let numeroCostoInversion = row[8];
     let numeroCuenta = row[9];
     let comentarios = row[10];
+    let valorEstimadoStringBienes;
+    let cantidadStringBienes;
+    if(valorEstimado !== "" || valorEstimado !== null){
+      valorEstimadoStringBienes = `${valorEstimado}`
+    }
+    let regexletras = /^[a-zA-Z]+$/g;
+    let testeadoBienes = regexletras.test(valorEstimadoStringBienes);
+    
+    if(cantidad !== "" || cantidad !== null) {
+      cantidadStringBienes = `${cantidad}`
+    }
+    let cantidadLetrasBienes = /^[a-zA-Z]+$/g;
+    let cantidadTesteadoBienes = cantidadLetrasBienes.test(cantidadStringBienes)
+   
 
     if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
       
@@ -323,6 +349,15 @@ export class CrearSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
         }
+        if(cantidadTesteadoBienes === true) {
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
+        }
+
+        if(testeadoBienes === true){
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+        }
     
         if(costoInversion === "" || costoInversion === null || costoInversion === undefined){
           this.cantidadErrorFile++;
@@ -339,7 +374,7 @@ export class CrearSolicitudComponent implements OnInit {
         }
       
         if(this.cantidadErrorFile === 0){
-          valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+          // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
           let Obj ={
             Title: "Condición Técnicas Bienes " + new Date().toDateString(),
             SolicitudId: this.idSolicitudGuardada,
@@ -350,8 +385,8 @@ export class CrearSolicitudComponent implements OnInit {
             Fabricante: fabricante.toString(),
             Cantidad: cantidad,
             CantidadSondeo: cantidad,
-            ValorEstimado: valorEstimado.toString(),
-            PrecioSondeo: valorEstimado.toString(),
+            ValorEstimado: valorEstimadoStringBienes,
+            PrecioSondeo: valorEstimadoStringBienes,
             Comentarios: comentarios,
             TipoMoneda: tipoMoneda.toString(),
             MonedaSondeo: tipoMoneda.toString(),
@@ -362,6 +397,9 @@ export class CrearSolicitudComponent implements OnInit {
             return Obj;         
         } 
         else{
+          setTimeout(() => {
+            this.limpiarArrayErrorFile()
+          }, 8000);
           return "";
         }   
       }
@@ -383,7 +421,14 @@ export class CrearSolicitudComponent implements OnInit {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
           }
-      
+          if(cantidadTesteadoBienes === true) {
+            this.cantidadErrorFile++;
+            this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
+          }
+          if(testeadoBienes === true){
+            this.cantidadErrorFile++;
+            this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+          }
           if(costoInversion === "" || costoInversion === null || costoInversion === undefined){
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
@@ -399,7 +444,7 @@ export class CrearSolicitudComponent implements OnInit {
           }
         
           if(this.cantidadErrorFile === 0){
-            valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+            // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
             let Obj ={
               Title: "Condición Técnicas Bienes " + new Date().toDateString(),
               SolicitudId: this.idSolicitudGuardada,
@@ -410,8 +455,8 @@ export class CrearSolicitudComponent implements OnInit {
               Fabricante: fabricante.toString(),
               Cantidad: cantidad,
               CantidadSondeo: cantidad,
-              ValorEstimado: valorEstimado.toString(),
-              PrecioSondeo: valorEstimado.toString(),
+              ValorEstimado: valorEstimadoStringBienes,
+              PrecioSondeo: valorEstimadoStringBienes,
               Comentarios: comentarios,
               TipoMoneda: tipoMoneda.toString(),
               MonedaSondeo: tipoMoneda.toString(),
@@ -422,6 +467,9 @@ export class CrearSolicitudComponent implements OnInit {
               return Obj;         
           } 
           else{
+            setTimeout(() => {
+              this.limpiarArrayErrorFile()
+            }, 8000);
             return "";
           }   
         
@@ -445,9 +493,17 @@ export class CrearSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
         }
+        if(cantidadTesteadoBienes === true) {
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
+        }
+        if(testeadoBienes === true){
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+        }
     
         if(this.cantidadErrorFile === 0){
-          valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+          // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
           let Obj ={
             Title: "Condición Técnicas Bienes " + new Date().toDateString(),
             SolicitudId: this.idSolicitudGuardada,
@@ -458,8 +514,8 @@ export class CrearSolicitudComponent implements OnInit {
             Fabricante: fabricante.toString(),
             Cantidad: cantidad,
             CantidadSondeo: cantidad,
-            ValorEstimado: valorEstimado.toString(),
-            PrecioSondeo: valorEstimado.toString(),
+            ValorEstimado: valorEstimadoStringBienes,
+            PrecioSondeo: valorEstimadoStringBienes,
             Comentarios: comentarios,
             TipoMoneda: tipoMoneda.toString(),
             MonedaSondeo: tipoMoneda.toString(),
@@ -470,6 +526,9 @@ export class CrearSolicitudComponent implements OnInit {
             return Obj;         
         } 
         else{
+          setTimeout(() => {
+            this.limpiarArrayErrorFile()
+          }, 8000);
           return "";
         }   
     }
@@ -491,9 +550,17 @@ export class CrearSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
       }
+      if(cantidadTesteadoBienes === true) {
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
+      }
+      if(testeadoBienes === true){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+      }
     
       if(this.cantidadErrorFile === 0){
-        valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+        // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj ={
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
           SolicitudId: this.idSolicitudGuardada,
@@ -504,8 +571,8 @@ export class CrearSolicitudComponent implements OnInit {
           Fabricante: fabricante.toString(),
           Cantidad: cantidad,
           CantidadSondeo: cantidad,
-          ValorEstimado: valorEstimado.toString(),
-          PrecioSondeo: valorEstimado.toString(),
+          ValorEstimado: valorEstimadoStringBienes,
+          PrecioSondeo: valorEstimadoStringBienes,
           Comentarios: comentarios,
           TipoMoneda: tipoMoneda.toString(),
           MonedaSondeo: tipoMoneda.toString(),
@@ -516,6 +583,9 @@ export class CrearSolicitudComponent implements OnInit {
           return Obj;         
       } 
       else{
+        setTimeout(() => {
+          this.limpiarArrayErrorFile()
+        }, 8000);
         return "";
       } 
     }  
@@ -544,6 +614,11 @@ leerArchivoServicios(inputValue: any): void {
 }
 
 procesarArchivoServicios(file) {
+  if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar') {
+    this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
+    this.spinner.hide();
+    return false;
+  }
   if (file.length === 0) {
     this.mostrarError('El archivo se encuentra vacio');
     return false;
@@ -582,7 +657,7 @@ procesarArchivoServicios(file) {
                       )
                   }                    
                 }, err => {
-                  this.mostrarError('Error en la creación de la condición técnica de bienes');
+                  this.mostrarError('Error en la creación de la condición técnica de servicios');
                   this.spinner.hide();
                 }
               )
@@ -602,10 +677,16 @@ procesarArchivoServicios(file) {
     } 
     else {
       this.spinner.hide();
-      this.mostrarError('El archivo no es el correcto, por favor verifiquelo');
+      this.mostrarError('El archivo no es el correcto, por favor verifiquelo o descargue la plantilla estándar');
       return false;
     }
   }
+  
+}
+
+limpiarArrayErrorFileCTS() {
+  this.cantidadErrorFileCTS = 0
+  this.modalRef.hide()
 }
 
 ValidarVaciosCTS(row: any, i: number): any {
@@ -619,6 +700,19 @@ ValidarVaciosCTS(row: any, i: number): any {
   let numeroCostoInversion = row[6];
   let numeroCuenta = row[7];
   let comentarios = row[8];
+  let valorEstimadoString;
+  let cantidadString;
+  if(valorEstimado !== "" || valorEstimado !== null){
+    valorEstimadoString = `${valorEstimado}`
+  }
+  let regexletras = /^[a-zA-Z]+$/g;
+  let testeado = regexletras.test(valorEstimadoString);
+
+  if(cantidad !== "" || cantidad !== null){
+    cantidadString = `${cantidad}`
+  } 
+  let cantidadLetras = /^[a-zA-Z]+$/g;
+  let cantidadTesteadoServicios = cantidadLetras.test(cantidadString)
 
   if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
     
@@ -630,9 +724,15 @@ ValidarVaciosCTS(row: any, i: number): any {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
       }
-      if(valorEstimado === "" || valorEstimado === null){
+
+      if(cantidadTesteadoServicios === true){
         this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+        this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
+      }
+
+      if(testeado === true){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
       }
       if(costoInversion === "" || costoInversion === null){
         this.cantidadErrorFileCTS++;
@@ -647,7 +747,7 @@ ValidarVaciosCTS(row: any, i: number): any {
         this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
       }
       if(this.cantidadErrorFileCTS === 0){
-        valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+
   
         let Obj ={
           Title: "Condición Técnicas Servicios" + new Date().toDateString(),
@@ -657,8 +757,8 @@ ValidarVaciosCTS(row: any, i: number): any {
           Descripcion: descripcion.toString(),
           Cantidad: cantidad,
           CantidadSondeo: cantidad,
-          ValorEstimado: valorEstimado.toString(),
-          PrecioSondeo: valorEstimado.toString(),
+          ValorEstimado: valorEstimadoString,
+          PrecioSondeo: valorEstimadoString,
           TipoMoneda: tipoMoneda.toString(),
           MonedaSondeo: tipoMoneda.toString(),
           Comentario: comentarios,
@@ -669,6 +769,9 @@ ValidarVaciosCTS(row: any, i: number): any {
           return Obj;         
       } 
       else{
+        setTimeout(() => {
+          this.limpiarArrayErrorFileCTS()
+        }, 8000);
         return "";
       } 
     
@@ -683,9 +786,13 @@ ValidarVaciosCTS(row: any, i: number): any {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
         }
-        if(valorEstimado === "" || valorEstimado === null){
+        if(cantidadTesteadoServicios === true){
           this.cantidadErrorFileCTS++;
-          this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+          this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
+        }
+        if(testeado === true){
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
         if(costoInversion === "" || costoInversion === null){
           this.cantidadErrorFileCTS++;
@@ -700,7 +807,7 @@ ValidarVaciosCTS(row: any, i: number): any {
           this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
         }
         if(this.cantidadErrorFileCTS === 0){
-          valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+          // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
     
           let Obj ={
             Title: "Condición Técnicas Servicios" + new Date().toDateString(),
@@ -710,8 +817,8 @@ ValidarVaciosCTS(row: any, i: number): any {
             Descripcion: descripcion.toString(),
             Cantidad: cantidad,
             CantidadSondeo: cantidad,
-            ValorEstimado: valorEstimado.toString(),
-            PrecioSondeo: valorEstimado.toString(),
+            ValorEstimado: valorEstimadoString,
+            PrecioSondeo: valorEstimadoString,
             TipoMoneda: tipoMoneda.toString(),
             MonedaSondeo: tipoMoneda.toString(),
             Comentario: comentarios,
@@ -722,6 +829,9 @@ ValidarVaciosCTS(row: any, i: number): any {
             return Obj;         
         } 
         else{
+          setTimeout(() => {
+            this.limpiarArrayErrorFileCTS()
+          }, 8000);
           return "";
         }
       
@@ -737,13 +847,17 @@ ValidarVaciosCTS(row: any, i: number): any {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
       }
-      if(valorEstimado === "" || valorEstimado === null){
+      if(cantidadTesteadoServicios === true){
         this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+        this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
+      }
+      if(testeado === true){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
       }
      
       if(this.cantidadErrorFileCTS === 0){
-        valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+        // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
   
         let Obj ={
           Title: "Condición Técnicas Servicios" + new Date().toDateString(),
@@ -753,8 +867,8 @@ ValidarVaciosCTS(row: any, i: number): any {
           Descripcion: descripcion.toString(),
           Cantidad: cantidad,
           CantidadSondeo: cantidad,
-          ValorEstimado: valorEstimado.toString(),
-          PrecioSondeo: valorEstimado.toString(),
+          ValorEstimado: valorEstimadoString,
+          PrecioSondeo: valorEstimadoString,
           TipoMoneda: tipoMoneda.toString(),
           MonedaSondeo: tipoMoneda.toString(),
           Comentario: comentarios,
@@ -765,6 +879,9 @@ ValidarVaciosCTS(row: any, i: number): any {
           return Obj;         
       } 
       else{
+        setTimeout(() => {
+          this.limpiarArrayErrorFileCTS()
+        }, 8000);
         return "";
       }
     
@@ -778,13 +895,17 @@ ValidarVaciosCTS(row: any, i: number): any {
       this.cantidadErrorFileCTS++;
       this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
     }
-    if(valorEstimado === "" || valorEstimado === null){
+    if(cantidadTesteadoServicios === true){
       this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
+      this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
+    }
+    if(testeado === true){
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
     }
    
     if(this.cantidadErrorFileCTS === 0){
-      valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
+      // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
 
       let Obj ={
         Title: "Condición Técnicas Servicios" + new Date().toDateString(),
@@ -794,8 +915,8 @@ ValidarVaciosCTS(row: any, i: number): any {
         Descripcion: descripcion.toString(),
         Cantidad: cantidad,
         CantidadSondeo: cantidad,
-        ValorEstimado: valorEstimado.toString(),
-        PrecioSondeo: valorEstimado.toString(),
+        ValorEstimado: valorEstimadoString,
+        PrecioSondeo: valorEstimadoString,
         TipoMoneda: tipoMoneda.toString(),
         MonedaSondeo: tipoMoneda.toString(),
         Comentario: comentarios,
@@ -806,6 +927,9 @@ ValidarVaciosCTS(row: any, i: number): any {
         return Obj;         
     } 
     else{
+      setTimeout(() => {
+        this.limpiarArrayErrorFileCTS()
+      }, 8000);
       return "";
     }
   }
@@ -1505,7 +1629,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     // let indexNumeroCostoInversion =this.condicionesTS.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
     // let indexNumeroCuenta =this.condicionesTS.map(function(e) { return e.numeroCuenta; }).indexOf(null);
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
-    if(valorOrdenEstadistica == "NO" && (costoInversion === "" || costoInversion === null || numeroCostoInversion === "" || numeroCostoInversion === null || numeroCuenta === "" || numeroCuenta === null)) {
+    if(valorOrdenEstadistica == "NO" && (costoInversion === "" || costoInversion === null) && (numeroCostoInversion === "" || numeroCostoInversion === null) && (numeroCuenta === "" || numeroCuenta === null)) {
        this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
        respuesta = false;
     }
@@ -1527,7 +1651,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     // let indexNumeroCostoInversion =this.condicionesTB.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
     // let indexNumeroCuenta =this.condicionesTB.map(function(e) { return e.numeroCuenta; }).indexOf(null);
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
-    if(valorOrdenEstadistica == "NO" && (costoInversion === null || costoInversion === "" || numeroCostoInversion === null || numeroCostoInversion === "" || numeroCuenta === "" || numeroCuenta === null)){
+    if(valorOrdenEstadistica == "NO" && (costoInversion === null || costoInversion === "") && (numeroCostoInversion === null || numeroCostoInversion === "") && (numeroCuenta === "" || numeroCuenta === null)){
       this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
      respuesta = false;
     }
