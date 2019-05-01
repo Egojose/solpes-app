@@ -13,13 +13,19 @@
                 <mat-panel-title><strong>Ver bienes solicitados</strong></mat-panel-title>
                 <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
             </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-checkbox color="primary" [(ngModel)]="todosBienes" (change)="seleccionarTodosBienes($event)">Seleccionar todos los bienes</mat-checkbox>
+                </div>
+            </div>
+            <br>
             <div class="row" id="TablaVerificar">
                 <div class="col-md-12">
                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
                         <ng-container matColumnDef="seleccionar">
                             <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-checkbox color="primary" value="{{element.IdBienes}}" [ngModel]="element.idContrato !== '' && element.idContrato !== null" [disabled]="element.idContrato !== '' && element.idContrato !== null" (change)="seleccionarBienes($event)"></mat-checkbox>
+                                <mat-checkbox color="primary" value="{{element.IdBienes}}" [ngModel]="element.idContrato !== '' && element.idContrato !== null" [disabled]="element.idContrato !== '' && element.idContrato !== null && element.idContrato !== '0'" (change)="seleccionarBienes($event)"></mat-checkbox>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="codigo">
@@ -78,13 +84,19 @@
                 <mat-panel-title><strong>Ver servicios solicitados</strong></mat-panel-title>
                 <mat-panel-description>{{panelOpenState1 ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
             </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-checkbox color="primary" [(ngModel)]="todosServicios" (change)="seleccionarTodosServicios($event)">Seleccionar todos los servicios</mat-checkbox>
+                </div>
+            </div>
+            <br>
             <div class="row" id="TablaVerificar">
                 <div class="col-md-12">
                     <table mat-table [dataSource]="dataSourceTS" class="mat-elevation-z8">
                         <ng-container matColumnDef="seleccionar">
                             <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-checkbox value="{{element.IdBienes}}" color="primary" [ngModel]="element.idContrato !== '' && element.idContrato !== null" [disabled]="element.idContrato !== '' && element.idContrato !== null" (change)="seleccionarServicios($event)"></mat-checkbox>
+                                <mat-checkbox value="{{element.IdBienes}}" color="primary" [ngModel]="element.idContrato !== '' && element.idContrato !== null" [disabled]="element.idContrato !== '' && element.idContrato !== null && element.idContrato !== '0'" (change)="seleccionarServicios($event)"></mat-checkbox>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="codigo">

@@ -83,6 +83,8 @@ export class ContratosComponent implements OnInit {
   ServiciosSeleccionados: any[]=[];
   CantidadBienesServicios: number = 0;
   CantidadBienesServiciosConContrato: number = 0;
+  todosBienes: any;
+  todosServicios: boolean;
  
 
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
@@ -622,26 +624,82 @@ export class ContratosComponent implements OnInit {
   }
 
   seleccionarBienes(evento){
+    let idElemento = parseInt(evento.source.value);
     if (evento.checked === true) {
-        let idElemento = evento.source.value;
-        this.BienesSeleccionados.push(idElemento);
+      let index = this.ObjCondicionesTecnicas.findIndex(k=> k.IdBienes === idElemento);
+      this.ObjCondicionesTecnicas[index]["idContrato"] = "0";
+      this.BienesSeleccionados.push(idElemento);
     }
     else{
-      let idElemento = evento.source.value;
+      let indexCT = this.ObjCondicionesTecnicas.findIndex(k=> k.IdBienes ===idElemento);
+      this.ObjCondicionesTecnicas[indexCT]["idContrato"] = null;
       let index =this.BienesSeleccionados.findIndex(x=> x === idElemento);
       this.BienesSeleccionados.splice(index, 1);
+      this.todosBienes = false;
     }    
   }
 
-  seleccionarServicios(evento){    
+  seleccionarTodosBienes(evento){
     if (evento.checked === true) {
-        let idElemento = evento.source.value;
-        this.ServiciosSeleccionados.push(idElemento);
+      this.ObjCondicionesTecnicas.filter(
+        (x)=>{
+          if (x.idContrato === null) {
+            let pp = this.BienesSeleccionados.findIndex(j=> j === x.IdBienes);
+            if (pp === -1) {
+              this.BienesSeleccionados.push(x.IdBienes);
+              let index = this.ObjCondicionesTecnicas.findIndex(k=> k.IdBienes === x.IdBienes);
+              this.ObjCondicionesTecnicas[index]["idContrato"] = "0";
+            }          
+          }        
+      });
     }
     else{
-      let idElemento = evento.source.value;
+      this.BienesSeleccionados.forEach(
+        (x)=>{
+          let indexCT = this.ObjCondicionesTecnicas.findIndex(k=> k.IdBienes === x);
+          this.ObjCondicionesTecnicas[indexCT]["idContrato"] = null;          
+        });
+        this.BienesSeleccionados =[];
+    }    
+  }
+
+  seleccionarServicios(evento){  
+    let idElemento = parseInt(evento.source.value);  
+    if (evento.checked === true) {
+        let index = this.ObjCondicionesTecnicasServicios.findIndex(k=> k.IdBienes === idElemento);
+        this.ObjCondicionesTecnicasServicios[index]["idContrato"] = "0";
+        this.ServiciosSeleccionados.push(idElemento);
+    }
+    else{  
+      let indexCTS = this.ObjCondicionesTecnicasServicios.findIndex(k=> k.IdBienes === idElemento);
+      this.ObjCondicionesTecnicasServicios[indexCTS]["idContrato"] = null;    
       let index =this.ServiciosSeleccionados.findIndex(x=> x === idElemento);
       this.ServiciosSeleccionados.splice(index, 1);
+      this.todosServicios = false;
+    }    
+  }
+
+  seleccionarTodosServicios(evento){
+    if (evento.checked === true) {
+      this.ObjCondicionesTecnicasServicios.filter(
+        (x)=>{
+          if (x.idContrato === null) {
+            let pp = this.ServiciosSeleccionados.findIndex(j=> j === x.IdBienes);
+            if (pp === -1) {
+              this.ServiciosSeleccionados.push(x.IdBienes);
+              let index = this.ObjCondicionesTecnicasServicios.findIndex(k=> k.IdBienes === x.IdBienes);
+              this.ObjCondicionesTecnicasServicios[index]["idContrato"] = "0";
+            }          
+          }        
+      });
+    }
+    else{
+      this.ServiciosSeleccionados.forEach(
+        (x)=>{
+          let indexCTS = this.ObjCondicionesTecnicasServicios.findIndex(k=> k.IdBienes === x);
+          this.ObjCondicionesTecnicasServicios[indexCTS]["idContrato"] = null;          
+        });
+        this.ServiciosSeleccionados =[];
     }    
   }
 
