@@ -288,12 +288,6 @@ export class EditarSolicitudComponent implements OnInit {
 
   procesarArchivo(file) {
 
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
-      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
-      this.spinner.hide();
-      return false;
-    }
-
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
       return false;
@@ -347,8 +341,6 @@ export class EditarSolicitudComponent implements OnInit {
           this.mostrarError('No se encontraron registros para subir');
           return false;
         }
-
-
       }
       else {
         this.spinner.hide();
@@ -356,10 +348,15 @@ export class EditarSolicitudComponent implements OnInit {
         return false;
       }
     }
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
+      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
+      this.spinner.hide();
+      this.cantidadErrorFile = 0;
+      return false;
+    }
   }
 
   limpiarArrayErrorFile() {
-    this.cantidadErrorFile = 0
     this.modalRef.hide()
   }
 
@@ -378,6 +375,7 @@ export class EditarSolicitudComponent implements OnInit {
     let comentarios = row[10];
     let valorEstimadoStringBienes;
     let cantidadStringBienes;
+    let numeroCuentaString;
     if(valorEstimado !== "" || valorEstimado !== null){
       valorEstimadoStringBienes = `${valorEstimado}`
     }
@@ -388,7 +386,14 @@ export class EditarSolicitudComponent implements OnInit {
       cantidadStringBienes = `${cantidad}`
     }
     let cantidadLetrasBienes = /^[a-zA-Z]+$/g;
-    let cantidadTesteadoBienes = cantidadLetrasBienes.test(cantidadStringBienes)
+    let cantidadTesteadoBienes = cantidadLetrasBienes.test(cantidadStringBienes);
+
+    if(numeroCuenta !== "" || numeroCuenta !== null) {
+      numeroCuentaString = `${numeroCuenta}`;
+    }
+
+    let numeroCuentaLetrasBienes = /^[a-zA-Z]+$/g;
+    let numeroCuentaTesteadoBienes = numeroCuentaLetrasBienes.test(numeroCuentaString);
    
 
     if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
@@ -413,10 +418,21 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
         }
-
         if(testeadoBienes === true){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+        }
+        if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
+        }
+        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
+        }
+        if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión')) {
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
         }
         if(costoInversion === "" || costoInversion === null){
           this.cantidadErrorFile++;
@@ -425,6 +441,10 @@ export class EditarSolicitudComponent implements OnInit {
         if(numeroCostoInversion === "" || numeroCostoInversion === null){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo Número centro de costos/ Orden de inversión en la columna I fila "+ (i+1)})
+        }
+        if(numeroCuentaTesteadoBienes === true) {
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: "El campo Número de cuenta sólo admite números en la columna J fila " + (i + 1)} )
         }
         if(numeroCuenta === "" || numeroCuenta === null){
           this.cantidadErrorFile++;
@@ -449,7 +469,7 @@ export class EditarSolicitudComponent implements OnInit {
             MonedaSondeo: tipoMoneda.toString(),
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuenta.toString()
+            numeroCuenta: numeroCuentaString
         }
             return Obj;         
         } 
@@ -480,10 +500,21 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
           }
-  
           if(testeadoBienes === true){
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+          }
+          if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+            this.cantidadErrorFile++;
+            this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
+          }
+          if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+            this.cantidadErrorFile++;
+            this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
+          }
+          if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión')) {
+            this.cantidadErrorFile++;
+            this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
           }
           if(costoInversion === "" || costoInversion === null){
             this.cantidadErrorFile++;
@@ -492,6 +523,10 @@ export class EditarSolicitudComponent implements OnInit {
           if(numeroCostoInversion === "" || numeroCostoInversion === null){
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo Número centro de costos/ Orden de inversión en la columna I fila "+ (i+1)})
+          }
+          if(numeroCuentaTesteadoBienes === true) {
+            this.cantidadErrorFile++;
+            this.ArrayErrorFile.push({error: "El campo Número de cuenta sólo admite números en la columna J fila " + (i + 1)} )
           }
           if(numeroCuenta === "" || numeroCuenta === null){
             this.cantidadErrorFile++;
@@ -516,7 +551,7 @@ export class EditarSolicitudComponent implements OnInit {
               MonedaSondeo: tipoMoneda.toString(),
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
-              numeroCuenta: numeroCuenta.toString()
+              numeroCuenta: numeroCuentaString
           }
               return Obj;         
           } 
@@ -547,10 +582,17 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
         }
-
         if(testeadoBienes === true){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+        }
+        if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
+        }
+        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
         
         if(this.cantidadErrorFile === 0){
@@ -602,10 +644,17 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
       }
-
       if(testeadoBienes === true){
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+      }
+      if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
+      }
+      if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+        this.cantidadErrorFile++;
+        this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
       }
       
       if(this.cantidadErrorFile === 0){
@@ -689,12 +738,6 @@ export class EditarSolicitudComponent implements OnInit {
 
   procesarArchivoServicios(file) {
 
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
-      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
-      this.spinner.hide();
-      return false;
-    }
-
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
       return false;
@@ -748,8 +791,6 @@ export class EditarSolicitudComponent implements OnInit {
           this.mostrarError('No se encontraron registros para subir');
           return false;
         }
-       
-        
       } 
       else {
         this.spinner.hide();
@@ -757,11 +798,16 @@ export class EditarSolicitudComponent implements OnInit {
         return false;
       }
     }
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
+      this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
+      this.spinner.hide();
+      this.cantidadErrorFileCTS = 0;
+      return false;
+    }
   }
 
   limpiarArrayErrorFileCTS() {
-    this.cantidadErrorFileCTS = 0
-    this.modalRef.hide()
+      this.modalRef.hide()
   }
 
   ValidarVaciosCTS(row: any, i: number): any {
@@ -776,6 +822,7 @@ export class EditarSolicitudComponent implements OnInit {
     let numeroCuenta = row[7];
     let comentarios = row[8];
     let valorEstimadoString;
+    let numeroCuentaStringCTS;
   let cantidadString;
   if(valorEstimado !== "" || valorEstimado !== null){
     valorEstimadoString = `${valorEstimado}`
@@ -787,7 +834,14 @@ export class EditarSolicitudComponent implements OnInit {
     cantidadString = `${cantidad}`
   } 
   let cantidadLetras = /^[a-zA-Z]+$/g;
-  let cantidadTesteadoServicios = cantidadLetras.test(cantidadString)
+  let cantidadTesteadoServicios = cantidadLetras.test(cantidadString);
+
+  if(numeroCuenta !== "" || numeroCuenta !== null) {
+    numeroCuentaStringCTS = `${numeroCuenta}`
+  }
+
+  let numeroCuentaLetrasCTS = /^[a-zA-Z]+$/g;
+  let numeroCuentaTesteadoServicios = numeroCuentaLetrasCTS.test(numeroCuentaStringCTS);
 
 
     if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
@@ -804,10 +858,17 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
         }
-  
         if(testeado === true){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+        }
+        if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
+        }
+        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
         if(costoInversion === "" || costoInversion === null){
           this.cantidadErrorFile++;
@@ -816,6 +877,10 @@ export class EditarSolicitudComponent implements OnInit {
         if(numeroCostoInversion === "" || costoInversion === null){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+        }
+        if(numeroCuentaTesteadoServicios === true) {
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error: "El campo Número de cuenta sólo admite números en la columna H fila " + (i + 1)})
         }
         if(numeroCuenta === "" || numeroCuenta === null){
           this.cantidadErrorFileCTS++;
@@ -839,14 +904,14 @@ export class EditarSolicitudComponent implements OnInit {
             Comentario: comentarios,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuenta.toString()
+            numeroCuenta: numeroCuentaStringCTS
           }
             return Obj;         
         } 
         else{
           setTimeout(() => {
             this.limpiarArrayErrorFileCTS()
-          }, 8000);
+          }, 15000);
           return "";
         } 
     }
@@ -863,10 +928,17 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
           }
-    
           if(testeado === true){
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+          }
+          if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+            this.cantidadErrorFileCTS++;
+            this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
+          }
+          if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+            this.cantidadErrorFileCTS++;
+            this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
           }
           if(costoInversion === "" || costoInversion === null){
             this.cantidadErrorFileCTS++;
@@ -875,6 +947,10 @@ export class EditarSolicitudComponent implements OnInit {
           if(numeroCostoInversion === "" || numeroCostoInversion === null){
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
+          }
+          if(numeroCuentaTesteadoServicios === true) {
+            this.cantidadErrorFileCTS++;
+            this.ArrayErrorFileCTS.push({error: "El campo Número de cuenta sólo admite números en la columna H fila " + (i + 1)})
           }
           if(numeroCuenta === "" || numeroCuenta === null){
             this.cantidadErrorFileCTS++;
@@ -898,14 +974,14 @@ export class EditarSolicitudComponent implements OnInit {
               Comentario: comentarios,
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
-              numeroCuenta: numeroCuenta.toString()
+              numeroCuenta: numeroCuentaStringCTS
             }
               return Obj;         
           } 
           else{
             setTimeout(() => {
               this.limpiarArrayErrorFileCTS()
-            }, 8000);
+            }, 15000);
             return "";
           }
       }
@@ -924,10 +1000,17 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
         }
-  
         if(testeado === true){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+        }
+        if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
+        }
+        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
        
         if(this.cantidadErrorFileCTS === 0){
@@ -955,7 +1038,7 @@ export class EditarSolicitudComponent implements OnInit {
         else{
           setTimeout(() => {
             this.limpiarArrayErrorFileCTS()
-          }, 8000);
+          }, 15000);
           return "";
         }
     }
@@ -972,10 +1055,17 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
       }
-
       if(testeado === true){
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
+      }
+      if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
+      }
+      if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
       }
      
       if(this.cantidadErrorFileCTS === 0){

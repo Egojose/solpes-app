@@ -348,18 +348,20 @@
                             />
                         </div>
                         <div class="col-md-6">
-                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTB" class="asterisco-obligatorio">*</span>
-                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
-                <option value="">Seleccione</option>
-                <option value="ARS">ARS</option>
-                <option value="BRL">BRL</option>
-                <option value="CLP">CLP</option>
-                <option value="COP">COP</option>
-                <option value="EUR">EUR</option>
-                <option value="PEN">PEN</option>
-                <option value="UF">UF</option>
-                <option value="USD">USD</option>
-              </select>
+                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTB"
+                                class="asterisco-obligatorio">*</span>
+                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control"
+                                [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
+                                <option value="">Seleccione</option>
+                                <option value="ARS">ARS</option>
+                                <option value="BRL">BRL</option>
+                                <option value="CLP">CLP</option>
+                                <option value="COP">COP</option>
+                                <option value="EUR">EUR</option>
+                                <option value="PEN">PEN</option>
+                                <option value="UF">UF</option>
+                                <option value="USD">USD</option>
+                            </select>
                             <div *ngIf="ctbSubmitted && f.tipoMonedaCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.tipoMonedaCTB.errors.required">Este campo es requerido</div>
                             </div>
@@ -463,18 +465,20 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTS" class="asterisco-obligatorio">*</span>
-                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
-                <option value="">Seleccione</option>
-                <option value="ARS">ARS</option>
-                <option value="BRL">BRL</option>
-                <option value="CLP">CLP</option>
-                <option value="COP">COP</option>
-                <option value="EUR">EUR</option>
-                <option value="PEN">PEN</option>
-                <option value="UF">UF</option>
-                <option value="USD">USD</option>
-              </select>
+                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTS"
+                                class="asterisco-obligatorio">*</span>
+                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control"
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
+                                <option value="">Seleccione</option>
+                                <option value="ARS">ARS</option>
+                                <option value="BRL">BRL</option>
+                                <option value="CLP">CLP</option>
+                                <option value="COP">COP</option>
+                                <option value="EUR">EUR</option>
+                                <option value="PEN">PEN</option>
+                                <option value="UF">UF</option>
+                                <option value="USD">USD</option>
+                            </select>
                             <div *ngIf="ctsSubmitted && f2.tipoMonedaCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.tipoMonedaCTS.errors.required">Este campo es requerido</div>
                             </div>
@@ -562,6 +566,8 @@
                     {{item.error}}
                 </li>
             </ul>
+            <br>
+            <p>La lista de errores seguirá estando disponible hasta que cargue nuevamente el archivo</p>
         </div>
     </div>
 </ng-template>
@@ -583,6 +589,8 @@
                     {{item.error}}
                 </li>
             </ul>
+            <br>
+            <p>La lista de errores siguirá estando disponible hasta que cargue nuevamente el archivo</p>
         </div>
     </div>
 </ng-template>
