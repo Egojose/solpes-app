@@ -430,6 +430,10 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
+        if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión')) {
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
+        }
         if(costoInversion === "" || costoInversion === null){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
@@ -507,6 +511,10 @@ export class EditarSolicitudComponent implements OnInit {
           if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
+          }
+          if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión')) {
+            this.cantidadErrorFile++;
+            this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
           }
           if(costoInversion === "" || costoInversion === null){
             this.cantidadErrorFile++;
