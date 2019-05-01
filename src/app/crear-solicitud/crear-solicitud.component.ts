@@ -207,7 +207,6 @@ export class CrearSolicitudComponent implements OnInit {
 
   changeListener($event): void {
     this.leerArchivo($event.target);
-    this.limpiarArrayErrorFile();
   }
 
   leerArchivo(inputValue: any): void {
@@ -417,7 +416,7 @@ export class CrearSolicitudComponent implements OnInit {
       else {
         setTimeout(() => {
           this.limpiarArrayErrorFile()
-        }, 15000);
+        },15000);
         return "";
       }
     }
