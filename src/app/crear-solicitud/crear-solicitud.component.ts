@@ -866,7 +866,7 @@ ValidarVaciosCTS(row: any, i: number): any {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila" + (i +1) })
         }
-        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' || tipoMoneda !== 'BRL' || tipoMoneda !== 'CLP' || tipoMoneda !== 'COP' || tipoMoneda !== 'EUR' || tipoMoneda !== 'PEN' || tipoMoneda !== 'UF' || tipoMoneda !== 'USD')){
+        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
@@ -943,7 +943,7 @@ ValidarVaciosCTS(row: any, i: number): any {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
       }
-      if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' || tipoMoneda !== 'BRL' || tipoMoneda !== 'CLP' || tipoMoneda !== 'COP' || tipoMoneda !== 'EUR' || tipoMoneda !== 'PEN' || tipoMoneda !== 'UF' || tipoMoneda !== 'USD')){
+      if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
       }
@@ -999,7 +999,7 @@ ValidarVaciosCTS(row: any, i: number): any {
       this.cantidadErrorFileCTS++;
       this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
     }
-    if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' || tipoMoneda !== 'BRL' || tipoMoneda !== 'CLP' || tipoMoneda !== 'COP' || tipoMoneda !== 'EUR' || tipoMoneda !== 'PEN' || tipoMoneda !== 'UF' || tipoMoneda !== 'USD')){
+    if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
       this.cantidadErrorFileCTS++;
       this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
     }
