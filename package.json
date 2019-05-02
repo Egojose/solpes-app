@@ -26,7 +26,7 @@
     "convert-excel-to-json": "^1.6.1",
     "core-js": "^2.5.4",
     "file-saver": "^2.0.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "ng-select2-component": "^7.0.0",
     "ng-snotify": "^4.3.1",
     "ng6-toastr-notifications": "^1.0.4",
@@ -43,8 +43,8 @@
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.12.3",
-    "@angular/cli": "~7.0.3",
+    "@angular-devkit/build-angular": "^0.13.8",
+    "@angular/cli": "^7.3.8",
     "@angular/compiler-cli": "^7.2.8",
     "@angular/language-service": "~7.0.0",
     "@types/jasmine": "~2.8.8",

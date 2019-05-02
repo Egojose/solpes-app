@@ -219,68 +219,68 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   procesarArchivo(file) {
-      if (file.length === 0) {
-        this.mostrarError('El archivo se encuentra vacio');
-        return false;
-      }
-      else {
-        if (file[0][0]==="Bienes") {
-          if (file.length > 2) {
-               this.ObjCTB = [];
-            for (let i = 2; i < file.length; i++) {
-              let row = file[i];
-              let codigo = row[0];            
-              this.validarCodigosBrasilCTB(codigo, i);           
-              let obj = this.ValidarVaciosCTB(row, i); 
-              if (obj != "") {
-                this.ObjCTB.push(obj);
-              }                      
-            } 
-            if (this.cantidadErrorFile === 0) {
-              let contador = 0;
-              this.ObjCTB.forEach(element => {
-                  this.servicio.agregarCondicionesTecnicasBienesExcel(element).then(
-                    (item: ItemAddResult) => {
-                      contador++;
-                      if (this.ObjCTB.length === contador) {
-                          this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
-                            (res)=>{
-                              this.condicionesTB = CondicionTecnicaBienes.fromJsonList(res);
-                              this.dataSourceCTB.data = this.condicionesTB;
-                              this.emptyCTB = false;
-                              this.modalRef.hide();
-                              this.spinner.hide();
-                            },
-                            (error)=>{
-  
-                            }
-                          )
-                      }                    
-                    }, err => {
-                      this.mostrarError('Error en la creación de la condición técnica de bienes');
-                      this.spinner.hide();
-                    }
-                  )
-              }); 
-            }
-            else{
-              this.spinner.hide();
+    if (file.length === 0) {
+      this.mostrarError('El archivo se encuentra vacio');
+      return false;
+    }
+    else {
+      if (file[0][0] === "Bienes") {
+        if (file.length > 2) {
+          this.ObjCTB = [];
+          for (let i = 2; i < file.length; i++) {
+            let row = file[i];
+            let codigo = row[0];
+            this.validarCodigosBrasilCTB(codigo, i);
+            let obj = this.ValidarVaciosCTB(row, i);
+            if (obj != "") {
+              this.ObjCTB.push(obj);
             }
           }
-          else{
+          if (this.cantidadErrorFile === 0) {
+            let contador = 0;
+            this.ObjCTB.forEach(element => {
+              this.servicio.agregarCondicionesTecnicasBienesExcel(element).then(
+                (item: ItemAddResult) => {
+                  contador++;
+                  if (this.ObjCTB.length === contador) {
+                    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+                      (res) => {
+                        this.condicionesTB = CondicionTecnicaBienes.fromJsonList(res);
+                        this.dataSourceCTB.data = this.condicionesTB;
+                        this.emptyCTB = false;
+                        this.modalRef.hide();
+                        this.spinner.hide();
+                      },
+                      (error) => {
+
+                      }
+                    )
+                  }
+                }, err => {
+                  this.mostrarError('Error en la creación de la condición técnica de bienes');
+                  this.spinner.hide();
+                }
+              )
+            });
+          }
+          else {
             this.spinner.hide();
-            this.mostrarError('No se encontraron registros para subir');
-            return false;
           }
-         
-          
-        } 
+        }
         else {
           this.spinner.hide();
-          this.mostrarError('El archivo no es el correcto, por favor verifiquelo');
+          this.mostrarError('No se encontraron registros para subir');
           return false;
         }
+
+
       }
+      else {
+        this.spinner.hide();
+        this.mostrarError('El archivo no es el correcto, por favor verifiquelo');
+        return false;
+      }
+    }
   }
   ValidarVaciosCTB(row, i){
     let codigo = row[0];
@@ -296,27 +296,27 @@ export class CrearSolicitudComponent implements OnInit {
     let comentarios = row[10];
     if (descripcion === "" || descripcion === null) {
       this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B de la fila "+ (i+1)});
+      this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
     }
     if(modelo === "" || modelo === null){
       this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Modelo en la columna C de la fila "+ (i+1)})
+      this.ArrayErrorFile.push({error:"El campo Modelo en la columna C fila "+ (i+1)})
     }
     if(fabricante === "" || fabricante === null){
       this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo fabricante en la columna D de la fila "+ (i+1)})
+      this.ArrayErrorFile.push({error:"El campo fabricante en la columna D fila "+ (i+1)})
     }
     if(cantidad === "" || cantidad === null){
       this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo cantidad en la columna E de la fila "+ (i+1)})
+      this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
     }
     if(costoInversion === "" || costoInversion === null){
       this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H de la fila "+ (i+1)})
+      this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
     }
     if(numeroCuenta === "" || numeroCuenta === null){
       this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Número de cuenta en la columna J de la fila "+ (i+1)})
+      this.ArrayErrorFile.push({error:"El campo Número de cuenta en la columna J fila "+ (i+1)})
     }
     if(this.cantidadErrorFile === 0){
       valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
@@ -446,27 +446,27 @@ procesarArchivoServicios(file) {
 
     if (descripcion === "" || descripcion === null) {
       this.cantidadErrorFile++;
-      this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B de la fila "+ (i+1)});
+      this.ArrayErrorFile.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
     }
     if(cantidad === "" || cantidad === null){
       this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C de la fila "+ (i+1)})
+      this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
     }
     if(valorEstimado === "" || valorEstimado === null){
       this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D de la fila "+ (i+1)})
+      this.ArrayErrorFileCTS.push({error:"El campo valor estimado en la columna D fila "+ (i+1)})
     }
     if(costoInversion === "" || costoInversion === null){
       this.cantidadErrorFile++;
-      this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F de la fila "+ (i+1)})
+      this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
     }
     if(numeroCostoInversion === "" || costoInversion === null){
       this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G de la fila "+ (i+1)})
+      this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
     }
     if(numeroCuenta === "" || numeroCuenta === null){
       this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H de la fila "+ (i+1)})
+      this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
     }
     if(this.cantidadErrorFileCTS === 0){
       valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
@@ -503,7 +503,7 @@ validarCodigosBrasilCTB(codigoValidar, i) {
   if ((solicitudTipo === "Solp" || solicitudTipo === "Orden CM") && paisValidar === "Brasil") {
       if(codigoValidar === "" || codigoValidar === null || codigoValidar === undefined) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error:"El código es obligatorio para Brasil, por favor valide el código de material en la columna A de la fila "+ (i+1)});
+        this.ArrayErrorFile.push({error:"El código es obligatorio para Brasil, por favor valide el código de material en la columna A fila "+ (i+1)});
         // this.mostrarError('El código es obligatorio para Brasil, por favor valide el código de material en la columna A de la fila '+ (i+1));
         // return false;
       }

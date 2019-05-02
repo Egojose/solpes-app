@@ -549,14 +549,14 @@
     <div class="modal-body text-center">
         <h5>Cargue los bienes en un archivo CSV según la planilla estándar</h5>
         <br>
-        <button class="btn btn-primary">Descargar la plantilla estándar</button>
+        <a href="../../assets/archivos/Plantilla_estandar_para_cargar_bienes.xlsx"><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
         <br>
         <br>
         <label for="archivoCsv">Cargue el archivo con los bienes a solicitar</label>
         <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListener($event)">
         <br>
         <div *ngIf="cantidadErrorFile > 0">
-            <h3>Incidentes encontrados en el archivo</h3>
+            <h3>Por favor diligencie los siguientes campos en el archivo</h3>
             <ul class="text-left">
                 <li *ngFor="let item of ArrayErrorFile">
                     {{item.error}}
@@ -571,14 +571,14 @@
     <div class="modal-body text-center">
         <h5>Cargue los servicios en un archivo CSV según la planilla estándar</h5>
         <br>
-        <button class="btn btn-primary">Descargar la plantilla estándar</button>
+        <a href="../../assets/archivos/Plantilla_estandar_para_cargar_servicios.xlsx"><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
         <br>
         <br>
         <label for="archivoCsv">Cargue el archivo con los servicios a solicitar</label>
         <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListenerServicios($event)">
         <br>
         <div *ngIf="cantidadErrorFileCTS > 0">
-            <h3>Incidentes encontrados en el archivo</h3>
+            <h3>Por favor diligencie los siguientes campos en el archivo</h3>
             <ul class="text-left">
                 <li *ngFor="let item of ArrayErrorFileCTS">
                     {{item.error}}
