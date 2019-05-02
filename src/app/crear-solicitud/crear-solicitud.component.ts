@@ -333,7 +333,6 @@ export class CrearSolicitudComponent implements OnInit {
     if(numeroCuenta !== "" || numeroCuenta !== null) {
       numeroCuentaString = `${numeroCuenta}`;
     }
-
     let numeroCuentaLetrasBienes = /^[a-zA-Z]+$/g;
     let numeroCuentaTesteadoBienes = numeroCuentaLetrasBienes.test(numeroCuentaString);
     
