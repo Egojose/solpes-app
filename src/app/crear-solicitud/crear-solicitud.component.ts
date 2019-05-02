@@ -231,6 +231,7 @@ export class CrearSolicitudComponent implements OnInit {
 
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
+      this.spinner.hide();
       return false;
     }
     else {
@@ -664,6 +665,7 @@ leerArchivoServicios(inputValue: any): void {
 
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
+      this.spinner.hide();
       return false;
     }
     else {
