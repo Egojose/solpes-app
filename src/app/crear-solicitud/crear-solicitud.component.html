@@ -1,33 +1,31 @@
 <div class="container">
-  <form [formGroup]="solpFormulario">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="tipo-solicitud">Tipo de solicitud</label><span class="asterisco-obligatorio">*</span>
-          <div class="row">
-            <mat-radio-group class="tipo-solicitud-group" layout="row" formControlName="tipoSolicitud">
-              <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" *ngFor="let tipoSolicitud of tiposSolicitud"
-                [value]="tipoSolicitud.nombre" (change)="ValidacionesTipoSolicitud(tipoSolicitud)">
-                {{tipoSolicitud.nombre}}
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
+    <form [formGroup]="solpFormulario">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="tipo-solicitud">Tipo de solicitud</label><span class="asterisco-obligatorio">*</span>
+                    <div class="row">
+                        <mat-radio-group class="tipo-solicitud-group" layout="row" formControlName="tipoSolicitud">
+                            <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" *ngFor="let tipoSolicitud of tiposSolicitud" [value]="tipoSolicitud.nombre" (change)="ValidacionesTipoSolicitud(tipoSolicitud)">
+                                {{tipoSolicitud.nombre}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="zona-contrato-marco" [hidden]="!mostrarContratoMarco">
+                    <label for="contrato-marco">Contrato Marco</label>
+                    <input type="text" id="cm" name="cm" class="form-control" formControlName="cm" autocomplete="off">
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="zona-contrato-marco" [hidden]="!mostrarContratoMarco">
-          <label for="contrato-marco">Contrato Marco</label>
-          <input type="text" id="cm" name="cm" class="form-control" formControlName="cm" autocomplete="off">
-        </div>
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-md-6">
-        <label for="solicitante" class="col-form-label">Solicitante</label><span class="asterisco-obligatorio">*</span>
-        <input type="text" class="form-control" id="solicitante" value="{{nombreUsuario}}" formControlName="solicitante"
-          [attr.disabled]="true">
-      </div>
-      <!-- <label for="empresa" class="col-form-label">Empresa</label><span class="asterisco-obligatorio">*</span>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label for="solicitante" class="col-form-label">Solicitante</label><span class="asterisco-obligatorio">*</span>
+                <input type="text" class="form-control" id="solicitante" value="{{nombreUsuario}}" formControlName="solicitante" [attr.disabled]="true">
+            </div>
+            <!-- <label for="empresa" class="col-form-label">Empresa</label><span class="asterisco-obligatorio">*</span>
       <div class="col-md-5">
         <select id="empresa" formControlName="empresa" class="form-control">
           <option value="">Seleccione</option>
@@ -36,133 +34,64 @@
           </option>
         </select>
       </div> -->
-    </div>
-    <div class="form-group row">
-      <div class="col-md-6">
-        <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span class="asterisco-obligatorio">*</span>
-        <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto"
-          class="form-control" (update)="seleccionarOrdenadorGastos($event)">
-        </select2>
-        <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
-            No tiene un jefe asignado en Office 365, debes seleccionar uno
         </div>
-      </div>
-      <div class="col-md-6">
-        <label for="pais" class="col-form-label">País</label><span class="asterisco-obligatorio">*</span>
-        <select id="pais" name="pais" formControlName="pais" class="form-control" (change)="filtrarSubcategorias()">
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span class="asterisco-obligatorio">*</span>
+                <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" (update)="seleccionarOrdenadorGastos($event)">
+                </select2>
+                <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+                    No tiene un jefe asignado en Office 365, debe seleccionar uno
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="pais" class="col-form-label">País</label><span class="asterisco-obligatorio">*</span>
+                <select id="pais" name="pais" formControlName="pais" class="form-control" (change)="filtrarSubcategorias()">
           <option value="">Seleccione</option>
           <option *ngFor="let pais of paises" [ngValue]="pais" [text]="pais.nombre">
             {{pais.nombre}}
           </option>
         </select>
-      </div>
-    </div>
+            </div>
+        </div>
 
-    <div class="form-group row">
-      <div class="col-md-6">
-        <label for="categoria" class="col-form-label">Categoría</label><span class="asterisco-obligatorio">*</span>
-        <select id="categoria" name="categoria" formControlName="categoria" class="form-control" (change)="filtrarSubcategorias()">
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label for="categoria" class="col-form-label">Categoría</label><span class="asterisco-obligatorio">*</span>
+                <select id="categoria" name="categoria" formControlName="categoria" class="form-control" (change)="filtrarSubcategorias()">
           <option value="">Seleccione</option>
           <option *ngFor="let categoria of categorias" [ngValue]="categoria" [text]="categoria.nombre">
             {{categoria.nombre}}
           </option>
         </select>
-      </div>
-      <div class="col-md-6">
-        <label for="subcategoria" class="col-form-label">Subcategoría</label><span class="asterisco-obligatorio">*</span>
-        <select id="subcategoria" name="subcategoria" formControlName="subcategoria" class="form-control" (change)="cargarCondicionesContractuales()">
+            </div>
+            <div class="col-md-6">
+                <label for="subcategoria" class="col-form-label">Subcategoría</label><span class="asterisco-obligatorio">*</span>
+                <select id="subcategoria" name="subcategoria" formControlName="subcategoria" class="form-control" (change)="cargarCondicionesContractuales()">
           <option value="">Seleccione</option>
           <option *ngFor="let subcategoria of subcategorias" [ngValue]="subcategoria" [text]="subcategoria.nombre">
             {{subcategoria.nombre}}
           </option>
         </select>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-md-6">
-        <label for="comprador">Comprador</label><span class="asterisco-obligatorio">*</span>
-        <input type="text" id="comprador" name="comprador" formControlName="comprador" class="form-control"
-          [attr.disabled]="true">
-      </div>
-      <div class="col-md-6">
-        <label for="fecha-entrega-deseada">Fecha entrega deseada</label><span class="asterisco-obligatorio">*</span>
-        <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text"
-          [minDate]="minDate" autocomplete="off" placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker"
-          [bsConfig]="bsConfig" bsDatepicker>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-md-6">
-        <label for="codigoAriba">Código Ariba</label>
-        <input type="text" id="codigoAriba" name="codigoAriba" formControlName="codigoAriba" class="form-control"
-        [attr.disabled]="true" />
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-md-12">
-        <label for="alcance">Alcance</label><span class="asterisco-obligatorio">*</span>
-        <textarea id="alcance" name="alcance" formControlName="alcance" class="form-control" rows="4" placeholder="Describa el alcance de la compra..."></textarea>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-md-12">
-        <label for="justificacion">Justificación</label><span class="asterisco-obligatorio">*</span>
-        <textarea id="justificacion" name="justificacion" formControlName="justificacion" class="form-control" rows="4"
-          placeholder="Indique la justificación para llevar a cabo la compra..."></textarea>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-md-12">
-        <label class="titulo-label" for="condiciones-contractuales">Condiciones contractuales</label>
-        <div id="condiciones-contractuales" class="table-responsive">
-          <table class="table">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">Campo</th>
-                <th scope="col">Descripción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let condicionContractual of condicionesContractuales">
-                <td>{{condicionContractual.nombre}}<span class="asterisco-obligatorio">*</span></td>
-                <td>
-                  <textarea id="condicionContractual{{condicionContractual.id}}" name="condicionContractual{{condicionContractual.id}}"
-                    formControlName="condicionContractual{{condicionContractual.id}}" class="form-control" rows="2"></textarea>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <hr>
-    <div class="form-group row">
-      <div class="col-md-6">
-        <label for="CompraEstadística">Compra orden de estadística</label>
-        <mat-radio-group class="orden-estadistica-group" layout="row" formControlName="compraOrdenEstadistica">
-            <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO" (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>
-            <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="SI" (change)="mostrarNumeroOrdenEstadistica($event.value)">SI</mat-radio-button>
-          </mat-radio-group>
-      </div>
-      <div class="col-md-6">
-        <div class="numero-orden-estadistica" [hidden]="!emptyNumeroOrdenEstadistica">
-            <label for="numeroOrdenEstadistica">Número de orden estadística</label>
-            <input id="numeroOrdenEstadistica" name="numeroOrdenEstadistica" formControlName="numeroOrdenEstadistica" class="form-control" />
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label for="comprador">Comprador</label><span class="asterisco-obligatorio">*</span>
+                <input type="text" id="comprador" name="comprador" formControlName="comprador" class="form-control" [attr.disabled]="true">
+            </div>
+            <div class="col-md-6">
+                <label for="fecha-entrega-deseada">Fecha entrega deseada</label><span class="asterisco-obligatorio">*</span>
+                <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text" [minDate]="minDate" autocomplete="off" placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="form-group row">
-      <div class="col-md-12">
-        <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
-        <div class="btn-agregar-condiciones-bienes">
-          <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label for="codigoAriba">Código Ariba</label>
+                <input type="text" id="codigoAriba" name="codigoAriba" formControlName="codigoAriba" class="form-control" [attr.disabled]="true" />
+            </div>
         </div>
         <br/>
         <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
@@ -220,15 +149,19 @@
             </tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
           </table>
-        </div>
-      </div>
-    </div>
 
-    <div class="form-group row">
-      <div class="col-md-12">
-        <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
-        <div class="btn-agregar-condiciones-servicios">
-          <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label for="alcance">Alcance</label><span class="asterisco-obligatorio">*</span>
+                <textarea id="alcance" name="alcance" formControlName="alcance" class="form-control" rows="4" placeholder="Describa el alcance de la compra..."></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label for="justificacion">Justificación</label><span class="asterisco-obligatorio">*</span>
+                <textarea id="justificacion" name="justificacion" formControlName="justificacion" class="form-control" rows="4" placeholder="Indique la justificación para llevar a cabo la compra..."></textarea>
+            </div>
         </div>
         <br/>
         <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
@@ -254,169 +187,322 @@
                       <div class="col-md-12">
                         <table st class="table table-striped">
                           <thead>
-                            <tr>
-                              <th>Cantidad</th>
-                              <th>Valor Estimado</th>
-                              <th>Tipo Moneda</th>
-                              <th>Comentarios</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>{{element.cantidad | number}}</td>
-                              <td>{{element.valorEstimado | number}}</td>
-                              <td>{{element.tipoMoneda}}</td>
-                              <td>{{element.comentarios}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplayCTS"></tr>
-            <tr mat-row *matRowDef="let element; columns: columnsToDisplayCTS;" class="example-element-row"
-              [class.example-expanded-row]="expandedElementCTS === element" (click)="expandedElementCTS = expandedElementCTS === element ? null : element">
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-          </table>
-        </div>
-      </div>
-    </div>
 
-    <div class="form-group row">
-      <div class="col-md-12">
-        <div class="botonera">
-          <button (click)="enviarSolicitud();" class="derecha-boton btn btn-success">Enviar</button>
-          <button type="button" class="derecha-boton btn btn-primary" (click)="guardarParcialSolicitud();">Guardado parcial</button>
-          <button type="button" class="derecha-boton btn btn-danger" (click)="descartarSolicitud(templateConfirmacionDescartar);">Descartar</button>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label class="titulo-label" for="condiciones-contractuales">Condiciones contractuales</label>
+                <div id="condiciones-contractuales" class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Campo</th>
+                                <th scope="col">Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let condicionContractual of condicionesContractuales">
+                                <td>{{condicionContractual.nombre}}<span class="asterisco-obligatorio">*</span></td>
+                                <td>
+                                    <textarea id="condicionContractual{{condicionContractual.id}}" name="condicionContractual{{condicionContractual.id}}" formControlName="condicionContractual{{condicionContractual.id}}" class="form-control" rows="2"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </form>
+
+        <hr>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label for="CompraEstadística">Compra orden de estadística</label>
+                <mat-radio-group class="orden-estadistica-group" layout="row" formControlName="compraOrdenEstadistica">
+                    <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO" (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>
+                    <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="SI" (change)="mostrarNumeroOrdenEstadistica($event.value)">SI</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="col-md-6">
+                <div class="numero-orden-estadistica" [hidden]="!emptyNumeroOrdenEstadistica">
+                    <label for="numeroOrdenEstadistica">Número de orden estadística</label>
+                    <input id="numeroOrdenEstadistica" name="numeroOrdenEstadistica" formControlName="numeroOrdenEstadistica" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
+                <div class="btn-agregar-condiciones-bienes">
+                    <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
+                    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes desde archivo</button>
+                </div>
+                <br/>
+                <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
+                <div id="condiciones-tecnicas-bienes" class="mat-elevation-z8" [hidden]="emptyCTB">
+                    <table mat-table [dataSource]="dataSourceCTB" multiTemplateDataRows class="mat-elevation-z8">
+                        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTB">
+                            <th class="columnaBienes" mat-header-cell *matHeaderCellDef> {{column}} </th>
+                            <div *ngIf="column == 'Acciones'; else contenidoCTB">
+                                <td mat-cell *matCellDef="let element"><img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/editar.png"  class="icono-tabla"  alt="editar"  (click)="editarBienes(element, templateCondicionesTecnicasBienes);"  tooltip="Editar bien"
+                                        placement="bottom"  />&nbsp;<img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/borrar.png"  class="icono-tabla"  alt="borrar"  (click)="borrarBienes(element);"  tooltip="Borrar bien"
+                                        placement="bottom"  /></td>
+                            </div>
+                            <ng-template #contenidoCTB>
+                                <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                            </ng-template>
+                        </ng-container>
+                        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                        <ng-container matColumnDef="expandedDetail">
+                            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayCTB.length">
+                                <div class="example-element-detail" [@detailExpand]="element == expandedElementCTB ? 'expanded' : 'collapsed'">
+                                    <div class="lista-datos-bienes">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table st class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Modelo</th>
+                                                            <th>Fabricante</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Valor Estimado</th>
+                                                            <th>Tipo Moneda</th>
+                                                            <th>Comentarios</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{element.modelo}}</td>
+                                                            <td>{{element.fabricante}}</td>
+                                                            <td>{{element.cantidad | number}}</td>
+                                                            <td>{{element.valorEstimado | number}}</td>
+                                                            <td>{{element.tipoMoneda}}</td>
+                                                            <td>{{element.comentarios}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="columnsToDisplayCTB"></tr>
+                        <tr mat-row *matRowDef="let element; columns: columnsToDisplayCTB;" class="example-element-row" [class.example-expanded-row]="expandedElementCTB === element" (click)="expandedElementCTB = expandedElementCTB === element ? null : element">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
+                <div class="btn-agregar-condiciones-servicios">
+                    <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
+                    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button>
+                </div>
+                <br/>
+                <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
+                <div id="condiciones-tecnicas-servicios" class="mat-elevation-z8" [hidden]="emptyCTS">
+                    <table mat-table [dataSource]="dataSourceCTS" multiTemplateDataRows class="mat-elevation-z8">
+                        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTS">
+                            <th class="columnaServicios" mat-header-cell *matHeaderCellDef> {{column}} </th>
+                            <div *ngIf="column == 'Acciones'; else contenidoCTS">
+                                <td mat-cell *matCellDef="let element"><img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/editar.png"  class="icono-tabla"  alt="editar"  (click)="editarServicios(element, templateCondicionesTecnicasServicios);"  tooltip="Editar servicio"
+                                        placement="bottom"  />&nbsp;<img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/borrar.png"  class="icono-tabla"  alt="borrar"  (click)="borrarServicios(element);"  tooltip="Borrar servicio"
+                                        placement="bottom"  /></td>
+                            </div>
+                            <ng-template #contenidoCTS>
+                                <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                            </ng-template>
+                        </ng-container>
+                        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                        <ng-container matColumnDef="expandedDetail">
+                            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayCTS.length">
+                                <div class="example-element-detail" [@detailExpand]="element == expandedElementCTS ? 'expanded' : 'collapsed'">
+                                    <div class="lista-datos-servicios">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table st class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Cantidad</th>
+                                                            <th>Valor Estimado</th>
+                                                            <th>Tipo Moneda</th>
+                                                            <th>Comentarios</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{element.cantidad | number}}</td>
+                                                            <td>{{element.valorEstimado | number}}</td>
+                                                            <td>{{element.tipoMoneda}}</td>
+                                                            <td>{{element.comentarios}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="columnsToDisplayCTS"></tr>
+                        <tr mat-row *matRowDef="let element; columns: columnsToDisplayCTS;" class="example-element-row" [class.example-expanded-row]="expandedElementCTS === element" (click)="expandedElementCTS = expandedElementCTS === element ? null : element">
+                        </tr>
+                        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="botonera">
+                    <button (click)="enviarSolicitud();" class="derecha-boton btn btn-success">Enviar</button>
+                    <button type="button" class="derecha-boton btn btn-primary" (click)="guardarParcialSolicitud();">Guardado parcial</button>
+                    <button type="button" class="derecha-boton btn btn-danger" (click)="descartarSolicitud(templateConfirmacionDescartar);">Descartar</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
 <ng-template #templateCondicionesTecnicasBienes>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">{{tituloModalCTB}}</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{tituloModalCTB}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
-  <div class="modal-body">
-    <div class="container">
-      <form [formGroup]="ctbFormulario" (ngSubmit)="ctbOnSubmit()">
-        <div class="form-group">
-          <label for="codigo">Código de material</label>
-          <input id="codigoCTB" name="codigoCTB" formControlName="codigoCTB" class="form-control" type="text"
-            placeholder="Escriba el código si lo conoce" />
-        </div>
-        <div class="form-group">
-          <label for="descripcion">Descripción del elemento a comprar</label><span class="asterisco-obligatorio">*</span>
-          <textarea id="descripcionCTB" name="descripcionCTB" formControlName="descripcionCTB" class="form-control"
-            type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctbSubmitted && f.descripcionCTB.errors }"></textarea>
-          <div *ngIf="ctbSubmitted && f.descripcionCTB.errors" class="invalid-feedback">
-            <div *ngIf="f.descripcionCTB.errors.required">Este campo es requerido</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-6">
-              <label for="modelo">Modelo</label><span class="asterisco-obligatorio">*</span>
-              <input id="modeloCTB" name="modeloCTB" formControlName="modeloCTB" class="form-control" type="text"
-                placeholder="Escriba el modelo" [ngClass]="{ 'is-invalid': ctbSubmitted && f.modeloCTB.errors }" />
-              <div *ngIf="ctbSubmitted && f.modeloCTB.errors" class="invalid-feedback">
-                <div *ngIf="f.modeloCTB.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label for="fabricante">Fabricante</label><span class="asterisco-obligatorio">*</span>
-              <input id="fabricanteCTB" name="fabricanteCTB" formControlName="fabricanteCTB" class="form-control" type="text"
-                placeholder="Escriba el fabricante" [ngClass]="{ 'is-invalid': ctbSubmitted && f.fabricanteCTB.errors }" />
-              <div *ngIf="ctbSubmitted && f.fabricanteCTB.errors" class="invalid-feedback">
-                <div *ngIf="f.fabricanteCTB.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-12">
-              <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
-              <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTB" name="cantidadCTB" formControlName="cantidadCTB" class="form-control" type="text"
-                 placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cantidadCTB.errors }" />
-              <div *ngIf="ctbSubmitted && f.cantidadCTB.errors" class="invalid-feedback">
-                <div *ngIf="f.cantidadCTB.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-6">
-              <label for="valorEstimado">Valor Estimado</label>
-              <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTB" name="valorEstimadoCTB" formControlName="valorEstimadoCTB" class="form-control"
-                type="text" placeholder="Escriba el valor estimado" />
-            </div>
-            <div class="col-md-6">
-              <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTB" class="asterisco-obligatorio">*</span>
-              <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control"
-                [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
-                <option value="">Seleccione</option>
-                <option value="ARS">ARS</option>
-                <option value="BRL">BRL</option>
-                <option value="CLP">CLP</option>
-                <option value="COP">COP</option>
-                <option value="EUR">EUR</option>
-                <option value="PEN">PEN</option>
-                <option value="UF">UF</option>
-                <option value="USD">USD</option>
-              </select>
-              <div *ngIf="ctbSubmitted && f.tipoMonedaCTB.errors" class="invalid-feedback">
-                <div *ngIf="f.tipoMonedaCTB.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-          </div>
-        </div>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <form [formGroup]="ctbFormulario" (ngSubmit)="ctbOnSubmit()">
+                <div class="form-group">
+                    <label for="codigo">Código de material</label>
+                    <input id="codigoCTB" name="codigoCTB" formControlName="codigoCTB" class="form-control" type="text" placeholder="Escriba el código si lo conoce" />
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción del elemento a comprar</label><span class="asterisco-obligatorio">*</span>
+                    <textarea id="descripcionCTB" name="descripcionCTB" formControlName="descripcionCTB" class="form-control" type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctbSubmitted && f.descripcionCTB.errors }"></textarea>
+                    <div *ngIf="ctbSubmitted && f.descripcionCTB.errors" class="invalid-feedback">
+                        <div *ngIf="f.descripcionCTB.errors.required">Este campo es requerido</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="modelo">Modelo</label><span class="asterisco-obligatorio">*</span>
+                            <input id="modeloCTB" name="modeloCTB" formControlName="modeloCTB" class="form-control" type="text" placeholder="Escriba el modelo" [ngClass]="{ 'is-invalid': ctbSubmitted && f.modeloCTB.errors }" />
+                            <div *ngIf="ctbSubmitted && f.modeloCTB.errors" class="invalid-feedback">
+                                <div *ngIf="f.modeloCTB.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fabricante">Fabricante</label><span class="asterisco-obligatorio">*</span>
+                            <input id="fabricanteCTB" name="fabricanteCTB" formControlName="fabricanteCTB" class="form-control" type="text" placeholder="Escriba el fabricante" [ngClass]="{ 'is-invalid': ctbSubmitted && f.fabricanteCTB.errors }" />
+                            <div *ngIf="ctbSubmitted && f.fabricanteCTB.errors" class="invalid-feedback">
+                                <div *ngIf="f.fabricanteCTB.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTB" name="cantidadCTB" formControlName="cantidadCTB" class="form-control" type="text" placeholder="Escriba la cantidad"
+                                [ngClass]="{ 'is-invalid': ctbSubmitted && f.cantidadCTB.errors }" />
+                            <div *ngIf="ctbSubmitted && f.cantidadCTB.errors" class="invalid-feedback">
+                                <div *ngIf="f.cantidadCTB.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="valorEstimado">Valor Estimado</label>
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTB" name="valorEstimadoCTB" formControlName="valorEstimadoCTB" class="form-control" type="text" placeholder="Escriba el valor estimado"
+                            />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTB"
+                                class="asterisco-obligatorio">*</span>
+                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control"
+                                [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
+                                <option value="">Seleccione</option>
+                                <option value="ARS">ARS</option>
+                                <option value="BRL">BRL</option>
+                                <option value="CLP">CLP</option>
+                                <option value="COP">COP</option>
+                                <option value="EUR">EUR</option>
+                                <option value="PEN">PEN</option>
+                                <option value="UF">UF</option>
+                                <option value="USD">USD</option>
+                            </select>
+                            <div *ngIf="ctbSubmitted && f.tipoMonedaCTB.errors" class="invalid-feedback">
+                                <div *ngIf="f.tipoMonedaCTB.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
+                <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
 
-          <div class="form-group">
-            <div class="row">
-              <div class="col-md-12">
-                <label for="ceco">Centro de costos / Orden de inversión</label>
-                <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" 
-                [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }"> 
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="ceco">Centro de costos / Orden de inversión</label>
+                                <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }"> 
                   <option value="">Seleccione</option>
                   <option value="Centro de costos">Centro de costos</option>
                   <option value="Orden de inversión">Orden de inversión</option>
                 </select>
-                <div *ngIf="ctbSubmitted && f.cecoCTB.errors" class="invalid-feedback">
-                  <div *ngIf="f.cecoCTB.errors.required">Este campo es requerido</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
-              <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }">
-              <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
-                <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label for="Numero de cuenta">Número de cuenta</label>
-              <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCuentaCTB.errors }" numbersOnly>
-              <div *ngIf="ctbSubmitted && f.numCuentaCTB.errors" class="invalid-feedback">
-                <div *ngIf="f.numCuentaCTB.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-          </div>
-          <br>
+                                <div *ngIf="ctbSubmitted && f.cecoCTB.errors" class="invalid-feedback">
+                                    <div *ngIf="f.cecoCTB.errors.required">Este campo es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
+                            <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }">
+                            <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
+                                <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Numero de cuenta">Número de cuenta</label>
+                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCuentaCTB.errors }" (keypress)="numberOnly($event)">
+                            <div *ngIf="ctbSubmitted && f.numCuentaCTB.errors" class="invalid-feedback">
+                                <div *ngIf="f.numCuentaCTB.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
 
+                </div>
+
+                <div class="form-group">
+                    <label for="adjunto">Adjunto</label>
+                    <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event.target.files)" />
+                    <br>
+                    <div [hidden]="!mostrarAdjuntoCTB" class="adjunto-guardado">
+                        <img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/file.png"  alt="adjunto">
+                            <a href="{{rutaAdjuntoCTB}}"  target="_blank">{{nombreAdjuntoCTB}}</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comentarios">Comentarios</label>
+                    <textarea id="comentariosCTB" name="comentariosCTB" formControlName="comentariosCTB" class="form-control" type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">{{textoBotonGuardarCTB}} bien</button>
+                </div>
+            </form>
         </div>
         
         <div class="form-group">
@@ -437,104 +523,101 @@
         </div>
       </form>
     </div>
-  </div>
 </ng-template>
 
 <ng-template #templateCondicionesTecnicasServicios>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">{{tituloModalCTS}}</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{tituloModalCTS}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
-  <div class="modal-body">
-    <div class="container">
-      <form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()">
-        <div class="form-group">
-          <label for="codigo">Código de material</label>
-          <input id="codigoCTS" name="codigoCTS" formControlName="codigoCTS" class="form-control" type="text"
-            placeholder="Escriba el código si lo conoce" />
-        </div>
-        <div class="form-group">
-          <label for="descripcion">Descripción del elemento a comprar</label><span class="asterisco-obligatorio">*</span>
-          <textarea id="descripcionCTS" name="descripcionCTS" formControlName="descripcionCTS" class="form-control"
-            type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.descripcionCTS.errors }"></textarea>
-          <div *ngIf="ctsSubmitted && f2.descripcionCTS.errors" class="invalid-feedback">
-            <div *ngIf="f2.descripcionCTS.errors.required">Este campo es requerido</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
-          <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text"
-             placeholder="Escriba la cantidad" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
-          <div *ngIf="ctsSubmitted && f2.cantidadCTS.errors" class="invalid-feedback">
-            <div *ngIf="f2.cantidadCTS.errors.required">Este campo es requerido</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-6">
-              <label for="valorEstimado">Valor Estimado</label>
-              <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTS" name="valorEstimadoCTS" formControlName="valorEstimadoCTS" class="form-control"
-                type="text" placeholder="Escriba el valor estimado" />
-            </div>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()">
+                <div class="form-group">
+                    <label for="codigo">Código de material</label>
+                    <input id="codigoCTS" name="codigoCTS" formControlName="codigoCTS" class="form-control" type="text" placeholder="Escriba el código si lo conoce" />
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción del elemento a comprar</label><span class="asterisco-obligatorio">*</span>
+                    <textarea id="descripcionCTS" name="descripcionCTS" formControlName="descripcionCTS" class="form-control" type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.descripcionCTS.errors }"></textarea>
+                    <div *ngIf="ctsSubmitted && f2.descripcionCTS.errors" class="invalid-feedback">
+                        <div *ngIf="f2.descripcionCTS.errors.required">Este campo es requerido</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
+                    <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text" placeholder="Escriba la cantidad"
+                        [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
+                    <div *ngIf="ctsSubmitted && f2.cantidadCTS.errors" class="invalid-feedback">
+                        <div *ngIf="f2.cantidadCTS.errors.required">Este campo es requerido</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="valorEstimado">Valor Estimado</label>
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTS" name="valorEstimadoCTS" formControlName="valorEstimadoCTS" class="form-control" type="text" placeholder="Escriba el valor estimado"
+                            />
+                        </div>
 
-            <div class="col-md-6">
-              <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTS" class="asterisco-obligatorio">*</span>
-              <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control"
-                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
-                <option value="">Seleccione</option>
-                <option value="ARS">ARS</option>
-                <option value="BRL">BRL</option>
-                <option value="CLP">CLP</option>
-                <option value="COP">COP</option>
-                <option value="EUR">EUR</option>
-                <option value="PEN">PEN</option>
-                <option value="UF">UF</option>
-                <option value="USD">USD</option>
-              </select>
-              <div *ngIf="ctsSubmitted && f2.tipoMonedaCTS.errors" class="invalid-feedback">
-                <div *ngIf="f2.tipoMonedaCTS.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
-          <div class="form-group">
-            <div class="row">
-              <div class="col-md-12">
-                <label for="ceco">Centro de costos / Orden de inversión</label>
-                <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control"
-                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }">
+                        <div class="col-md-6">
+                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTS"
+                                class="asterisco-obligatorio">*</span>
+                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control"
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
+                                <option value="">Seleccione</option>
+                                <option value="ARS">ARS</option>
+                                <option value="BRL">BRL</option>
+                                <option value="CLP">CLP</option>
+                                <option value="COP">COP</option>
+                                <option value="EUR">EUR</option>
+                                <option value="PEN">PEN</option>
+                                <option value="UF">UF</option>
+                                <option value="USD">USD</option>
+                            </select>
+                            <div *ngIf="ctsSubmitted && f2.tipoMonedaCTS.errors" class="invalid-feedback">
+                                <div *ngIf="f2.tipoMonedaCTS.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="ceco">Centro de costos / Orden de inversión</label>
+                                <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }">
                   <option value="">Seleccione</option>
                   <option value="Centro de costos">Centro de costos</option>
                   <option value="Orden de inversión">Orden de inversión</option>
                 </select>
-                <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">
-                  <div *ngIf="f2.cecoCTS.errors.required">Este campo es requerido</div>
+                                <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">
+                                    <div *ngIf="f2.cecoCTS.errors.required">Este campo es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
+                            <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }">
+                            <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
+                                <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Numero de cuenta">Número de cuenta</label>
+                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" (keypress)="numberOnly($event)">
+                            <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
+                                <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
-              <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }">
-              <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
-                <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label for="Numero de cuenta">Número de cuenta</label>
-              <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" numbersOnly>
-              <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
-                <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
-              </div>
-            </div>
-          </div>
-          <br>
-        </div>
 
         <div class="form-group">
           <label for="adjunto">Adjunto</label>
@@ -552,19 +635,63 @@
         <div class="form-group">
           <button type="submit" class="btn btn-primary">{{textoBotonGuardarCTS}} servicio</button>
         </div>
-      </form>
     </div>
-  </div>
 </ng-template>
 
 <ng-template #templateConfirmacionDescartar>
     <div class="modal-body text-center">
-      <p>¿Estás seguro que desea descartar la solicitud?</p>
-      <button type="button" class="btn btn-default" (click)="confirmarDescartar()" >Sí</button>
-      <button type="button" class="btn btn-primary" (click)="declinarDescartar()" >No</button>
+        <p>¿Estás seguro que desea descartar la solicitud?</p>
+        <button type="button" class="btn btn-default" (click)="confirmarDescartar()">Sí</button>
+        <button type="button" class="btn btn-primary" (click)="declinarDescartar()">No</button>
     </div>
-  </ng-template>
+</ng-template>
 
-  <ngx-spinner>
-      <p style="font-size: 20px; color: white">PROCESANDO...</p>
-  </ngx-spinner>
+<ng-template #templateCargarListaBienes>
+    <div class="modal-body text-center">
+        <h5>Cargue los bienes en un archivo de excel según la planilla estándar</h5>
+        <br>
+        <a href="../../assets/archivos/Plantilla_estandar_para_cargar_bienes.xlsx" download><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
+        <br>
+        <br>
+        <label for="archivoCsv">Cargue el archivo con los bienes a solicitar</label>
+        <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListener($event)">
+        <br>
+        <div *ngIf="cantidadErrorFile > 0">
+            <h3>Por favor diligencie los siguientes campos en el archivo</h3>
+            <ul class="text-left">
+                <li *ngFor="let item of ArrayErrorFile">
+                    {{item.error}}
+                </li>
+            </ul>
+            <br>
+            <p>La lista de errores seguirá estando disponible hasta que cargue nuevamente el archivo</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #templateCargarListaServicios>
+    <div class="modal-body text-center">
+        <h5>Cargue los servicios en un archivo excel según la planilla estándar</h5>
+        <br>
+        <a href="../../assets/archivos/Plantilla_estandar_para_cargar_servicios.xlsx" download><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
+        <br>
+        <br>
+        <label for="archivoCsv">Cargue el archivo con los servicios a solicitar</label>
+        <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListenerServicios($event)">
+        <br>
+        <div *ngIf="cantidadErrorFileCTS > 0">
+            <h3>Por favor diligencie los siguientes campos en el archivo</h3>
+            <ul class="text-left">
+                <li *ngFor="let item of ArrayErrorFileCTS">
+                    {{item.error}}
+                </li>
+            </ul>
+            <br>
+            <p>La lista de errores siguirá estando disponible hasta que cargue nuevamente el archivo</p>
+        </div>
+    </div>
+</ng-template>
+
+<ngx-spinner>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>

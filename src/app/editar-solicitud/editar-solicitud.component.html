@@ -176,8 +176,8 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
                 <div class="btn-agregar-condiciones-bienes">
-                    <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar
-                        bien</button>
+                    <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
+                    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes desde archivo</button>
                 </div>
                 <br />
                 <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas
@@ -257,8 +257,8 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
                 <div class="btn-agregar-condiciones-servicios">
-                    <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar
-                        servicio</button>
+                    <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
+                    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button>
                 </div>
                 <br />
                 <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas
@@ -471,7 +471,7 @@
                             <label for="Numero de cuenta">Número de cuenta</label>
                             <input type="text" placeholder="ingrese el número de cuenta" class="form-control"
                                 formControlName="numCuentaCTB"
-                                [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCuentaCTB.errors }">
+                                [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCuentaCTB.errors }" (keypress)="numberOnly($event)">
                             <div *ngIf="ctbSubmitted && f.numCuentaCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCuentaCTB.errors.required">Este campo es requerido</div>
                             </div>
@@ -613,7 +613,7 @@
                             <label for="Numero de cuenta">Número de cuenta</label>
                             <input type="text" placeholder="ingrese el número de cuenta" class="form-control"
                                 formControlName="numCuentaCTS"
-                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }">
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" (keypress)="numberOnly($event)">
                             <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
                             </div>
@@ -658,6 +658,52 @@
         <p>¿Estás seguro que desea descartar la solicitud?</p>
         <button type="button" class="btn btn-default" (click)="confirmarDescartar()">Sí</button>
         <button type="button" class="btn btn-primary" (click)="declinarDescartar()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #templateCargarListaBienes>
+    <div class="modal-body text-center">
+        <h5>Cargue los bienes en un archivo CSV según la planilla estándar</h5>
+        <br>
+        <a href="../../assets/archivos/Plantilla_estandar_para_cargar_bienes.xlsx"><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
+        <br>
+        <br>
+        <label for="archivoCsv">Cargue el archivo con los bienes a solicitar</label>
+        <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListener($event)">
+        <br>
+        <div *ngIf="cantidadErrorFile > 0">
+            <h3>Por favor diligencie los siguientes campos en el archivo</h3>
+            <ul class="text-left">
+                <li *ngFor="let item of ArrayErrorFile">
+                    {{item.error}}
+                </li>
+            </ul>
+            <br>
+            <p>La lista de errores siguirá estando disponible hasta que cargue un nuevamente el archivo</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #templateCargarListaServicios>
+    <div class="modal-body text-center">
+        <h5>Cargue los servicios en un archivo CSV según la planilla estándar</h5>
+        <br>
+        <a href="../../assets/archivos/Plantilla_estandar_para_cargar_servicios.xlsx"><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
+        <br>
+        <br>
+        <label for="archivoCsv">Cargue el archivo con los servicios a solicitar</label>
+        <input type="file" name="archivoCsv" id="archivoCsv" class="form-control" (change)="changeListenerServicios($event)">
+        <br>
+        <div *ngIf="cantidadErrorFileCTS > 0">
+            <h3>Por favor diligencie los siguientes campos en el archivo</h3>
+            <ul class="text-left">
+                <li *ngFor="let item of ArrayErrorFileCTS">
+                    {{item.error}}
+                </li>
+            </ul>
+            <br>
+            <p>La lista de errores siguirá estando disponible hasta que cargue un nuevamente el archivo</p>
+        </div>
     </div>
 </ng-template>
 

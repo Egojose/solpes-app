@@ -3,19 +3,31 @@
 <div class="row espacio">
     <div class="col-md-12">
         <h3>Número SOLP SAP: {{NumSolSAP}}</h3>
-    </div>
+</div>
 </div>
 
-<div class="informacion-sondeo" *ngIf="fueSondeo == true">
+<div class="informacion-sondeo">
     <mat-accordion *ngIf="CTB === true">
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title><strong>Ver bienes solicitados</strong></mat-panel-title>
                 <mat-panel-description>{{panelOpenState ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
             </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-checkbox color="primary" [(ngModel)]="todosBienes" (change)="seleccionarTodosBienes($event)">Seleccionar todos los bienes</mat-checkbox>
+                </div>
+            </div>
+            <br>
             <div class="row" id="TablaVerificar">
                 <div class="col-md-12">
                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                        <ng-container matColumnDef="seleccionar">
+                            <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-checkbox color="primary" value="{{element.IdBienes}}" [ngModel]="element.idContrato !== '' && element.idContrato !== null" [disabled]="element.idContrato !== '' && element.idContrato !== null && element.idContrato !== '0'" (change)="seleccionarBienes($event)"></mat-checkbox>
+                            </td>
+                        </ng-container>
                         <ng-container matColumnDef="codigo">
                             <th mat-header-cell *matHeaderCellDef> Código </th>
                             <td mat-cell *matCellDef="let element"> {{element.codigoVerificar}} </td>
@@ -72,9 +84,21 @@
                 <mat-panel-title><strong>Ver servicios solicitados</strong></mat-panel-title>
                 <mat-panel-description>{{panelOpenState1 ? 'cerrar' : 'Click para desplegar' }}</mat-panel-description>
             </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-checkbox color="primary" [(ngModel)]="todosServicios" (change)="seleccionarTodosServicios($event)">Seleccionar todos los servicios</mat-checkbox>
+                </div>
+            </div>
+            <br>
             <div class="row" id="TablaVerificar">
                 <div class="col-md-12">
                     <table mat-table [dataSource]="dataSourceTS" class="mat-elevation-z8">
+                        <ng-container matColumnDef="seleccionar">
+                            <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-checkbox value="{{element.IdBienes}}" color="primary" [ngModel]="element.idContrato !== '' && element.idContrato !== null" [disabled]="element.idContrato !== '' && element.idContrato !== null && element.idContrato !== '0'" (change)="seleccionarServicios($event)"></mat-checkbox>
+                            </td>
+                        </ng-container>
                         <ng-container matColumnDef="codigo">
                             <th mat-header-cell *matHeaderCellDef> Código </th>
                             <td mat-cell *matCellDef="let element"> {{element.codigoVerificar}} </td>
@@ -106,8 +130,7 @@
                         <ng-container matColumnDef="adjunto">
                             <th mat-header-cell *matHeaderCellDef> Adjunto</th>
                             <td mat-cell *matCellDef="let element">
-                                <ng-container
-                                    *ngIf="element.adjuntoSondeo != null; else nohayAdjuntosContratosServicios">
+                                <ng-container *ngIf="element.adjuntoSondeo != null; else nohayAdjuntosContratosServicios">
                                     <a href="{{element.adjuntoSondeo.url}}" target="_blank">
                                         <button type="button" class="btn btn-success">Ver</button>
                                     </a>
@@ -123,7 +146,6 @@
                     <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
                 </div>
             </div>
-
         </mat-expansion-panel>
     </mat-accordion>
     <br>
@@ -133,8 +155,7 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label for="inputEmail4">Tipo de contrato <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="TipoContrato"
-                [ngClass]="{ 'is-invalid': submitted && f.TipoContrato.errors }">
+            <select name="" id="" class="form-control" formControlName="TipoContrato" [ngClass]="{ 'is-invalid': submitted && f.TipoContrato.errors }">
                 <option value="Orden a marco negociada" [disabled]="Guardado === true">Orden a marco negociada</option>
                 <option value="Orden a marco por negociar" [disabled]="Guardado === true">Orden a marco por negociar
                 </option>
@@ -147,8 +168,7 @@
         </div>
         <div class="form-group col-md-6">
             <label for="inputEmail4">N° SOLP SAP -RFP <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" placeholder=""
-                [ngClass]="{ 'is-invalid': submitted && f.SolpSapRfp.errors }" [readonly]="Guardado === true">
+            <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.SolpSapRfp.errors }" [readonly]="Guardado === true">
             <div *ngIf="submitted && f.SolpSapRfp.errors" class="invalid-feedback">
                 <div *ngIf="f.SolpSapRfp.errors.required">Es requerido</div>
             </div>
@@ -158,16 +178,14 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label for="inputEmail4">N° Contrato/Orden de Compra <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="ContratoOC" numbersOnly class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }" [readonly]="Guardado === true">
+            <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }" [readonly]="Guardado === true">
             <div *ngIf="submitted && f.ContratoOC.errors" class="invalid-feedback">
                 <div *ngIf="f.ContratoOC.errors.required">Es requerido</div>
             </div>
         </div>
         <div class="form-group col-md-6">
             <label for="inputEmail4">Requiere N° de Orden Inicio <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="OrdenInicio"
-                [ngClass]="{ 'is-invalid': submitted && f.OrdenInicio.errors }">
+            <select name="" id="" class="form-control" formControlName="OrdenInicio" [ngClass]="{ 'is-invalid': submitted && f.OrdenInicio.errors }">
                 <option value="" [disabled]="Guardado === true"></option>
                 <option value="Si" [disabled]="Guardado === true">Si</option>
                 <option value="No" [disabled]="Guardado === true">No</option>
@@ -181,9 +199,7 @@
     <div class="row">
         <div class="form-group col-md-12">
             <label for="inputEmail4">Objeto del contrato <span class="camposRequeridos">*</span></label>
-            <textarea class="form-control" formControlName="ObjetoContrato"
-                [ngClass]="{ 'is-invalid': submitted && f.ObjetoContrato.errors }"
-                [readonly]="Guardado === true"></textarea>
+            <textarea class="form-control" formControlName="ObjetoContrato" [ngClass]="{ 'is-invalid': submitted && f.ObjetoContrato.errors }" [readonly]="Guardado === true"></textarea>
             <div *ngIf="submitted && f.ObjetoContrato.errors" class="invalid-feedback">
                 <div *ngIf="f.ObjetoContrato.errors.required">Es requerido</div>
             </div>
@@ -192,8 +208,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">Contrato de Obra o Conexo</label>
-            <select name="" id="" class="form-control" formControlName="ContratoObraConexo"
-                [disabled]="Guardado === true">
+            <select name="" id="" class="form-control" formControlName="ContratoObraConexo" [disabled]="Guardado === true">
                 <option [ngValue]="false" [disabled]="Guardado === true">No</option>
                 <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
             </select>
@@ -201,8 +216,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Moneda del contrato <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="MonedaContrato"
-                [ngClass]="{ 'is-invalid': submitted && f.MonedaContrato.errors }">
+            <select name="" id="" class="form-control" formControlName="MonedaContrato" [ngClass]="{ 'is-invalid': submitted && f.MonedaContrato.errors }">
                 <option value="" [disabled]="Guardado === true"></option>
                 <option value="ARS">ARS</option>
                 <option value="BRL">BRL</option>
@@ -219,10 +233,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">IVA del contrato<span class="camposRequeridos">*</span> </label>
-            <input currencyMask
-                [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
-                type="text" formControlName="IvaContrato" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }" [readonly]="Guardado === true">
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="IvaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }" [readonly]="Guardado === true">
             <div *ngIf="submitted && f.IvaContrato.errors" class="invalid-feedback">
                 <div *ngIf="f.IvaContrato.errors.required">Es requerido</div>
             </div>
@@ -231,20 +242,16 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">Valor Contractual <span class="camposRequeridos">*</span></label>
-            <input
-                currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
-                type="text" formControlName="ValorContractual" class="form-control" numbersOnly
-                [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }" [readonly]="Guardado === true">
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="ValorContractual" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }"
+                [readonly]="Guardado === true">
             <div *ngIf="submitted && f.ValorContractual.errors" class="invalid-feedback">
                 <div *ngIf="f.ValorContractual.errors.required">Es requerido</div>
             </div>
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Línea base del contrato <span class="camposRequeridos">*</span></label>
-            <input currencyMask
-                [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
-                type="text" formControlName="LineaBaseContrato" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.LineaBaseContrato.errors }" [readonly]="Guardado === true">
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="LineaBaseContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LineaBaseContrato.errors }"
+                [readonly]="Guardado === true">
             <small id="emailHelp" class="form-text text-muted">Escriba el valor en la moneda del contrato</small>
             <div *ngIf="submitted && f.LineaBaseContrato.errors" class="invalid-feedback">
                 <div *ngIf="f.LineaBaseContrato.errors.required">Es requerido</div>
@@ -252,10 +259,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Ahorro generado en contrato <span class="camposRequeridos">*</span></label>
-            <input currencyMask
-                [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }"
-                type="text" formControlName="AhorroGenerado" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.AhorroGenerado.errors }" [readonly]="Guardado === true">
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="AhorroGenerado" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AhorroGenerado.errors }" [readonly]="Guardado === true">
             <small id="emailHelp" class="form-text text-muted">Escriba el valor en la moneda del contrato</small>
             <div *ngIf="submitted && f.AhorroGenerado.errors" class="invalid-feedback">
                 <div *ngIf="f.AhorroGenerado.errors.required">Es requerido</div>
@@ -267,8 +271,7 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Descripción cálculo del ahorro generado en el contrato <span
                     class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="DescripcionCalculo"
-                [ngClass]="{ 'is-invalid': submitted && f.DescripcionCalculo.errors }">
+            <select name="" id="" class="form-control" formControlName="DescripcionCalculo" [ngClass]="{ 'is-invalid': submitted && f.DescripcionCalculo.errors }">
                 <option value=""></option>
                 <option value="Rondas de negociación" [disabled]="Guardado === true">Rondas de negociación</option>
                 <option value="Presupuesto del área" [disabled]="Guardado === true">Presupuesto del área</option>
@@ -291,8 +294,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Requiere SST <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="RequiereSST"
-                [ngClass]="{ 'is-invalid': submitted && f.RequiereSST.errors }">
+            <select name="" id="" class="form-control" formControlName="RequiereSST" [ngClass]="{ 'is-invalid': submitted && f.RequiereSST.errors }">
                 <option value=""></option>
                 <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
                 <option [ngValue]="false" [disabled]="Guardado === true">No</option>
@@ -305,8 +307,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">Requiere póliza <span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="RequierePoliza"
-                [ngClass]="{ 'is-invalid': submitted && f.RequierePoliza.errors }">
+            <select name="" id="" class="form-control" formControlName="RequierePoliza" [ngClass]="{ 'is-invalid': submitted && f.RequierePoliza.errors }">
                 <option value=""></option>
                 <option [ngValue]="true" [disabled]="Guardado === true">Si</option>
                 <option [ngValue]="false" [disabled]="Guardado === true">No</option>
@@ -317,16 +318,14 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Acreedor</label>
-            <input type="text" formControlName="Acreedor" class="form-control" numbersOnly
-                [readonly]="Guardado === true">
+            <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [readonly]="Guardado === true">
             <small id="emailHelp" class="form-text text-muted">NIT o documento de identificación del proveedor, sin
                 dígito de verificación</small>
 
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Dígito de verificación </label>
-            <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly
-                [readonly]="Guardado === true">
+            <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly [readonly]="Guardado === true">
             <small id="emailHelp" class="form-text text-muted">Dígito de verificación del NIT o documento de
                 identificación del proveedor</small>
 
@@ -335,16 +334,14 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="NombreRazonSocial" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }" [readonly]="Guardado === true">
+            <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }" [readonly]="Guardado === true">
             <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
                 <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
             </div>
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">E-mail del proveedor <span class="camposRequeridos">*</span></label>
-            <input type="email" formControlName="EmailProveedor" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }" [readonly]="Guardado === true">
+            <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }" [readonly]="Guardado === true">
             <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
                 <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
                 <div *ngIf="f.EmailProveedor.errors.email">El E-mail es inválido</div>
@@ -352,8 +349,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Solicitante <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="Solicitante" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.Solicitante.errors }" [readonly]="true">
+            <input type="text" formControlName="Solicitante" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Solicitante.errors }" [readonly]="true">
             <div *ngIf="submitted && f.Solicitante.errors" class="invalid-feedback">
                 <div *ngIf="f.Solicitante.errors.required">Es requerido</div>
             </div>
@@ -364,18 +360,15 @@
         <div class="form-group col-md-6">
             <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
             <ng-template #tolTemplate>el usuario no existe</ng-template>
-            <input formControlName="Comprador" [typeahead]="ObjUsuarios" typeaheadOptionField="Title"
-                (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" triggers=""
-                #customTooltip="bs-tooltip" placement="bottom" class="form-control" [readonly]="Guardado === true">
+            <input formControlName="Comprador" [typeahead]="ObjUsuarios" typeaheadOptionField="Title" (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" triggers="" #customTooltip="bs-tooltip" placement="bottom" class="form-control"
+                [readonly]="Guardado === true">
             <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
                 <div *ngIf="f.Comprador.errors.required">Es requerido</div>
             </div>
         </div>
         <div class="form-group col-md-6">
             <label for="inputEmail4">Observaciones adicionales <span class="camposRequeridos">*</span></label>
-            <textarea formControlName="ObervacionesAdicionales" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.ObervacionesAdicionales.errors }"
-                [readonly]="Guardado === true"></textarea>
+            <textarea formControlName="ObervacionesAdicionales" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ObervacionesAdicionales.errors }" [readonly]="Guardado === true"></textarea>
             <div *ngIf="submitted && f.ObervacionesAdicionales.errors" class="invalid-feedback">
                 <div *ngIf="f.ObervacionesAdicionales.errors.required">Es requerido</div>
             </div>
@@ -392,14 +385,12 @@
     <div class="form-group row">
         <div class="col-md-12">
             <div class="botonera">
-                
-                <div>
-                    <button type="submit" class="derecha-boton btn btn-success"
-                        [hidden]="Guardado === true">Enviar</button>
+
+                <div *ngIf="CantidadBienesServiciosConContrato !== 0">
+                    <button type="submit" class="derecha-boton btn btn-success" [hidden]="Guardado === true">Enviar</button>
                 </div>
                 <div>
-                    <button type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger"
-                        (click)="comfirmasalir(templateConfirmacionDescartar);">Salir</button>
+                    <button type="button" style="margin-right: 5px;" class="derecha-boton btn btn-danger" (click)="comfirmasalir(templateConfirmacionDescartar);">Salir</button>
                 </div>
             </div>
         </div>
@@ -487,15 +478,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>Alcance</strong></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"
-                        readonly>{{alcance}}</textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{alcance}}</textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>Justificación</strong></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"
-                        readonly>{{justificacion}}</textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>{{justificacion}}</textarea>
                 </div>
             </div>
         </div>
@@ -528,108 +517,106 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <h4><strong>Número orden estadística: </strong>{{numOrdenEstadistica}}</h4>
-                </div>
-            </div>
-        </div>
+                    </div>
+                    </div>
+                    </div>
 
-        <div *ngIf="existeCondicionesTecnicasBienes === true" class="form-group row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>
+                    <div *ngIf="existeCondicionesTecnicasBienes === true" class="form-group row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="colFormLabel" class="col-sm-3 col-form-label"><strong>
                             <h4>Bienes solicitados</h4>
                         </strong></label>
-                    <div class="table-wrapper-scroll-y">
-                        <table class="table table-striped table-bordered table-hover text-center">
-                            <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Descripción</th>
-                                    <th>Modelo</th>
-                                    <th>Fabricante</th>
-                                    <th>Cantidad</th>
-                                    <th>Valor Estimado</th>
-                                    <th>Moneda</th>
-                                    <th>Comentario</th>
-                                    <th>Adjunto</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of ObjCondicionesTecnicas">
-                                    <ng-container>
-                                        <td>{{item.codigoBienes}}</td>
-                                        <td>{{item.descripcion}}</td>
-                                        <td>{{item.modeloBienes}}</td>
-                                        <td>{{item.fabricanteBienes}}</td>
-                                        <td>{{item.cantidadBienes | number}}</td>
-                                        <td>{{item.valorEstimado | number}}</td>
-                                        <td>{{item.moneda}}</td>
-                                        <td>{{item.comentariosBienes}}</td>
-                                        <td>
-                                            <ng-container
-                                                *ngIf="item.adjuntoCreacion != null; else nohayAdjuntosCreacion">
-                                                <a href="{{item.adjuntoCreacion.url}}" target="_blank">
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </ng-container>
-                                            <ng-template #nohayAdjuntosCreacion>
-                                                Sin adjunto
-                                            </ng-template>
-                                        </td>
-                                    </ng-container>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <div class="table-wrapper-scroll-y">
+                                    <table class="table table-striped table-bordered table-hover text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Descripción</th>
+                                                <th>Modelo</th>
+                                                <th>Fabricante</th>
+                                                <th>Cantidad</th>
+                                                <th>Valor Estimado</th>
+                                                <th>Moneda</th>
+                                                <th>Comentario</th>
+                                                <th>Adjunto</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of ObjCondicionesTecnicas">
+                                                <ng-container>
+                                                    <td>{{item.codigoBienes}}</td>
+                                                    <td>{{item.descripcion}}</td>
+                                                    <td>{{item.modeloBienes}}</td>
+                                                    <td>{{item.fabricanteBienes}}</td>
+                                                    <td>{{item.cantidadBienes | number}}</td>
+                                                    <td>{{item.valorEstimado | number}}</td>
+                                                    <td>{{item.moneda}}</td>
+                                                    <td>{{item.comentariosBienes}}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="item.adjuntoCreacion != null; else nohayAdjuntosCreacion">
+                                                            <a href="{{item.adjuntoCreacion.url}}" target="_blank">
+                                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                            </a>
+                                                        </ng-container>
+                                                        <ng-template #nohayAdjuntosCreacion>
+                                                            Sin adjunto
+                                                        </ng-template>
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="existeCondicionesTecnicasServicios === true" class="form-group row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>
+                    <div *ngIf="existeCondicionesTecnicasServicios === true" class="form-group row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="colFormLabel" class="col-sm-4 col-form-label"><strong>
                             <h4>Servicios solicitados</h4>
                         </strong></label>
-                    <div class="table-wrapper-scroll-y">
-                        <table class="table table-striped table-bordered table-hover text-center">
-                            <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Descripción</th>
-                                    <th>Cantidad</th>
-                                    <th>Valor Estimado</th>
-                                    <th>Moneda</th>
-                                    <th>Comentario</th>
-                                    <th>Adjunto</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                                    <ng-container>
-                                        <td>{{item.codigoServicios}}</td>
-                                        <td>{{item.descripcion}}</td>
-                                        <td>{{item.cantidadServicios | number}}</td>
-                                        <td>{{item.valorEstimado | number}}</td>
-                                        <td>{{item.moneda}}</td>
-                                        <td>{{item.comentariosServicios}}</td>
-                                        <td>
-                                            <ng-container
-                                                *ngIf="item.adjuntoCreacion != null; else nohayAdjuntosCreacion">
-                                                <a href="{{item.adjuntoCreacion.url}}" target="_blank">
-                                                    <button type="button" class="btn btn-primary">Ver Archivo</button>
-                                                </a>
-                                            </ng-container>
-                                            <ng-template #nohayAdjuntosCreacion>
-                                                Sin adjunto
-                                            </ng-template>
-                                        </td>
-                                    </ng-container>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <div class="table-wrapper-scroll-y">
+                                    <table class="table table-striped table-bordered table-hover text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Descripción</th>
+                                                <th>Cantidad</th>
+                                                <th>Valor Estimado</th>
+                                                <th>Moneda</th>
+                                                <th>Comentario</th>
+                                                <th>Adjunto</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
+                                                <ng-container>
+                                                    <td>{{item.codigoServicios}}</td>
+                                                    <td>{{item.descripcion}}</td>
+                                                    <td>{{item.cantidadServicios | number}}</td>
+                                                    <td>{{item.valorEstimado | number}}</td>
+                                                    <td>{{item.moneda}}</td>
+                                                    <td>{{item.comentariosServicios}}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="item.adjuntoCreacion != null; else nohayAdjuntosCreacion">
+                                                            <a href="{{item.adjuntoCreacion.url}}" target="_blank">
+                                                                <button type="button" class="btn btn-primary">Ver Archivo</button>
+                                                            </a>
+                                                        </ng-container>
+                                                        <ng-template #nohayAdjuntosCreacion>
+                                                            Sin adjunto
+                                                        </ng-template>
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
     </mat-expansion-panel>
 </mat-accordion>

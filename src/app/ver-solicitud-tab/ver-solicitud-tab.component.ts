@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { SPServicio } from '../servicios/sp-servicio';
 import { CondicionContractual } from '../dominio/condicionContractual';
 import { CondicionesTecnicasBienes } from '../verificar-material/condicionTecnicaBienes';
@@ -10,8 +10,11 @@ import { Contratos } from '../dominio/contrato';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Solicitud } from '../dominio/solicitud';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
+import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
 
 @Component({
   selector: 'app-ver-solicitud-tab',
@@ -21,6 +24,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 
 export class VerSolicitudTabComponent implements OnInit {
   @ViewChild('staticTabs') staticTabs: any;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   panelOpenState = false;
   ObjSolicitud: any;
   condicionesContractuales: CondicionContractual[] = [];
@@ -29,6 +33,8 @@ export class VerSolicitudTabComponent implements OnInit {
   fechaRegistroSolpSap: Date; 
   direccion:string
   dataSource;
+  DSBienesxContrato;
+  DSServiciosxContrato;
   contratoMarco: string;
   moneda: string;
   RutaArchivo: string;
@@ -58,6 +64,7 @@ export class VerSolicitudTabComponent implements OnInit {
   ArchivoAdjunto: boolean;
   ArchivoAdjuntoActivos: boolean;
   numSolSAP: number;
+  consecutivo: number;
   comentarioRegistrarSAP: string;
   tieneContrato: Boolean;
   ObjCondicionesContractuales: any;
@@ -71,8 +78,10 @@ export class VerSolicitudTabComponent implements OnInit {
   submitted = false;
   solicitudRecuperada: Solicitud;
   fueSondeo: boolean;
-  paginator: any;
+  contratoId: any;
   displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
+  displayedColumnsService: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda"];
+  displayedColumnsBienes: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda"];
   displayedColumns: string[] = [
     "codigo",
     "descripcion",
@@ -82,8 +91,14 @@ export class VerSolicitudTabComponent implements OnInit {
     "valorEstimado",
     "moneda"
   ];
+  modalRef: BsModalRef;
+  numeroContrato: any;
+  ObjCondicionesTS: resultadoCondicionesTS[] = [];
+  ObjCondicionesTB: resultadoCondicionesTB[] = [];
+  CTS: boolean;
+  CTB: boolean;
 
-  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager) {
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService,) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     if (this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
@@ -132,6 +147,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         this.estadoRegistrarSAP = solicitud.EstadoRegistrarSAP;
         this.numSolSAP = solicitud.NumSolSAP;
+        this.consecutivo = solicitud.Consecutivo;
         this.comentarioRegistrarSAP = solicitud.ComentarioRegistrarSAP;
         if (solicitud.Attachments === true) {
           let ObjArchivos = solicitud.AttachmentFiles.results;
@@ -200,6 +216,40 @@ export class VerSolicitudTabComponent implements OnInit {
     );
   }
 
+  abrirBienesServicios(template: TemplateRef<any>, idContrato){
+
+    this.spinner.show();
+    this.contratoId = idContrato;
+    this.numeroContrato = this.ObjContratos.filter(x => x.IdContratos == this.contratoId)[0].numeroContrato
+    this.DSServiciosxContrato = "";
+    this.DSBienesxContrato = "";
+    this.CTB = false; 
+    this.CTS = false;
+    this.servicio.ObtenerCondicionesTecnicasBienesxContrato(this.contratoId.toString()).subscribe(
+      RespuestaCondiciones => {
+        if (RespuestaCondiciones.length > 0) {            
+          this.CTB = true;        
+          let ObjCondicionesTB = resultadoCondicionesTB.fromJsonList(RespuestaCondiciones);
+          this.DSBienesxContrato = new MatTableDataSource(ObjCondicionesTB);
+          this.DSBienesxContrato.paginator = this.paginator;
+        }
+        this.servicio.ObtenerCondicionesTecnicasServiciosxContrato(this.contratoId.toString()).subscribe(
+          RespuestaCondicionesServicios => {
+            if (RespuestaCondicionesServicios.length > 0) {  
+              this.CTS = true;
+              let ObjCondicionesTS= resultadoCondicionesTS.fromJsonList(RespuestaCondicionesServicios);
+              this.DSServiciosxContrato = new MatTableDataSource(ObjCondicionesTS);
+              this.DSServiciosxContrato.paginator = this.paginator;
+            }
+            this.spinner.hide();
+            this.modalRef = this.modalService.show(template, { class: 'gray modal-lg' });            
+          }
+        );        
+      }
+    );
+      
+  }
+
   ValidacionTabsPorEstado(): any {
     this.DeshabilitarTodosLosTabs();
     switch (this.solicitudRecuperada.estado) {
@@ -228,6 +278,10 @@ export class VerSolicitudTabComponent implements OnInit {
         break;
       }
       case 'Por registrar contratos': {
+        this.HabilitarTabContratos();
+        break;
+      }
+      case 'Suspendida': {
         this.HabilitarTabContratos();
         break;
       }
