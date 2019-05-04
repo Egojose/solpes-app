@@ -334,7 +334,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
     
 
-    if(numeroCuenta !== "" || numeroCuenta !== null) {
+    if(numeroCuenta !== "" && numeroCuenta !== null) {
       numeroCuentaString = `${numeroCuenta}`;
       let numeroCuentaLetrasBienes = /^[0-9]*$/gm;
       numeroCuentaTesteadoBienes = numeroCuentaLetrasBienes.test(numeroCuentaString);
@@ -758,21 +758,21 @@ ValidarVaciosCTS(row: any, i: number): any {
   let cantidadTesteadoServicios = true;
   let numeroCuentaTesteadoServicios = true;
   
-  if(valorEstimado !== "" || valorEstimado !== null){
+  if(valorEstimado !== "" && valorEstimado !== null){
     valorEstimadoString = `${valorEstimado}`
     let regexletras = /^[0-9]*$/gm;
     testeado = regexletras.test(valorEstimadoString);
   }
  
 
-  if(cantidad !== "" || cantidad !== null){
+  if(cantidad !== "" && cantidad !== null){
     cantidadString = `${cantidad}`
     let cantidadLetras = /^[0-9]*$/gm;
     cantidadTesteadoServicios = cantidadLetras.test(cantidadString);
   } 
   
 
-  if(numeroCuenta !== "" || numeroCuenta !== null) {
+  if(numeroCuenta !== "" && numeroCuenta !== null) {
     numeroCuentaStringCTS = `${numeroCuenta}`
     let numeroCuentaLetrasCTS = /^[0-9]*$/gm;
     numeroCuentaTesteadoServicios = numeroCuentaLetrasCTS.test(numeroCuentaStringCTS);
@@ -800,7 +800,7 @@ ValidarVaciosCTS(row: any, i: number): any {
       }
       if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
         this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
+        this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna E fila " + (i +1) })
       }
       if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
         this.cantidadErrorFileCTS++;
@@ -876,7 +876,7 @@ ValidarVaciosCTS(row: any, i: number): any {
         }
         if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
           this.cantidadErrorFileCTS++;
-          this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila" + (i +1) })
+          this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna E fila" + (i +1) })
         }
         if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
           this.cantidadErrorFileCTS++;
@@ -953,7 +953,7 @@ ValidarVaciosCTS(row: any, i: number): any {
       }
       if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
         this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
+        this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna E fila " + (i +1) })
       }
       if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
         this.cantidadErrorFileCTS++;
@@ -1009,7 +1009,7 @@ ValidarVaciosCTS(row: any, i: number): any {
     }
     if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
       this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
+      this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna E fila " + (i +1) })
     }
     if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL'&& tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
       this.cantidadErrorFileCTS++;

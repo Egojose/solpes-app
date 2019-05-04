@@ -377,25 +377,29 @@ export class EditarSolicitudComponent implements OnInit {
     let valorEstimadoStringBienes;
     let cantidadStringBienes;
     let numeroCuentaString;
-    if(valorEstimado !== "" || valorEstimado !== null){
+    let testeadoBienes = true;
+    let cantidadTesteadoBienes = true;
+    let numeroCuentaTesteadoBienes = true;
+
+    if(valorEstimado !== "" && valorEstimado !== null){
       valorEstimadoStringBienes = `${valorEstimado}`
+      let regexletras = /^[0-9]*$/gm;
+      testeadoBienes = regexletras.test(valorEstimadoStringBienes);
     }
-    let regexletras = /^[0-9]*$/gm;
-    let testeadoBienes = regexletras.test(valorEstimadoStringBienes);
     
-    if(cantidad !== "" || cantidad !== null) {
+    
+    if(cantidad !== "" && cantidad !== null) {
       cantidadStringBienes = `${cantidad}`
+      let cantidadLetrasBienes = /^[0-9]*$/gm;
+      cantidadTesteadoBienes = cantidadLetrasBienes.test(cantidadStringBienes);
     }
-    let cantidadLetrasBienes = /^[0-9]*$/gm;
-    let cantidadTesteadoBienes = cantidadLetrasBienes.test(cantidadStringBienes);
+    
 
-    if(numeroCuenta !== "" || numeroCuenta !== null) {
+    if(numeroCuenta !== "" && numeroCuenta !== null) {
       numeroCuentaString = `${numeroCuenta}`;
+      let numeroCuentaLetrasBienes = /^[0-9]*$/gm;
+      numeroCuentaTesteadoBienes = numeroCuentaLetrasBienes.test(numeroCuentaString);
     }
-
-    let numeroCuentaLetrasBienes = /^[0-9]*$/gm;
-    let numeroCuentaTesteadoBienes = numeroCuentaLetrasBienes.test(numeroCuentaString);
-   
 
     if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
       
@@ -423,11 +427,11 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
-        if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+        if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
         }
-        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+        if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
@@ -466,8 +470,8 @@ export class EditarSolicitudComponent implements OnInit {
             ValorEstimado: valorEstimadoStringBienes,
             PrecioSondeo: valorEstimadoStringBienes,
             Comentarios: comentarios,
-            TipoMoneda: tipoMoneda.toString(),
-            MonedaSondeo: tipoMoneda.toString(),
+            TipoMoneda: tipoMoneda,
+            MonedaSondeo: tipoMoneda,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
             numeroCuenta: numeroCuentaString
@@ -505,11 +509,11 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
           }
-          if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+          if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
           }
-          if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+          if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
           }
@@ -548,8 +552,8 @@ export class EditarSolicitudComponent implements OnInit {
               ValorEstimado: valorEstimadoStringBienes,
               PrecioSondeo: valorEstimadoStringBienes,
               Comentarios: comentarios,
-              TipoMoneda: tipoMoneda.toString(),
-              MonedaSondeo: tipoMoneda.toString(),
+              TipoMoneda: tipoMoneda,
+              MonedaSondeo: tipoMoneda,
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
               numeroCuenta: numeroCuentaString
@@ -587,11 +591,11 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
-        if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+        if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
         }
-        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+        if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
@@ -611,8 +615,8 @@ export class EditarSolicitudComponent implements OnInit {
             ValorEstimado: valorEstimadoStringBienes,
             PrecioSondeo: valorEstimadoStringBienes,
             Comentarios: comentarios,
-            TipoMoneda: tipoMoneda.toString(),
-            MonedaSondeo: tipoMoneda.toString(),
+            TipoMoneda: tipoMoneda,
+            MonedaSondeo: tipoMoneda,
             costoInversion: "",
             numeroCostoInversion: "",
             numeroCuenta: ""
@@ -649,11 +653,11 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
       }
-      if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+      if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
       }
-      if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+      if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
       }
@@ -673,8 +677,8 @@ export class EditarSolicitudComponent implements OnInit {
           ValorEstimado: valorEstimadoStringBienes,
           PrecioSondeo: valorEstimadoStringBienes,
           Comentarios: comentarios,
-          TipoMoneda: tipoMoneda.toString(),
-          MonedaSondeo: tipoMoneda.toString(),
+          TipoMoneda: tipoMoneda,
+          MonedaSondeo: tipoMoneda,
           costoInversion: "",
           numeroCostoInversion: "",
           numeroCuenta: ""
@@ -825,26 +829,29 @@ export class EditarSolicitudComponent implements OnInit {
     let comentarios = row[8];
     let valorEstimadoString;
     let numeroCuentaStringCTS;
-  let cantidadString;
-  if(valorEstimado !== "" || valorEstimado !== null){
+    let cantidadString;
+    let testeado = true;
+    let cantidadTesteadoServicios = true;
+    let numeroCuentaTesteadoServicios = true;
+
+  if(valorEstimado !== "" && valorEstimado !== null){
     valorEstimadoString = `${valorEstimado}`
+    let regexletras = /^[0-9]*$/gm;
+    testeado = regexletras.test(valorEstimadoString);
   }
-  let regexletras = /^[0-9]*$/gm;
-  let testeado = regexletras.test(valorEstimadoString);
+ 
 
-  if(cantidad !== "" || cantidad !== null){
+  if(cantidad !== "" && cantidad !== null){
     cantidadString = `${cantidad}`
+    let cantidadLetras = /^[0-9]*$/gm;
+    cantidadTesteadoServicios = cantidadLetras.test(cantidadString);
   } 
-  let cantidadLetras = /^[0-9]*$/gm;
-  let cantidadTesteadoServicios = cantidadLetras.test(cantidadString);
-
-  if(numeroCuenta !== "" || numeroCuenta !== null) {
+  
+  if(numeroCuenta !== "" && numeroCuenta !== null) {
     numeroCuentaStringCTS = `${numeroCuenta}`
+    let numeroCuentaLetrasCTS = /^[0-9]*$/gm;
+    numeroCuentaTesteadoServicios = numeroCuentaLetrasCTS.test(numeroCuentaStringCTS);
   }
-
-  let numeroCuentaLetrasCTS = /^[0-9]*$/gm;
-  let numeroCuentaTesteadoServicios = numeroCuentaLetrasCTS.test(numeroCuentaStringCTS);
-
 
     if(valorcompraOrdenEstadistica === "NO" && (codigo === "" || codigo === null)) {
      
@@ -864,11 +871,11 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
-        if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+        if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
         }
-        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+        if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
@@ -905,8 +912,8 @@ export class EditarSolicitudComponent implements OnInit {
             CantidadSondeo: cantidad,
             ValorEstimado: valorEstimadoString,
             PrecioSondeo: valorEstimadoString,
-            TipoMoneda: tipoMoneda.toString(),
-            MonedaSondeo: tipoMoneda.toString(),
+            TipoMoneda: tipoMoneda,
+            MonedaSondeo: tipoMoneda,
             Comentario: comentarios,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
@@ -938,11 +945,11 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
           }
-          if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+          if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
           }
-          if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+          if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
           }
@@ -979,8 +986,8 @@ export class EditarSolicitudComponent implements OnInit {
               CantidadSondeo: cantidad,
               ValorEstimado: valorEstimadoString,
               PrecioSondeo: valorEstimadoString,
-              TipoMoneda: tipoMoneda.toString(),
-              MonedaSondeo: tipoMoneda.toString(),
+              TipoMoneda: tipoMoneda,
+              MonedaSondeo: tipoMoneda,
               Comentario: comentarios,
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
@@ -1014,11 +1021,11 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
-        if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+        if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
         }
-        if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+        if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
         }
@@ -1036,8 +1043,8 @@ export class EditarSolicitudComponent implements OnInit {
             CantidadSondeo: cantidad,
             ValorEstimado: valorEstimadoString,
             PrecioSondeo: valorEstimadoString,
-            TipoMoneda: tipoMoneda.toString(),
-            MonedaSondeo: tipoMoneda.toString(),
+            TipoMoneda: tipoMoneda,
+            MonedaSondeo: tipoMoneda,
             Comentario: comentarios,
             costoInversion: "",
             numeroCostoInversion: "",
@@ -1069,11 +1076,11 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
       }
-      if((valorEstimado !== "" || valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+      if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
       }
-      if((tipoMoneda !== null || tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+      if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
       }
@@ -1091,8 +1098,8 @@ export class EditarSolicitudComponent implements OnInit {
           CantidadSondeo: cantidad,
           ValorEstimado: valorEstimadoString,
           PrecioSondeo: valorEstimadoString,
-          TipoMoneda: tipoMoneda.toString(),
-          MonedaSondeo: tipoMoneda.toString(),
+          TipoMoneda: tipoMoneda,
+          MonedaSondeo: tipoMoneda,
           Comentario: comentarios,
           costoInversion: "",
           numeroCostoInversion: "",
