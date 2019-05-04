@@ -380,20 +380,20 @@ export class EditarSolicitudComponent implements OnInit {
     if(valorEstimado !== "" || valorEstimado !== null){
       valorEstimadoStringBienes = `${valorEstimado}`
     }
-    let regexletras = /^[a-zA-Z]+$/g;
+    let regexletras = /^[0-9]*$/gm;
     let testeadoBienes = regexletras.test(valorEstimadoStringBienes);
     
     if(cantidad !== "" || cantidad !== null) {
       cantidadStringBienes = `${cantidad}`
     }
-    let cantidadLetrasBienes = /^[a-zA-Z]+$/g;
+    let cantidadLetrasBienes = /^[0-9]*$/gm;
     let cantidadTesteadoBienes = cantidadLetrasBienes.test(cantidadStringBienes);
 
     if(numeroCuenta !== "" || numeroCuenta !== null) {
       numeroCuentaString = `${numeroCuenta}`;
     }
 
-    let numeroCuentaLetrasBienes = /^[a-zA-Z]+$/g;
+    let numeroCuentaLetrasBienes = /^[0-9]*$/gm;
     let numeroCuentaTesteadoBienes = numeroCuentaLetrasBienes.test(numeroCuentaString);
    
 
@@ -415,11 +415,11 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
         }
-        if(cantidadTesteadoBienes === true) {
+        if(cantidadTesteadoBienes === false) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
         }
-        if(testeadoBienes === true){
+        if(testeadoBienes === false){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
@@ -443,7 +443,7 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo Número centro de costos/ Orden de inversión en la columna I fila "+ (i+1)})
         }
-        if(numeroCuentaTesteadoBienes === true) {
+        if(numeroCuentaTesteadoBienes === false) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: "El campo Número de cuenta sólo admite números en la columna J fila " + (i + 1)} )
         }
@@ -497,11 +497,11 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
           }
-          if(cantidadTesteadoBienes === true) {
+          if(cantidadTesteadoBienes === false) {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
           }
-          if(testeadoBienes === true){
+          if(testeadoBienes === false){
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
           }
@@ -525,7 +525,7 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error:"El campo Número centro de costos/ Orden de inversión en la columna I fila "+ (i+1)})
           }
-          if(numeroCuentaTesteadoBienes === true) {
+          if(numeroCuentaTesteadoBienes === false) {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error: "El campo Número de cuenta sólo admite números en la columna J fila " + (i + 1)} )
           }
@@ -579,11 +579,11 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
         }
-        if(cantidadTesteadoBienes === true) {
+        if(cantidadTesteadoBienes === false) {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
         }
-        if(testeadoBienes === true){
+        if(testeadoBienes === false){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
@@ -641,11 +641,11 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo cantidad en la columna E fila "+ (i+1)})
       }
-      if(cantidadTesteadoBienes === true) {
+      if(cantidadTesteadoBienes === false) {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo cantidad sólo admite números en la columna E fila "+ (i+1)})
       }
-      if(testeadoBienes === true){
+      if(testeadoBienes === false){
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
       }
@@ -829,20 +829,20 @@ export class EditarSolicitudComponent implements OnInit {
   if(valorEstimado !== "" || valorEstimado !== null){
     valorEstimadoString = `${valorEstimado}`
   }
-  let regexletras = /^[a-zA-Z]+$/g;
+  let regexletras = /^[0-9]*$/gm;
   let testeado = regexletras.test(valorEstimadoString);
 
   if(cantidad !== "" || cantidad !== null){
     cantidadString = `${cantidad}`
   } 
-  let cantidadLetras = /^[a-zA-Z]+$/g;
+  let cantidadLetras = /^[0-9]*$/gm;
   let cantidadTesteadoServicios = cantidadLetras.test(cantidadString);
 
   if(numeroCuenta !== "" || numeroCuenta !== null) {
     numeroCuentaStringCTS = `${numeroCuenta}`
   }
 
-  let numeroCuentaLetrasCTS = /^[a-zA-Z]+$/g;
+  let numeroCuentaLetrasCTS = /^[0-9]*$/gm;
   let numeroCuentaTesteadoServicios = numeroCuentaLetrasCTS.test(numeroCuentaStringCTS);
 
 
@@ -856,11 +856,11 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
         }
-        if(cantidadTesteadoServicios === true){
+        if(cantidadTesteadoServicios === false){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
         }
-        if(testeado === true){
+        if(testeado === false){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
@@ -884,7 +884,7 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
         }
-        if(numeroCuentaTesteadoServicios === true) {
+        if(numeroCuentaTesteadoServicios === false) {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: "El campo Número de cuenta sólo admite números en la columna H fila " + (i + 1)})
         }
@@ -930,11 +930,11 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
           }
-          if(cantidadTesteadoServicios === true){
+          if(cantidadTesteadoServicios === false){
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
           }
-          if(testeado === true){
+          if(testeado === false){
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
           }
@@ -958,7 +958,7 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
           }
-          if(numeroCuentaTesteadoServicios === true) {
+          if(numeroCuentaTesteadoServicios === false) {
             this.cantidadErrorFileCTS++;
             this.ArrayErrorFileCTS.push({error: "El campo Número de cuenta sólo admite números en la columna H fila " + (i + 1)})
           }
@@ -1006,11 +1006,11 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
         }
-        if(cantidadTesteadoServicios === true){
+        if(cantidadTesteadoServicios === false){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
         }
-        if(testeado === true){
+        if(testeado === false){
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
         }
@@ -1061,11 +1061,11 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
       }
-      if(cantidadTesteadoServicios === true){
+      if(cantidadTesteadoServicios === false){
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
       }
-      if(testeado === true){
+      if(testeado === false){
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
       }
