@@ -380,7 +380,7 @@ export class ContratosComponent implements OnInit {
                           let notificacion = {
                             IdSolicitud: this.IdSolicitud.toString(),
                             ResponsableId: this.autor,
-                            Estado: 'Por recepcionar'
+                            Estado: 'Formalizar firmas contrato'
                           }
                           this.servicio.agregarNotificacion(notificacion).then(
                             (item: ItemAddResult) => {
@@ -419,7 +419,7 @@ export class ContratosComponent implements OnInit {
                     let notificacion = {
                       IdSolicitud: this.IdSolicitud.toString(),
                       ResponsableId: this.autor,
-                      Estado: 'Por recepcionar'
+                      Estado: 'Formalizar firmas contrato'
                     }
                     this.servicio.agregarNotificacion(notificacion).then(
                       (item: ItemAddResult) => {
@@ -477,7 +477,7 @@ export class ContratosComponent implements OnInit {
                           let notificacion = {
                             IdSolicitud: this.IdSolicitud.toString(),
                             ResponsableId: this.autor,
-                            Estado: 'Por recepcionar'
+                            Estado: 'Formalizar firmas contrato'
                           }
                           this.servicio.agregarNotificacion(notificacion).then(
                             (item: ItemAddResult) => {
@@ -510,7 +510,7 @@ export class ContratosComponent implements OnInit {
                   let notificacion = {
                     IdSolicitud: this.IdSolicitud.toString(),
                     ResponsableId: this.autor,
-                    Estado: 'Por recepcionar'
+                    Estado: 'Formalizar firmas contrato'
                   }
                   this.servicio.agregarNotificacion(notificacion).then(
                     (item: ItemAddResult) => {
