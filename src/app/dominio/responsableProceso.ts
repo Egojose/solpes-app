@@ -9,6 +9,7 @@ export class responsableProceso {
         public porRegistrarSapServicios: number,
         public porRegistrarSapBienes: number,
         public porRegistrarActivos: number,
+        public gestionContratos?: number
     ) { 
 
     }
@@ -20,7 +21,8 @@ export class responsableProceso {
             element.porConfirmarEntregaBienesId,
             element.porRegistrarSapServiciosId,
             element.porRegistrarSapBienesId, 
-            element.porRegistrarActivosId );
+            element.porRegistrarActivosId,
+            element.GestionDeContratosId);
     }
 
     public static fromJsonList(elements: any) {
