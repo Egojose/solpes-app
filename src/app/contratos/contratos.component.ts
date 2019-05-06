@@ -370,7 +370,7 @@ export class ContratosComponent implements OnInit {
             let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
             let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
             if (cantidadBienes === 0 && cantidadServicios === 0) {
-                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Formalizar firmas contrato", this.autor).then(
                   (resultado) => {
                     this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
                       () => {
@@ -470,7 +470,7 @@ export class ContratosComponent implements OnInit {
             let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
             let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
             if (cantidadBienes === 0 && cantidadServicios === 0) {
-                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Formalizar firmas contrato", this.autor).then(
                     (resultado) => {
                       this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
                         () => {
