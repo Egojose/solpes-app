@@ -286,7 +286,7 @@ export class VerSolicitudTabComponent implements OnInit {
         break;
       }
       case 'Formalizar firmas contrato' : {
-        this.HabilitarTabContratos();
+        this.HabilitarTabEntregas();
         break;
       }
       case 'Por recepcionar': {
