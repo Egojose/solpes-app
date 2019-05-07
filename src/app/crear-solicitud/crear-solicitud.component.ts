@@ -1595,13 +1595,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
           }
         }
 
-        this.servicio.obtenerParametrosConfiguracion().subscribe(
-          (respuestaConfiguracion) => {
-            this.consecutivoActual = respuestaConfiguracion[0].ConsecutivoSolicitudes;
-            let consecutivoNuevo = this.consecutivoActual + 1;
+        // this.servicio.obtenerParametrosConfiguracion().subscribe(
+        //   (respuestaConfiguracion) => {
+            this.consecutivoActual = this.idSolicitudGuardada;            
             if (respuesta == true) {
               this.solicitudGuardar = new Solicitud(
-                'Solicitud Solpes: ' + new Date(),
+                'Solicitud: ' + this.idSolicitudGuardada,
                 tipoSolicitud,
                 cm,
                 this.usuarioActual.nombre,
@@ -1620,10 +1619,11 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                 responsable,
                 this.compraBienes,
                 this.compraServicios,
-                consecutivoNuevo,
+                this.consecutivoActual,
                 this.usuarioActual.id,
                 null,
-                this.compraOrdenEstadistica, valornumeroOrdenEstadistica,
+                this.compraOrdenEstadistica, 
+                valornumeroOrdenEstadistica,
                 null,
                 this.compraBienes,
                 this.compraServicios,
@@ -1632,8 +1632,8 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 
               this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {
-                  this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
-                    (item: ItemAddResult) => {
+                  // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
+                  //   (item: ItemAddResult) => {
                       let notificacion = {
                         IdSolicitud: this.idSolicitudGuardada.toString(),
                         ResponsableId: responsable,
@@ -1649,22 +1649,22 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                           this.spinner.hide();
                         }
                       )
-                    }, err => {
-                      this.mostrarError('Error en la actualización del consecutivo');
-                      this.spinner.hide();
-                    }
-                  )
+                    // }, err => {
+                    //   this.mostrarError('Error en la actualización del consecutivo');
+                    //   this.spinner.hide();
+                    // }
+                  // )
                 }, err => {
                   this.mostrarError('Error en el envío de la solicitud');
                   this.spinner.hide();
                 }
               )
             }
-          }, err => {
-            this.mostrarError('Error en obtener parámetros de configuración');
-            this.spinner.hide();
-          }
-        )
+        //   }, err => {
+        //     this.mostrarError('Error en obtener parámetros de configuración');
+        //     this.spinner.hide();
+        //   }
+        // )// aqui
       }, err => {
         this.mostrarError('Error obteniendo responsable procesos: ' + err);
         this.spinner.hide();

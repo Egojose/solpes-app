@@ -298,6 +298,7 @@ export class ContratosComponent implements OnInit {
     let Comprador = this.ContratosForm.controls["Comprador"].value;
     let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value;
     let ObjContrato;
+    let bpoPais = this.ObResProceso[0].gestionContratos;
 
     if (this.Pais === "Colombia") {
       ObjContrato = {
@@ -370,7 +371,7 @@ export class ContratosComponent implements OnInit {
             let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
             let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
             if (cantidadBienes === 0 && cantidadServicios === 0) {
-                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais).then(
                   (resultado) => {
                     this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
                       () => {
@@ -380,7 +381,7 @@ export class ContratosComponent implements OnInit {
                           let notificacion = {
                             IdSolicitud: this.IdSolicitud.toString(),
                             ResponsableId: this.autor,
-                            Estado: 'Por recepcionar'
+                            Estado: 'Formalizar firmas contrato'
                           }
                           this.servicio.agregarNotificacion(notificacion).then(
                             (item: ItemAddResult) => {
@@ -419,7 +420,7 @@ export class ContratosComponent implements OnInit {
                     let notificacion = {
                       IdSolicitud: this.IdSolicitud.toString(),
                       ResponsableId: this.autor,
-                      Estado: 'Por recepcionar'
+                      Estado: 'Formalizar firmas contrato'
                     }
                     this.servicio.agregarNotificacion(notificacion).then(
                       (item: ItemAddResult) => {
@@ -470,14 +471,14 @@ export class ContratosComponent implements OnInit {
             let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
             let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
             if (cantidadBienes === 0 && cantidadServicios === 0) {
-                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Por recepcionar", this.autor).then(
+                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais).then(
                     (resultado) => {
                       this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
                         () => {
                           let notificacion = {
                             IdSolicitud: this.IdSolicitud.toString(),
                             ResponsableId: this.autor,
-                            Estado: 'Por recepcionar'
+                            Estado: 'Formalizar firmas contrato'
                           }
                           this.servicio.agregarNotificacion(notificacion).then(
                             (item: ItemAddResult) => {
@@ -510,7 +511,7 @@ export class ContratosComponent implements OnInit {
                   let notificacion = {
                     IdSolicitud: this.IdSolicitud.toString(),
                     ResponsableId: this.autor,
-                    Estado: 'Por recepcionar'
+                    Estado: 'Formalizar firmas contrato'
                   }
                   this.servicio.agregarNotificacion(notificacion).then(
                     (item: ItemAddResult) => {
