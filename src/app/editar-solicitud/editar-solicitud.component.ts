@@ -2636,7 +2636,7 @@ export class EditarSolicitudComponent implements OnInit {
            
             if (respuesta == true) {
               this.solicitudGuardar = new Solicitud(
-                'Solicitud Solpes: ' + new Date(),
+                'Solicitud Solpes: ' + this.solicitudRecuperada.id,
                 tipoSolicitud,
                 cm,
                 solicitante,
