@@ -299,8 +299,6 @@ export class ContratosComponent implements OnInit {
     let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value;
     let ObjContrato;
     let bpoPais = this.ObResProceso[0].gestionContratos;
-    let bpoNombre = this.ObjResponsableProceso;
-    console.log(bpoNombre)
 
     if (this.Pais === "Colombia") {
       ObjContrato = {
