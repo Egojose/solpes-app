@@ -299,6 +299,8 @@ export class ContratosComponent implements OnInit {
     let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value;
     let ObjContrato;
     let bpoPais = this.ObResProceso[0].gestionContratos;
+    let bpoNombre = this.ObjResponsableProceso;
+    console.log(bpoNombre)
 
     if (this.Pais === "Colombia") {
       ObjContrato = {
@@ -380,7 +382,7 @@ export class ContratosComponent implements OnInit {
                         this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
                           let notificacion = {
                             IdSolicitud: this.IdSolicitud.toString(),
-                            ResponsableId: this.autor,
+                            ResponsableId: bpoPais,
                             Estado: 'Formalizar firmas contrato'
                           }
                           this.servicio.agregarNotificacion(notificacion).then(
@@ -419,7 +421,7 @@ export class ContratosComponent implements OnInit {
                   this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
                     let notificacion = {
                       IdSolicitud: this.IdSolicitud.toString(),
-                      ResponsableId: this.autor,
+                      ResponsableId: bpoPais,
                       Estado: 'Formalizar firmas contrato'
                     }
                     this.servicio.agregarNotificacion(notificacion).then(
@@ -477,7 +479,7 @@ export class ContratosComponent implements OnInit {
                         () => {
                           let notificacion = {
                             IdSolicitud: this.IdSolicitud.toString(),
-                            ResponsableId: this.autor,
+                            ResponsableId: bpoPais,
                             Estado: 'Formalizar firmas contrato'
                           }
                           this.servicio.agregarNotificacion(notificacion).then(
@@ -510,7 +512,7 @@ export class ContratosComponent implements OnInit {
                 () => {
                   let notificacion = {
                     IdSolicitud: this.IdSolicitud.toString(),
-                    ResponsableId: this.autor,
+                    ResponsableId: bpoPais,
                     Estado: 'Formalizar firmas contrato'
                   }
                   this.servicio.agregarNotificacion(notificacion).then(
