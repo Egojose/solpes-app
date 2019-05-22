@@ -21,7 +21,7 @@ export class ReporteSolicitud {
         public fechaRegistrarActivo: string,
         public fechaRegistrarSolpSap: string,
         public fechaSuspension: string,
-        public fechaReactivacion: string,
+        public fechaFinSuspension: string,
         public fechaRegistrarContrato: string,
         public fechaEnvioProveedor: string,
         public departamento?: string,) {}
