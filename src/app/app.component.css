@@ -8,4 +8,36 @@
 
 div#sidebar-wrapper li {
    font-size: 13px;
+   border-bottom: solid 1px black;
 }
+
+div#sidebar-wrapper {
+    background: #2F3841;
+}
+
+.usuario {
+    width: 500px;
+    height: 80px;
+    padding: 20px;
+    margin-top: 0px;
+    background: #0099FF;
+    align-content: right;
+}
+
+.usuario-logueado {
+    color: white;
+    font-size: 20px;
+}
+
+#menu-toggle {
+    margin-top: 80px;
+}
+
+.logo {
+    background: no-repeat;
+    width: 150px;
+    height: 70px;
+    padding: 20px;
+    margin: 0px;
+}
+
