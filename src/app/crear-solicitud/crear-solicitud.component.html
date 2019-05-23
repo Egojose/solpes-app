@@ -113,7 +113,7 @@
                 <label class="titulo-label" for="condiciones-contractuales">Condiciones contractuales</label>
                 <div id="condiciones-contractuales" class="table-responsive">
                     <table class="table">
-                        <thead class="thead-dark">
+                        <thead class="thead-primary">
                             <tr>
                                 <th scope="col">Campo</th>
                                 <th scope="col">Descripción</th>
@@ -153,11 +153,11 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
                 <div class="btn-agregar-condiciones-bienes">
-                    <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
-                    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes desde archivo</button>
+                    <button class="btn btn-primary" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
+                    <button class="btn btn-primary justify-content-center" id="textInfo" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes desde archivo</button>
                 </div>
                 <br/>
-                <mat-toolbar color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
+                <mat-toolbar class="toolBar" color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
                 <div id="condiciones-tecnicas-bienes" class="mat-elevation-z8" [hidden]="emptyCTB">
                     <table mat-table [dataSource]="dataSourceCTB" multiTemplateDataRows class="mat-elevation-z8">
                         <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTB">
@@ -219,8 +219,8 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
                 <div class="btn-agregar-condiciones-servicios">
-                    <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
-                    <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button>
+                    <button class="btn btn-primary" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
+                    <button class="btn btn-default justify-content-center" id="textInfo" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button>
                 </div>
                 <br/>
                 <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
