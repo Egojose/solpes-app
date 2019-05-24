@@ -34,7 +34,9 @@ export class ReporteContratos {
         public solicitante: string,
         public comprador: string,
         public observacionesAdicionales: string,
-        public consecutivo: any) {}
+        public consecutivo: any,
+        public aribaSourcing: string,
+        public causalExcepcion: string) {}
 
         public static fromJson(element: any) {
             return new ReporteContratos(
@@ -72,7 +74,9 @@ export class ReporteContratos {
                 element.Solicitante,
                 element.Comprador,
                 element.ObservacionesAdicionales,
-                element.Solicitud.Consecutivo)
+                element.Solicitud.Consecutivo,
+                element.AribaSourcing,
+                element.CausalExcepcion)
             }
 
         public static fromJsonList(elements: any) {
