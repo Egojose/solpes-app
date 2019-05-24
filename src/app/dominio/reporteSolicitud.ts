@@ -22,6 +22,7 @@ export class ReporteSolicitud {
         public fechaRegistrarSolpSap: string,
         public fechaSuspension: string,
         public fechaFinSuspension: string,
+        public motivoSuspension: string,
         public fechaRegistrarContrato: string,
         public fechaEnvioProveedor: string,
         public departamento?: string,) {}
@@ -51,6 +52,7 @@ export class ReporteSolicitud {
                 element.FechaRegistrarSolpsap !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarSolpsap)) : "",
                 element.FechaSuspension !== null? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaSuspension)) : "" ,
                 element.FechaReactivacion !== null? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaReactivacion)) : "",
+                element.MotivoDeSuspension,
                 element.FechaRegistrarContrato !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRegistrarContrato)) : "",
                 element.FechaEnvioProveedor !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaEnvioProveedor)) : "", 
                 element.Author.Department
