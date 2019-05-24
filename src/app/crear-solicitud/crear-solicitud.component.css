@@ -39,3 +39,14 @@ tr.example-element-row:not(.example-expanded-row):active {
 button {
     margin-right: 5px;
 }
+
+.thead-primary {
+    background: #3D87E4;
+    color: white;
+}
+
+#textInfo {
+    background: #3D87E4;
+    color: white;
+}
+

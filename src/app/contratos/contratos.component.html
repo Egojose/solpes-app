@@ -376,12 +376,30 @@
 
     </div>
     <div class="row">
-        <div class="form-group col-md-6">
+        <div class="col-md-3">
+            <label for="Ariba">Ariba Sourcing<span class="camposRequeridos">*</span></label>
+            <select type="text" class="form-control" formControlName="ariba" (change)="leerAribaValue()" >
+                <option value="SI">SI</option>
+                <option value="N/A">N/A</option>
+            </select>
+        </div>
+        <ng-container *ngIf="valorAriba">
+            <div class="col-md-5">
+                <label for="Causal Excepción">Causal Excepción</label>
+                <select type="text" class="form-control" formControlName="causa">
+                    <option value=""></option>
+                    <option *ngFor="let causal of causalExcepcion" [value]="causal.nombre" [text]="causal.nombre">{{causal.nombre}}
+                    </option>
+                </select>
+            </div>
+        </ng-container>
+        <div class="form-group col-md-4">
             <label for="adjuntar">Adjuntar contrato y anexos</label>
             <input type="file" name="adjunto" class="form-control" placeholder="Recuerde que sólo pude ajuntar un archivo" (change)="adjuntarArchivo($event)">
             <small id="emailHelp" class="form-text text-muted">Recuerde que sólo pude adjuntar un archivo. Si requiere más de uno comprímalo en formato .zip o .rar</small>
         </div>
     </div>
+    <br>
     <div class="form-group row">
         <div class="col-md-12">
             <div class="botonera">
@@ -620,6 +638,7 @@
 
     </mat-expansion-panel>
 </mat-accordion>
+<br>
 <ng-template #templateConfirmacionDescartar>
     <div class="modal-body text-center">
         <p>¿Está seguro que desea salir?</p>

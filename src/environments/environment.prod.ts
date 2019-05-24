@@ -19,5 +19,6 @@ export const environment = {
   listaResponsableProceso: 'ResponsableProceso',
   listaNotificaciones: 'Notificaciones',
   linkVistaEdicionContratos: '/Lists/Contratos/EdicionContratos.aspx',
-  listaMotivoSuspension: 'motivoSuspension'
+  listaMotivoSuspension: 'motivoSuspension',
+  listaCausalExcepcion: 'CausalExcepcion'
 };

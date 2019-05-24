@@ -28,7 +28,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkhCeGw5bUFlNmd4YXZDa2NvT1UyVEhzRE5hMCIsImtpZCI6IkhCeGw5bUFlNmd4YXZDa2NvT1UyVEhzRE5hMCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTU3NTEyMzQ2LCJuYmYiOjE1NTc1MTIzNDYsImV4cCI6MTU1NzU0MTQ0NiwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.zTb9MKATGqcrgeeZAo14vmdpa4MxvmF_mXWRSZIqsYH8SmtIckfHs6t3xh2yNP2PKZTGLPJsp7zn_Ww9xiLNvD31W7Z1h6sq0einjwXF9lkF5vNXFj-UKNTzzBMLHUwTSVsLyH_savg1lNavzis0VVrtTPuMJWxQImI_BTELTlB_afjKjrtUksMNId6GuyECH8B4wLzW9wnBGN9uZuYTcnkxHIq0ry3HIcRw6vmgTQL4hQcM2BiX6NoloiTiIqR2VoUD8xwrcaXTxXhmdhQr0noqx2Pgf8Vr-aN92DAabqoqDwLYRsI3sD22Txd9UWjZ1xAQkGzP4iCe9_TI0M03zw'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkhCeGw5bUFlNmd4YXZDa2NvT1UyVEhzRE5hMCIsImtpZCI6IkhCeGw5bUFlNmd4YXZDa2NvT1UyVEhzRE5hMCJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTU4NzAwNDc4LCJuYmYiOjE1NTg3MDA0NzgsImV4cCI6MTU1ODcyOTU3OCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.QmXnA1BYbXrJ5-jV9XZ_2rC6V1CDSbV_w7eSRUeSZLNBg1icHJhscdCwnhK-SEPFRwE87plEN-xOfSxWg0z928FZSFBkt5QJhosKVXUwPU5U2_bXviClmsqYOVIgIKfB_p5-BC_i5NvvyqLs9sCXb84eG2tiV-QxC5hHXyxEBiCVpbuVmDY1DqibXP4hDW9hS1ltv-qwqEvJLfsZhJ5xHtNwkr9NA3GD_otBvCL8zZmqidmU-TKibFqTV7Yvm_WvvLDNxSgI0GGQmmXc8SmhksDsKH7LHmo2hUyheE5wsBJjkZa-Z2FET3lCmB546d55se0_LyfkNHLnTknHOQyJPA'
             }
         }, environment.urlWeb);
 
@@ -318,7 +318,7 @@ export class SPServicio {
     }
 
     ObtenerReporteSolicitud(fechaInico, fechaFin){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","TipoSolicitud","Estado","NumSolSAP","CM","OrdenadorGastos/Title","NumeroDeContrato","Solicitante","Author/Department","OrdenadorGastos/ID","Comprador/Title","Comprador/ID","Responsable/ID", "Responsable/Title","Categoria","Subcategoria","Alcance","Pais/Title","Pais/ID","FueSondeo","FechaDeCreacion","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor").expand("OrdenadorGastos","Responsable","Comprador","Pais", "Author").filter("FechaDeCreacion ge datetime'"+fechaInico+"T00:00:00.00Z' and FechaDeCreacion le datetime'"+fechaFin+"T23:59:59.00Z'").top(4999).get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","TipoSolicitud","Estado","NumSolSAP","CM","OrdenadorGastos/Title","NumeroDeContrato","Solicitante","Author/Department","OrdenadorGastos/ID","Comprador/Title","Comprador/ID","Categoria","Subcategoria","Alcance","Pais/Title","Pais/ID","FueSondeo","FechaDeCreacion","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaSuspension", "FechaReactivacion", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor","MotivoDeSuspension","Responsable/ID", "Responsable/Title").expand("OrdenadorGastos","Responsable","Comprador","Pais", "Author").filter("FechaDeCreacion ge datetime'"+fechaInico+"T00:00:00.00Z' and FechaDeCreacion le datetime'"+fechaFin+"T23:59:59.00Z'").top(4999).get());
         return respuesta;
     }
 
@@ -559,6 +559,11 @@ export class SPServicio {
 
     obtenerMotivoSuspension() {
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaMotivoSuspension).items.get());
+        return respuesta;
+    }
+
+    obtenerCausalExcepcion() {
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCausalExcepcion).items.get());
         return respuesta;
     }
 

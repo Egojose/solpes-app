@@ -5,11 +5,11 @@ export class ReporteContratos {
         public contrato: string,
         public requiereNumOrdenInicio: boolean,
         public objContrato: string,
-        public fechaFirmaContrato: string,
         public contratoObra: boolean,
         public fechaEntregaCSC: string,
-        public fechaEnvioProveedor: string,
-        public fechaDevolucionProveedor: string,
+        public fechaCargadoDocuSign: string,
+        public fechaFirmadoOrdenadorGasto: string,
+        public fechaFirmadoProveedor: string,
         public monedaContrato: string,
         public TMRSAP: any,
         public ivaContrato: string,
@@ -34,7 +34,9 @@ export class ReporteContratos {
         public solicitante: string,
         public comprador: string,
         public observacionesAdicionales: string,
-        public consecutivo: any) {}
+        public consecutivo: any,
+        public aribaSourcing: string,
+        public causalExcepcion: string) {}
 
         public static fromJson(element: any) {
             return new ReporteContratos(
@@ -43,10 +45,10 @@ export class ReporteContratos {
                 element.CM,
                 element.RequiereNumOrdenInicio,
                 element.ObjContrato,
-                element.FechaFirmaContrato !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaFirmaContrato)) : "",
                 element.ContratoObra,
                 element.FechaEntregaCSC !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaEntregaCSC)) : "",
                 element.FechaEnvioProveedor !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaEnvioProveedor)) : "",
+                element.FechaFirmaContrato !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaFirmaContrato)) : "" ,
                 element.FechaDevolucionProveedor !== null ? ReporteContratos.ObtenerFormatoFecha(new Date(element.FechaDevolucionProveedor)) : "",
                 element.MonedaContrato,
                 element.TMRSAP,
@@ -72,7 +74,9 @@ export class ReporteContratos {
                 element.Solicitante,
                 element.Comprador,
                 element.ObservacionesAdicionales,
-                element.Solicitud.Consecutivo)
+                element.Solicitud.Consecutivo,
+                element.AribaSourcing,
+                element.CausalExcepcion)
             }
 
         public static fromJsonList(elements: any) {
