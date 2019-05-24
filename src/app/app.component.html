@@ -1,8 +1,10 @@
 <div id="wrapper">
     <div class="container-fluid">
     <div id="sidebar-wrapper" class="text-left">
+        
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
+                <img src="../assets/images/LogoInternexa.png" class="logo"/>
             </li>
             <li>
                 <a routerLink="/crear-solicitud" routerLinkActive="active">Crear solicitud</a>
@@ -48,8 +50,8 @@
                 <div class="col-lg-12">
                     <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Ocultar menú</a>
                     <div class="zona-usuario-logueado">
-                        <div class="usuario">
-                            <span class="usuario-logueado">Bienvenido {{nombreUsuario}}</span>
+                        <div class="usuario text-right">
+                            <span class="usuario-logueado">Bienvenido <b>{{nombreUsuario}}</b></span>
                         </div>
                     </div>
                     <div class="contenido-aplicacion">

@@ -28,13 +28,13 @@
 }
 
 #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+    width: 270px;
 }
 
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    padding: 15px;
+    padding-left: 15px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -74,9 +74,11 @@
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
-    font-size: 18px;
-    line-height: 60px;
+    height: 100px;
+    /* font-size: 18px; */
+    /* line-height: 60px; */
+    background: white;
+    /* padding: 10px; */
 }
 
 .sidebar-nav > .sidebar-brand a {
@@ -106,7 +108,7 @@
     }
 
     #page-content-wrapper {
-        padding: 20px;
+        padding-left: 20px;
         position: relative;
     }
 
@@ -209,5 +211,21 @@ td.mat-cell,td.mat-footer-cell, th.mat-header-cell {
 .texto-version{
     font-size: small;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+.btn-success {
+   background: #8BC400;
+   border: none; 
+}
+
+.btn-primary {
+    background: #0099FF;
+    border: none;
+}
+
+.btn-danger {
+    background: #FE5000;
+    border: none;
+    
 }
 

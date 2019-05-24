@@ -15,6 +15,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ItemAddResult } from 'sp-pnp-js';
 import { Solicitud } from '../dominio/solicitud';
 import { Usuario } from '../dominio/usuario';
+import { CausalExcepcion } from '../dominio/causalExcepcion';
 
 @Component({
   selector: 'app-contratos',
@@ -85,17 +86,21 @@ export class ContratosComponent implements OnInit {
   CantidadBienesServiciosConContrato: number = 0;
   todosBienes: any;
   todosServicios: boolean;
+  causalExcepcion: CausalExcepcion[] = [];
+  causa: any;
+  ariba: any;
+  causalexeption: any;
+  valorAriba: boolean = false;
  
-
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
-    console.log(this.solicitudRecuperada);
     this.perfilacionEstado();
     this.idSolicitudParameter = this.solicitudRecuperada.id;
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
     this.Guardado = false;
+
   }
 
   private perfilacionEstado() {
@@ -108,7 +113,6 @@ export class ContratosComponent implements OnInit {
       if (this.perfilacion) {
         this.perfilacion = this.verificarResponsable();
         if (this.perfilacion) {
-          console.log("perfilación correcta");
           this.fueSondeo = this.solicitudRecuperada.FueSondeo;
         }
         else {
@@ -122,6 +126,13 @@ export class ContratosComponent implements OnInit {
       }
     }
   }
+  
+    obtenerCausas() { this.servicio.obtenerCausalExcepcion().subscribe(
+      (respuesta) => {
+        this.causalExcepcion = CausalExcepcion.fromJsonList(respuesta);
+      }
+    );
+      }     
 
   verificarEstado(): boolean {
     if (this.solicitudRecuperada.estado == 'Por registrar contratos') {
@@ -147,8 +158,20 @@ export class ContratosComponent implements OnInit {
     this.modalRef.hide();
   }
 
+  leerAribaValue() {
+    if(this.ContratosForm.controls.ariba.value === 'N/A') {
+      this.valorAriba = true;
+    }
+    else {
+      this.valorAriba = false;
+      this.ContratosForm.controls.causa.value === ""
+    }
+  }
+  
+
   ngOnInit() {
     this.spinner.show();
+    this.obtenerCausas();
     this.ContratosForm = this.formBuilder.group({
       TipoContrato: ['', Validators.required],
       SolpSapRfp: ['', Validators.required],
@@ -171,7 +194,9 @@ export class ContratosComponent implements OnInit {
       EmailProveedor: ['', [Validators.required, Validators.email]],
       Solicitante: [, Validators.required],
       Comprador: ['', Validators.required],
-      ObervacionesAdicionales: ['', Validators.required]
+      ObervacionesAdicionales: ['', Validators.required],
+      ariba: [''],
+      causa: ['']
     });
 
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
@@ -299,6 +324,19 @@ export class ContratosComponent implements OnInit {
     let ObervacionesAdicionales = this.ContratosForm.controls["ObervacionesAdicionales"].value;
     let ObjContrato;
     let bpoPais = this.ObResProceso[0].gestionContratos;
+    let causa = this.ContratosForm.controls["causa"].value;
+    let ariba = this.ContratosForm.controls["ariba"].value;
+    ariba === 'N/A'? causa = causa : causa = "";
+    if(ariba === "" || ariba === null) {
+      this.mostrarAdvertencia('El campo AribaSourcing es requerido');
+      this.spinner.hide();
+      return false;
+    }
+    if(ariba === 'N/A' && (causa === "" || causa === null)){
+      this.mostrarAdvertencia('Debe seleccionar una causa de excepción')
+      this.spinner.hide();
+      return false;
+    }
 
     if (this.Pais === "Colombia") {
       ObjContrato = {
@@ -326,6 +364,8 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter,
         FechaDeCreacion: fechaContrato,
+        AribaSourcing: ariba,
+        CausalExcepcion: causa
 
       }
     } else {
@@ -353,7 +393,8 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter,
         FechaDeCreacion: fechaContrato,
-
+        AribaSourcing: ariba,
+        CausalExcepcion: causa
       }
     }
     if (this.adjunto) {
