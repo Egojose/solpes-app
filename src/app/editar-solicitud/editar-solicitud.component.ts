@@ -383,7 +383,7 @@ export class EditarSolicitudComponent implements OnInit {
 
     if(valorEstimado !== "" && valorEstimado !== null){
       valorEstimadoStringBienes = `${valorEstimado}`
-      let regexletras = /^[0-9]*$/gm;
+      let regexletras = /^[0-9.]*$/gm;
       testeadoBienes = regexletras.test(valorEstimadoStringBienes);
     }
     
@@ -836,7 +836,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   if(valorEstimado !== "" && valorEstimado !== null){
     valorEstimadoString = `${valorEstimado}`
-    let regexletras = /^[0-9]*$/gm;
+    let regexletras = /^[0-9.]*$/gm;
     testeado = regexletras.test(valorEstimadoString);
   }
  
