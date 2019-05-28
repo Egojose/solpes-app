@@ -277,6 +277,10 @@ export class VerSolicitudTabComponent implements OnInit {
         this.HabilitarTabRegistrarSolpSAP();
         break;
       }
+      case 'Rechazado': {
+        this.HabilitarTabRegistrarSolpSAP();
+        break;
+      }
       case 'Por registrar contratos': {
         this.HabilitarTabContratos();
         break;
