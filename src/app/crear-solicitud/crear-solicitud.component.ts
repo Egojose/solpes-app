@@ -323,7 +323,7 @@ export class CrearSolicitudComponent implements OnInit {
     let numeroCuentaTesteadoBienes = true;
     if (valorEstimado !== "" && valorEstimado !== null) {
       valorEstimadoStringBienes = `${valorEstimado}`;
-      let regexletras = /^[0-9]*$/gm;
+      let regexletras = /^[0-9.]*$/gm;
       testeadoBienes = regexletras.test(valorEstimadoStringBienes);
     }
 
@@ -449,7 +449,7 @@ export class CrearSolicitudComponent implements OnInit {
       }
       if (testeadoBienes === false) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El campo valor estimado sólo admite números en la columna D fila " + (i + 1) })
+        this.ArrayErrorFile.push({ error: "El campo valor estimado sólo admite números en la columna F fila " + (i + 1) })
       }
       if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
         this.cantidadErrorFile++;
@@ -759,8 +759,11 @@ ValidarVaciosCTS(row: any, i: number): any {
   let numeroCuentaTesteadoServicios = true;
   
   if(valorEstimado !== "" && valorEstimado !== null){
+    let regularExp = /[.,]/g
+    // valorEstimado.replace(regularExp, "");
     valorEstimadoString = `${valorEstimado}`
-    let regexletras = /^[0-9]*$/gm;
+    valorEstimadoString.replace(regularExp, "")
+    let regexletras = /^[0-9.]*$/gm;
     testeado = regexletras.test(valorEstimadoString);
   }
  
@@ -2366,7 +2369,6 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   editarBienes(element, template: TemplateRef<any>) {
-    console.log(element);
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
     if (element.archivoAdjunto != null) {
