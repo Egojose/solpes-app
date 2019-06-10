@@ -415,7 +415,8 @@ export class CrearSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
-          numeroCuenta: numeroCuentaString
+          numeroCuenta: numeroCuentaString,
+          Orden: parseInt(row, 10)
         }
         return Obj;
       }
@@ -500,7 +501,8 @@ export class CrearSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
-          numeroCuenta: numeroCuentaString
+          numeroCuenta: numeroCuentaString,
+          Orden: parseInt(row, 10)
         }
         return Obj;
       }
@@ -565,7 +567,8 @@ export class CrearSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(row, 10)
         }
         return Obj;
       }
@@ -630,7 +633,8 @@ export class CrearSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(row, 10)
         }
         return Obj;
       }
