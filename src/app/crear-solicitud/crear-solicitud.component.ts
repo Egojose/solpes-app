@@ -252,6 +252,7 @@ export class CrearSolicitudComponent implements OnInit {
             this.ObjCTB.forEach(element => {
               this.servicio.agregarCondicionesTecnicasBienesExcel(element).then(
                 (item: ItemAddResult) => {
+                  console.log(element.Codigo);
                   contador++;
                   if (this.ObjCTB.length === contador) {
                     this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
