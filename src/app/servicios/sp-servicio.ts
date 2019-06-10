@@ -152,7 +152,6 @@ export class SPServicio {
     }
 
     agregarCondicionesTecnicasBienesExcel(condicionTecnicaBienes) {
-         console.log(condicionTecnicaBienes.Codigo)
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.add(condicionTecnicaBienes);
     }
 
@@ -329,7 +328,7 @@ export class SPServicio {
     }
 
     ObtenerCondicionesTecnicasBienes(IdSolicitud){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").orderBy("Orden").get());
         return respuesta;
     }    
 
