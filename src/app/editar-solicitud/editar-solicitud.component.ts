@@ -313,7 +313,7 @@ export class EditarSolicitudComponent implements OnInit {
                 (item: ItemAddResult) => {
                   contador++;
                   if (this.ObjCTB.length === contador) {
-                    this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
+                    this.servicio.ObtenerCondicionesTecnicasBienesExcel(this.IdSolicitud).subscribe(
                       (res) => {
                         this.condicionesTB = CondicionTecnicaBienes.fromJsonList(res);
                         this.dataSourceCTB.data = this.condicionesTB;
@@ -772,7 +772,7 @@ export class EditarSolicitudComponent implements OnInit {
                   (item: ItemAddResult) => {
                     contador++;
                     if (this.ObjCTS.length === contador) {
-                        this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
+                        this.servicio.ObtenerCondicionesTecnicasServiciosExcel(this.IdSolicitud).subscribe(
                           (res)=>{
                             this.condicionesTS = CondicionTecnicaServicios.fromJsonList(res);
                             this.dataSourceCTS.data = this.condicionesTS;
