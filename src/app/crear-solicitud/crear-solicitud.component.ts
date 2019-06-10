@@ -241,6 +241,7 @@ export class CrearSolicitudComponent implements OnInit {
           for (let i = 2; i < file.length; i++) {
             let row = file[i];
             let codigo = row[0];
+            let filas = i;
             this.validarCodigosBrasilCTB(codigo, i);
             let obj = this.ValidarVaciosCTB(row, i);
             if (obj != "") {
@@ -416,7 +417,7 @@ export class CrearSolicitudComponent implements OnInit {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
           numeroCuenta: numeroCuentaString,
-          Orden: parseInt(row, 10)
+          Orden: parseInt(i, 10)
         }
         return Obj;
       }
@@ -502,7 +503,7 @@ export class CrearSolicitudComponent implements OnInit {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
           numeroCuenta: numeroCuentaString,
-          Orden: parseInt(row, 10)
+          Orden: parseInt(i, 10)
         }
         return Obj;
       }
@@ -568,7 +569,7 @@ export class CrearSolicitudComponent implements OnInit {
           costoInversion: "",
           numeroCostoInversion: "",
           numeroCuenta: "",
-          Orden: parseInt(row, 10)
+          Orden: parseInt(i, 10)
         }
         return Obj;
       }
@@ -634,7 +635,7 @@ export class CrearSolicitudComponent implements OnInit {
           costoInversion: "",
           numeroCostoInversion: "",
           numeroCuenta: "",
-          Orden: parseInt(row, 10)
+          Orden: parseInt(i, 10)
         }
         return Obj;
       }
@@ -684,6 +685,7 @@ leerArchivoServicios(inputValue: any): void {
           for (let i = 2; i < file.length; i++) {
             let row = file[i];
             let codigo = row[0];
+            let filas = i;
             this.validarCodigosBrasilCTS(codigo, i);
             let obj = this.ValidarVaciosCTS(row, i);
             if (obj != "") {
@@ -853,7 +855,7 @@ ValidarVaciosCTS(row: any, i: number): any {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
           numeroCuenta: numeroCuentaStringCTS,
-          Orden: parseInt(row, 10)
+          Orden: i
         }
           return Obj;         
       } 
@@ -930,7 +932,7 @@ ValidarVaciosCTS(row: any, i: number): any {
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
             numeroCuenta: numeroCuentaStringCTS,
-            Orden: parseInt(row, 10)
+            Orden: i
           }
             return Obj;         
         } 
@@ -989,7 +991,7 @@ ValidarVaciosCTS(row: any, i: number): any {
           costoInversion: "",
           numeroCostoInversion: "",
           numeroCuenta: "",
-          Orden: parseInt(row, 10)
+          Orden: i
         }
           return Obj;         
       } 
@@ -1046,7 +1048,7 @@ ValidarVaciosCTS(row: any, i: number): any {
         costoInversion: "",
         numeroCostoInversion: "",
         numeroCuenta: "",
-        Orden: parseInt(row, 10)
+        Orden: i
       }
         return Obj;         
     } 
