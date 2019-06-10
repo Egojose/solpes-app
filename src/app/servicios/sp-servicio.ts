@@ -328,9 +328,14 @@ export class SPServicio {
     }
 
     ObtenerCondicionesTecnicasBienes(IdSolicitud){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
+        return respuesta;
+    } 
+    
+    ObtenerCondicionesTecnicasBienesExcel(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").orderBy("Orden").get());
         return respuesta;
-    }    
+    } 
 
     ObtenerRecepcionesBienes(IdResponsable : number){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaRecepcionBienes).items.filter("recibidoSap eq '0' and Cantidad ne '0' and Estado eq 'Confirmado' and ResponsableSAPId eq '"+IdResponsable+"'").select("*","AttachmentFiles", "Author/Title").expand("AttachmentFiles", "Author").get());
@@ -392,6 +397,11 @@ export class SPServicio {
     
     ObtenerCondicionesTecnicasServicios(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());
+        return respuesta;
+    }
+
+    ObtenerCondicionesTecnicasServiciosExcel(IdSolicitud){
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").orderBy("Orden").get());
         return respuesta;
     }
 

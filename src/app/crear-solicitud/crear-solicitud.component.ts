@@ -255,7 +255,7 @@ export class CrearSolicitudComponent implements OnInit {
                   console.log(element.Codigo);
                   contador++;
                   if (this.ObjCTB.length === contador) {
-                    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+                    this.servicio.ObtenerCondicionesTecnicasBienesExcel(this.idSolicitudGuardada).subscribe(
                       (res) => {
                         this.condicionesTB = CondicionTecnicaBienes.fromJsonList(res);
                         this.dataSourceCTB.data = this.condicionesTB;
@@ -697,7 +697,7 @@ leerArchivoServicios(inputValue: any): void {
                 (item: ItemAddResult) => {
                   contador++;
                   if (this.ObjCTS.length === contador) {
-                    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+                    this.servicio.ObtenerCondicionesTecnicasServiciosExcel(this.idSolicitudGuardada).subscribe(
                       (res) => {
                         this.condicionesTS = CondicionTecnicaServicios.fromJsonList(res);
                         this.dataSourceCTS.data = this.condicionesTS;
@@ -852,7 +852,8 @@ ValidarVaciosCTS(row: any, i: number): any {
           Comentario: comentarios,
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
-          numeroCuenta: numeroCuentaStringCTS
+          numeroCuenta: numeroCuentaStringCTS,
+          Orden: parseInt(row, 10)
         }
           return Obj;         
       } 
@@ -928,7 +929,8 @@ ValidarVaciosCTS(row: any, i: number): any {
             Comentario: comentarios,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuentaStringCTS
+            numeroCuenta: numeroCuentaStringCTS,
+            Orden: parseInt(row, 10)
           }
             return Obj;         
         } 
@@ -986,7 +988,8 @@ ValidarVaciosCTS(row: any, i: number): any {
           Comentario: comentarios,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(row, 10)
         }
           return Obj;         
       } 
@@ -1042,7 +1045,8 @@ ValidarVaciosCTS(row: any, i: number): any {
         Comentario: comentarios,
         costoInversion: "",
         numeroCostoInversion: "",
-        numeroCuenta: ""
+        numeroCuenta: "",
+        Orden: parseInt(row, 10)
       }
         return Obj;         
     } 
