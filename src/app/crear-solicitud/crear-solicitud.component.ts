@@ -852,7 +852,8 @@ ValidarVaciosCTS(row: any, i: number): any {
           Comentario: comentarios,
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
-          numeroCuenta: numeroCuentaStringCTS
+          numeroCuenta: numeroCuentaStringCTS,
+          Orden: parseInt(row, 10)
         }
           return Obj;         
       } 
@@ -928,7 +929,8 @@ ValidarVaciosCTS(row: any, i: number): any {
             Comentario: comentarios,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuentaStringCTS
+            numeroCuenta: numeroCuentaStringCTS,
+            Orden: parseInt(row, 10)
           }
             return Obj;         
         } 
@@ -986,7 +988,8 @@ ValidarVaciosCTS(row: any, i: number): any {
           Comentario: comentarios,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(row, 10)
         }
           return Obj;         
       } 
@@ -1042,7 +1045,8 @@ ValidarVaciosCTS(row: any, i: number): any {
         Comentario: comentarios,
         costoInversion: "",
         numeroCostoInversion: "",
-        numeroCuenta: ""
+        numeroCuenta: "",
+        Orden: parseInt(row, 10)
       }
         return Obj;         
     } 
