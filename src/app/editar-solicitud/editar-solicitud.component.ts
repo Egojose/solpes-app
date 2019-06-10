@@ -474,7 +474,8 @@ export class EditarSolicitudComponent implements OnInit {
             MonedaSondeo: tipoMoneda,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuentaString
+            numeroCuenta: numeroCuentaString,
+            Orden: parseInt(row, 10)
         }
             return Obj;         
         } 
@@ -556,7 +557,8 @@ export class EditarSolicitudComponent implements OnInit {
               MonedaSondeo: tipoMoneda,
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
-              numeroCuenta: numeroCuentaString
+              numeroCuenta: numeroCuentaString,
+              Orden: parseInt(row, 10)
           }
               return Obj;         
           } 
@@ -619,7 +621,8 @@ export class EditarSolicitudComponent implements OnInit {
             MonedaSondeo: tipoMoneda,
             costoInversion: "",
             numeroCostoInversion: "",
-            numeroCuenta: ""
+            numeroCuenta: "",
+            Orden: parseInt(row, 10)
         }
             return Obj;         
         } 
@@ -681,7 +684,8 @@ export class EditarSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(row, 10)
       }
           return Obj;         
       } 
@@ -917,7 +921,8 @@ export class EditarSolicitudComponent implements OnInit {
             Comentario: comentarios,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuentaStringCTS
+            numeroCuenta: numeroCuentaStringCTS,
+            Orden: parseInt(row, 10)
           }
             return Obj;         
         } 
@@ -991,7 +996,8 @@ export class EditarSolicitudComponent implements OnInit {
               Comentario: comentarios,
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
-              numeroCuenta: numeroCuentaStringCTS
+              numeroCuenta: numeroCuentaStringCTS,
+              Orden: parseInt(row, 10)
             }
               return Obj;         
           } 
@@ -1048,7 +1054,8 @@ export class EditarSolicitudComponent implements OnInit {
             Comentario: comentarios,
             costoInversion: "",
             numeroCostoInversion: "",
-            numeroCuenta: ""
+            numeroCuenta: "",
+            Orden: parseInt(row, 10)
           }
             return Obj;         
         } 
@@ -1103,7 +1110,8 @@ export class EditarSolicitudComponent implements OnInit {
           Comentario: comentarios,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(row, 10)
         }
           return Obj;         
       } 
