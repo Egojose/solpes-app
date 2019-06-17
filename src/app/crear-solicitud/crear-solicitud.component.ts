@@ -2018,7 +2018,13 @@ validarCodigosBrasilCTS(codigoValidar, i) {
         this.condicionTB.numeroCuenta = numeroCuenta;
         this.condicionTB.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
-        let nombreArchivoBorrar = this.rutaAdjuntoCTB.split('/');
+
+        let nombreArchivoBorrar = null;
+        if(this.rutaAdjuntoCTB != "")
+        {
+          nombreArchivoBorrar = this.rutaAdjuntoCTB.split('/');
+        }
+          
         if (this.rutaAdjuntoCTB == '') {
           this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
             (item: ItemAddResult) => {
@@ -2384,8 +2390,16 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.idCondicionTBGuardada = element.id;
     if (element.archivoAdjunto != null) {
       this.mostrarAdjuntoCTB = true;
-      this.rutaAdjuntoCTB = element.rutaAdjunto;
-      this.nombreAdjuntoCTB = element.archivoAdjunto.name;
+      if(element.rutaAdjunto.toString() == "[object Object]")
+      {
+        this.rutaAdjuntoCTB = ""; //element.rutaAdjunto
+        this.nombreAdjuntoCTB  = ""; //element.archivoAdjunto.name;
+      }
+      else
+      {
+        this.rutaAdjuntoCTB = element.rutaAdjunto;
+        this.nombreAdjuntoCTB =  element.archivoAdjunto.name;
+      }
     } else {
       this.mostrarAdjuntoCTB = false;
       this.rutaAdjuntoCTB = '';
