@@ -29,6 +29,7 @@ import * as XLSX from 'xlsx';
 import readXlsxFile from 'read-excel-file';
 import { CondicionesTecnicasBienes } from '../entrega-bienes/condicionTecnicaBienes';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
+import { CondicionesTecnicasServicios } from '../entrega-servicios/condicionTecnicaServicio';
 
 
 @Component({
@@ -241,6 +242,7 @@ export class CrearSolicitudComponent implements OnInit {
           for (let i = 2; i < file.length; i++) {
             let row = file[i];
             let codigo = row[0];
+            let filas = i;
             this.validarCodigosBrasilCTB(codigo, i);
             let obj = this.ValidarVaciosCTB(row, i);
             if (obj != "") {
@@ -252,9 +254,10 @@ export class CrearSolicitudComponent implements OnInit {
             this.ObjCTB.forEach(element => {
               this.servicio.agregarCondicionesTecnicasBienesExcel(element).then(
                 (item: ItemAddResult) => {
+                  console.log(element.Codigo);
                   contador++;
                   if (this.ObjCTB.length === contador) {
-                    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+                    this.servicio.ObtenerCondicionesTecnicasBienesExcel(this.idSolicitudGuardada).subscribe(
                       (res) => {
                         this.condicionesTB = CondicionTecnicaBienes.fromJsonList(res);
                         this.dataSourceCTB.data = this.condicionesTB;
@@ -323,7 +326,7 @@ export class CrearSolicitudComponent implements OnInit {
     let numeroCuentaTesteadoBienes = true;
     if (valorEstimado !== "" && valorEstimado !== null) {
       valorEstimadoStringBienes = `${valorEstimado}`;
-      let regexletras = /^[0-9]*$/gm;
+      let regexletras = /^[0-9.]*$/gm;
       testeadoBienes = regexletras.test(valorEstimadoStringBienes);
     }
 
@@ -414,7 +417,8 @@ export class CrearSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
-          numeroCuenta: numeroCuentaString
+          numeroCuenta: numeroCuentaString,
+          Orden: parseInt(i, 10)
         }
         return Obj;
       }
@@ -449,7 +453,7 @@ export class CrearSolicitudComponent implements OnInit {
       }
       if (testeadoBienes === false) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El campo valor estimado sólo admite números en la columna D fila " + (i + 1) })
+        this.ArrayErrorFile.push({ error: "El campo valor estimado sólo admite números en la columna F fila " + (i + 1) })
       }
       if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
         this.cantidadErrorFile++;
@@ -499,7 +503,8 @@ export class CrearSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
-          numeroCuenta: numeroCuentaString
+          numeroCuenta: numeroCuentaString,
+          Orden: parseInt(i, 10)
         }
         return Obj;
       }
@@ -564,7 +569,8 @@ export class CrearSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(i, 10)
         }
         return Obj;
       }
@@ -629,7 +635,8 @@ export class CrearSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(i, 10)
         }
         return Obj;
       }
@@ -679,6 +686,7 @@ leerArchivoServicios(inputValue: any): void {
           for (let i = 2; i < file.length; i++) {
             let row = file[i];
             let codigo = row[0];
+            let filas = i;
             this.validarCodigosBrasilCTS(codigo, i);
             let obj = this.ValidarVaciosCTS(row, i);
             if (obj != "") {
@@ -692,7 +700,7 @@ leerArchivoServicios(inputValue: any): void {
                 (item: ItemAddResult) => {
                   contador++;
                   if (this.ObjCTS.length === contador) {
-                    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+                    this.servicio.ObtenerCondicionesTecnicasServiciosExcel(this.idSolicitudGuardada).subscribe(
                       (res) => {
                         this.condicionesTS = CondicionTecnicaServicios.fromJsonList(res);
                         this.dataSourceCTS.data = this.condicionesTS;
@@ -759,8 +767,11 @@ ValidarVaciosCTS(row: any, i: number): any {
   let numeroCuentaTesteadoServicios = true;
   
   if(valorEstimado !== "" && valorEstimado !== null){
+    let regularExp = /[.,]/g
+    // valorEstimado.replace(regularExp, "");
     valorEstimadoString = `${valorEstimado}`
-    let regexletras = /^[0-9]*$/gm;
+    valorEstimadoString.replace(regularExp, "")
+    let regexletras = /^[0-9.]*$/gm;
     testeado = regexletras.test(valorEstimadoString);
   }
  
@@ -844,7 +855,8 @@ ValidarVaciosCTS(row: any, i: number): any {
           Comentario: comentarios,
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString(),
-          numeroCuenta: numeroCuentaStringCTS
+          numeroCuenta: numeroCuentaStringCTS,
+          Orden: i
         }
           return Obj;         
       } 
@@ -920,7 +932,8 @@ ValidarVaciosCTS(row: any, i: number): any {
             Comentario: comentarios,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuentaStringCTS
+            numeroCuenta: numeroCuentaStringCTS,
+            Orden: i
           }
             return Obj;         
         } 
@@ -978,7 +991,8 @@ ValidarVaciosCTS(row: any, i: number): any {
           Comentario: comentarios,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: i
         }
           return Obj;         
       } 
@@ -1034,7 +1048,8 @@ ValidarVaciosCTS(row: any, i: number): any {
         Comentario: comentarios,
         costoInversion: "",
         numeroCostoInversion: "",
-        numeroCuenta: ""
+        numeroCuenta: "",
+        Orden: i
       }
         return Obj;         
     } 
@@ -1781,6 +1796,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   abrirModalCTB(template: TemplateRef<any>) {
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
@@ -1800,6 +1816,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   abrirModalCTS(template: TemplateRef<any>) {
+    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
@@ -1918,6 +1935,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                 this.condicionTB = null;
                 this.spinner.hide();
                 this.ctbSubmitted = false;
+                this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                 this.spinner.hide();
@@ -1941,9 +1959,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
             this.condicionTB = null;
             this.spinner.hide();
             this.ctbSubmitted = false;
+
+            this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');
             this.spinner.hide();
+           
           }
         )
       }
@@ -1976,6 +1997,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
             this.modalRef.hide();
             this.spinner.hide();
             this.ctbSubmitted = false;
+            this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
           }, err => {
             this.mostrarError('Error en la actualización de la condición técnica de bienes');
             this.spinner.hide();
@@ -1999,7 +2021,13 @@ validarCodigosBrasilCTS(codigoValidar, i) {
         this.condicionTB.numeroCuenta = numeroCuenta;
         this.condicionTB.tipoMoneda = tipoMoneda;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
-        let nombreArchivoBorrar = this.rutaAdjuntoCTB.split('/');
+
+        let nombreArchivoBorrar = null;
+        if(this.rutaAdjuntoCTB != "")
+        {
+          nombreArchivoBorrar = this.rutaAdjuntoCTB.split('/');
+        }
+          
         if (this.rutaAdjuntoCTB == '') {
           this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
             (item: ItemAddResult) => {
@@ -2028,6 +2056,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                   this.modalRef.hide();
                   this.spinner.hide();
                   this.ctbSubmitted = false;
+                  this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
                 }, err => {
                   this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                   this.spinner.hide();
@@ -2069,6 +2098,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                       this.modalRef.hide();
                       this.spinner.hide();
                       this.ctbSubmitted = false;
+                      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
                     }, err => {
                       this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                       this.spinner.hide();
@@ -2144,13 +2174,15 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       return false;
     }
 
-    if(this.condicionTS != null)
+    if(this.condicionTS == null)
     {
+      this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
+    }
       if(this.condicionTS.archivoAdjunto != null)
       {
         adjunto = this.condicionTS.archivoAdjunto.name;
       }
-    }
+    
 
     if (this.textoBotonGuardarCTS == "Guardar") {
       if (adjunto == null) {
@@ -2166,6 +2198,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
             this.modalRef.hide();
             this.spinner.hide();
             this.ctsSubmitted = false;
+            this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');
             this.spinner.hide();
@@ -2199,6 +2232,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                 this.modalRef.hide();
                 this.spinner.hide();
                 this.ctsSubmitted = false;
+                this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
                 this.spinner.hide();
@@ -2237,6 +2271,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
             this.modalRef.hide();
             this.spinner.hide();
             this.ctsSubmitted = false;
+            this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
           }, err => {
             this.mostrarError('Error en la actualización de la condición técnica de servicios');
             this.spinner.hide();
@@ -2286,6 +2321,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                       this.modalRef.hide();
                       this.spinner.hide();
                       this.ctsSubmitted = false;
+                      this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
                     }, err => {
                       this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
                       this.spinner.hide();
@@ -2327,6 +2363,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                   this.modalRef.hide();
                   this.spinner.hide();
                   this.ctsSubmitted = false;
+                  this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
                 }, err => {
                   this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de servicios');
                   this.spinner.hide();
@@ -2360,14 +2397,30 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.ctsFormulario.controls["numCuentaCTS"].setValue('');
   }
 
+  
   editarBienes(element, template: TemplateRef<any>) {
-    console.log(element);
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
     if (element.archivoAdjunto != null) {
       this.mostrarAdjuntoCTB = true;
-      this.rutaAdjuntoCTB = element.rutaAdjunto;
-      this.nombreAdjuntoCTB = element.archivoAdjunto.name;
+      if(element.rutaAdjunto.toString() == "[object Object]")
+      {
+        if(element.rutaAdjunto.results.length > 0)
+        {
+          this.rutaAdjuntoCTB = element.rutaAdjunto.results[0].ServerRelativeUrl; //element.rutaAdjunto
+          this.nombreAdjuntoCTB  = element.rutaAdjunto.results[0].FileName; //element.archivoAdjunto.name;
+        }
+        else
+        {
+          this.rutaAdjuntoCTB = ""; //element.rutaAdjunto
+          this.nombreAdjuntoCTB  = ""; //element.archivoAdjunto.name;
+        }
+      }
+      else
+      {
+        this.rutaAdjuntoCTB = element.rutaAdjunto;
+        this.nombreAdjuntoCTB =  element.archivoAdjunto.name;
+      }
     } else {
       this.mostrarAdjuntoCTB = false;
       this.rutaAdjuntoCTB = '';
@@ -2399,8 +2452,18 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.idCondicionTSGuardada = element.id;
     if (element.archivoAdjunto != null) {
       this.mostrarAdjuntoCTS = true;
+      if(element.rutaAdjunto.toString() == "[object Object]") {
+        if(element.rutaAdjunto.results.length > 0) {
+          this.rutaAdjuntoCTS = element.rutaAdjunto.results[0].ServerRelativeUrl;
+          this.nombreAdjuntoCTS = element.rutaAdjunto.results[0].FileName;
+        } else {
+          this.rutaAdjuntoCTS = "";
+          this.nombreAdjuntoCTS = "";
+        }
+      } else {
       this.rutaAdjuntoCTS = element.rutaAdjunto;
       this.nombreAdjuntoCTS = element.archivoAdjunto.name;
+      }
     } else {
       this.mostrarAdjuntoCTS = false;
       this.rutaAdjuntoCTS = '';

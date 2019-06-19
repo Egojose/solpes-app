@@ -313,7 +313,7 @@ export class EditarSolicitudComponent implements OnInit {
                 (item: ItemAddResult) => {
                   contador++;
                   if (this.ObjCTB.length === contador) {
-                    this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
+                    this.servicio.ObtenerCondicionesTecnicasBienesExcel(this.IdSolicitud).subscribe(
                       (res) => {
                         this.condicionesTB = CondicionTecnicaBienes.fromJsonList(res);
                         this.dataSourceCTB.data = this.condicionesTB;
@@ -383,7 +383,7 @@ export class EditarSolicitudComponent implements OnInit {
 
     if(valorEstimado !== "" && valorEstimado !== null){
       valorEstimadoStringBienes = `${valorEstimado}`
-      let regexletras = /^[0-9]*$/gm;
+      let regexletras = /^[0-9.]*$/gm;
       testeadoBienes = regexletras.test(valorEstimadoStringBienes);
     }
     
@@ -474,7 +474,8 @@ export class EditarSolicitudComponent implements OnInit {
             MonedaSondeo: tipoMoneda,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuentaString
+            numeroCuenta: numeroCuentaString,
+            Orden: parseInt(i, 10)
         }
             return Obj;         
         } 
@@ -556,7 +557,8 @@ export class EditarSolicitudComponent implements OnInit {
               MonedaSondeo: tipoMoneda,
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
-              numeroCuenta: numeroCuentaString
+              numeroCuenta: numeroCuentaString,
+              Orden: parseInt(i, 10)
           }
               return Obj;         
           } 
@@ -619,7 +621,8 @@ export class EditarSolicitudComponent implements OnInit {
             MonedaSondeo: tipoMoneda,
             costoInversion: "",
             numeroCostoInversion: "",
-            numeroCuenta: ""
+            numeroCuenta: "",
+            Orden: parseInt(i, 10)
         }
             return Obj;         
         } 
@@ -681,7 +684,8 @@ export class EditarSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: parseInt(i, 10)
       }
           return Obj;         
       } 
@@ -768,7 +772,7 @@ export class EditarSolicitudComponent implements OnInit {
                   (item: ItemAddResult) => {
                     contador++;
                     if (this.ObjCTS.length === contador) {
-                        this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
+                        this.servicio.ObtenerCondicionesTecnicasServiciosExcel(this.IdSolicitud).subscribe(
                           (res)=>{
                             this.condicionesTS = CondicionTecnicaServicios.fromJsonList(res);
                             this.dataSourceCTS.data = this.condicionesTS;
@@ -836,7 +840,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   if(valorEstimado !== "" && valorEstimado !== null){
     valorEstimadoString = `${valorEstimado}`
-    let regexletras = /^[0-9]*$/gm;
+    let regexletras = /^[0-9.]*$/gm;
     testeado = regexletras.test(valorEstimadoString);
   }
  
@@ -917,7 +921,8 @@ export class EditarSolicitudComponent implements OnInit {
             Comentario: comentarios,
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString(),
-            numeroCuenta: numeroCuentaStringCTS
+            numeroCuenta: numeroCuentaStringCTS,
+            Orden: i
           }
             return Obj;         
         } 
@@ -991,7 +996,8 @@ export class EditarSolicitudComponent implements OnInit {
               Comentario: comentarios,
               costoInversion: costoInversion.toString(),
               numeroCostoInversion: numeroCostoInversion.toString(),
-              numeroCuenta: numeroCuentaStringCTS
+              numeroCuenta: numeroCuentaStringCTS,
+              Orden: i
             }
               return Obj;         
           } 
@@ -1048,7 +1054,8 @@ export class EditarSolicitudComponent implements OnInit {
             Comentario: comentarios,
             costoInversion: "",
             numeroCostoInversion: "",
-            numeroCuenta: ""
+            numeroCuenta: "",
+            Orden: i
           }
             return Obj;         
         } 
@@ -1103,7 +1110,8 @@ export class EditarSolicitudComponent implements OnInit {
           Comentario: comentarios,
           costoInversion: "",
           numeroCostoInversion: "",
-          numeroCuenta: ""
+          numeroCuenta: "",
+          Orden: i
         }
           return Obj;         
       } 
