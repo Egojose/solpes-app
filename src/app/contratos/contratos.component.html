@@ -176,14 +176,14 @@
 
     </div>
     <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="inputEmail4">N° Contrato/Orden de Compra <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }" [readonly]="Guardado === true">
             <div *ngIf="submitted && f.ContratoOC.errors" class="invalid-feedback">
                 <div *ngIf="f.ContratoOC.errors.required">Es requerido</div>
             </div>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="inputEmail4">Requiere N° de Orden Inicio <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="OrdenInicio" [ngClass]="{ 'is-invalid': submitted && f.OrdenInicio.errors }">
                 <option value="" [disabled]="Guardado === true"></option>
@@ -193,6 +193,17 @@
             </select>
             <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
                 <div *ngIf="f.OrdenInicio.errors.required">Es requerido</div>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputEmail4">Requiere evaluación <span class="camposRequeridos">*</span></label>
+            <select name="" id="" class="form-control" formControlName="evaluacion" [ngClass]="{ 'is-invalid': submitted && f.evaluacion.errors }">
+                <option value="" [disabled]="Guardado === true"></option>
+                <option value="Si" [disabled]="Guardado === true">Si</option>
+                <option value="No" [disabled]="Guardado === true">No</option>
+            </select>
+            <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
+                <div *ngIf="f.evaluacion.errors.required">Es requerido</div>
             </div>
         </div>
     </div>
@@ -232,8 +243,8 @@
             </div>
         </div>
         <div class="form-group col-md-4">
-            <label for="inputEmail4">IVA del contrato<span class="camposRequeridos">*</span> </label>
-            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="IvaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }" [readonly]="Guardado === true">
+            <label for="inputEmail4">Porcentaje IVA del contrato<span class="camposRequeridos">*</span> </label>
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="IvaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }" [readonly]="Guardado === true" (keyup)="validarIva()">
             <div *ngIf="submitted && f.IvaContrato.errors" class="invalid-feedback">
                 <div *ngIf="f.IvaContrato.errors.required">Es requerido</div>
             </div>
@@ -241,7 +252,7 @@
     </div>
     <div class="row">
         <div class="form-group col-md-4">
-            <label for="inputEmail4">Valor Contractual <span class="camposRequeridos">*</span></label>
+            <label for="inputEmail4">Valor contractual sin impuestos<span class="camposRequeridos">*</span></label>
             <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="ValorContractual" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }"
                 [readonly]="Guardado === true">
             <div *ngIf="submitted && f.ValorContractual.errors" class="invalid-feedback">
@@ -249,7 +260,7 @@
             </div>
         </div>
         <div class="form-group col-md-4">
-            <label for="inputEmail4">Línea base del contrato <span class="camposRequeridos">*</span></label>
+            <label for="inputEmail4">Línea base del contrato sin impuestos <span class="camposRequeridos">*</span></label>
             <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="LineaBaseContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LineaBaseContrato.errors }"
                 [readonly]="Guardado === true">
             <small id="emailHelp" class="form-text text-muted">Escriba el valor en la moneda del contrato</small>
@@ -258,7 +269,7 @@
             </div>
         </div>
         <div class="form-group col-md-4">
-            <label for="inputEmail4">Ahorro generado en contrato <span class="camposRequeridos">*</span></label>
+            <label for="inputEmail4">Ahorro generado en contrato sin impuestos <span class="camposRequeridos">*</span></label>
             <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="AhorroGenerado" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AhorroGenerado.errors }" [readonly]="Guardado === true">
             <small id="emailHelp" class="form-text text-muted">Escriba el valor en la moneda del contrato</small>
             <div *ngIf="submitted && f.AhorroGenerado.errors" class="invalid-feedback">
@@ -318,23 +329,28 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Acreedor</label>
-            <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [readonly]="Guardado === true">
+            <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [readonly]="Guardado === true" [ngClass]="{ 'is-invalid': submitted && f.Acreedor.errors }">
             <small id="emailHelp" class="form-text text-muted">NIT o documento de identificación del proveedor, sin
                 dígito de verificación</small>
-
+            <div *ngIf="submitted && f.Acreedor.errors" class="invalid-feedback">
+                <div *ngIf="f.Acreedor.errors.required">Es requerido</div>
+            </div>
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Dígito de verificación </label>
-            <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly [readonly]="Guardado === true">
+            <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly [readonly]="Guardado === true" [ngClass]="{ 'is-invalid': submitted && f.DigitoVerificacion.errors }">
             <small id="emailHelp" class="form-text text-muted">Dígito de verificación del NIT o documento de
                 identificación del proveedor</small>
-
+            <div *ngIf="submitted && f.DigitoVerificacion.errors" class="invalid-feedback">
+                <div *ngIf="f.DigitoVerificacion.errors.required">Es requerido</div>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }" [readonly]="Guardado === true">
+            <small id="emailHelp" class="form-text text-muted">Debe ser el nombre que está registrado en SAP</small>
             <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
                 <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
             </div>
@@ -398,6 +414,27 @@
             <input type="file" name="adjunto" class="form-control" placeholder="Recuerde que sólo pude ajuntar un archivo" (change)="adjuntarArchivo($event)">
             <small id="emailHelp" class="form-text text-muted">Recuerde que sólo pude adjuntar un archivo. Si requiere más de uno comprímalo en formato .zip o .rar</small>
         </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label for="inputEmail4">Puntaje actual de la evaluación del proveedor<span class="camposRequeridos">*</span></label>
+            <select name="" id="" class="form-control" formControlName="puntaje"
+                [ngClass]="{ 'is-invalid': submitted && f.puntaje.errors }" (change)="Puntaje()">
+                <option value="">Seleccione</option>
+                <option value="No se ha evaluado previamente" [disabled]="Guardado === true">No se ha evaluado previamente</option>
+                <option value="Agregar un puntaje" [disabled]="Guardado === true">Agregar un puntaje</option>
+            </select>
+            <div *ngIf="submitted && f.puntaje.errors" class="invalid-feedback">
+                <div *ngIf="f.puntaje.errors.required">Es requerido</div>
+            </div>
+        </div>
+        <ng-container *ngIf="mostrarPuntaje">
+            <div class="form-group col-md-6">
+                <label for="">Escriba el puntaje</label>
+                <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="valorPuntaje" class="form-control" (keyup)="validarPuntaje()">
+            </div>
+        </ng-container>
+        
     </div>
     <br>
     <div class="form-group row">
