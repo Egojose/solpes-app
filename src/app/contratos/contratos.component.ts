@@ -91,6 +91,7 @@ export class ContratosComponent implements OnInit {
   ariba: any;
   causalexeption: any;
   valorAriba: boolean = false;
+  mostrarPuntaje: boolean = false;
  
   constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -167,6 +168,15 @@ export class ContratosComponent implements OnInit {
       this.ContratosForm.controls.causa.value === ""
     }
   }
+
+  Puntaje() {
+    if(this.ContratosForm.controls['puntaje'].value === 'Agregar un puntaje') {
+      this.mostrarPuntaje = true;
+    }
+    else {
+      this.mostrarPuntaje = false;
+    }
+  }
   
 
   ngOnInit() {
@@ -180,7 +190,7 @@ export class ContratosComponent implements OnInit {
       ObjetoContrato: ['', Validators.required],
       ContratoObraConexo: [false],
       MonedaContrato: ['', Validators.required],
-      IvaContrato: ['', Validators.required],
+      IvaContrato: ['', Validators.required, Validators.min(0), Validators.max(100)],
       ValorContractual: ['', Validators.required],
       LineaBaseContrato: ['', Validators.required],
       AhorroGenerado: ['', Validators.required],
@@ -188,15 +198,18 @@ export class ContratosComponent implements OnInit {
       VigenciaContrato: [''],
       RequiereSST: ['', Validators.required],
       RequierePoliza: ['', Validators.required],
-      Acreedor: [''],
-      DigitoVerificacion: [''],
+      Acreedor: ['', Validators.required],
+      DigitoVerificacion: ['', Validators.required],
       NombreRazonSocial: ['', Validators.required],
       EmailProveedor: ['', [Validators.required, Validators.email]],
       Solicitante: [, Validators.required],
       Comprador: ['', Validators.required],
       ObervacionesAdicionales: ['', Validators.required],
       ariba: [''],
-      causa: ['']
+      causa: [''],
+      evaluacion: ['', Validators.required],
+      puntaje: ['', Validators.required],
+      valorPuntaje: ['']
     });
 
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
@@ -272,6 +285,20 @@ export class ContratosComponent implements OnInit {
     )
   }
 
+  validarPuntaje() {
+    if(this.ContratosForm.controls['valorPuntaje'].value > 100) {
+      this.mostrarAdvertencia('El puntaje debe estar entre 0 y 100');
+      return false;
+    }
+  }
+
+  validarIva() {
+    if(this.ContratosForm.controls['IvaContrato'].value > 100) {
+      this.mostrarAdvertencia('El porcentaje del IVA debe ser máximo de 100');
+      return false;
+    }
+  }
+
   adjuntarArchivo(event) {
     let archivoAdjunto = event.target.files[0];
     if (archivoAdjunto != null) {
@@ -298,6 +325,9 @@ export class ContratosComponent implements OnInit {
       this.mostrarAdvertencia("Por favor seleccione uno o varios bienes y/o servicios");
       return false;
     }
+
+    this.validarPuntaje();
+    this.validarIva();
     this.spinner.show();
     let fechaContrato = new Date();
     let TipoContrato = this.ContratosForm.controls["TipoContrato"].value;
@@ -326,6 +356,8 @@ export class ContratosComponent implements OnInit {
     let bpoPais = this.ObResProceso[0].gestionContratos;
     let causa = this.ContratosForm.controls["causa"].value;
     let ariba = this.ContratosForm.controls["ariba"].value;
+    let evaluacion = this.ContratosForm.controls['evaluacion'].value;
+    let puntaje;
     ariba === 'N/A'? causa = causa : causa = "";
     if(ariba === "" || ariba === null) {
       this.mostrarAdvertencia('El campo AribaSourcing es requerido');
@@ -336,6 +368,17 @@ export class ContratosComponent implements OnInit {
       this.mostrarAdvertencia('Debe seleccionar una causa de excepción')
       this.spinner.hide();
       return false;
+    }
+
+    if(this.ContratosForm.controls['puntaje'].value === "Agregar un puntaje") {
+      puntaje = this.ContratosForm.controls['valorPuntaje'].value;
+    }
+    else {
+      puntaje = this.ContratosForm.controls['puntaje'].value;
+    }
+
+    if(this.ContratosForm.controls['puntaje'].value === 'Agregar un puntaje' && this.ContratosForm.controls['valorPuntaje'].value === "") {
+      this.mostrarAdvertencia('Debe agregar un puntaje antes de guardar el contrato');
     }
 
     if (this.Pais === "Colombia") {
@@ -365,7 +408,9 @@ export class ContratosComponent implements OnInit {
         SolicitudId: this.idSolicitudParameter,
         FechaDeCreacion: fechaContrato,
         AribaSourcing: ariba,
-        CausalExcepcion: causa
+        CausalExcepcion: causa,
+        RequiereEvaluacion: evaluacion,
+        PuntajeActualEvaluacionProveedor: puntaje
 
       }
     } else {
@@ -394,7 +439,9 @@ export class ContratosComponent implements OnInit {
         SolicitudId: this.idSolicitudParameter,
         FechaDeCreacion: fechaContrato,
         AribaSourcing: ariba,
-        CausalExcepcion: causa
+        CausalExcepcion: causa,
+        RequiereEvaluacion: evaluacion,
+        PuntajeActualEvaluacionProveedor: puntaje
       }
     }
     if (this.adjunto) {

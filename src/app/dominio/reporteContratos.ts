@@ -13,12 +13,12 @@ export class ReporteContratos {
         public monedaContrato: string,
         public TMRSAP: any,
         public ivaContrato: string,
-        public valorContractual: string,
+        public valorContractualSinImpuestos: string,
         public valorFinalSinIva: string,
         public valorFinal: string,
         public referencia: string,
-        public lineaBaseContrato: string,
-        public ahorroGenerado: string,
+        public lineaBaseContratoSinImpuestos: string,
+        public ahorroGeneradoDelContratoSinImpuestos: string,
         public descripcionCalculoAhorro: string,
         public vigenciaContrato: string,
         public requiereSST: boolean,
@@ -36,7 +36,9 @@ export class ReporteContratos {
         public observacionesAdicionales: string,
         public consecutivo: any,
         public aribaSourcing: string,
-        public causalExcepcion: string) {}
+        public causalExcepcion: string,
+        public requiereEvaluacion: boolean,
+        public puntajeActualEvaluacionProveedor: string) {}
 
         public static fromJson(element: any) {
             return new ReporteContratos(
@@ -76,7 +78,9 @@ export class ReporteContratos {
                 element.ObservacionesAdicionales,
                 element.Solicitud.Consecutivo,
                 element.AribaSourcing,
-                element.CausalExcepcion)
+                element.CausalExcepcion,
+                element.RequiereEvaluacion,
+                element.PuntajeActualEvaluacionProveedor)
             }
 
         public static fromJsonList(elements: any) {
