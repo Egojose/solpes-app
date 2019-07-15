@@ -26,6 +26,8 @@ export class ReasignarComponent implements OnInit {
     { value: '', label: 'Seleccione' }
   ];
   ReasignarControl: FormControl;
+  usuario: Usuario;
+  nombreUsuario: string;
 
   constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
@@ -56,6 +58,7 @@ export class ReasignarComponent implements OnInit {
       (respuesta) => {
         this.usuarios = Usuario.fromJsonList(respuesta);
         this.DataSourceUsuariosSelect2();
+        this.ObtenerUsuarioActual();
       }, err => {
         console.log('Error obteniendo usuarios: ' + err);
       }
@@ -66,6 +69,19 @@ export class ReasignarComponent implements OnInit {
     this.usuarios.forEach(usuario => {
       this.dataUsuarios.push({ value: usuario.id.toString(), label: usuario.nombre });
     });
+  }
+
+  ObtenerUsuarioActual() {
+    this.servicio.ObtenerUsuarioActual().subscribe(
+      (respuesta) => {
+        this.usuario = new Usuario(respuesta.Title, respuesta.email, respuesta.Id);
+        this.nombreUsuario = this.usuario.nombre;
+        console.log(this.nombreUsuario);
+        sessionStorage.setItem('usuario', JSON.stringify(this.usuario));
+      }, err => {
+        console.log('Error obteniendo usuario: ' + err);
+      }
+    )
   }
 
   salir() {
@@ -84,9 +100,35 @@ export class ReasignarComponent implements OnInit {
 
   actualizarResponsableyComprador(): any {
     this.spinner.show();
+    let responsableReasignarSondeo;
+    let fechaReasignadoSondeo;
+    let responsableReasingarContratos;
+    let fechaReasignadoContratos;
+    if(this.solicitudRecuperada.estado === "Por sondear") {
+     responsableReasignarSondeo = this.nombreUsuario;
+     fechaReasignadoSondeo = new Date()
+    }
+    else {
+      responsableReasignarSondeo = "",
+      fechaReasignadoSondeo = null
+    }
+
+    if(this.solicitudRecuperada.estado === "Por registrar contratos") {
+      responsableReasingarContratos = this.nombreUsuario;
+      fechaReasignadoContratos = new Date();
+    }
+    else {
+      responsableReasingarContratos = "";
+      fechaReasignadoContratos = null;
+    }
+
     let objetoActualizar = {
       ResponsableId: this.reasignarModelo,
-      CompradorId: this.reasignarModelo
+      CompradorId: this.reasignarModelo,
+      ResponsableReasignarSondeo: responsableReasignarSondeo,
+      FechaReasignadoSondeo: fechaReasignadoSondeo,
+      ResponsableReasignarContratos: responsableReasingarContratos,
+      FechaReasignadoContratos: fechaReasignadoContratos
     }
     this.servicio.actualizarResponsableCompradorSolicitud(this.solicitudRecuperada.id, objetoActualizar).then(
       (item: ItemAddResult) => {
