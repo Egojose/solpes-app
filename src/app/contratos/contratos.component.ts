@@ -380,6 +380,8 @@ export class ContratosComponent implements OnInit {
 
     if(this.ContratosForm.controls['puntaje'].value === 'Agregar un puntaje' && this.ContratosForm.controls['valorPuntaje'].value === "") {
       this.mostrarAdvertencia('Debe agregar un puntaje antes de guardar el contrato');
+      this.spinner.hide();
+      return false;
     }
 
     if (this.Pais === "Colombia") {
