@@ -190,7 +190,7 @@ export class ContratosComponent implements OnInit {
       ObjetoContrato: ['', Validators.required],
       ContratoObraConexo: [false],
       MonedaContrato: ['', Validators.required],
-      IvaContrato: ['', Validators.required, Validators.min(0), Validators.max(100)],
+      IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
       LineaBaseContrato: ['', Validators.required],
       AhorroGenerado: ['', Validators.required],
@@ -371,7 +371,8 @@ export class ContratosComponent implements OnInit {
     }
 
     if(this.ContratosForm.controls['puntaje'].value === "Agregar un puntaje") {
-      puntaje = this.ContratosForm.controls['valorPuntaje'].value;
+      let puntajeString = this.ContratosForm.controls['valorPuntaje'].value;
+      puntaje = `${puntajeString}`
     }
     else {
       puntaje = this.ContratosForm.controls['puntaje'].value;
