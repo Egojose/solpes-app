@@ -104,32 +104,30 @@ export class ReasignarComponent implements OnInit {
     let fechaReasignadoSondeo;
     let responsableReasingarContratos;
     let fechaReasignadoContratos;
-    if(this.solicitudRecuperada.estado === "Por sondear") {
-     responsableReasignarSondeo = this.nombreUsuario;
-     fechaReasignadoSondeo = new Date()
-    }
-    else {
-      responsableReasignarSondeo = "",
-      fechaReasignadoSondeo = null
+    let objetoActualizar;
+
+    if (this.solicitudRecuperada.estado === "Por sondear") {
+      responsableReasignarSondeo = this.nombreUsuario;
+      fechaReasignadoSondeo = new Date();
+      objetoActualizar = {
+        ResponsableId: this.reasignarModelo,
+        CompradorId: this.reasignarModelo,
+        ResponsableReasignarSondeo: responsableReasignarSondeo,
+        FechaReasignadoSondeo: fechaReasignadoSondeo,
+      }
     }
 
-    if(this.solicitudRecuperada.estado === "Por registrar contratos") {
+    else if (this.solicitudRecuperada.estado === "Por registrar contratos") {
       responsableReasingarContratos = this.nombreUsuario;
       fechaReasignadoContratos = new Date();
+      objetoActualizar = {
+        ResponsableId: this.reasignarModelo,
+        CompradorId: this.reasignarModelo,
+        ResponsableReasignarContratos: responsableReasingarContratos,
+        FechaReasignadoContratos: fechaReasignadoContratos
+      }
     }
-    else {
-      responsableReasingarContratos = "";
-      fechaReasignadoContratos = null;
-    }
-
-    let objetoActualizar = {
-      ResponsableId: this.reasignarModelo,
-      CompradorId: this.reasignarModelo,
-      ResponsableReasignarSondeo: responsableReasignarSondeo,
-      FechaReasignadoSondeo: fechaReasignadoSondeo,
-      ResponsableReasignarContratos: responsableReasingarContratos,
-      FechaReasignadoContratos: fechaReasignadoContratos
-    }
+    
     this.servicio.actualizarResponsableCompradorSolicitud(this.solicitudRecuperada.id, objetoActualizar).then(
       (item: ItemAddResult) => {
         let notificacion = {
