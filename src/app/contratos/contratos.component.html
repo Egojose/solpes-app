@@ -199,7 +199,7 @@
             <label for="inputEmail4">Requiere evaluación <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="evaluacion" [ngClass]="{ 'is-invalid': submitted && f.evaluacion.errors }">
                 <option value="" [disabled]="Guardado === true"></option>
-                <option value="Si" [disabled]="Guardado === true">Si</option>
+                <option value="Si" [disabled]="Guardado === true">Sí</option>
                 <option value="No" [disabled]="Guardado === true">No</option>
             </select>
             <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
