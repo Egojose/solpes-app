@@ -328,7 +328,7 @@
             </div>
         </div>
         <div class="form-group col-md-4">
-            <label for="inputEmail4">Acreedor</label>
+            <label for="inputEmail4">Acreedor<span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [readonly]="Guardado === true" [ngClass]="{ 'is-invalid': submitted && f.Acreedor.errors }">
             <small id="emailHelp" class="form-text text-muted">NIT o documento de identificación del proveedor, sin
                 dígito de verificación</small>
@@ -337,7 +337,7 @@
             </div>
         </div>
         <div class="form-group col-md-4">
-            <label for="inputEmail4">Dígito de verificación </label>
+            <label for="inputEmail4">Dígito de verificación<span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="DigitoVerificacion" class="form-control" numbersOnly [readonly]="Guardado === true" [ngClass]="{ 'is-invalid': submitted && f.DigitoVerificacion.errors }">
             <small id="emailHelp" class="form-text text-muted">Dígito de verificación del NIT o documento de
                 identificación del proveedor</small>
