@@ -372,8 +372,8 @@ export class ContratosComponent implements OnInit {
     }
 
     if(this.ContratosForm.controls['puntaje'].value === "Agregar un puntaje") {
-      // let puntajeString = this.ContratosForm.controls['valorPuntaje'].value;
-      puntaje = parseFloat(valorPuntaje)
+      let puntajeString = parseFloat(valorPuntaje)
+      puntaje = `${puntajeString}`
     }
     else {
       puntaje = this.ContratosForm.controls['puntaje'].value;
