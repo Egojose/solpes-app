@@ -358,6 +358,7 @@ export class ContratosComponent implements OnInit {
     let ariba = this.ContratosForm.controls["ariba"].value;
     let evaluacion = this.ContratosForm.controls['evaluacion'].value;
     let puntaje;
+    let valorPuntaje = this.ContratosForm.controls['valorPuntaje'].value;
     ariba === 'N/A'? causa = causa : causa = "";
     if(ariba === "" || ariba === null) {
       this.mostrarAdvertencia('El campo AribaSourcing es requerido');
@@ -372,7 +373,7 @@ export class ContratosComponent implements OnInit {
 
     if(this.ContratosForm.controls['puntaje'].value === "Agregar un puntaje") {
       // let puntajeString = this.ContratosForm.controls['valorPuntaje'].value;
-      puntaje = parseFloat(puntaje)
+      puntaje = parseFloat(valorPuntaje)
     }
     else {
       puntaje = this.ContratosForm.controls['puntaje'].value;
