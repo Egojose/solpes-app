@@ -431,7 +431,7 @@
         <ng-container *ngIf="mostrarPuntaje">
             <div class="form-group col-md-6">
                 <label for="">Escriba el puntaje</label>
-                <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="valorPuntaje" class="form-control" (keyup)="validarPuntaje()">
+                <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision: 0 }" type="text" formControlName="valorPuntaje" class="form-control" (keyup)="validarPuntaje()">
             </div>
         </ng-container>
         
