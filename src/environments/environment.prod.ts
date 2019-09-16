@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
   urlRaiz: 'https://isaempresas.sharepoint.com',
-  urlWeb:'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes', 
-  urlReltativa: '/sites/jam/solpes',
+  urlWeb:'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test', 
+  urlReltativa: '/sites/INTERNEXA/Solpes_test',
   listaEmpresas: 'Empresas',
   listaPaises: 'Paises',
   listaCategorias: 'Categorias',

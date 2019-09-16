@@ -163,8 +163,8 @@
                         <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTB">
                             <th class="columnaBienes" mat-header-cell *matHeaderCellDef> {{column}} </th>
                             <div *ngIf="column == 'Acciones'; else contenidoCTB">
-                                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarBienes(element, templateCondicionesTecnicasBienes);" tooltip="Editar bien"
-                                    placement="bottom" />&nbsp;<img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/borrar.png" class="icono-tabla" alt="borrar" (click)="borrarBienes(element);" tooltip="Borrar bien"
+                                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarBienes(element, templateCondicionesTecnicasBienes);" tooltip="Editar bien"
+                                    placement="bottom" />&nbsp;<img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/borrar.png" class="icono-tabla" alt="borrar" (click)="borrarBienes(element);" tooltip="Borrar bien"
                                     placement="bottom" /></td>
                             </div>
                             <ng-template #contenidoCTB>
@@ -229,8 +229,8 @@
                         <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTS">
                             <th class="columnaServicios" mat-header-cell *matHeaderCellDef> {{column}} </th>
                             <div *ngIf="column == 'Acciones'; else contenidoCTS">
-                                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarServicios(element, templateCondicionesTecnicasServicios);" tooltip="Editar servicio"
-                                    placement="bottom" />&nbsp;<img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/borrar.png" class="icono-tabla" alt="borrar" (click)="borrarServicios(element);" tooltip="Borrar servicio"
+                                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarServicios(element, templateCondicionesTecnicasServicios);" tooltip="Editar servicio"
+                                    placement="bottom" />&nbsp;<img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes_test/aplicacion/borrar.png" class="icono-tabla" alt="borrar" (click)="borrarServicios(element);" tooltip="Borrar servicio"
                                     placement="bottom" /></td>
                             </div>
                             <ng-template #contenidoCTS>
@@ -411,7 +411,7 @@
                     <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event.target.files)" />
                     <br>
                     <div [hidden]="!mostrarAdjuntoCTB" class="adjunto-guardado">
-                        <img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/file.png" alt="adjunto"><a href="{{rutaAdjuntoCTB}}" target="_blank">{{nombreAdjuntoCTB}}</a>
+                        <img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/file.png" alt="adjunto"><a href="{{rutaAdjuntoCTB}}" target="_blank">{{nombreAdjuntoCTB}}</a>
                             <a href="{{rutaAdjuntoCTB}}"  target="_blank">{{nombreAdjuntoCTB}}</a>
                     </div>
                 </div>
@@ -525,7 +525,7 @@
                     <label for="adjunto">Adjunto</label>
                     <input id="adjuntoCTS" name="adjuntoCTS" formControlName="adjuntoCTS" type="file" class="form-control" (change)="subirAdjuntoCTS($event.target.files)" />
                     <div [hidden]="!mostrarAdjuntoCTS" class="adjunto-guardado">
-                        <img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/ImagenesSolpes/aplicacion/file.png" alt="adjunto">
+                        <img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/file.png" alt="adjunto">
                             <a href="{{rutaAdjuntoCTS}}" target="_blank">{{nombreAdjuntoCTS}}</a>
                     </div>
                 </div>
@@ -553,7 +553,7 @@
     <div class="modal-body text-center">
         <h5>Cargue los bienes en un archivo de excel según la planilla estándar</h5>
         <br>
-        <a href="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/Plantilla_estandar_para_cargar_bienes.xlsx" download><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
+        <a href="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/Plantilla_estandar_para_cargar_bienes.xlsx" download><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
         <br>
         <br>
         <label for="archivoCsv">Cargue el archivo con los bienes a solicitar</label>
@@ -576,7 +576,7 @@
     <div class="modal-body text-center">
         <h5>Cargue los servicios en un archivo excel según la planilla estándar</h5>
         <br>
-        <a href="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/Plantilla_estandar_para_cargar_servicios.xlsx" download><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
+        <a href="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/Plantilla_estandar_para_cargar_servicios.xlsx" download><button class="btn btn-primary">Descargar la plantilla estándar</button></a>
         <br>
         <br>
         <label for="archivoCsv">Cargue el archivo con los servicios a solicitar</label>
