@@ -90,11 +90,11 @@ export class AppComponent implements OnInit {
 
   VerificarPermisosMenu(): any {
 
-    const grupoEdicionContratos = "Solpes-Edicion-Contratos";
-    const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
-    const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
-    const grupoReporteSolicitudes = "Solpes-Reporte-Solicitudes";
-    const grupoReporteContratos = "Solpes-Reporte-Contratos";
+    const grupoEdicionContratos = "Edicion-Contratos-Solpes";
+    const grupoRegistroEntradasBienes = "Registro-Entrada-Bienes-Solpes";
+    const grupoRegistroEntradasServicios = "Registro-Entrada-Servicios-Solpes";
+    const grupoReporteSolicitudes = "Reporte-Solicitudes-Solpes";
+    const grupoReporteContratos = "Reporte-Contratos-Solpes";
     let grupoConsultaGeneral = this.nombreGrupoConsultaGeneral;
 
     let existeGrupoEdicionContratos = this.grupos.find(x => x.title == grupoEdicionContratos);
