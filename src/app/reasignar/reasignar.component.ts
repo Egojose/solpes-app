@@ -28,9 +28,14 @@ export class ReasignarComponent implements OnInit {
   ReasignarControl: FormControl;
   usuario: Usuario;
   nombreUsuario: string;
+  emptyManager: boolean;
+  correoManager: string;
+  mostrarJefe: boolean = true;
 
   constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    this.correoManager = "";
+    this.emptyManager = true;
     if(this.solicitudRecuperada == null){
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
@@ -41,6 +46,7 @@ export class ReasignarComponent implements OnInit {
     this.asignarConsecutivo();
     this.registrarControles();
     this.obtenerUsuariosSitio();
+    this.obtenerProfile();
   }
 
   asignarConsecutivo() {
@@ -82,6 +88,49 @@ export class ReasignarComponent implements OnInit {
         console.log('Error obteniendo usuario: ' + err);
       }
     )
+  }
+
+  obtenerProfile() {
+    this.servicio.obtenerdatosProfile().subscribe(
+      (respuesta) => {
+        if (respuesta.ExtendedManagers.results.length > 0) {
+          let posicionManager = respuesta.ExtendedManagers.results.length - 1;
+          this.correoManager = respuesta.ExtendedManagers.results[posicionManager];
+          this.correoManager = this.correoManager.split('|')[2];
+        }
+        if (this.correoManager != "") {
+          this.cargarJefePorDefecto();
+        } 
+        // else {
+        //   this.agregarSolicitudInicial();
+        // }
+      }, err => {
+        this.mostrarError('Error obteniendo profile');
+        this.spinner.hide();
+        console.log('Error obteniendo profile: ' + err);
+      }
+    )
+  }
+
+  cargarJefePorDefecto(): any {
+    this.servicio.ObtenerUsuarioPorEmail(this.correoManager).subscribe(
+      (respuesta) => {
+        this.emptyManager = false;
+        this.valorUsuarioPorDefecto = respuesta.Id.toString();
+      }, err => {
+        this.mostrarError('Error obteniendo jefe inmediato');
+        this.spinner.hide();
+        console.log('Error obteniendo jefe inmediato: ' + err);
+      }
+    )
+  }
+
+  seleccionarOrdenadorGastos(event) {
+    if (event != "Seleccione") {
+      this.emptyManager = false;
+    } else {
+      this.emptyManager = true;
+    }
   }
 
   salir() {
