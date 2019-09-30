@@ -228,7 +228,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
-    this.AsignarRequeridosDatosContables();
+    // this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
   }
 
@@ -2144,6 +2144,12 @@ export class EditarSolicitudComponent implements OnInit {
   ValidacionesTipoSolicitud(tipoSolicitud) {
     this.mostrarCM(tipoSolicitud);
     this.deshabilitarJustificacion(tipoSolicitud);
+    if(tipoSolicitud.nombre !== 'Sondeo') {
+      this.AsignarRequeridosDatosContables();
+    }
+    else {
+      this.removerRequeridosDatosContables();
+    }
   }
 
   mostrarCM(tipoSolicitud: any): any {
@@ -2389,8 +2395,8 @@ export class EditarSolicitudComponent implements OnInit {
       this.condicionesContractuales.forEach(condicionContractual => {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
         if (textoCajon != null) {
-          var json = textoCajon.replace(/[|&;$%@"<>()+,]/g, "");
-          this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r)/gm," ");
+          var json = textoCajon.replace(/[|&;$%@"<>\()+,]/g, "");
+          this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r|\t)/gm," ");
           this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.jsonCondicionesContractuales + '"},');
         }
       });
@@ -2718,27 +2724,37 @@ export class EditarSolicitudComponent implements OnInit {
   }
   private validarCondicionesTSdatosContables(): boolean {
    let respuesta = true;
-   let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
-   let indexNumeroCostoInversion =this.condicionesTS.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
-   let indexNumeroCuenta =this.condicionesTS.map(function(e) { return e.numeroCuenta; }).indexOf(null);
+   let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
+   let indexCostoInversion =this.condicionesTS.map(e => { return e.costoInversion; }).indexOf('');
+   let indexNumeroCostoInversion =this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
+   let indexNumeroCuenta =this.condicionesTS.map(e => { return e.numeroCuenta; }).indexOf('');
    let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
-   if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+  //  if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+  //   this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+  //   respuesta = false;
+  //  }
+  if ((tipoSolicitud === 'Solp' || tipoSolicitud === 'Orden a CM') && valorOrdenEstadistica == "NO" && (indexCostoInversion > -1 || indexNumeroCostoInversion > -1 || indexNumeroCuenta > -1)) {
     this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
     respuesta = false;
-   }
+  }
    return respuesta;
   }
   private validarCondicionesTBdatosContables(): boolean {
    
    let respuesta = true;
-   let indexCostoInversion =this.condicionesTB.map(function(e) { return e.costoInversion; }).indexOf(null);
-   let indexNumeroCostoInversion =this.condicionesTB.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
-   let indexNumeroCuenta =this.condicionesTB.map(function(e) { return e.numeroCuenta; }).indexOf(null);
+   let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
+   let indexCostoInversion =this.condicionesTB.map(e => { return e.costoInversion; }).indexOf('');
+   let indexNumeroCostoInversion =this.condicionesTB.map(e => { return e.numeroCostoInversion; }).indexOf('');
+   let indexNumeroCuenta =this.condicionesTB.map(e => { return e.numeroCuenta; }).indexOf('');
    let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
-   if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+  //  if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+  //   this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
+  //   respuesta = false;
+  //  }
+  if ((tipoSolicitud === 'Solp' || tipoSolicitud === 'Orden a CM') && valorOrdenEstadistica == "NO" && (indexCostoInversion > -1 || indexNumeroCostoInversion > -1 || indexNumeroCuenta > -1)) {
     this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
     respuesta = false;
-   }
+  }
    return respuesta; 
   }
 
@@ -2784,8 +2800,15 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   mostrarDivDatosContables(): any {
+    let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
     this.mostrarDatosContables = false;
-    this.AsignarRequeridosDatosContables();
+    if (tipoSolicitud !== 'Sondeo') {
+      this.AsignarRequeridosDatosContables();
+    }
+    else {
+      this.removerRequeridosDatosContables();
+    }
+   
   }
 
   esconderDatosContables(): any {

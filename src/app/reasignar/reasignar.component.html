@@ -18,6 +18,19 @@
     </div>
   </div>
 
+  <div class="row" *ngIf="mostrarJefe">
+    <div class="col-md-12">
+      <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span
+        class="asterisco-obligatorio">*</span>
+      <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1"
+        [value]="valorUsuarioPorDefecto" class="form-control" (update)="seleccionarOrdenadorGastos($event)">
+      </select2>
+      <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+        No tiene un jefe asignado en Office 365, debe seleccionar uno
+      </div>
+    </div>
+  </div>
+
   <div class="row">
     <div class="alertas">
 
