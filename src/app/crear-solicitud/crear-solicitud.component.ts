@@ -201,7 +201,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.RegistrarFormularioCTS();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
     this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
-    this.AsignarRequeridosDatosContables();
+    // this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
     
   }
@@ -1094,6 +1094,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 }
 
   AsignarRequeridosDatosContables(): any {
+    // let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
     this.ctbFormulario.controls["cecoCTB"].setValidators(Validators.required);
     this.ctbFormulario.controls["numCicoCTB"].setValidators(Validators.required);
     this.ctbFormulario.controls["numCuentaCTB"].setValidators(Validators.required);
@@ -1237,8 +1238,15 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   ValidacionesTipoSolicitud(tipoSolicitud) {
+    console.log(tipoSolicitud);
     this.mostrarCM(tipoSolicitud);
     this.deshabilitarJustificacion(tipoSolicitud);
+    if(tipoSolicitud.nombre !== 'Sondeo') {
+      this.AsignarRequeridosDatosContables();
+    }
+    else {
+      this.removerRequeridosDatosContables();
+    }
   }
 
   deshabilitarJustificacion(tipoSolicitud: any): any {
@@ -1749,20 +1757,30 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 
   private validarCondicionesTSdatosContables(): boolean {
     let respuesta = true;
+    let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
     // let costoInversion = this.ctsFormulario.controls["cecoCTS"].value;
+    // console.log(costoInversion);
     // let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
+    // console.log(numeroCostoInversion);
     // let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
-    let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
-    let indexNumeroCostoInversion =this.condicionesTS.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
-    let indexNumeroCuenta =this.condicionesTS.map(function(e) { return e.numeroCuenta; }).indexOf(null);
+    // console.log(numeroCuenta);
+    let indexCostoInversion = this.condicionesTS.map(e => {return e.costoInversion}).indexOf('');
+    // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
+    let indexNumeroCostoInversion =this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
+    let indexNumeroCuenta =this.condicionesTS.map(e => { return e.numeroCuenta; }).indexOf('');
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     // if(valorOrdenEstadistica == "NO" && (costoInversion === "" || costoInversion === null) && (numeroCostoInversion === "" || numeroCostoInversion === null) && (numeroCuenta === "" || numeroCuenta === null)) {
     //    this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
     //    respuesta = false;
     // }
-    if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
-     this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
-     respuesta = false;
+    // if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
+    //  this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+    //  respuesta = false;
+    // }
+    
+    if ((tipoSolicitud === 'Solp' || tipoSolicitud === 'Orden a CM') && valorOrdenEstadistica == "NO" && (indexCostoInversion > -1 || indexNumeroCostoInversion > -1 || indexNumeroCuenta > -1)) {
+      this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+      respuesta = false;
     }
     return respuesta;
    }
@@ -1771,22 +1789,24 @@ validarCodigosBrasilCTS(codigoValidar, i) {
    private validarCondicionesTBdatosContables(): boolean {
    
     let respuesta = true;
+    let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
     // let costoInversion = this.ctbFormulario.controls["cecoCTB"].value;
     // let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
     // let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
-    let indexCostoInversion =this.condicionesTB.map(function(e) { return e.costoInversion; }).indexOf(null);
-    let indexNumeroCostoInversion =this.condicionesTB.map(function(e) { return e.numeroCostoInversion; }).indexOf(null);
-    let indexNumeroCuenta =this.condicionesTB.map(function(e) { return e.numeroCuenta; }).indexOf(null);
+    let indexCostoInversion =this.condicionesTB.map(e => { return e.costoInversion; }).indexOf('');
+    let indexNumeroCostoInversion =this.condicionesTB.map(e => { return e.numeroCostoInversion; }).indexOf('');
+    let indexNumeroCuenta =this.condicionesTB.map(e => { return e.numeroCuenta; }).indexOf('');
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     // if(valorOrdenEstadistica == "NO" && (costoInversion === null || costoInversion === "") && (numeroCostoInversion === null || numeroCostoInversion === "") && (numeroCuenta === "" || numeroCuenta === null)){
     //   this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
     //  respuesta = false;
     // }
-    if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
-     this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
-     respuesta = false;
+
+    if ((tipoSolicitud === 'Solp' || tipoSolicitud === 'Orden a CM') && valorOrdenEstadistica == "NO" && (indexCostoInversion > -1 || indexNumeroCostoInversion > -1 || indexNumeroCuenta > -1)) {
+      this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+      respuesta = false;
     }
-    return respuesta; 
+     return respuesta; 
    }
 
   EsCampoVacio(valorCampo: string) {
@@ -2624,8 +2644,15 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   mostrarDivDatosContables(): any {
+    let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
+    console.log(tipoSolicitud);
     this.mostrarDatosContables = false;
-    this.AsignarRequeridosDatosContables();
+    if (tipoSolicitud !== 'Sondeo') {
+      this.AsignarRequeridosDatosContables();
+    }
+    else {
+      this.removerRequeridosDatosContables();
+    }
   }
 
   esconderDatosContables(): any {
