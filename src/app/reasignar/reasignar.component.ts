@@ -30,12 +30,14 @@ export class ReasignarComponent implements OnInit {
   nombreUsuario: string;
   emptyManager: boolean;
   correoManager: string;
-  mostrarJefe: boolean = true;
+  mostrarJefe: boolean;
+  jefeDirecto: any;
 
   constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.correoManager = "";
     this.emptyManager = true;
+    this.mostrarJefe = false;
     if(this.solicitudRecuperada == null){
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
@@ -46,7 +48,8 @@ export class ReasignarComponent implements OnInit {
     this.asignarConsecutivo();
     this.registrarControles();
     this.obtenerUsuariosSitio();
-    this.obtenerProfile();
+    // this.obtenerProfile();
+    this.mostrarCampoJefe();
   }
 
   asignarConsecutivo() {
@@ -71,6 +74,12 @@ export class ReasignarComponent implements OnInit {
     )
   }
 
+  mostrarCampoJefe() {
+    if(this.solicitudRecuperada.estado === "Por aprobar sondeo") {
+      this.mostrarJefe = true;
+    }
+  }
+
   private DataSourceUsuariosSelect2() {
     this.usuarios.forEach(usuario => {
       this.dataUsuarios.push({ value: usuario.id.toString(), label: usuario.nombre });
@@ -93,6 +102,7 @@ export class ReasignarComponent implements OnInit {
   obtenerProfile() {
     this.servicio.obtenerdatosProfile().subscribe(
       (respuesta) => {
+        console.log(respuesta);
         if (respuesta.ExtendedManagers.results.length > 0) {
           let posicionManager = respuesta.ExtendedManagers.results.length - 1;
           this.correoManager = respuesta.ExtendedManagers.results[posicionManager];
@@ -100,6 +110,9 @@ export class ReasignarComponent implements OnInit {
         }
         if (this.correoManager != "") {
           this.cargarJefePorDefecto();
+        }
+        else {
+          alert('no tiene jefe');
         } 
         // else {
         //   this.agregarSolicitudInicial();
@@ -115,6 +128,7 @@ export class ReasignarComponent implements OnInit {
   cargarJefePorDefecto(): any {
     this.servicio.ObtenerUsuarioPorEmail(this.correoManager).subscribe(
       (respuesta) => {
+        console.log(respuesta);
         this.emptyManager = false;
         this.valorUsuarioPorDefecto = respuesta.Id.toString();
       }, err => {
@@ -131,6 +145,11 @@ export class ReasignarComponent implements OnInit {
     } else {
       this.emptyManager = true;
     }
+  }
+
+  changeSolicitante($event) {
+    console.log($event);
+    this.obtenerProfile()
   }
 
   salir() {
@@ -164,6 +183,10 @@ export class ReasignarComponent implements OnInit {
         ResponsableReasignarSondeo: responsableReasignarSondeo,
         FechaReasignadoSondeo: fechaReasignadoSondeo,
       }
+    }
+
+    else if (this.solicitudRecuperada.estado === "Por aprobar sondeo") {
+     
     }
 
     else if (this.solicitudRecuperada.estado === "Por registrar contratos" || this.solicitudRecuperada.estado === "Suspendida") {
