@@ -1803,7 +1803,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     // }
 
     if ((tipoSolicitud === 'Solp' || tipoSolicitud === 'Orden a CM') && valorOrdenEstadistica == "NO" && (indexCostoInversion > -1 || indexNumeroCostoInversion > -1 || indexNumeroCuenta > -1)) {
-      this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+      this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de bienes");
       respuesta = false;
     }
      return respuesta; 
