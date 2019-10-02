@@ -260,7 +260,7 @@ export class MisPendientesComponent implements OnInit {
     sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
     window.scroll(0, 0);
     this.dialog.open(ReasignarComponent, {
-      height: '360px',
+      height: '420px',
       width: '600px',
     });
   }

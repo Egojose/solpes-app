@@ -10,8 +10,11 @@
   <div class="row">
     <div class="col-md-12">
       <label for="reasignar-a">Reasignar a</label>
-      <select2 [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" required>
-      </select2>
+      <select class="form-control" (change)="changeSolicitante($event)" [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo">
+        <option *ngFor="let usuario of dataUsuarios" [value]="usuario.value" [text]="usuario.label">{{usuario.label}}</option>
+      </select>
+      <!-- <select2 [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" required (change)="changeSolicitante()">
+      </select2> -->
       <mat-error *ngIf="ReasignarControl.hasError('required')">
           Este campo es requerido
       </mat-error>
@@ -22,11 +25,12 @@
     <div class="col-md-12">
       <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span
         class="asterisco-obligatorio">*</span>
-      <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1"
-        [value]="valorUsuarioPorDefecto" class="form-control" (update)="seleccionarOrdenadorGastos($event)">
+        <!-- <input type="text" class="form-control">{{jefeDirectoNombre}} -->
+      <select2  [data]="dataUsuarios" [minCountForSearch]="1"
+        [value]="valorUsuarioPorDefecto" class="form-control">
       </select2>
       <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
-        No tiene un jefe asignado en Office 365, debe seleccionar uno
+        No tiene un ordenador de gastos asignado, debe seleccionar uno
       </div>
     </div>
   </div>
