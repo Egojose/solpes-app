@@ -1118,6 +1118,15 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.ctsFormulario.controls["numCuentaCTS"].clearValidators();
   }
 
+  limpiarDatosContables() {
+    this.ctbFormulario.controls["cecoCTB"].setValue('');
+    this.ctbFormulario.controls["numCicoCTB"].setValue('');
+    this.ctbFormulario.controls["numCuentaCTB"].setValue('');
+    this.ctsFormulario.controls["cecoCTS"].setValue('');
+    this.ctsFormulario.controls["numCicoCTS"].setValue('');
+    this.ctsFormulario.controls["numCuentaCTS"].setValue('');
+  }
+
   aplicarTemaCalendario() {
     this.bsConfig = Object.assign({}, { containerClass: this.colorTheme, dateInputFormat: 'DD/MM/YYYY' });
   }
@@ -1243,9 +1252,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.deshabilitarJustificacion(tipoSolicitud);
     if(tipoSolicitud.nombre !== 'Sondeo') {
       this.AsignarRequeridosDatosContables();
+      this.mostrarDivDatosContables();
     }
     else {
       this.removerRequeridosDatosContables();
+      this.esconderDatosContables();
+      this.limpiarDatosContables();
     }
   }
 
@@ -2636,7 +2648,9 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       this.emptyNumeroOrdenEstadistica = true;
       this.esconderDatosContables();
     } else {
-      this.mostrarDivDatosContables();
+      if (this.solpFormulario.get('tipoSolicitud').value !== 'Sondeo') {
+        this.mostrarDivDatosContables();
+      }
       this.emptyNumeroOrdenEstadistica = false;
       this.solpFormulario.controls["numeroOrdenEstadistica"].setValue("");
       
@@ -2648,16 +2662,18 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     console.log(tipoSolicitud);
     this.mostrarDatosContables = false;
     if (tipoSolicitud !== 'Sondeo') {
-      this.AsignarRequeridosDatosContables();
+      // this.AsignarRequeridosDatosContables();
     }
     else {
       this.removerRequeridosDatosContables();
+      this.limpiarDatosContables();
     }
   }
 
   esconderDatosContables(): any {
     this.mostrarDatosContables = true;
     this.removerRequeridosDatosContables();
+    this.limpiarDatosContables();
   }
 
 
