@@ -516,7 +516,7 @@ export class CrearSolicitudComponent implements OnInit {
         return "";
       }
     }
-    else if (valorcompraOrdenEstadistica === 'NO' && tipoSolicitud === 'Sondeo' && (codigo !== "" || codigo !== null)) {
+    else if (valorcompraOrdenEstadistica === 'NO' && tipoSolicitud === 'Sondeo' && (codigo !== "" && codigo !== null)) {
       if (descripcion === "" || descripcion === null) {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({ error: "El campo Descripción del elemento en la columna B fila " + (i + 1) });
