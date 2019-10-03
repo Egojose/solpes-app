@@ -1500,8 +1500,8 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.mostrarCM(tipoSolicitud);
     this.deshabilitarJustificacion(tipoSolicitud);
     if(tipoSolicitud.nombre !== 'Sondeo') {
-      this.AsignarRequeridosDatosContables();
       this.mostrarDivDatosContables();
+      this.AsignarRequeridosDatosContables();
     }
     else {
       this.removerRequeridosDatosContables();
@@ -2930,7 +2930,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     console.log(tipoSolicitud);
     this.mostrarDatosContables = false;
     if (tipoSolicitud !== 'Sondeo') {
-      // this.AsignarRequeridosDatosContables();
+      this.AsignarRequeridosDatosContables();
     }
     else {
       this.removerRequeridosDatosContables();
