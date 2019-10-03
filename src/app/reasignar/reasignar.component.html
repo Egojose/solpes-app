@@ -26,9 +26,12 @@
       <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span
         class="asterisco-obligatorio">*</span>
         <!-- <input type="text" class="form-control">{{jefeDirectoNombre}} -->
-      <select2  [data]="dataUsuarios" [minCountForSearch]="1"
-        [value]="valorUsuarioPorDefecto" class="form-control">
-      </select2>
+        <select class="form-control" [formControl]="ReasignarControl" [value]="jefeSeleccionado" (change)="changeJefe($event)">
+            <option *ngFor="let usuario of dataUsuarios" [value]="usuario.value" [text]="usuario.label">{{usuario.label}}</option>
+          </select>
+      <!-- <select2  [data]="dataUsuarios" [minCountForSearch]="1"
+        [value]="valorUsuarioPorDefecto" class="form-control" [(ngModel)]="valorUsuarioPorDefecto" (change)="changeJefe()">
+      </select2> -->
       <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
         No tiene un ordenador de gastos asignado, debe seleccionar uno
       </div>
