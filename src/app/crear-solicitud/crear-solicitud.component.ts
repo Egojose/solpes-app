@@ -1555,7 +1555,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       return false;
     }
 
-    if (tipoSolicitud == 'Solp' || tipoSolicitud == 'Orden a CM') {
+    if (tipoSolicitud == 'Solp' || tipoSolicitud == 'Orden a CM' || tipoSolicitud == 'Cláusula adicional') {
       if (this.EsCampoVacio(justificacion)) {
         this.mostrarAdvertencia("El campo Justificación es requerido");
         this.spinner.hide();
@@ -1924,7 +1924,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
 
-    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
+    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM' || solicitudTipo === 'Cláusula adicional') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
       this.mostrarError('El código de bienes es obligatorio para Brasil')
       this.spinner.hide();
       return false;
@@ -2205,7 +2205,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
     let adjunto = null;
 
-    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
+    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM' || solicitudTipo === 'Cláusula adicional') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
       this.mostrarError('El código de servicios es obligatorio para Brasil')
       this.spinner.hide();
       return false;
