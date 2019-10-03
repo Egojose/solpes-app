@@ -2019,30 +2019,30 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   private validarCondicionesTSdatosContables(): boolean {
     let respuesta = true;
     let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
-    // let costoInversion = this.ctsFormulario.controls["cecoCTS"].value;
-    // console.log(costoInversion);
-    // let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
-    // console.log(numeroCostoInversion);
-    // let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
-    // console.log(numeroCuenta);
-    let indexCostoInversion = this.condicionesTS.map(e => {return e.costoInversion}).indexOf('');
-    // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
-    let indexNumeroCostoInversion =this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
-    let indexNumeroCuenta =this.condicionesTS.map(e => { return e.numeroCuenta; }).indexOf('');
-    let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
-    // if(valorOrdenEstadistica == "NO" && (costoInversion === "" || costoInversion === null) && (numeroCostoInversion === "" || numeroCostoInversion === null) && (numeroCuenta === "" || numeroCuenta === null)) {
-    //    this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
-    //    respuesta = false;
-    // }
-    // if (valorOrdenEstadistica == "NO" && indexCostoInversion > -1 && indexNumeroCostoInversion > -1 && indexNumeroCuenta > -1){
-    //  this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
-    //  respuesta = false;
-    // }
-    
-    if ((tipoSolicitud === 'Solp' || tipoSolicitud === 'Orden a CM' || tipoSolicitud === 'Cláusual adicional') && valorOrdenEstadistica == "NO" && (indexCostoInversion > -1 || indexNumeroCostoInversion > -1 || indexNumeroCuenta > -1)) {
-      this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
-      respuesta = false;
+    if (this.cargaExcel === false) {
+      let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf('');
+      // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
+      let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
+      let indexNumeroCuenta = this.condicionesTS.map(e => { return e.numeroCuenta; }).indexOf('');
+      let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+
+      if ((tipoSolicitud === 'Solp' || tipoSolicitud === 'Orden a CM' || tipoSolicitud === 'Cláusual adicional') && valorOrdenEstadistica == "NO" && (indexCostoInversion > -1 || indexNumeroCostoInversion > -1 || indexNumeroCuenta > -1)) {
+        this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+        respuesta = false;
+      }
     }
+    else if (this.cargaExcel) {
+      let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf(null);
+      // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
+      let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf(null);
+      let indexNumeroCuenta = this.condicionesTS.map(e => { return e.numeroCuenta; }).indexOf(null);
+      let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
+
+      if ((tipoSolicitud === 'Solp' || tipoSolicitud === 'Orden a CM' || tipoSolicitud === 'Cláusual adicional') && valorOrdenEstadistica == "NO" && (indexCostoInversion > -1 || indexNumeroCostoInversion > -1 || indexNumeroCuenta > -1)) {
+        this.mostrarAdvertencia("Hay datos contables sin llenar en condiciones técnicas de servicios");
+        respuesta = false;
+      }
+    } 
     return respuesta;
    }
 
