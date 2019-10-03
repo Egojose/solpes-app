@@ -2187,9 +2187,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
     let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
     let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
-    let costoInversion = this.ctbFormulario.controls["cecoCTB"].value;
-    let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
-    let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
+    let costoInversion; 
+    solicitudTipo !== 'Sondeo' ? costoInversion = this.ctbFormulario.controls["cecoCTB"].value : costoInversion = ""
+    let numeroCostoInversion;
+    solicitudTipo !== 'Sondeo' ? numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value : numeroCostoInversion = ""
+    let numeroCuenta;
+    solicitudTipo !== 'Sondeo' ? numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value : numeroCuenta = ""
     let adjunto = null;
 
     if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM' || solicitudTipo === 'Cláusula adicional') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
@@ -2468,9 +2471,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
     let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
     let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
-    let costoInversion = this.ctsFormulario.controls["cecoCTS"].value;
-    let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
-    let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
+    let costoInversion;
+    solicitudTipo !== 'Sondeo' ? costoInversion = this.ctsFormulario.controls["cecoCTS"].value : costoInversion = "";
+    let numeroCostoInversion;
+    solicitudTipo !== 'Sondeo' ? numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value : numeroCostoInversion = "";
+    let numeroCuenta;
+    solicitudTipo !== 'Sondeo' ? numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value : numeroCuenta = "";
     let adjunto = null;
 
     if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM' || solicitudTipo === 'Cláusula adicional') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
