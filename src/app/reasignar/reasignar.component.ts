@@ -38,6 +38,7 @@ export class ReasignarComponent implements OnInit {
   nuevoSolicitante: string;
   nuevoSolicitanteId: number;
   emailNuevoSolicitante: string;
+  jefeSeleccionado: string;
 
   constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
@@ -149,6 +150,14 @@ export class ReasignarComponent implements OnInit {
     this.ObtenerUsuarioPorId(id)
   }
 
+  changeJefe($event) {
+    this.jefeSeleccionado = $event.target.value;
+    console.log(this.jefeSeleccionado);
+    if (this.jefeSeleccionado !== "") {
+      this.emptyManager = false;
+    }
+  }
+
   ObtenerUsuarioPorId(id: number) {
     this.servicio.ObtenerUsuarioPorId(id).subscribe(
       (respuesta) => {
@@ -188,7 +197,7 @@ export class ReasignarComponent implements OnInit {
     this.servicio.ObtenerUsuarioPorEmail(this.jefeDirectoEmail).subscribe(
       (respuesta) => {
         console.log(respuesta);
-        this.valorUsuarioPorDefecto = respuesta.Id.toString();
+        this.jefeSeleccionado = respuesta.Id.toString();
         this.jefeDirectoNombre = respuesta.Title;
         this.jefeDirectoId = respuesta.Id;
         console.log(this.jefeDirectoNombre);
@@ -221,7 +230,7 @@ export class ReasignarComponent implements OnInit {
 
   actualizarResponsableyComprador(): any {
     this.spinner.show();
-    if (this.valorUsuarioPorDefecto === "") {
+    if (this.jefeSeleccionado === "") {
       this.mostrarAdvertencia('Debe seleccionar un ordenador de gastos');
       this.spinner.hide();
       return false;
@@ -256,7 +265,7 @@ export class ReasignarComponent implements OnInit {
         FechaReasignadoRevisarSondeo: fechaReasignadoRevisarSondeo,
         SolicitanteOriginal: solicitanteOriginal,
         Solicitante: this.nuevoSolicitante,
-        OrdenadorGastosId: this.jefeDirectoId.toString()
+        OrdenadorGastosId: this.jefeSeleccionado.toString()
       }
     }
 
