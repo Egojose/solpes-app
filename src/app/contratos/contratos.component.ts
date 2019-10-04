@@ -16,6 +16,7 @@ import { ItemAddResult } from 'sp-pnp-js';
 import { Solicitud } from '../dominio/solicitud';
 import { Usuario } from '../dominio/usuario';
 import { CausalExcepcion } from '../dominio/causalExcepcion';
+import { Compardor } from '../dominio/compardor';
 
 @Component({
   selector: 'app-contratos',
@@ -42,6 +43,7 @@ export class ContratosComponent implements OnInit {
   CompraBienes: any;
   CompraServicios: any;
   paisId: any;
+  listaCompradores: Compardor[] = [];
   ObResProceso: responsableProceso[];
   NombreSolicitante: string;
   displayedColumns: string[] = ["seleccionar","codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
@@ -177,11 +179,11 @@ export class ContratosComponent implements OnInit {
       this.mostrarPuntaje = false;
     }
   }
-  
 
   ngOnInit() {
     this.spinner.show();
     this.obtenerCausas();
+    this.obtenerCompradores();
     this.ContratosForm = this.formBuilder.group({
       TipoContrato: ['', Validators.required],
       SolpSapRfp: ['', Validators.required],
@@ -283,6 +285,16 @@ export class ContratosComponent implements OnInit {
         )
       }
     )
+  }
+
+  obtenerCompradores() {
+    this.servicio.obtenerCompradores().subscribe(
+      (respuesta) => {
+        console.log(respuesta);
+        this.listaCompradores = Compardor.fromJsonList(respuesta)
+        console.log(this.listaCompradores);
+      }
+    ) 
   }
 
   validarPuntaje() {

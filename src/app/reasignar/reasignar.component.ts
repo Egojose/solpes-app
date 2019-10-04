@@ -9,6 +9,7 @@ import { ItemAddResult } from 'sp-pnp-js';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Compardor } from '../dominio/compardor';
 
 @Component({
   selector: 'app-reasignar',
@@ -39,12 +40,15 @@ export class ReasignarComponent implements OnInit {
   nuevoSolicitanteId: number;
   emailNuevoSolicitante: string;
   jefeSeleccionado: string;
+  mostrarEnSondeo: boolean;
+  listaCompradores: Compardor [] = []
 
   constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.correoManager = "";
     this.emptyManager = false;
     this.mostrarJefe = false;
+    this.mostrarEnSondeo = false;
     if(this.solicitudRecuperada == null){
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
@@ -57,6 +61,7 @@ export class ReasignarComponent implements OnInit {
     this.obtenerUsuariosSitio();
     // this.obtenerProfile();
     this.mostrarCampoJefe();
+    this.mostrarCampoSondeo();
   }
 
   asignarConsecutivo() {
@@ -75,10 +80,19 @@ export class ReasignarComponent implements OnInit {
         this.usuarios = Usuario.fromJsonList(respuesta);
         this.DataSourceUsuariosSelect2();
         this.ObtenerUsuarioActual();
+        
+        this.obtenerCompradores();
       }, err => {
         console.log('Error obteniendo usuarios: ' + err);
       }
     )
+  }
+
+  mostrarCampoSondeo() {
+    if(this.solicitudRecuperada.estado === 'Por sondear' || this.solicitudRecuperada.estado === 'Por aprobar sondeo') {
+      this.mostrarEnSondeo = true;
+      console.log(this.mostrarEnSondeo);
+    }
   }
 
   mostrarCampoJefe() {
@@ -88,9 +102,18 @@ export class ReasignarComponent implements OnInit {
   }
 
   private DataSourceUsuariosSelect2() {
+    console.log(this.usuarios);
     this.usuarios.forEach(usuario => {
       this.dataUsuarios.push({ value: usuario.id.toString(), label: usuario.nombre });
     });
+  }
+
+  obtenerCompradores() {
+    this.servicio.obtenerCompradores().subscribe(
+      (respuesta) => {
+        this.listaCompradores = Compardor.fromJsonList(respuesta)
+      }
+    ) 
   }
 
   ObtenerUsuarioActual() {

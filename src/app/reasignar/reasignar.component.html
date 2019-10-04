@@ -7,9 +7,9 @@
 <hr>
 
 <mat-dialog-content class="mat-typography">
-  <div class="row">
+  <div class="row" *ngIf="mostrarEnSondeo">
     <div class="col-md-12">
-      <label for="reasignar-a">Reasignar a</label>
+      <label for="reasignar-a">Reasignar a </label>
       <select class="form-control" (change)="changeSolicitante($event)" [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo">
         <option *ngFor="let usuario of dataUsuarios" [value]="usuario.value" [text]="usuario.label">{{usuario.label}}</option>
       </select>
@@ -20,6 +20,20 @@
       </mat-error>
     </div>
   </div>
+
+  <div class="row" *ngIf="!mostrarEnSondeo">
+      <div class="col-md-12">
+        <label for="reasignar-a">Reasignar a</label>
+        <select class="form-control" (change)="changeSolicitante($event)" [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo">
+          <option *ngFor="let comprador of listaCompradores" [value]="comprador.compradorId" [text]="comprador.compradorNombre">{{comprador.compradorNombre}}</option>
+        </select>
+        <!-- <select2 [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" required (change)="changeSolicitante()">
+        </select2> -->
+        <mat-error *ngIf="ReasignarControl.hasError('required')">
+            Este campo es requerido
+        </mat-error>
+      </div>
+    </div>
 
   <div class="row" *ngIf="mostrarJefe">
     <div class="col-md-12">

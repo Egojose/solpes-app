@@ -376,7 +376,7 @@
         <div class="form-group col-md-6">
             <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
             <ng-template #tolTemplate>el usuario no existe</ng-template>
-            <input formControlName="Comprador" [typeahead]="ObjUsuarios" typeaheadOptionField="Title" (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" triggers="" #customTooltip="bs-tooltip" placement="bottom" class="form-control"
+            <input formControlName="Comprador" [typeahead]="listaCompradores" typeaheadOptionField="compradorNombre" (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" [typeaheadOptionsLimit]="7" triggers="" #customTooltip="bs-tooltip" placement="bottom" class="form-control"
                 [readonly]="Guardado === true">
             <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
                 <div *ngIf="f.Comprador.errors.required">Es requerido</div>
