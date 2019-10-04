@@ -168,7 +168,7 @@
         </div>
         <div class="form-group col-md-6">
             <label for="inputEmail4">N° SOLP SAP -RFP <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.SolpSapRfp.errors }" [readonly]="Guardado === true">
+            <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" readonly [value]="NumSolSAP">
             <div *ngIf="submitted && f.SolpSapRfp.errors" class="invalid-feedback">
                 <div *ngIf="f.SolpSapRfp.errors.required">Es requerido</div>
             </div>
@@ -327,7 +327,7 @@
                 <div *ngIf="f.RequierePoliza.errors.required">Es requerido</div>
             </div>
         </div>
-        <div class="form-group col-md-4">
+        <!-- <div class="form-group col-md-4">
             <label for="inputEmail4">Acreedor<span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="Acreedor" class="form-control" numbersOnly [readonly]="Guardado === true" [ngClass]="{ 'is-invalid': submitted && f.Acreedor.errors }">
             <small id="emailHelp" class="form-text text-muted">NIT o documento de identificación del proveedor, sin
@@ -344,45 +344,44 @@
             <div *ngIf="submitted && f.DigitoVerificacion.errors" class="invalid-feedback">
                 <div *ngIf="f.DigitoVerificacion.errors.required">Es requerido</div>
             </div>
-        </div>
+        </div> -->
+        <div class="form-group col-md-4">
+                <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
+                <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }" [readonly]="Guardado === true">
+                <small id="emailHelp" class="form-text text-muted">Debe ser el nombre que está registrado en SAP</small>
+                <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
+                    <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">E-mail del proveedor <span class="camposRequeridos">*</span></label>
+                <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }" [readonly]="Guardado === true">
+                <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
+                    <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
+                    <div *ngIf="f.EmailProveedor.errors.email">El E-mail es inválido</div>
+                </div>
+            </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }" [readonly]="Guardado === true">
-            <small id="emailHelp" class="form-text text-muted">Debe ser el nombre que está registrado en SAP</small>
-            <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
-                <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputEmail4">E-mail del proveedor <span class="camposRequeridos">*</span></label>
-            <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }" [readonly]="Guardado === true">
-            <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
-                <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
-                <div *ngIf="f.EmailProveedor.errors.email">El E-mail es inválido</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
             <label for="inputEmail4">Solicitante <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="Solicitante" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Solicitante.errors }" [readonly]="true">
             <div *ngIf="submitted && f.Solicitante.errors" class="invalid-feedback">
                 <div *ngIf="f.Solicitante.errors.required">Es requerido</div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
         <div class="form-group col-md-6">
-            <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
-            <ng-template #tolTemplate>el usuario no existe</ng-template>
-            <input formControlName="Comprador" [typeahead]="listaCompradores" typeaheadOptionField="compradorNombre" (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" [typeaheadOptionsLimit]="7" triggers="" #customTooltip="bs-tooltip" placement="bottom" class="form-control"
-                [readonly]="Guardado === true">
-            <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
-                <div *ngIf="f.Comprador.errors.required">Es requerido</div>
+                <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
+                <ng-template #tolTemplate>el usuario no existe</ng-template>
+                <input formControlName="Comprador" [typeahead]="listaCompradores" [ngClass]="{ 'is-invalid': submitted && f.Comprador.errors }" typeaheadOptionField="compradorNombre" (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" [typeaheadOptionsLimit]="7" triggers="" #customTooltip="bs-tooltip" placement="bottom" class="form-control"
+                    [readonly]="Guardado === true">
+                <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
+                    <div *ngIf="f.Comprador.errors.required">Es requerido</div>
+                </div>
             </div>
-        </div>
-        <div class="form-group col-md-6">
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
             <label for="inputEmail4">Observaciones adicionales <span class="camposRequeridos">*</span></label>
             <textarea formControlName="ObervacionesAdicionales" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ObervacionesAdicionales.errors }" [readonly]="Guardado === true"></textarea>
             <div *ngIf="submitted && f.ObervacionesAdicionales.errors" class="invalid-feedback">
