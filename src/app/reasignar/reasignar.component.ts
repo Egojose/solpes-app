@@ -288,7 +288,8 @@ export class ReasignarComponent implements OnInit {
         FechaReasignadoRevisarSondeo: fechaReasignadoRevisarSondeo,
         SolicitanteOriginal: solicitanteOriginal,
         Solicitante: this.nuevoSolicitante,
-        OrdenadorGastosId: this.jefeSeleccionado.toString()
+        OrdenadorGastosId: this.jefeSeleccionado.toString(),
+        ReasignadoRevisarSondeo: 'true'
       }
     }
 

@@ -153,6 +153,13 @@ export class ContratosComponent implements OnInit {
     }
   }
 
+  calcularAhorro() {
+    let lineaBase = parseFloat(this.ContratosForm.get('LineaBaseContrato').value)
+    let valorContrato = parseFloat(this.ContratosForm.get('ValorContractual').value)
+    let ahorro = lineaBase - valorContrato
+    this.ContratosForm.controls['AhorroGenerado'].setValue(ahorro);
+  }
+
   comfirmasalir(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
   }
@@ -195,7 +202,7 @@ export class ContratosComponent implements OnInit {
       IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
       LineaBaseContrato: ['', Validators.required],
-      AhorroGenerado: ['', Validators.required],
+      AhorroGenerado: [''],
       DescripcionCalculo: ['', Validators.required],
       VigenciaContrato: [''],
       RequiereSST: ['', Validators.required],
@@ -211,7 +218,8 @@ export class ContratosComponent implements OnInit {
       causa: [''],
       evaluacion: ['', Validators.required],
       puntaje: ['', Validators.required],
-      valorPuntaje: ['']
+      valorPuntaje: [''],
+      tipoEjecucion: ['']
     });
 
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
@@ -311,6 +319,18 @@ export class ContratosComponent implements OnInit {
     }
   }
 
+  validarNumeroContrato() {
+    let max = this.ContratosForm.get('ContratoOC').value;
+    let restrict;
+    console.log(max);
+    if(max.length > 10) {
+     restrict =  max.slice(0, 10)
+      this.ContratosForm.controls['ContratoOC'].setValue(restrict);
+      this.mostrarAdvertencia('El numero de contrato sólo admite hasta 10 dígitos');
+      return false;
+    }
+  }
+
   adjuntarArchivo(event) {
     let archivoAdjunto = event.target.files[0];
     if (archivoAdjunto != null) {
@@ -369,6 +389,7 @@ export class ContratosComponent implements OnInit {
     let causa = this.ContratosForm.controls["causa"].value;
     let ariba = this.ContratosForm.controls["ariba"].value;
     let evaluacion = this.ContratosForm.controls['evaluacion'].value;
+    let ejecucion = this.ContratosForm.controls['tipoEjecucion'].value;
     let puntaje;
     let valorPuntaje = this.ContratosForm.controls['valorPuntaje'].value;
     ariba === 'N/A'? causa = causa : causa = "";
@@ -433,7 +454,8 @@ export class ContratosComponent implements OnInit {
         AribaSourcing: ariba,
         CausalExcepcion: causa,
         RequiereEvaluacion: evaluacion,
-        PuntajeActualEvaluacionProveedor: puntaje
+        PuntajeActualEvaluacionProveedor: puntaje,
+        TipoEjecucion: ejecucion
 
       }
     } else {
@@ -464,7 +486,8 @@ export class ContratosComponent implements OnInit {
         AribaSourcing: ariba,
         CausalExcepcion: causa,
         RequiereEvaluacion: evaluacion,
-        PuntajeActualEvaluacionProveedor: puntaje
+        PuntajeActualEvaluacionProveedor: puntaje,
+        TipoEjecucion: ejecucion
       }
     }
     if (this.adjunto) {
