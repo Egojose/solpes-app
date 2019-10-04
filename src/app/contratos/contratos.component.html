@@ -153,7 +153,7 @@
 
 <form autocomplete="off" [formGroup]="ContratosForm" (ngSubmit)="onSubmit()">
     <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="inputEmail4">Tipo de contrato <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="TipoContrato" [ngClass]="{ 'is-invalid': submitted && f.TipoContrato.errors }">
                 <option value="Orden a marco negociada" [disabled]="Guardado === true">Orden a marco negociada</option>
@@ -166,12 +166,19 @@
                 <div *ngIf="f.TipoContrato.errors.required">Es requerido</div>
             </div>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="inputEmail4">N° SOLP SAP -RFP <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="SolpSapRfp" numbersOnly class="form-control" readonly [value]="NumSolSAP">
             <div *ngIf="submitted && f.SolpSapRfp.errors" class="invalid-feedback">
                 <div *ngIf="f.SolpSapRfp.errors.required">Es requerido</div>
             </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="tipoEjecucion">Tipo de ejecución</label>
+            <select class="form-control" formControlName="tipoEjecucion">
+                <option value="Transaccional" [disabled]="Guardado === true">Transaccional</option>
+                <option value="Recurrente" [disabled]="Guardado === true">Recurrente</option> 
+            </select>
         </div>
 
     </div>
