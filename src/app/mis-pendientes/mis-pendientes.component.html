@@ -68,6 +68,11 @@
           </div>
         </div>
         <div class="filaBtn">
+            <div class="col-md-12">
+              <button *ngIf="element.estado == 'Por aprobar sondeo' && element.reasignadoAprobar == false" class="btn btn-success btn-block" (click)="reasignar(element)">Reasignar</button>
+            </div>
+          </div>
+        <div class="filaBtn">
           <div class="col-md-12">
             <button *ngIf="element.estado =='Por aprobar sondeo'" class="btn btn-primary btn-block" (click)="AprobarSondeo(element)">
               Revisar sondeo</button>
