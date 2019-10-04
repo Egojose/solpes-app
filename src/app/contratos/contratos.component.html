@@ -261,7 +261,7 @@
         <div class="form-group col-md-4">
             <label for="inputEmail4">Valor contractual sin impuestos<span class="camposRequeridos">*</span></label>
             <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="ValorContractual" class="form-control" numbersOnly [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }"
-                [readonly]="Guardado === true">
+                [readonly]="Guardado === true" (keyup)="calcularAhorro()">
             <div *ngIf="submitted && f.ValorContractual.errors" class="invalid-feedback">
                 <div *ngIf="f.ValorContractual.errors.required">Es requerido</div>
             </div>
@@ -277,7 +277,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Ahorro generado en contrato sin impuestos <span class="camposRequeridos">*</span></label>
-            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="AhorroGenerado" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AhorroGenerado.errors }" readonly>
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: true }" type="text" formControlName="AhorroGenerado" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AhorroGenerado.errors }" disabled>
             <small id="emailHelp" class="form-text text-muted">Escriba el valor en la moneda del contrato</small>
             <div *ngIf="submitted && f.AhorroGenerado.errors" class="invalid-feedback">
                 <div *ngIf="f.AhorroGenerado.errors.required">Es requerido</div>
