@@ -178,7 +178,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">N° Contrato/Orden de Compra <span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }" [readonly]="Guardado === true">
+            <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }" [readonly]="Guardado === true" (keyup)="validarNumeroContrato()">
             <div *ngIf="submitted && f.ContratoOC.errors" class="invalid-feedback">
                 <div *ngIf="f.ContratoOC.errors.required">Es requerido</div>
             </div>

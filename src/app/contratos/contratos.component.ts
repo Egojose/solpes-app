@@ -311,6 +311,18 @@ export class ContratosComponent implements OnInit {
     }
   }
 
+  validarNumeroContrato() {
+    let max = this.ContratosForm.get('ContratoOC').value;
+    let restrict;
+    console.log(max);
+    if(max.length > 10) {
+     restrict =  max.slice(0, 10)
+      this.ContratosForm.controls['ContratoOC'].setValue(restrict);
+      this.mostrarAdvertencia('El numero de contrato sólo admite hasta 10 dígitos');
+      return false;
+    }
+  }
+
   adjuntarArchivo(event) {
     let archivoAdjunto = event.target.files[0];
     if (archivoAdjunto != null) {
