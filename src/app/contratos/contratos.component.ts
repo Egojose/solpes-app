@@ -186,7 +186,7 @@ export class ContratosComponent implements OnInit {
     this.obtenerCompradores();
     this.ContratosForm = this.formBuilder.group({
       TipoContrato: ['', Validators.required],
-      SolpSapRfp: ['', Validators.required],
+      SolpSapRfp: [''],
       ContratoOC: ['', Validators.required],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
@@ -200,8 +200,8 @@ export class ContratosComponent implements OnInit {
       VigenciaContrato: [''],
       RequiereSST: ['', Validators.required],
       RequierePoliza: ['', Validators.required],
-      Acreedor: ['', Validators.required],
-      DigitoVerificacion: ['', Validators.required],
+      // Acreedor: ['', Validators.required],
+      // DigitoVerificacion: ['', Validators.required],
       NombreRazonSocial: ['', Validators.required],
       EmailProveedor: ['', [Validators.required, Validators.email]],
       Solicitante: [, Validators.required],
@@ -357,8 +357,8 @@ export class ContratosComponent implements OnInit {
     let VigenciaContrato = this.ContratosForm.controls["VigenciaContrato"].value;
     let RequiereSST = this.ContratosForm.controls["RequiereSST"].value;
     let RequierePoliza = this.ContratosForm.controls["RequierePoliza"].value;
-    let Acreedor = this.ContratosForm.controls["Acreedor"].value;
-    let DigitoVerificacion = this.ContratosForm.controls["DigitoVerificacion"].value;
+    // let Acreedor = this.ContratosForm.controls["Acreedor"].value;
+    // let DigitoVerificacion = this.ContratosForm.controls["DigitoVerificacion"].value;
     let NombreRazonSocial = this.ContratosForm.controls["NombreRazonSocial"].value;
     let EmailProveedor = this.ContratosForm.controls["EmailProveedor"].value;
     let Solicitante = this.ContratosForm.controls["Solicitante"].value;
@@ -377,6 +377,13 @@ export class ContratosComponent implements OnInit {
       this.spinner.hide();
       return false;
     }
+
+    if(Comprador === "") {
+      this.mostrarAdvertencia('Debe seleccionar un comprador');
+      this.spinner.hide();
+      return false;
+    }
+
     if(ariba === 'N/A' && (causa === "" || causa === null)){
       this.mostrarAdvertencia('Debe seleccionar una causa de excepción')
       this.spinner.hide();
@@ -414,8 +421,8 @@ export class ContratosComponent implements OnInit {
         VigenciaContrato: VigenciaContrato,
         RequiereSST: RequiereSST,
         RequierePoliza: RequierePoliza,
-        Acreedor: Acreedor,
-        DigitoVerificacion: DigitoVerificacion,
+        // Acreedor: Acreedor,
+        // DigitoVerificacion: DigitoVerificacion,
         NombreProveedor: NombreRazonSocial,
         EmailProveedor: EmailProveedor,
         Solicitante: Solicitante,
@@ -445,8 +452,8 @@ export class ContratosComponent implements OnInit {
         DescripcionCalculoAhorroGenerado: DescripcionCalculo,
         RequiereSST: RequiereSST,
         RequierePoliza: RequierePoliza,
-        Acreedor: Acreedor,
-        DigitoVerificacion: DigitoVerificacion,
+        // Acreedor: Acreedor,
+        // DigitoVerificacion: DigitoVerificacion,
         NombreProveedor: NombreRazonSocial,
         EmailProveedor: EmailProveedor,
         Solicitante: Solicitante,
