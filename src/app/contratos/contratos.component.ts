@@ -153,6 +153,13 @@ export class ContratosComponent implements OnInit {
     }
   }
 
+  calcularAhorro() {
+    let lineaBase = parseFloat(this.ContratosForm.get('LineaBaseContrato').value)
+    let valorContrato = parseFloat(this.ContratosForm.get('ValorContractual').value)
+    let ahorro = lineaBase - valorContrato
+    this.ContratosForm.controls['AhorroGenerado'].setValue(ahorro);
+  }
+
   comfirmasalir(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
   }
@@ -195,7 +202,7 @@ export class ContratosComponent implements OnInit {
       IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
       LineaBaseContrato: ['', Validators.required],
-      AhorroGenerado: ['', Validators.required],
+      AhorroGenerado: [''],
       DescripcionCalculo: ['', Validators.required],
       VigenciaContrato: [''],
       RequiereSST: ['', Validators.required],
