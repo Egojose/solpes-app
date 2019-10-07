@@ -316,7 +316,6 @@ export class MisPendientesComponent implements OnInit {
       Estado: estado,
       FechaSuspensionSondeo: this.fechaSuspensionSondeo,
       SuspendidaSondeo: true,
-      // ResponsableSondeoId: this.usuarioActual.id
       ResponsableId: this.solicitante.ID
     }
     this.servicio.suspenderSolicitud(this.idSolicitud, ObjSus).then(
