@@ -38,6 +38,9 @@ export class MisPendientesComponent implements OnInit {
   suspenderForm: FormGroup;
   motivoSuspender: any;
   nombreSuspension: any;
+  fechaSuspensionSondeo: any;
+  comprador: any;
+  solicitante: any;
 
   constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService, private formBuilder: FormBuilder) {
     this.dataSource = new MatTableDataSource();
@@ -76,6 +79,7 @@ export class MisPendientesComponent implements OnInit {
     this.servicio.ObtenerMisPendientes(idUsuario).subscribe(
       (respuesta) => {
         this.misSolicitudes = EdSolicitud.fromJsonList(respuesta);
+        console.log(this.misSolicitudes);
         if (this.misSolicitudes.length > 0) {
           this.empty = false;
           this.dataSource = new MatTableDataSource(this.misSolicitudes);
@@ -267,6 +271,7 @@ export class MisPendientesComponent implements OnInit {
 
   suspender(template: TemplateRef<any>, element) {
     this.idSolicitud = element.id;
+    this.solicitante = element.solicitantePersona;
     this.modalRef = this.modalServicio.show(template, { class: 'modal-md' });
   }
 
@@ -290,6 +295,7 @@ export class MisPendientesComponent implements OnInit {
     }
     this.servicio.suspenderSolicitud(this.idSolicitud, ObjSus).then(
       (respuesta) => {
+        this.MostrarExitoso('La solicitud se ha suspendido con éxito');
         this.modalRef.hide();
         this.router.navigate(['/mis-solicitudes']);
       }
@@ -302,8 +308,36 @@ export class MisPendientesComponent implements OnInit {
     }
   }
 
+  confirmarSuspenderSondeo() {
+    let ObjSus;
+    let estado = 'Suspendida sondeo'
+    this.fechaSuspensionSondeo = new Date();
+    ObjSus = {
+      Estado: estado,
+      FechaSuspensionSondeo: this.fechaSuspensionSondeo,
+      SuspendidaSondeo: true,
+      // ResponsableSondeoId: this.usuarioActual.id
+      ResponsableId: this.solicitante.ID
+    }
+    this.servicio.suspenderSolicitud(this.idSolicitud, ObjSus).then(
+      (respuesta) => {
+        this.MostrarExitoso('La solicitud se ha suspendido con éxito');
+        this.modalRef.hide();
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    ).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+      }
+    )
+  }
+
+
   reactivar(template: TemplateRef<any>, element) {
+    console.log(element);
     this.idSolicitud = element.id;
+    this.comprador = element.comprador;
     this.modalRef = this.modalServicio.show(template, { class: 'modal-md' });
   }
 
@@ -319,6 +353,7 @@ export class MisPendientesComponent implements OnInit {
     }
     this.servicio.reactivarSolicitud(this.idSolicitud, objReac).then(
       (respuesta) => {
+        this.MostrarExitoso('La solicitud se ha reactivado con éxito');
         this.modalRef.hide();
         this.router.navigate(['/mis-solicitudes']);
       }
@@ -329,6 +364,30 @@ export class MisPendientesComponent implements OnInit {
       }
     )
 
+  }
+
+  confirmarReactivarSondeo () {
+    let objReac;
+    let estado = "Por sondear";
+    let fechaReactivacion = new Date();
+    objReac = {
+      ReactivadaSondeo: true,
+      FechaReactivacionSondeo: fechaReactivacion,
+      Estado: estado,
+      ResponsableId: this.comprador.ID
+    }
+    this.servicio.reactivarSolicitud(this.idSolicitud, objReac).then(
+      (respuesta) => {
+        this.MostrarExitoso('La solicitud se ha reactivado con éxito');
+        this.modalRef.hide();
+        this.router.navigate(['/mis-solicitudes']);
+      }
+    ).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+      }
+    )
   }
 
 }
