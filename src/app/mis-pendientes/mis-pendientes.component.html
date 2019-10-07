@@ -143,7 +143,7 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button  class="btn btn-warning btn-block" *ngIf="element.estado == 'Por registrar contratos' && element.suspendida === false" (click)="suspender(templateSuspenderSolicitud,element)">Suspender solicitud</button>
+            <button  class="btn btn-warning btn-block" *ngIf="element.estado == 'Por registrar contratos'" (click)="suspender(templateSuspenderSolicitud,element)">Suspender solicitud</button>
           </div>
         </div>
         <div class="filaBtn">
@@ -155,7 +155,7 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button *ngIf="element.estado =='Suspendida' && element.reactivada === false" class="btn btn-warning btn-block" (click)="reactivar(templateReactivarSolicitud,element)">Reactivar</button>
+            <button *ngIf="element.estado =='Suspendida'" class="btn btn-warning btn-block" (click)="reactivar(templateReactivarSolicitud,element)">Reactivar</button>
           </div>
         </div>
         <div class="filaBtn">
@@ -229,7 +229,10 @@
 <ng-template #templateReactivarSolicitud>
   <div class="modal-body text-center">
     <p>¿Está seguro?</p>
-    <p>Una vez reactivada no podrá volver a suspender esta solicitud</p>
+    <!-- <p>Una vez reactivada no podrá volver a suspender esta solicitud</p> -->
+    <br>
+    <textarea class="form-control" [(ngModel)]="comentarioSuspension" placeholder="Comentario opcional"></textarea>
+    <br>
     <button type="button" class="btn btn-danger" (click)="confirmarReactivar(element)">Aceptar</button>
     <button type="button" class="btn btn-primary" (click)="declinarDescartar()">Cancelar</button>
   </div>
