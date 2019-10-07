@@ -373,7 +373,8 @@ export class ContratosComponent implements OnInit {
     this.spinner.show();
     let fechaContrato = new Date();
     let TipoContrato = this.ContratosForm.controls["TipoContrato"].value;
-    let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
+    let SolpSapRfp = this.NumSolSAP;
+    // let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
     let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
     let OrdenInicio = this.ContratosForm.controls["OrdenInicio"].value;
     let ObjetoContrato = this.ContratosForm.controls["ObjetoContrato"].value;

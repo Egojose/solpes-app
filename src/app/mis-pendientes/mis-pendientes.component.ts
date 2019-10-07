@@ -405,7 +405,8 @@ export class MisPendientesComponent implements OnInit {
     objReac = {
       Reactivada: true,
       FechaReactivacion: fechaReactivacion,
-      Estado: estado
+      Estado: estado,
+      ComentarioReactivar: this.comentarioSuspension
     }
     objHistorial = {
       Title: 'Reactivación',
@@ -452,7 +453,6 @@ export class MisPendientesComponent implements OnInit {
         this.spinner.hide();
       }
     )
-
   }
 
   confirmarReactivarSondeo () {
