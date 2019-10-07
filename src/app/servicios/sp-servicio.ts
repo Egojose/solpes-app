@@ -97,6 +97,7 @@ export class SPServicio {
     }
 
     agregarSolicitud(solicitud: Solicitud) {
+        debugger
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.add({
             Title: solicitud.titulo,
             TipoSolicitud: solicitud.tipoSolicitud,
@@ -123,6 +124,7 @@ export class SPServicio {
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
+            SolicitantePersonaId: solicitud.solicitantePersona
         });
     }
 
@@ -157,6 +159,7 @@ export class SPServicio {
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
+            SolicitantePersonaId: solicitud.solicitantePersona,
             FechaDeCreacion: solicitud.fechaCreacion
         });
     }
