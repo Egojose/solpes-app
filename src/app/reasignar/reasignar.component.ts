@@ -60,12 +60,13 @@ export class ReasignarComponent implements OnInit {
     this.registrarControles();
     this.obtenerUsuariosSitio();
     // this.obtenerProfile();
-    this.mostrarCampoJefe();
-    this.mostrarCampoSondeo();
   }
 
   asignarConsecutivo() {
     this.consecutivoSolicitud = this.solicitudRecuperada.consecutivo.toString();
+    this.mostrarCampoSondeo();
+    this.mostrarCampoJefe();
+    
   }
 
   registrarControles() {
