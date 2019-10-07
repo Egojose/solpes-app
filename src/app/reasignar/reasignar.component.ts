@@ -60,12 +60,13 @@ export class ReasignarComponent implements OnInit {
     this.registrarControles();
     this.obtenerUsuariosSitio();
     // this.obtenerProfile();
-    this.mostrarCampoJefe();
-    this.mostrarCampoSondeo();
   }
 
   asignarConsecutivo() {
     this.consecutivoSolicitud = this.solicitudRecuperada.consecutivo.toString();
+    this.mostrarCampoSondeo();
+    this.mostrarCampoJefe();
+    
   }
 
   registrarControles() {
@@ -283,11 +284,12 @@ export class ReasignarComponent implements OnInit {
       fechaReasignadoRevisarSondeo = new Date();
       objetoActualizar = {
         ResponsableId: this.reasignarModelo,
-        CompradorId: this.reasignarModelo,
+        // CompradorId: this.reasignarModelo,
         ResponsableReasignarRevisarSonde: responsableResignarRevisarSondeo,
         FechaReasignadoRevisarSondeo: fechaReasignadoRevisarSondeo,
         SolicitanteOriginal: solicitanteOriginal,
         Solicitante: this.nuevoSolicitante,
+        SolicitantePersonaId: this.nuevoSolicitanteId.toString(),
         OrdenadorGastosId: this.jefeSeleccionado.toString(),
         ReasignadoRevisarSondeo: 'true'
       }
@@ -306,6 +308,7 @@ export class ReasignarComponent implements OnInit {
     
     this.servicio.actualizarResponsableCompradorSolicitud(this.solicitudRecuperada.id, objetoActualizar).then(
       (item: ItemAddResult) => {
+        this.dialogRef.close();
         let notificacion = {
           IdSolicitud: this.solicitudRecuperada.id.toString(),
           ResponsableId: this.reasignarModelo,
