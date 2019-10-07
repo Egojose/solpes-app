@@ -11,6 +11,7 @@ import { responsableProceso } from '../dominio/responsableProceso';
 import { ReasignarComponent } from '../reasignar/reasignar.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MotivoSuspension } from '../dominio/motivoSuspension';
+import { ItemAddResult } from 'sp-pnp-js';
 import { element } from '@angular/core/src/render3';
 import { FormGroup, FormBuilder, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -41,6 +42,7 @@ export class MisPendientesComponent implements OnInit {
   fechaSuspensionSondeo: any;
   comprador: any;
   solicitante: any;
+  comentarioSuspension: string;
 
   constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService, private formBuilder: FormBuilder) {
     this.dataSource = new MatTableDataSource();
@@ -282,6 +284,7 @@ export class MisPendientesComponent implements OnInit {
     }
     else {
     let ObjSus;
+    let objHistorial;
     let estado = 'Suspendida'
     let motivo = this.nombreSuspension;
     
@@ -291,13 +294,45 @@ export class MisPendientesComponent implements OnInit {
       Estado: estado,
       FechaSuspension: this.fechaSuspension,
       MotivoDeSuspension: motivo,
-      Suspendida: true
+      Suspendida: true,
+      ResponsableId: this.solicitante.ID
     }
+
+    objHistorial = {
+      Title: 'Suspensión',
+      ResponsableSuspension: this.usuarioActual.nombre, 
+      FechaSuspension: new Date(),
+      SolicitudId: this.idSolicitud.toString(),
+      MotivoSuspension: motivo
+    }
+    let notificacion = {
+      IdSolicitud: this.idSolicitud.toString(),
+      ResponsableId: this.solicitante.ID,
+      Estado: estado
+    };
+    this.servicio.guardarHistorial(objHistorial).then(
+      (item: ItemAddResult) => {
+        this.mostrarInformacion('Se guardó un registro de la suspensión');
+      }
+    ).catch(err=> {
+      this.mostrarError('No se pudo guardar un registro de la suspensión' + err);
+    })
     this.servicio.suspenderSolicitud(this.idSolicitud, ObjSus).then(
-      (respuesta) => {
-        this.MostrarExitoso('La solicitud se ha suspendido con éxito');
-        this.modalRef.hide();
-        this.router.navigate(['/mis-solicitudes']);
+      (item: ItemAddResult) => {
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.MostrarExitoso("La solicitud se ha suspendido correctamente");
+            this.modalRef.hide();
+            this.spinner.hide();
+            this.router.navigate(['/mis-solicitudes']);
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        )
+      }, err => {
+        this.mostrarError('Error suspendiendo la solicitud');
+        this.spinner.hide();
       }
     ).catch(
       (error) => {
@@ -318,11 +353,32 @@ export class MisPendientesComponent implements OnInit {
       SuspendidaSondeo: true,
       ResponsableId: this.solicitante.ID
     }
+    let notificacion = {
+      IdSolicitud: this.idSolicitud.toString(),
+      ResponsableId: this.solicitante.ID,
+      Estado: estado
+    };
     this.servicio.suspenderSolicitud(this.idSolicitud, ObjSus).then(
-      (respuesta) => {
-        this.MostrarExitoso('La solicitud se ha suspendido con éxito');
-        this.modalRef.hide();
-        this.router.navigate(['/mis-solicitudes']);
+      (item: ItemAddResult) => {
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.MostrarExitoso("La solicitud se ha suspendido correctamente");
+            this.modalRef.hide();
+            this.spinner.hide();
+            this.router.navigate(['/mis-solicitudes']);
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        ).catch(
+          (error) => {
+            console.log(error);
+            this.spinner.hide();
+          }
+        )
+      }, err => {
+        this.mostrarError('Error suspendiendo la solicitud');
+        this.spinner.hide();
       }
     ).catch(
       (error) => {
@@ -330,7 +386,7 @@ export class MisPendientesComponent implements OnInit {
         this.spinner.hide();
       }
     )
-  }
+    }
 
 
   reactivar(template: TemplateRef<any>, element) {
@@ -342,6 +398,7 @@ export class MisPendientesComponent implements OnInit {
 
   confirmarReactivar() {
     let objReac;
+    let objHistorial;
     let estado = "Por registrar contratos";
     let fechaReactivacion = new Date();
     
@@ -350,11 +407,44 @@ export class MisPendientesComponent implements OnInit {
       FechaReactivacion: fechaReactivacion,
       Estado: estado
     }
+    objHistorial = {
+      Title: 'Reactivación',
+      ResponsableReactivacion: this.usuarioActual.nombre, 
+      FechaReactivacion: new Date(),
+      SolicitudId: this.idSolicitud.toString(),
+      Comentarios: this.comentarioSuspension
+    }
+    let notificacion = {
+      IdSolicitud: this.idSolicitud.toString(),
+      ResponsableId: this.comprador.ID,
+      Estado: estado
+    };
+    this.servicio.guardarHistorial(objHistorial).then(
+      (item: ItemAddResult) => {
+        this.mostrarInformacion('Se guardó un registro de la reactivación');
+      }
+    ).catch(err=> {
+      this.mostrarError('No se pudo guardar un registro de la suspensión');
+      console.log(err);
+    })
     this.servicio.reactivarSolicitud(this.idSolicitud, objReac).then(
-      (respuesta) => {
-        this.MostrarExitoso('La solicitud se ha reactivado con éxito');
-        this.modalRef.hide();
-        this.router.navigate(['/mis-solicitudes']);
+      (item: ItemAddResult) => {
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.MostrarExitoso("La solicitud se ha reactivado correctamente");
+            this.modalRef.hide();
+            this.spinner.hide();
+            this.router.navigate(['/mis-solicitudes']);
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        ).catch(
+          (error) => {
+            console.log(error);
+            this.spinner.hide();
+          }
+        )
       }
     ).catch(
       (error) => {
@@ -375,11 +465,29 @@ export class MisPendientesComponent implements OnInit {
       Estado: estado,
       ResponsableId: this.comprador.ID
     }
+    let notificacion = {
+      IdSolicitud: this.idSolicitud.toString(),
+      ResponsableId: this.comprador.ID,
+      Estado: estado
+    };
     this.servicio.reactivarSolicitud(this.idSolicitud, objReac).then(
       (respuesta) => {
-        this.MostrarExitoso('La solicitud se ha reactivado con éxito');
-        this.modalRef.hide();
-        this.router.navigate(['/mis-solicitudes']);
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.MostrarExitoso("La solicitud se ha reactivado correctamente");
+            this.modalRef.hide();
+            this.spinner.hide();
+            this.router.navigate(['/mis-solicitudes']);
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        ).catch(
+          (error) => {
+            console.log(error);
+            this.spinner.hide();
+          }
+        )
       }
     ).catch(
       (error) => {
@@ -388,5 +496,4 @@ export class MisPendientesComponent implements OnInit {
       }
     )
   }
-
 }

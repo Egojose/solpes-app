@@ -21,5 +21,6 @@ export const environment = {
   linkVistaEdicionContratos: '/Lists/Contratos/EdicionContratos.aspx',
   listaMotivoSuspension: 'motivoSuspension',
   listaCausalExcepcion: 'CausalExcepcion',
-  listaCompradores: 'Compradores'
+  listaCompradores: 'Compradores',
+  listaHistorial: 'HistorialSuspensiones'
 };

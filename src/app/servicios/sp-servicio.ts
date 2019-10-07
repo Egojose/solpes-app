@@ -615,6 +615,10 @@ export class SPServicio {
         return respuesta;
     }
 
+    guardarHistorial(objHistorial){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaHistorial).items.add(objHistorial);
+    }
+
     guardarIdContratoServicios(idBienes, idContrato){
         let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
             {
