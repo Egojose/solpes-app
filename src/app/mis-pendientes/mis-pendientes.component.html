@@ -162,7 +162,7 @@
           <div class="col-md-12">
             <button
               *ngIf="element.estado =='Suspendida sondeo' && element.suspendidaSondeo === true && element.reactivadoSondeo === false"
-              class="btn btn-warning btn-block" (click)="reactivar(templateReactivarSolicitudSondeo,element)">Reactivar!!</button>
+              class="btn btn-warning btn-block" (click)="reactivar(templateReactivarSolicitudSondeo,element)">Reactivar</button>
           </div>
         </div>
       </td>
@@ -237,7 +237,7 @@
 
 <ng-template #templateReactivarSolicitudSondeo>
     <div class="modal-body text-center">
-      <p>¿Está seguro !!!!!?</p>
+      <p>¿Está seguro?</p>
       <p>Una vez reactivada no podrá volver a suspender esta solicitud</p>
       <button type="button" class="btn btn-danger" (click)="confirmarReactivarSondeo(element)">Aceptar</button>
       <button type="button" class="btn btn-primary" (click)="declinarDescartar()">Cancelar</button>
