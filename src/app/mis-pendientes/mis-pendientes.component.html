@@ -103,7 +103,7 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
-            <button *ngIf="element.estado =='Suspendida'" class="btn btn-success btn-block" (click)="reasignar(element)">Reasignar</button>
+            <button *ngIf="element.estado =='Suspendida sondeo'" class="btn btn-success btn-block" (click)="reasignar(element)">Reasignar</button>
           </div>
         </div>
         <div class="filaBtn">
@@ -148,7 +148,21 @@
         </div>
         <div class="filaBtn">
           <div class="col-md-12">
+            <button class="btn btn-warning btn-block"
+              *ngIf="element.estado == 'Por sondear' && element.suspendidaSondeo === false"
+              (click)="suspender(templateSuspenderSolicitudSondeo,element)">Suspender solicitud</button>
+          </div>
+        </div>
+        <div class="filaBtn">
+          <div class="col-md-12">
             <button *ngIf="element.estado =='Suspendida' && element.reactivada === false" class="btn btn-warning btn-block" (click)="reactivar(templateReactivarSolicitud,element)">Reactivar</button>
+          </div>
+        </div>
+        <div class="filaBtn">
+          <div class="col-md-12">
+            <button
+              *ngIf="element.estado =='Suspendida sondeo' && element.suspendidaSondeo === true && element.reactivadoSondeo === false"
+              class="btn btn-warning btn-block" (click)="reactivar(templateReactivarSolicitudSondeo,element)">Reactivar!!</button>
           </div>
         </div>
       </td>
@@ -198,6 +212,20 @@
   </div>
 </ng-template>
 
+<ng-template #templateSuspenderSolicitudSondeo>
+    <div class="modal-body text-center">
+      <h4>¿Está seguro que desea suspender esta solicitud? </h4>
+      <!-- <p>Por favor indique el motivo de la suspensión</p>
+      <select name="suspender" id="suspender" class="form-control" [(ngModel)]="nombreSuspension">
+        <option value="" selected="selected">Seleccione</option>
+        <option *ngFor="let motivo of motivoSuspension" [ngValue]="motivo.nombre">{{motivo.nombre}}</option>
+      </select>
+      <br> -->
+      <button type="button" class="btn btn-danger" (click)="confirmarSuspenderSondeo(element)">Aceptar</button>
+      <button type="button" class="btn btn-primary" (click)="declinarDescartar()">Cancelar</button>
+    </div>
+  </ng-template>
+
 <ng-template #templateReactivarSolicitud>
   <div class="modal-body text-center">
     <p>¿Está seguro?</p>
@@ -206,6 +234,15 @@
     <button type="button" class="btn btn-primary" (click)="declinarDescartar()">Cancelar</button>
   </div>
 </ng-template>
+
+<ng-template #templateReactivarSolicitudSondeo>
+    <div class="modal-body text-center">
+      <p>¿Está seguro !!!!!?</p>
+      <p>Una vez reactivada no podrá volver a suspender esta solicitud</p>
+      <button type="button" class="btn btn-danger" (click)="confirmarReactivarSondeo(element)">Aceptar</button>
+      <button type="button" class="btn btn-primary" (click)="declinarDescartar()">Cancelar</button>
+    </div>
+  </ng-template>
 
 
 <ngx-spinner>

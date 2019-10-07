@@ -1748,6 +1748,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let FechaDeCreacion = new Date();
+    let solicitantePersona = this.usuarioActual.id;
     
 
     if (this.EsCampoVacio(tipoSolicitud)) {
@@ -1908,12 +1909,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                 null,
                 this.compraOrdenEstadistica, 
                 valornumeroOrdenEstadistica,
+                solicitantePersona,
                 null,
                 this.compraBienes,
                 this.compraServicios,
                 this.fueSondeo,
                 FechaDeCreacion);
-
               this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {
                   // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
