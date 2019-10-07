@@ -158,7 +158,7 @@ export class SPServicio {
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
-            SolicitantePersonaId: solicitud.solicitantePersona
+            SolicitantePersonaId: solicitud.solicitantePersona,
             FechaDeCreacion: solicitud.fechaCreacion
         });
     }
