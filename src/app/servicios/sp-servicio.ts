@@ -123,6 +123,7 @@ export class SPServicio {
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
+            SolicitantePersonaId: solicitud.solicitantePersona
         });
     }
 
@@ -157,6 +158,7 @@ export class SPServicio {
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
+            SolicitantePersonaId: solicitud.solicitantePersona
             FechaDeCreacion: solicitud.fechaCreacion
         });
     }
