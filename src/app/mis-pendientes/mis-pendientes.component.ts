@@ -406,7 +406,8 @@ export class MisPendientesComponent implements OnInit {
       Reactivada: true,
       FechaReactivacion: fechaReactivacion,
       Estado: estado,
-      ComentarioReactivar: this.comentarioSuspension
+      ComentarioReactivar: this.comentarioSuspension,
+      ResponsableId: this.comprador.ID
     }
     objHistorial = {
       Title: 'Reactivación',
