@@ -131,6 +131,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.IdSolicitud = this.solicitudRecuperada.id;
+    console.log(this.IdSolicitud);
     this.perfilacionEstado();
     setTheme('bs4');
     this.mostrarContratoMarco = false;
@@ -471,7 +472,7 @@ export class EditarSolicitudComponent implements OnInit {
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
+          SolicitudId: this.IdSolicitud,
           Codigo: "",
           CodigoSondeo: "",
           Descripcion: descripcion.toString(),
@@ -557,7 +558,7 @@ export class EditarSolicitudComponent implements OnInit {
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
+          SolicitudId: this.IdSolicitud,
           Codigo: codigo.toString(),
           CodigoSondeo: codigo.toString(),
           Descripcion: descripcion.toString(),
@@ -622,7 +623,7 @@ export class EditarSolicitudComponent implements OnInit {
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
+          SolicitudId: this.IdSolicitud,
           Codigo: codigo.toString(),
           CodigoSondeo: codigo.toString(),
           Descripcion: descripcion.toString(),
@@ -688,7 +689,7 @@ export class EditarSolicitudComponent implements OnInit {
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
+          SolicitudId: this.IdSolicitud,
           Codigo: "",
           CodigoSondeo: "",
           Descripcion: descripcion.toString(),
@@ -754,7 +755,7 @@ export class EditarSolicitudComponent implements OnInit {
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
+          SolicitudId: this.IdSolicitud,
           Codigo: "",
           CodigoSondeo: "",
           Descripcion: descripcion.toString(),
@@ -820,7 +821,7 @@ export class EditarSolicitudComponent implements OnInit {
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
+          SolicitudId: this.IdSolicitud,
           Codigo: codigo.toString(),
           CodigoSondeo: codigo.toString(),
           Descripcion: descripcion.toString(),
@@ -1195,7 +1196,7 @@ export class EditarSolicitudComponent implements OnInit {
   
         let Obj ={
           Title: "Condición Técnicas Servicios" + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
+          SolicitudId: this.IdSolicitud,
           Codigo: "",
           CodigoSondeo: "",
           Descripcion: descripcion.toString(),
@@ -1252,7 +1253,7 @@ export class EditarSolicitudComponent implements OnInit {
   
         let Obj ={
           Title: "Condición Técnicas Servicios" + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
+          SolicitudId: this.IdSolicitud,
           Codigo: codigo.toString(),
           CodigoSondeo: codigo.toString(),
           Descripcion: descripcion.toString(),
