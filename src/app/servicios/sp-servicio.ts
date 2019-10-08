@@ -616,7 +616,7 @@ export class SPServicio {
     }
 
     guardarHistorial(objHistorial){
-        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaHistorial).items.add(objHistorial);
+        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaHistorial).items.add(objHistorial);
     }
 
     guardarIdContratoServicios(idBienes, idContrato){
