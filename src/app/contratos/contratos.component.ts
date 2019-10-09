@@ -153,15 +153,6 @@ export class ContratosComponent implements OnInit {
     }
   }
 
-  convertirAfloat() {
-    let valor = this.ContratosForm.get('ValorContractual').value;
-    let newValor = valor.replace(/[^0-9]/g, '.')
-    this.ContratosForm.controls['ValorContractual'].setValue(newValor);
-    let base = this.ContratosForm.get('LineaBaseContrato').value;
-    let newBase = base.replace(/[^0-9]/g, '.');
-    this.ContratosForm.controls['LineaBaseContrato'].setValue(newBase);
-    this.calcularAhorro();
-  }
 
   calcularAhorro() {
     let lineaBase = parseFloat(this.ContratosForm.get('LineaBaseContrato').value)

@@ -410,10 +410,9 @@ export class MisPendientesComponent implements OnInit {
       ResponsableId: this.comprador.ID
     }
     objHistorial = {
-      Title: 'Reactivación',
+      Title: 'Suspensión - Reactivada',
       ResponsableReactivacion: this.usuarioActual.nombre, 
       FechaReactivacion: new Date(),
-      SolicitudId: this.idSolicitud.toString(),
       Comentarios: this.comentarioSuspension
     }
     let notificacion = {
@@ -421,14 +420,23 @@ export class MisPendientesComponent implements OnInit {
       ResponsableId: this.comprador.ID,
       Estado: estado
     };
-    this.servicio.guardarHistorial(objHistorial).then(
-      (item: ItemAddResult) => {
-        this.mostrarInformacion('Se guardó un registro de la reactivación');
+    this.servicio.obtenerReactivarHistorial(this.idSolicitud.toString()).subscribe(
+      (respuesta) => {
+        console.log(respuesta);
+        let idHistorial =  respuesta[0].ID;
+
+          this.servicio.reactivarHistorial(objHistorial, idHistorial).then(
+            (respuesta) => {
+              console.log(respuesta);
+              this.mostrarInformacion('Se guardó un registro de la reactivación');
+            }
+          )
+
+       
       }
-    ).catch(err=> {
-      this.mostrarError('No se pudo guardar un registro de la suspensión');
-      console.log(err);
-    })
+    )
+
+    
     this.servicio.reactivarSolicitud(this.idSolicitud, objReac).then(
       (item: ItemAddResult) => {
         this.servicio.agregarNotificacion(notificacion).then(

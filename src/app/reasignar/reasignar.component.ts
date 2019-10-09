@@ -170,9 +170,19 @@ export class ReasignarComponent implements OnInit {
 
   changeSolicitante($event) {
     this.spinner.show();
+
+    
     let id = $event.target.value
     this.ObtenerUsuarioPorId(id)
   }
+
+
+  changeSolicitanteComprador(event: any): void {
+    let id = event.item.compradorId;
+    this.reasignarModelo = id;
+    this.ObtenerUsuarioPorId(id)
+  }
+
 
   changeJefe($event) {
     this.jefeSeleccionado = $event.target.value;
