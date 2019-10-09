@@ -22,17 +22,26 @@
   </div>
 
   <div class="row" *ngIf="!mostrarEnSondeo">
-      <div class="col-md-12">
+       <div class="col-md-12">
         <label for="reasignar-a">Reasignar a</label>
-        <select class="form-control" (change)="changeSolicitante($event)" [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo">
+       
+        <!-- <select class="form-control"  [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo">
           <option *ngFor="let comprador of listaCompradores" [value]="comprador.compradorId" [text]="comprador.compradorNombre">{{comprador.compradorNombre}}</option>
-        </select>
-        <!-- <select2 [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" required (change)="changeSolicitante()">
-        </select2> -->
+        </select> -->
+
+        <input class="form-control"  [formControl]="ReasignarControl"   
+        [typeahead]="listaCompradores" 
+        [ngClass]="{ 'is-invalid': submitted && f.Comprador.errors }" 
+        typeaheadOptionField="comprador.compradorNombre" 
+        (typeaheadOnSelect)="changeSolicitanteComprador($event)" [typeaheadOptionsLimit]="7" 
+        triggers=""  placement="bottom" >
+      
         <mat-error *ngIf="ReasignarControl.hasError('required')">
             Este campo es requerido
         </mat-error>
       </div>
+
+     
     </div>
 
   <div class="row" *ngIf="mostrarJefe">
