@@ -2837,6 +2837,24 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   //   }
   // }                                          // Hasta aquí
 
+//------------------------------Eliminar cuando datos contables no obligatorios---------------------
+  abrirModalArchivoCsvServicios(template: TemplateRef<any>) {
+    let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
+      return false;
+    }
+    else{
+      this.modalRef = this.modalServicio.show(
+        template,
+        Object.assign({}, {class: 'gray modal-lg'})
+      )
+    }
+  }
+ // --------------------------------------Hasta aquí-----------------------------------------------
+
+
   ctbOnSubmit() {
     this.ctbSubmitted = true;
     if (this.ctbFormulario.invalid) {
