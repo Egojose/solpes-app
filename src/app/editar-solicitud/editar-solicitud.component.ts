@@ -2508,6 +2508,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       return;
     }
 
+    //--------------------------Eliminar cuando datos contables no obligatorios-------------------
     this.spinner.show();
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
@@ -2517,12 +2518,31 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
     let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
     let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
     let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
-    let costoInversion;
-    solicitudTipo !== 'Sondeo' ? costoInversion = this.ctsFormulario.controls["cecoCTS"].value : costoInversion = "";
-    let numeroCostoInversion;
-    solicitudTipo !== 'Sondeo' ? numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value : numeroCostoInversion = "";
-    let numeroCuenta;
-    solicitudTipo !== 'Sondeo' ? numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value : numeroCuenta = "";
+    let costoInversion = this.ctsFormulario.controls["cecoCTS"].value;
+    let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
+    let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
+    //----------------------------------Hasta aquí---------------------------------------------
+
+
+    //---------------------------------Habilitar cuando datos contables no obligatorios---------------------
+    // this.spinner.show();
+    // let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    // let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    // let codigo = this.ctsFormulario.controls["codigoCTS"].value;
+    // let descripcion = this.ctsFormulario.controls["descripcionCTS"].value;
+    // let cantidad = this.ctsFormulario.controls["cantidadCTS"].value;
+    // let valorEstimado = this.ctsFormulario.controls["valorEstimadoCTS"].value;
+    // let tipoMoneda = this.ctsFormulario.controls["tipoMonedaCTS"].value;
+    // let comentarios = this.ctsFormulario.controls["comentariosCTS"].value;
+    // let costoInversion;
+    // solicitudTipo !== 'Sondeo' ? costoInversion = this.ctsFormulario.controls["cecoCTS"].value : costoInversion = "";
+    // let numeroCostoInversion;
+    // solicitudTipo !== 'Sondeo' ? numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value : numeroCostoInversion = "";
+    // let numeroCuenta;
+    // solicitudTipo !== 'Sondeo' ? numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value : numeroCuenta = "";
+    //--------------------------------------------------Hasta aquí---------------------------------------------
+
+
 
     if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
       this.mostrarError('El código de bienes es obligatorio para Brasil')
@@ -2743,8 +2763,8 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       return;
     }
 
+    //----------------------------------Eliminar cuando datos contables no obligatorios-------------------
     this.spinner.show();
-
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value
     let codigo = this.ctbFormulario.controls["codigoCTB"].value;
@@ -2755,13 +2775,32 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
     let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
     let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
     let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
-    let costoInversion; 
-    solicitudTipo !== 'Sondeo' ? costoInversion = this.ctbFormulario.controls["cecoCTB"].value : costoInversion = ""
-    let numeroCostoInversion;
-    solicitudTipo !== 'Sondeo' ? numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value : numeroCostoInversion = ""
-    let numeroCuenta;
-    solicitudTipo !== 'Sondeo' ? numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value : numeroCuenta = ""
+    let costoInversion = this.ctbFormulario.controls["cecoCTB"].value;
+    let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
+    let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
+    //-----------------------------------Hasta aquí-----------------------------------------
+
+    //----------------------Habilitar cuando datos contables no obligatorios----------------
+    // this.spinner.show();
+    // let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+    // let paisValidar = this.solpFormulario.controls["pais"].value
+    // let codigo = this.ctbFormulario.controls["codigoCTB"].value;
+    // let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
+    // let modelo = this.ctbFormulario.controls["modeloCTB"].value;
+    // let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
+    // let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
+    // let valorEstimado = this.ctbFormulario.controls["valorEstimadoCTB"].value;
+    // let tipoMoneda = this.ctbFormulario.controls["tipoMonedaCTB"].value;
+    // let comentarios = this.ctbFormulario.controls["comentariosCTB"].value;
+    // let costoInversion; 
+    // solicitudTipo !== 'Sondeo' ? costoInversion = this.ctbFormulario.controls["cecoCTB"].value : costoInversion = ""
+    // let numeroCostoInversion;
+    // solicitudTipo !== 'Sondeo' ? numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value : numeroCostoInversion = ""
+    // let numeroCuenta;
+    // solicitudTipo !== 'Sondeo' ? numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value : numeroCuenta = ""
+    // let adjunto = null;
+    //------------------------------------Hasta aquí-----------------------------------------------------
 
     if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 3 && (codigo === "" || codigo === null || codigo === undefined)) {
       this.mostrarError('El código de servicios es obligatorio para Brasil')
