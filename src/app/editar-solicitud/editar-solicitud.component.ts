@@ -236,6 +236,14 @@ export class EditarSolicitudComponent implements OnInit {
     this.obtenerTiposSolicitud();
   }
 
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
   AsignarRequeridosDatosContables(): any {
     this.ctbFormulario.controls["cecoCTB"].setValidators(Validators.required);
     this.ctbFormulario.controls["numCicoCTB"].setValidators(Validators.required);
