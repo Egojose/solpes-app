@@ -25,13 +25,15 @@ export class Solicitud {
         public nombreResponsable?: any,
         public compraOrdenEstadistica?: boolean,
         public numeroOrdenEstadistica?: string,
+        public solicitantePersona?: any,
         public id?: number,
         public FaltaRecepcionBienes?: boolean,
         public FaltaRecepcionServicios?: boolean,
         public FueSondeo?: boolean,
         public fechaCreacion?: Date,
         public suspendida?: boolean,
-        public reactivada?: boolean) { }
+        public reactivada?: boolean,
+       ) { }
 
     public static fromJson(element: any) {
         return new Solicitud(
@@ -59,13 +61,15 @@ export class Solicitud {
             (element.Responsable != null) ? element.Responsable.Title : null,
             element.OrdenEstadistica,
             element.NumeroOrdenEstadistica,
+            element.SolicitantePersona,
             element.ID,
             element.FaltaRecepcionBienes,
             element.FaltaRecepcionServicios,
             element.FueSondeo,
             element.FechaDeCreacion,
             element.Suspendida,
-            element.Reactivada);
+            element.Reactivada,
+           );
     }
 
     public static fromJsonList(elements: any) {

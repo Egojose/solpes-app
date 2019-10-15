@@ -28,7 +28,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6InU0T2ZORlBId0VCb3NIanRyYXVPYlY4NExuWSIsImtpZCI6InU0T2ZORlBId0VCb3NIanRyYXVPYlY4NExuWSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTYzNDkxODc4LCJuYmYiOjE1NjM0OTE4NzgsImV4cCI6MTU2MzUyMDk3OCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.R-Q5ifRHl0LvZqp803RGHvTmyLkqwrbTHdoHo9XZgwisNiewbACYs55vfl0VTIatI5FaW4Xd1ktwtX9yPFOSHkiscIiV3XHa-JCyRBrbYIvqbtI7Q-Z6i-1Zn82rNys1r3m62GUcZ_0SkApnc51WPIEawOaHOfd7tErVXlkxDjahLwR_BNUKK_g0CE1qr4fiObT43-8qSHJw_Czo0vqJl-etGhI0_vGiAAYbhk-ufn8zQuizZlfxo13btxWbEx1AUuw2YI8lELVCfJ7L_yqwYSCSFOXnw3qYhnsNUmGrsawPeNEAYV26IcvkNY-3BO75qOjGAD-uN9-wlY63f-8GqQ'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyIsImtpZCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTcxMTUwMjQ0LCJuYmYiOjE1NzExNTAyNDQsImV4cCI6MTU3MTE3OTM0NCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.QINMOwHKgINllrIsUp-8NZX_7sQDfGUCAfbullkZG1tLjXRTcBbhcDiIOdobjZdeJIOgtXPgwZ3vU3FRHiy325KpiJ6RuABDHhI2w3iaABpIu6zVsv-x3NyML22Hm61M4tmQZR68PE-Vjw_haXaE19h564EWjcE5Mc9KPFWSxBqV2K_GCLxM_zApXJQCygBGKdmMjHuQswN08Kodmlh072EwXWxpB5IBIzHT-nHu6hKrwoVKnKDppC8nnAGR56um6izCLkxUqUb5hmr7If2r7lZpC8jWCLcKjnSeihmSi-3AVtScXuN4gZGls3HiqRbTMgNnYjJ_wiboE_5rWEeCwQ'
             }
         }, environment.urlWeb);
 
@@ -48,6 +48,11 @@ export class SPServicio {
     ObtenerUsuarioPorEmail(email : string){
         let respuesta = from(this.ObtenerConfiguracion().web.siteUsers.getByEmail(email).get());
         return respuesta;
+    }
+
+    ObtenerUsuarioPorId(id: number) {
+        let respuesta = from(this.ObtenerConfiguracion().web.siteUsers.getById(id).get());
+        return respuesta; 
     }
 
     ObtenerTiposSolicitud() {
@@ -86,6 +91,11 @@ export class SPServicio {
         return respuesta;
     }
 
+    obtenerCompradores() {
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle('Compradores').items.select("*", 'Comprador/Title', 'Comprador/ID', 'Comprador/EMail').expand('Comprador').get());
+        return respuesta;
+    }
+
     agregarSolicitud(solicitud: Solicitud) {
         return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.add({
             Title: solicitud.titulo,
@@ -113,6 +123,7 @@ export class SPServicio {
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
+            SolicitantePersonaId: solicitud.solicitantePersona
         });
     }
 
@@ -147,6 +158,7 @@ export class SPServicio {
             CodigoAriba: solicitud.codigoAriba,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
+            SolicitantePersonaId: solicitud.solicitantePersona,
             FechaDeCreacion: solicitud.fechaCreacion
         });
     }
@@ -312,6 +324,23 @@ export class SPServicio {
         return respuesta;
     }
 
+    obtenerdatosProfileSeleccionado(UserName, propertyName){
+        let respuesta = from(this.ObtenerConfiguracion().profiles.getUserProfilePropertyFor(UserName, propertyName)).subscribe(
+            result => {
+                return respuesta
+            }
+        );
+    }
+
+    obtenerPropiedadesPerfil(loginName) {
+        return from(this.ObtenerConfiguracion().profiles.getPropertiesFor(loginName));
+        // let respuesta = from(this.ObtenerConfiguracion().profiles.getPropertiesFor(loginName)).subscribe(
+        //     result => {
+        //         return respuesta
+        //     }
+        // );
+    };
+
     ObtenerSolicitudBienesServicios(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","FechaRegistrarSolpsap","Solicitante","Responsable/Title","OrdenadorGastos/Title","OrdenadorGastos/Department","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo", "FechaDeCreacion","Consecutivo").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles").get());
         return respuesta;
@@ -472,7 +501,7 @@ export class SPServicio {
     }
     
     ObtenerMisPendientes(usuarioId){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "OrdenadorGastos/ID", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created","Responsable/Title", "Responsable/ID", "CompraBienes", "CompraServicios", "CodigoAriba", "Consecutivo", "OrdenEstadistica", "NumeroOrdenEstadistica","FaltaRecepcionServicios","FaltaRecepcionBienes", "FueSondeo", "Suspendida", "Reactivada").expand("Empresa", "Pais", "OrdenadorGastos", "Comprador", "Responsable", "Author").filter("Responsable eq '"+usuarioId+"' and Estado ne 'Finalizado' and Estado ne 'Rechazado' and Estado ne 'Descartado' and Estado ne 'Inicial' and Estado ne 'Recibido'").orderBy('Consecutivo', true).top(4999).get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "OrdenadorGastos/ID", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created","Responsable/Title", "Responsable/ID", "CompraBienes", "CompraServicios", "CodigoAriba", "Consecutivo", "OrdenEstadistica", "NumeroOrdenEstadistica","FaltaRecepcionServicios","FaltaRecepcionBienes", "FueSondeo", "Suspendida", "Reactivada", "SuspendidaSondeo", "ReactivadaSondeo", "ResponsableSondeo/Title", "ResponsableSondeo/ID", "ResponsableSondeo/EMail", "ReasignadoRevisarSondeo", "SolicitantePersona/Title", "SolicitantePersona/EMail", "SolicitantePersona/ID").expand("Empresa", "Pais", "OrdenadorGastos", "Comprador", "Responsable", "Author", "ResponsableSondeo", "SolicitantePersona").filter("Responsable eq '"+usuarioId+"' and Estado ne 'Finalizado' and Estado ne 'Rechazado' and Estado ne 'Descartado' and Estado ne 'Inicial' and Estado ne 'Recibido'").orderBy('Consecutivo', true).top(4999).get());
         return respuesta;
     }
 
@@ -584,6 +613,20 @@ export class SPServicio {
             }
         );
         return respuesta;
+    }
+
+    guardarHistorial(objHistorial){
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaHistorial).items.add(objHistorial);
+    }
+
+    obtenerReactivarHistorial(idSolicitud){
+        let respuesta =  from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaHistorial).items.filter("SolicitudId eq " + idSolicitud + " and ResponsableReactivacion eq null ").top(1).get());
+        return respuesta;
+    }
+
+
+    reactivarHistorial(objHistorial, idHistoria){       
+        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaHistorial).items.getById(idHistoria).update(objHistorial);
     }
 
     guardarIdContratoServicios(idBienes, idContrato){
