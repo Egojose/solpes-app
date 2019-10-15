@@ -16,6 +16,7 @@ import { ItemAddResult } from 'sp-pnp-js';
 import { Solicitud } from '../dominio/solicitud';
 import { Usuario } from '../dominio/usuario';
 import { CausalExcepcion } from '../dominio/causalExcepcion';
+import { Compardor } from '../dominio/compardor';
 
 @Component({
   selector: 'app-contratos',
@@ -42,6 +43,7 @@ export class ContratosComponent implements OnInit {
   CompraBienes: any;
   CompraServicios: any;
   paisId: any;
+  listaCompradores: Compardor[] = [];
   ObResProceso: responsableProceso[];
   NombreSolicitante: string;
   displayedColumns: string[] = ["seleccionar","codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda", "adjunto"];
@@ -151,6 +153,14 @@ export class ContratosComponent implements OnInit {
     }
   }
 
+
+  calcularAhorro() {
+    let lineaBase = parseFloat(this.ContratosForm.get('LineaBaseContrato').value)
+    let valorContrato = parseFloat(this.ContratosForm.get('ValorContractual').value)
+    let ahorro = lineaBase - valorContrato
+    this.ContratosForm.controls['AhorroGenerado'].setValue(ahorro);
+  }
+
   comfirmasalir(template: TemplateRef<any>) {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-lg' });
   }
@@ -177,14 +187,14 @@ export class ContratosComponent implements OnInit {
       this.mostrarPuntaje = false;
     }
   }
-  
 
   ngOnInit() {
     this.spinner.show();
     this.obtenerCausas();
+    this.obtenerCompradores();
     this.ContratosForm = this.formBuilder.group({
       TipoContrato: ['', Validators.required],
-      SolpSapRfp: ['', Validators.required],
+      SolpSapRfp: [''],
       ContratoOC: ['', Validators.required],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
@@ -193,13 +203,13 @@ export class ContratosComponent implements OnInit {
       IvaContrato: ['', Validators.required],
       ValorContractual: ['', Validators.required],
       LineaBaseContrato: ['', Validators.required],
-      AhorroGenerado: ['', Validators.required],
+      AhorroGenerado: [''],
       DescripcionCalculo: ['', Validators.required],
       VigenciaContrato: [''],
       RequiereSST: ['', Validators.required],
       RequierePoliza: ['', Validators.required],
-      Acreedor: ['', Validators.required],
-      DigitoVerificacion: ['', Validators.required],
+      // Acreedor: ['', Validators.required],
+      // DigitoVerificacion: ['', Validators.required],
       NombreRazonSocial: ['', Validators.required],
       EmailProveedor: ['', [Validators.required, Validators.email]],
       Solicitante: [, Validators.required],
@@ -209,7 +219,8 @@ export class ContratosComponent implements OnInit {
       causa: [''],
       evaluacion: ['', Validators.required],
       puntaje: ['', Validators.required],
-      valorPuntaje: ['']
+      valorPuntaje: [''],
+      tipoEjecucion: ['']
     });
 
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
@@ -285,6 +296,16 @@ export class ContratosComponent implements OnInit {
     )
   }
 
+  obtenerCompradores() {
+    this.servicio.obtenerCompradores().subscribe(
+      (respuesta) => {
+        console.log(respuesta);
+        this.listaCompradores = Compardor.fromJsonList(respuesta)
+        console.log(this.listaCompradores);
+      }
+    ) 
+  }
+
   validarPuntaje() {
     if(this.ContratosForm.controls['valorPuntaje'].value > 100) {
       this.mostrarAdvertencia('El puntaje debe estar entre 0 y 100');
@@ -295,6 +316,18 @@ export class ContratosComponent implements OnInit {
   validarIva() {
     if(this.ContratosForm.controls['IvaContrato'].value > 100) {
       this.mostrarAdvertencia('El porcentaje del IVA debe ser máximo de 100');
+      return false;
+    }
+  }
+
+  validarNumeroContrato() {
+    let max = this.ContratosForm.get('ContratoOC').value;
+    let restrict;
+    console.log(max);
+    if(max.length > 10) {
+     restrict =  max.slice(0, 10)
+      this.ContratosForm.controls['ContratoOC'].setValue(restrict);
+      this.mostrarAdvertencia('El numero de contrato sólo admite hasta 10 dígitos');
       return false;
     }
   }
@@ -331,7 +364,8 @@ export class ContratosComponent implements OnInit {
     this.spinner.show();
     let fechaContrato = new Date();
     let TipoContrato = this.ContratosForm.controls["TipoContrato"].value;
-    let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
+    let SolpSapRfp = this.NumSolSAP;
+    // let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
     let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
     let OrdenInicio = this.ContratosForm.controls["OrdenInicio"].value;
     let ObjetoContrato = this.ContratosForm.controls["ObjetoContrato"].value;
@@ -345,8 +379,8 @@ export class ContratosComponent implements OnInit {
     let VigenciaContrato = this.ContratosForm.controls["VigenciaContrato"].value;
     let RequiereSST = this.ContratosForm.controls["RequiereSST"].value;
     let RequierePoliza = this.ContratosForm.controls["RequierePoliza"].value;
-    let Acreedor = this.ContratosForm.controls["Acreedor"].value;
-    let DigitoVerificacion = this.ContratosForm.controls["DigitoVerificacion"].value;
+    // let Acreedor = this.ContratosForm.controls["Acreedor"].value;
+    // let DigitoVerificacion = this.ContratosForm.controls["DigitoVerificacion"].value;
     let NombreRazonSocial = this.ContratosForm.controls["NombreRazonSocial"].value;
     let EmailProveedor = this.ContratosForm.controls["EmailProveedor"].value;
     let Solicitante = this.ContratosForm.controls["Solicitante"].value;
@@ -357,6 +391,7 @@ export class ContratosComponent implements OnInit {
     let causa = this.ContratosForm.controls["causa"].value;
     let ariba = this.ContratosForm.controls["ariba"].value;
     let evaluacion = this.ContratosForm.controls['evaluacion'].value;
+    let ejecucion = this.ContratosForm.controls['tipoEjecucion'].value;
     let puntaje;
     let valorPuntaje = this.ContratosForm.controls['valorPuntaje'].value;
     ariba === 'N/A'? causa = causa : causa = "";
@@ -365,6 +400,13 @@ export class ContratosComponent implements OnInit {
       this.spinner.hide();
       return false;
     }
+
+    if(Comprador === "") {
+      this.mostrarAdvertencia('Debe seleccionar un comprador');
+      this.spinner.hide();
+      return false;
+    }
+
     if(ariba === 'N/A' && (causa === "" || causa === null)){
       this.mostrarAdvertencia('Debe seleccionar una causa de excepción')
       this.spinner.hide();
@@ -402,8 +444,8 @@ export class ContratosComponent implements OnInit {
         VigenciaContrato: VigenciaContrato,
         RequiereSST: RequiereSST,
         RequierePoliza: RequierePoliza,
-        Acreedor: Acreedor,
-        DigitoVerificacion: DigitoVerificacion,
+        // Acreedor: Acreedor,
+        // DigitoVerificacion: DigitoVerificacion,
         NombreProveedor: NombreRazonSocial,
         EmailProveedor: EmailProveedor,
         Solicitante: Solicitante,
@@ -414,7 +456,8 @@ export class ContratosComponent implements OnInit {
         AribaSourcing: ariba,
         CausalExcepcion: causa,
         RequiereEvaluacion: evaluacion,
-        PuntajeActualEvaluacionProveedor: puntaje
+        PuntajeActualEvaluacionProveedor: puntaje,
+        TipoEjecucion: ejecucion
 
       }
     } else {
@@ -433,8 +476,8 @@ export class ContratosComponent implements OnInit {
         DescripcionCalculoAhorroGenerado: DescripcionCalculo,
         RequiereSST: RequiereSST,
         RequierePoliza: RequierePoliza,
-        Acreedor: Acreedor,
-        DigitoVerificacion: DigitoVerificacion,
+        // Acreedor: Acreedor,
+        // DigitoVerificacion: DigitoVerificacion,
         NombreProveedor: NombreRazonSocial,
         EmailProveedor: EmailProveedor,
         Solicitante: Solicitante,
@@ -445,7 +488,8 @@ export class ContratosComponent implements OnInit {
         AribaSourcing: ariba,
         CausalExcepcion: causa,
         RequiereEvaluacion: evaluacion,
-        PuntajeActualEvaluacionProveedor: puntaje
+        PuntajeActualEvaluacionProveedor: puntaje,
+        TipoEjecucion: ejecucion
       }
     }
     if (this.adjunto) {
