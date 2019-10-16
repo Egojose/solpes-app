@@ -376,13 +376,34 @@
                             <div class="col-md-12">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
                                 <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }">
+                                    [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilter($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
+                                    <option value="ID de Servicios">ID de Servicios</option>
                                 </select>
                                 <div *ngIf="ctbSubmitted && f.cecoCTB.errors" class="invalid-feedback">
                                     <div *ngIf="f.cecoCTB.errors.required">Este campo es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filtroBusqueda" *ngIf="mostrarFiltro">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control">
+                                    </div>
                                 </div>
                             </div>
                         </div>

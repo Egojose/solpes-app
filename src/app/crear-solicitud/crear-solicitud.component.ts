@@ -133,6 +133,7 @@ export class CrearSolicitudComponent implements OnInit {
   cantidadErrorFileCTS: number =0;
   ArrayErrorFileCTS: any=[];
   ObjCTS = [];
+  mostrarFiltro: boolean;
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
@@ -163,6 +164,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.fueSondeo = false;
     this.valorcompra = false;
     this.mostrarDatosContables = false;
+    this.mostrarFiltro = false;
     // this.cargaExcel = false; se debe habilitar para datos contables no obligatorios
   }
 
@@ -1092,6 +1094,16 @@ export class CrearSolicitudComponent implements OnInit {
     //   }
     // }              // Hasta aquí
   } 
+
+  showFilter ($event) {
+    console.log($event);
+    if ($event.target.value === "ID de Servicios") {
+      this.mostrarFiltro = true;
+    }
+    else {
+      this.mostrarFiltro = false;
+    }
+  }
 
   changeListenerServicios($event): void {
     this.leerArchivoServicios($event.target);
