@@ -4,7 +4,7 @@ import { setTheme } from 'ngx-bootstrap/utils';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Usuario } from '../dominio/usuario';
 import { Empresa } from '../dominio/empresa';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, FormsModule } from '@angular/forms';
 import { Select2Data } from 'ng-select2-component';
 import { Pais } from '../dominio/pais';
 import { Categoria } from '../dominio/categoria';
@@ -133,7 +133,11 @@ export class CrearSolicitudComponent implements OnInit {
   cantidadErrorFileCTS: number =0;
   ArrayErrorFileCTS: any=[];
   ObjCTS = [];
-  mostrarFiltro: boolean;
+  mostrarFiltroBienes: boolean;
+  mostrarFiltroServicios: boolean;
+  ordenBienes: string;
+  IdServicioBienes: string;
+  nombreIdServicioBienes: string;
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
@@ -164,7 +168,8 @@ export class CrearSolicitudComponent implements OnInit {
     this.fueSondeo = false;
     this.valorcompra = false;
     this.mostrarDatosContables = false;
-    this.mostrarFiltro = false;
+    this.mostrarFiltroBienes = false;
+    this.mostrarFiltroServicios = false;
     // this.cargaExcel = false; se debe habilitar para datos contables no obligatorios
   }
 
@@ -214,6 +219,29 @@ export class CrearSolicitudComponent implements OnInit {
 
   changeListener($event): void {
     this.leerArchivo($event.target);
+  }
+
+  validarLengthBusqueda() {
+    let cliente = this.ctbFormulario.get('clienteBienes').value;
+    let ordenBienes = this.ctbFormulario.get('ordenBienes').value;
+    let IdServicioBienes = this.ctbFormulario.get('IdServicioBienes').value;
+    let nombreIdServicioBienes = this.ctbFormulario.get('nombreIdServicioBienes').value;
+    let clienteServicios = this.ctsFormulario.get('clienteServicios').value;
+    let ordenServicios = this.ctsFormulario.get('ordenServicios').value;
+    let idServicio = this.ctsFormulario.get('idServicio').value;
+    let nombreIdServicio = this.ctsFormulario.get('nombreIdServicio').value;
+    if((cliente !== '' && cliente.length < 4) || (clienteServicios !== '' && clienteServicios.length < 4)) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Cliente"');
+      return false;
+    }
+    if((IdServicioBienes !== '' && IdServicioBienes.length < 3) || (idServicio !== '' && idServicio.length < 3)) {
+      this.mostrarAdvertencia('Se requieren al menos 3 caracteres si va a utilizar el campo "Id de servicios"')
+      return false;
+    }
+    if((nombreIdServicioBienes !== '' && nombreIdServicioBienes.length < 4) || (nombreIdServicio !== '' && nombreIdServicio.length < 4)) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
+      return false;
+    }
   }
 
   leerArchivo(inputValue: any): void {
@@ -1095,13 +1123,21 @@ export class CrearSolicitudComponent implements OnInit {
     // }              // Hasta aquí
   } 
 
-  showFilter ($event) {
-    console.log($event);
+  showFilterBienes ($event) {
     if ($event.target.value === "ID de Servicios") {
-      this.mostrarFiltro = true;
+      this.mostrarFiltroBienes = true;
     }
     else {
-      this.mostrarFiltro = false;
+      this.mostrarFiltroBienes = false;
+    }
+  }
+
+  showFilterServicios ($event) {
+    if ($event.target.value === "ID de Servicios") {
+      this.mostrarFiltroServicios = true;
+    }
+    else {
+      this.mostrarFiltroServicios = false;
     }
   }
 
@@ -1988,7 +2024,11 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       comentariosCTS: [''],
       cecoCTS: [''],
       numCicoCTS: [''],
-      numCuentaCTS: ['']
+      numCuentaCTS: [''],
+      clienteServicios: [''],
+      ordenServicios: [''],
+      idServicio: [''],
+      nombreIdServicio: ['']
     });
   }
 
@@ -2005,7 +2045,11 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       comentariosCTB: [''],
       cecoCTB: [''],
       numCicoCTB: [''],
-      numCuentaCTB: ['']
+      numCuentaCTB: [''],
+      clienteBienes: [''],
+      ordenBienes: [''],
+      IdServicioBienes: [''],
+      nombreIdServicioBienes: ['']
     });
   }
 

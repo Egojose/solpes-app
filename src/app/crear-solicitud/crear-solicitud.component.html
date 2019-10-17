@@ -376,7 +376,7 @@
                             <div class="col-md-12">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
                                 <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilter($event)">
+                                    [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
@@ -388,26 +388,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="filtroBusqueda" *ngIf="mostrarFiltro">
+                    <div class="filtroBusqueda" *ngIf="mostrarFiltroBienes">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteBienes" (change)="validarLengthBusqueda()" name="cliente">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenBienes" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="IdServicioBienes" (change)="validarLengthBusqueda()">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicioBienes" (change)="validarLengthBusqueda()">
                                     </div>
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control">
+                                    <div class="col-md-1">
+                                        <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
+                                        <button class="btn btn-outline-primary" type="button">O</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
@@ -514,10 +519,11 @@
                             <div class="col-md-12">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
                                 <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }">
+                                    [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
+                                    <option value="ID de Servicios">ID de Servicios</option>
                                 </select>
                                 <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">
                                     <div *ngIf="f2.cecoCTS.errors.required">Este campo es requerido</div>
@@ -525,6 +531,31 @@
                             </div>
                         </div>
                     </div>
+                    <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenServicios" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
+                                        <button class="btn btn-outline-primary" type="button">O</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
