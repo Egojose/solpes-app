@@ -125,6 +125,9 @@ export class EditarSolicitudComponent implements OnInit {
   ArrayErrorFileCTS: any=[];
   ObjCTS = [];
   idSolicitudGuardada: number;
+  mostrarFiltro: boolean;
+  mostrarFiltroBienes: boolean;
+  mostrarFiltroServicios: boolean;
   // cargaExcel: boolean;  Habilitar cuando datos contables no obligatorios
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
@@ -159,6 +162,8 @@ export class EditarSolicitudComponent implements OnInit {
     this.emptyNumeroOrdenEstadistica = false;
     this.fueSondeo = false;
     this.mostrarDatosContables = false;
+    this.mostrarFiltroBienes = false;
+    this.mostrarFiltroServicios = false;
     // this.cargaExcel = false;  Habilitar cuando datos contables no obligatorios
   }
 
@@ -234,6 +239,7 @@ export class EditarSolicitudComponent implements OnInit {
     // this.ValidarOnInitTipoSolicitud(); //----------Habilitar ValidarOnInitTipoSolicitud cuando datos contables no obligatorios----------------
     this.AsignarRequeridosDatosContables();  //---------Deshabilitar cuando datos contables no obligatorios--------------
     this.obtenerTiposSolicitud();
+    this.showFilterAlCargar();
   }
 
   numberOnly(event): boolean {
@@ -242,6 +248,29 @@ export class EditarSolicitudComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  validarLengthBusqueda() {
+    let cliente = this.ctbFormulario.get('clienteBienes').value;
+    let ordenBienes = this.ctbFormulario.get('ordenBienes').value;
+    let IdServicioBienes = this.ctbFormulario.get('IdServicioBienes').value;
+    let nombreIdServicioBienes = this.ctbFormulario.get('nombreIdServicioBienes').value;
+    let clienteServicios = this.ctsFormulario.get('clienteServicios').value;
+    let ordenServicios = this.ctsFormulario.get('ordenServicios').value;
+    let idServicio = this.ctsFormulario.get('idServicio').value;
+    let nombreIdServicio = this.ctsFormulario.get('nombreIdServicio').value;
+    if((cliente !== '' && cliente.length < 4) || (clienteServicios !== '' && clienteServicios.length < 4)) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Cliente"');
+      return false;
+    }
+    if((IdServicioBienes !== '' && IdServicioBienes.length < 3) || (idServicio !== '' && idServicio.length < 3)) {
+      this.mostrarAdvertencia('Se requieren al menos 3 caracteres si va a utilizar el campo "Id de servicios"')
+      return false;
+    }
+    if((nombreIdServicioBienes !== '' && nombreIdServicioBienes.length < 4) || (nombreIdServicio !== '' && nombreIdServicio.length < 4)) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
+      return false;
+    }
   }
 
   AsignarRequeridosDatosContables(): any {
@@ -289,6 +318,33 @@ export class EditarSolicitudComponent implements OnInit {
 
   changeListener($event): void {
     this.leerArchivo($event.target);
+  }
+
+  showFilterAlCargar() {
+    if(this.solpFormulario.get('cecoCTB').value === "ID de Servicios") {
+      this.mostrarFiltroBienes = true;
+    }
+    if(this.solpFormulario.get('cecoCTS').value === 'ID de Servicios') {
+      this.mostrarFiltroServicios = true;
+    }
+  }
+
+  showFilterBienes ($event) {
+    if ($event.target.value === "ID de Servicios") {
+      this.mostrarFiltroBienes = true;
+    }
+    else {
+      this.mostrarFiltro = false;
+    }
+  }
+
+  showFilterServicios ($event) {
+    if ($event.target.value === "ID de Servicios") {
+      this.mostrarFiltroServicios = true;
+    }
+    else {
+      this.mostrarFiltro = false;
+    }
   }
 
   leerArchivo(inputValue: any): void {
@@ -2007,7 +2063,11 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       comentariosCTB: [''],
       cecoCTB: [''],
       numCicoCTB: [''],
-      numCuentaCTB: ['']
+      numCuentaCTB: [''],
+      clienteBienes: [''],
+      ordenBienes: [''],
+      IdServicioBienes: [''],
+      nombreIdServicioBienes: ['']
     });
   }
 
@@ -2022,7 +2082,11 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       comentariosCTS: [''],
       cecoCTS: [''],
       numCicoCTS: [''],
-      numCuentaCTS: ['']
+      numCuentaCTS: [''],
+      clienteServicios: [''],
+      ordenServicios: [''],
+      idServicio: [''],
+      nombreIdServicio: ['']
     });
   }
 

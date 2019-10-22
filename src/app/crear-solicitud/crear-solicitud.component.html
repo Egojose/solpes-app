@@ -376,10 +376,11 @@
                             <div class="col-md-12">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
                                 <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }">
+                                    [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
+                                    <option value="ID de Servicios">ID de Servicios</option>
                                 </select>
                                 <div *ngIf="ctbSubmitted && f.cecoCTB.errors" class="invalid-feedback">
                                     <div *ngIf="f.cecoCTB.errors.required">Este campo es requerido</div>
@@ -387,6 +388,101 @@
                             </div>
                         </div>
                     </div>
+                    <div class="filtroBusqueda" *ngIf="mostrarFiltroBienes">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteBienes" (change)="validarLengthBusqueda()" name="cliente">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenBienes" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="IdServicioBienes" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicioBienes" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
+                                        <button class="btn btn-outline-primary" type="button" (click)="filtrarArrayPrueba()">IR</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-md-12">
+                               
+                                    <div class="col-md-3">
+                                       
+                                            <mat-form-field>
+                                                <input matInput  placeholder="Filtrar cliente" formControlName="clientBienes" (keyup)="leerFiltros()" >
+                                            </mat-form-field>
+                                       
+                                    </div>
+                                    <div class="col-md-3">
+                                       
+                                            <mat-form-field>
+                                                <input matInput  placeholder="Filtrar orden servicio"
+                                                    formControlName="ordenServBienes" (keyup)="leerFiltros()">
+                                            </mat-form-field>
+                                        
+                                    </div>
+                                    <div class="col-md-3">
+                                       
+                                            <mat-form-field>
+                                                <input matInput placeholder="Filtrar ID servicio" formControlName="idServBienes" (keyup)="leerFiltros()">
+                                            </mat-form-field>
+                                        
+                                    </div>
+                                    <div class="col-md-3">
+                                       
+                                            <mat-form-field>
+                                                <input matInput placeholder="Filtrar Nombre ID serv"
+                                                    formControlName="nombreIdServBienes" (keyup)="leerFiltros()">
+                                            </mat-form-field>
+                                       
+                                    </div>
+                               
+                                </div>
+                            </div> -->
+                            <div class="row">
+                            <div class="col-md-12">
+                                <br>
+                                <div class="col-md-3">
+                                    <mat-checkbox color="primary" (change)="seleccionarTodos($event)">Seleccionar todos los ID de servicio</mat-checkbox>
+                                </div>
+                                <table mat-table [dataSource]="datos">
+                                    <ng-container matColumnDef="seleccionar">
+                                        <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <mat-checkbox color="primary" value="" [checked]="selectAll"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="cliente">
+                                        <th mat-header-cell *matHeaderCellDef> Cliente </th>
+                                        <td mat-cell *matCellDef="let element">{{element.cliente}}</td>
+                                    </ng-container>
+                                    <ng-container  matColumnDef="OS">
+                                        <th mat-header-cell *matHeaderCellDef>Orden de servicio</th>
+                                        <td mat-cell *matCellDef="let element">{{element.idOrdenServicio}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="idServicio">
+                                        <th mat-header-cell *matHeaderCellDef>Id de servicio</th>
+                                        <td mat-cell *matCellDef="let element">{{element.idServicio}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="nombreIdServicio">
+                                        <th mat-header-cell *matHeaderCellDef >Nombre ID servicio</th>
+                                        <td mat-cell *matCellDef="let element">{{element.nombreIdServicio}}</td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
@@ -493,10 +589,11 @@
                             <div class="col-md-12">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
                                 <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }">
+                                    [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
+                                    <option value="ID de Servicios">ID de Servicios</option>
                                 </select>
                                 <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">
                                     <div *ngIf="f2.cecoCTS.errors.required">Este campo es requerido</div>
@@ -504,6 +601,31 @@
                             </div>
                         </div>
                     </div>
+                    <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenServicios" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio" (change)="validarLengthBusqueda()">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
+                                        <button class="btn btn-outline-primary" type="button">O</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>

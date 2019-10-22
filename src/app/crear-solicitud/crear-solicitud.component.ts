@@ -27,6 +27,7 @@ import * as $ from 'jquery';
 import { Grupo } from '../dominio/grupo';
 import * as XLSX from 'xlsx';
 import readXlsxFile from 'read-excel-file';
+import { ActivatedRoute } from "@angular/router";
 import { CondicionesTecnicasBienes } from '../entrega-bienes/condicionTecnicaBienes';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 import { CondicionesTecnicasServicios } from '../entrega-servicios/condicionTecnicaServicio';
@@ -97,7 +98,7 @@ export class CrearSolicitudComponent implements OnInit {
   rutaAdjuntoCTS: string;
   nombreAdjuntoCTS: string;
   mostrarAdjuntoCTS: boolean;
-
+  usuario: Usuario;
   textoBotonGuardarCTB: string;
   textoBotonGuardarCTS: String;
   modalRef: BsModalRef;
@@ -133,9 +134,36 @@ export class CrearSolicitudComponent implements OnInit {
   cantidadErrorFileCTS: number =0;
   ArrayErrorFileCTS: any=[];
   ObjCTS = [];
+  mostrarFiltroBienes: boolean;
+  mostrarFiltroServicios: boolean;
+  ordenBienes: string;
+  IdServicioBienes: string;
+  nombreIdServicioBienes: string;
+  arrayPrueba = [];
+  datos: any=[];
+  selectAll: boolean;
+  disableIdServicio: boolean;
+  dataSource = new MatTableDataSource();
+  displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
+  
+  
+  // clientBienes = new FormControl('');
+  // ordenServBienes = new FormControl('');
+  // idServBienes = new FormControl('');
+  // nombreIdServBienes = new FormControl('');
+  filterValues = {
+    cliente: '',
+    idOrdenServicio: '',
+    idServicio: '',
+    nombreIdServicio: ''
+  };
+  idClient: any;
+  idServiceOrder: any;
+  idService: any;
+  tieneParams: boolean;
 
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute) {
     setTheme('bs4');
     this.PermisosCreacion = false;
     this.mostrarContratoMarco = false;
@@ -163,7 +191,141 @@ export class CrearSolicitudComponent implements OnInit {
     this.fueSondeo = false;
     this.valorcompra = false;
     this.mostrarDatosContables = false;
+    this.mostrarFiltroBienes = false;
+    this.mostrarFiltroServicios = false;
+    this.selectAll = false;
+    this.disableIdServicio = false;
+    this.dataSource.data = this.datos;
+    this.dataSource.filterPredicate = this.createFilter();
     // this.cargaExcel = false; se debe habilitar para datos contables no obligatorios
+    this.arrayPrueba = [{
+      cliente: 'cliente1',
+      idOrdenServicio: 'OS-1234',
+      idServicio: '001234',
+      nombreIdServicio: 'cliente1-0234'
+    },
+    {
+      cliente: 'cliente1',
+      idOrdenServicio: 'OS-1235',
+      idServicio: '001235',
+      nombreIdServicio: 'cliente1-0235'
+    },
+    {
+      cliente: 'cliente1',
+      idOrdenServicio: 'OS-1236',
+      idServicio: '001236',
+      nombreIdServicio: 'cliente1-0236'
+    },
+    {
+      cliente: 'cliente1',
+      idOrdenServicio: 'OS-1237',
+      idServicio: '001237',
+      nombreIdServicio: 'cliente1-0237'
+    },
+    {
+      cliente: 'empresa1',
+      idOrdenServicio: 'OS-5678',
+      idServicio: '001237',
+      nombreIdServicio: 'empresa1-0234'
+    },
+    {
+      cliente: 'Compañia1',
+      idOrdenServicio: 'OS-9870',
+      idServicio: '987',
+      nombreIdServicio: 'compañia1-9870'
+    },
+    {
+      cliente: 'Compañia1',
+      idOrdenServicio: 'OS-9871',
+      idServicio: '988',
+      nombreIdServicio: 'compañia1-9871'
+    }]
+    
+  }
+
+  ngOnInit() {
+    this.spinner.show();
+    this.ObtenerUsuarioActual();
+    this.aplicarTemaCalendario();
+    // this.RecuperarUsuario();
+    this.RegistrarFormularioSolp();
+    this.RegistrarFormularioCTB();
+    this.RegistrarFormularioCTS();
+    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
+    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
+    //se reactivia AsignarRequeridosDatosContables para pedir datos siempre.
+    //se debe mutear cuando los requeridos no sean obligatorios en sondeo.
+    this.AsignarRequeridosDatosContables();
+    this.obtenerTiposSolicitud();
+    this.obtenerQueryParams();
+
+  }
+
+  obtenerQueryParams() {
+    this.tieneParams = this.route.snapshot.queryParamMap.has('idCliente');
+    this.idClient = this.route.snapshot.queryParamMap.get('idCliente');
+    this.idServiceOrder = this.route.snapshot.queryParamMap.get('idOrdenServicio');
+    this.idService = this.route.snapshot.queryParamMap.get('idServicio');
+    this.verificarQueryParams();
+  }
+
+  verificarQueryParams() {
+    // this.mostrarInformacion('Usted seleccionó el id de cliente: '+ this.idClient + ', el id de orden de servicio: '+ this.idServiceOrder+ ' , y el id de servicio: ' + this.idService);
+    alert('Usted seleccionó el id de cliente: '+ this.idClient + ', el id de orden de servicio: '+ this.idServiceOrder+ ' , y id de servicio: ' + this.idService)
+    if(this.route.snapshot.queryParamMap.has('idCliente') || this.route.snapshot.queryParamMap.has('idOrdenServicio') || this.route.snapshot.queryParamMap.has('idServicio')) {
+      this.tieneParams = true
+    }
+    else {
+      this.tieneParams = false;
+    }
+  }
+
+
+
+  ObtenerUsuarioActual() {
+    this.servicio.ObtenerUsuarioActual().subscribe(
+      (respuesta) => {
+        this.usuario = new Usuario(respuesta.Title, respuesta.email, respuesta.Id);
+        this.nombreUsuario = this.usuario.nombre;
+        sessionStorage.setItem('usuario', JSON.stringify(this.usuario));
+        this.RecuperarUsuario();
+      }, err => {
+        console.log('Error obteniendo usuario: ' + err);
+      }
+    )
+  }
+  
+  filtrarArrayPrueba() {
+    this.validarLengthBusqueda();
+    let cliente = this.ctbFormulario.get('clienteBienes').value;
+    let idServ = this.ctbFormulario.get('IdServicioBienes').value;
+    let nombreServ = this.ctbFormulario.get('nombreIdServicioBienes').value;
+    let os = this.ctbFormulario.get('ordenBienes').value;
+    this.datos = this.arrayPrueba.filter(x=> {
+      return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
+    })
+    let stringIdServicios = this.datos.map(x=> {
+      return x.idServicio
+    })
+    this.ctbFormulario.controls['numCicoCTB'].setValue(stringIdServicios.toString())
+    // this.dataSource = new MatTableDataSource(this.datos);
+  }
+  
+
+  createFilter(): (data: any, filter: string) => boolean {
+    let filterFunction = function(data, filter): boolean {
+      let searchTerms = JSON.parse(filter);
+      return data.cliente.toLowerCase().indexOf(searchTerms.cliente) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
+        && data.idServicio.toLowerCase().indexOf(searchTerms.idServicio) !== -1
+        && data.nombreIdServicio.toLowerCase().indexOf(searchTerms.nombreIdServicio) !== -1;
+    }
+    return filterFunction;
+  }
+
+  seleccionarTodos($event) {
+    $event.checked === true ? this.selectAll = true : this.selectAll = false;
+    console.log(this.selectAll);
   }
 
   numberOnly(event): boolean {
@@ -194,24 +356,67 @@ export class CrearSolicitudComponent implements OnInit {
     this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
-  ngOnInit() {
-    this.spinner.show();
-    this.aplicarTemaCalendario();
-    this.RecuperarUsuario();
-    this.RegistrarFormularioSolp();
-    this.RegistrarFormularioCTB();
-    this.RegistrarFormularioCTS();
-    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
-    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
-    //se reactivia AsignarRequeridosDatosContables para pedir datos siempre.
-    //se debe mutear cuando los requeridos no sean obligatorios en sondeo.
-    this.AsignarRequeridosDatosContables();
-    this.obtenerTiposSolicitud();
-    
+  
+
+  leerFiltros() {
+    this.ctbFormulario.controls['clientBienes'].valueChanges
+    .subscribe(
+      cliente => {
+        this.filterValues.cliente = cliente;
+        this.dataSource.filter = JSON.stringify(this.filterValues);
+      }
+    )
+
+  this.ctbFormulario.controls['ordenServBienes'].valueChanges
+    .subscribe(
+      os => {
+        this.filterValues.idOrdenServicio = os;
+        this.dataSource.filter = JSON.stringify(this.filterValues);
+      }
+    )
+
+  this.ctbFormulario.controls['idServBienes'].valueChanges
+    .subscribe(
+      id => {
+        this.filterValues.idServicio = id;
+        this.dataSource.filter = JSON.stringify(this.filterValues);
+      }
+    ) 
+
+  this.ctbFormulario.controls['nombreIdServBienes'].valueChanges
+    .subscribe(
+      nombre => {
+        this.filterValues.nombreIdServicio = nombre;
+        this.dataSource.filter = JSON.stringify(this.filterValues);
+      }
+    )
   }
 
   changeListener($event): void {
     this.leerArchivo($event.target);
+  }
+
+  validarLengthBusqueda() {
+    let cliente = this.ctbFormulario.get('clienteBienes').value;
+    let ordenBienes = this.ctbFormulario.get('ordenBienes').value;
+    let IdServicioBienes = this.ctbFormulario.get('IdServicioBienes').value;
+    let nombreIdServicioBienes = this.ctbFormulario.get('nombreIdServicioBienes').value;
+    let clienteServicios = this.ctsFormulario.get('clienteServicios').value;
+    let ordenServicios = this.ctsFormulario.get('ordenServicios').value;
+    let idServicio = this.ctsFormulario.get('idServicio').value;
+    let nombreIdServicio = this.ctsFormulario.get('nombreIdServicio').value;
+    if((cliente !== '' && cliente.length < 4) || (clienteServicios !== '' && clienteServicios.length < 4)) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Cliente"');
+      return false;
+    }
+    if((IdServicioBienes !== '' && IdServicioBienes.length < 3) || (idServicio !== '' && idServicio.length < 3)) {
+      this.mostrarAdvertencia('Se requieren al menos 3 caracteres si va a utilizar el campo "Id de servicios"')
+      return false;
+    }
+    if((nombreIdServicioBienes !== '' && nombreIdServicioBienes.length < 4) || (nombreIdServicio !== '' && nombreIdServicio.length < 4)) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
+      return false;
+    }
   }
 
   leerArchivo(inputValue: any): void {
@@ -1092,6 +1297,29 @@ export class CrearSolicitudComponent implements OnInit {
     //   }
     // }              // Hasta aquí
   } 
+
+  showFilterBienes ($event) {
+    if ($event.target.value === "ID de Servicios") {
+      this.mostrarFiltroBienes = true;
+      this.idClient !== null ? this.ctbFormulario.controls['clienteBienes'].setValue(this.idClient) : this.ctbFormulario.controls['clienteBienes'].setValue('');
+      this.idServiceOrder !== null ? this.ctbFormulario.controls['ordenBienes'].setValue(this.idServiceOrder) : this.ctbFormulario.controls['ordenBienes'].setValue('');
+      this.idService !== null ? this.ctbFormulario.controls['IdServicioBienes'].setValue(this.idService) : this.ctbFormulario.controls['IdServicioBienes'].setValue('');
+      this.idService !== null ? this.disableIdServicio = true : this.disableIdServicio = false
+      console.log(this.disableIdServicio);
+    }
+    else {
+      this.mostrarFiltroBienes = false;
+    }
+  }
+
+  showFilterServicios ($event) {
+    if ($event.target.value === "ID de Servicios") {
+      this.mostrarFiltroServicios = true;
+    }
+    else {
+      this.mostrarFiltroServicios = false;
+    }
+  }
 
   changeListenerServicios($event): void {
     this.leerArchivoServicios($event.target);
@@ -1976,7 +2204,11 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       comentariosCTS: [''],
       cecoCTS: [''],
       numCicoCTS: [''],
-      numCuentaCTS: ['']
+      numCuentaCTS: [''],
+      clienteServicios: [''],
+      ordenServicios: [''],
+      idServicio: [''],
+      nombreIdServicio: ['']
     });
   }
 
@@ -1993,7 +2225,15 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       comentariosCTB: [''],
       cecoCTB: [''],
       numCicoCTB: [''],
-      numCuentaCTB: ['']
+      numCuentaCTB: [''],
+      clienteBienes: [''],
+      ordenBienes: [''],
+      IdServicioBienes: [''],
+      nombreIdServicioBienes: [''],
+      clientBienes: [''],
+      ordenServBienes: [''],
+      idServBienes: [''],
+      nombreIdServBienes: ['']   
     });
   }
 
