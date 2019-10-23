@@ -143,6 +143,7 @@ export class CrearSolicitudComponent implements OnInit {
   datos: any=[];
   selectAll: boolean;
   disableIdServicio: boolean;
+  mostrarTable: boolean;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
@@ -296,11 +297,11 @@ export class CrearSolicitudComponent implements OnInit {
   }
   
   filtrarArrayPrueba() {
-    this.validarLengthBusqueda();
     let cliente = this.ctbFormulario.get('clienteBienes').value;
     let idServ = this.ctbFormulario.get('IdServicioBienes').value;
     let nombreServ = this.ctbFormulario.get('nombreIdServicioBienes').value;
     let os = this.ctbFormulario.get('ordenBienes').value;
+    this.mostrarTable = true;
     this.datos = this.arrayPrueba.filter(x=> {
       return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
     })
@@ -417,6 +418,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
       return false;
     }
+    this.filtrarArrayPrueba();
   }
 
   leerArchivo(inputValue: any): void {
@@ -2987,6 +2989,8 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    this.mostrarFiltroBienes = false;
+    this.mostrarTable = false;
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
       return false;
@@ -2998,7 +3002,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.textoBotonGuardarCTB = "Guardar";
     this.modalRef = this.modalServicio.show(
       template,
-      Object.assign({}, { class: 'gray modal-lg' })
+      Object.assign({}, { class: 'gray modal-lg', width: '600px' })
     );
     }
   }

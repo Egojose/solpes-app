@@ -406,7 +406,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
-                                        <button class="btn btn-outline-primary" type="button" (click)="filtrarArrayPrueba()">IR</button>
+                                        <button class="btn btn-outline-primary" type="button" (click)="validarLengthBusqueda()">IR</button>
                                     </div>
                                 </div>
                             </div>
@@ -447,7 +447,7 @@
                                
                                 </div>
                             </div> -->
-                            <div class="row">
+                            <div class="row" *ngIf="mostrarTable">
                             <div class="col-md-12">
                                 <br>
                                 <div class="col-md-3">
@@ -461,19 +461,43 @@
                                         </td>
                                     </ng-container>
                                     <ng-container matColumnDef="cliente">
-                                        <th mat-header-cell *matHeaderCellDef> Cliente </th>
+                                        <th class="header" mat-header-cell *matHeaderCellDef>
+                                            Cliente
+                                            <mat-form-field class="filter" floatLabel="never">
+                                                <mat-label>filtrar</mat-label>
+                                                <input matInput [formControl]="idFilter">
+                                            </mat-form-field>
+                                        </th>
                                         <td mat-cell *matCellDef="let element">{{element.cliente}}</td>
                                     </ng-container>
-                                    <ng-container  matColumnDef="OS">
-                                        <th mat-header-cell *matHeaderCellDef>Orden de servicio</th>
+                                    <ng-container matColumnDef="OS">
+                                        <th class="header" mat-header-cell *matHeaderCellDef>
+                                            Orden de servicio
+                                            <mat-form-field class="filter" floatLabel="never">
+                                                <mat-label>filtrar</mat-label>
+                                                <input matInput [formControl]="idFilter">
+                                            </mat-form-field>
+                                        </th>
                                         <td mat-cell *matCellDef="let element">{{element.idOrdenServicio}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="idServicio">
-                                        <th mat-header-cell *matHeaderCellDef>Id de servicio</th>
+                                        <th class="header" mat-header-cell *matHeaderCellDef>
+                                            Id de servicio
+                                            <mat-form-field class="filter" floatLabel="never">
+                                                <mat-label>filtrar</mat-label>
+                                                <input matInput [formControl]="idFilter">
+                                            </mat-form-field>
+                                        </th>
                                         <td mat-cell *matCellDef="let element">{{element.idServicio}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="nombreIdServicio">
-                                        <th mat-header-cell *matHeaderCellDef >Nombre ID servicio</th>
+                                        <th class="header" mat-header-cell *matHeaderCellDef>
+                                            Nombre id servicio
+                                            <mat-form-field class="filter" floatLabel="never">
+                                                <mat-label>filtrar</mat-label>
+                                                <input matInput [formControl]="idFilter">
+                                            </mat-form-field>
+                                        </th>
                                         <td mat-cell *matCellDef="let element">{{element.nombreIdServicio}}</td>
                                     </ng-container>
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
