@@ -95,6 +95,7 @@ import { ExcelService } from './servicios/excel.service';
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
     NgxSpinnerModule,
+    HttpClientModule,
     RouterModule.forRoot([
       {path:'',redirectTo:'/mis-solicitudes',pathMatch:'full'},
       {path:'aprobar-sondeo', component:AprobarSondeoComponent},
