@@ -7,11 +7,12 @@ import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
 import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 import { RecepcionBienes } from "../entrega-bienes/recepcionBienes";
 import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
+import { HttpClient } from "@angular/common/http";
 import { promised } from "q";
 
 @Injectable()
 export class SPServicio {
-    constructor() { }
+    constructor(private httpClient: HttpClient) { }
 
     public ObtenerConfiguracion() {
         const configuracionSharepoint = pnp.sp.configure({
@@ -28,13 +29,13 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyIsImtpZCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTcxNjg4NDM0LCJuYmYiOjE1NzE2ODg0MzQsImV4cCI6MTU3MTcxNzUzNCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.QINJsEaDynXLHARhTM2eh7HBwOpdn4iw1bWsrgTLcQx-F_bt9r1eOLqkiDylhKypwM_IXEHXVrHqSmbcogBdtvXus-GQh4ASJHuetUOSSDAGu9zHpAv6Gu7SW3P2TRNZc8k2D0-XJFOWqnSvn4jlPejiraMQwmKHgHjOXu4QZC1rmMswjH3GzibbcEWTYdEA6l-hEAPB_YW2mBSAXhpmcWEcwJggfLk8-S2lnsJXoH8G-wOVFVo0GswiWdNggNdRTYFx53o1Wi4kVyX-dmaA6a7ahet99j5nDUq8S95yIQqFzKcmzJdocCLlNdLdWfKK9wZFR6KBjdzqZH8Cc-y5IA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyIsImtpZCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTcyMDIwMDc2LCJuYmYiOjE1NzIwMjAwNzYsImV4cCI6MTU3MjA0OTE3NiwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.DLaQxn--nW8GCRkp4MtqJocP1VLk_xiFmkgRid1Vj2_dYZf3VI2pmW9Bpu9cauVwWwG6KPTrZkm5HxlkbpNOi8-3XrNpi5BdwKAWf3DfugYIZPGxE2rO0AYbRsuSg_BFZXnKOxp2e4ZASm4e5Z_OQ0ZlJl46kNJXa9xSGyfuO1C9bEiC9a38aJq8Cc8Z491ZHDWa66itJh9qMYDAQI6jkahm9YCmHSfDaVYQ43epsfv9vqRDk4ADJWrVSqmXkcsgRfxIHUAxMuw5TS9ZyHPG7JYloHEyY4w7LPPxESvOhBX3JkQWgd8IfX5nbSHSpNQp6UAgxOJi47duVKsbk4TcoA'
             }
         }, environment.urlWeb);
 
         return configuracionSharepoint;
     }
-
+    
     ObtenerUsuarioActual() {
         let respuesta = from(this.ObtenerConfiguracion().web.currentUser.get());
         return respuesta;
