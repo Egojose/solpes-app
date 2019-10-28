@@ -251,7 +251,8 @@
         </div>
         <div class="form-group col-md-4">
             <label for="inputEmail4">Porcentaje IVA del contrato<span class="camposRequeridos">*</span> </label>
-            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="IvaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }" [readonly]="Guardado === true" (keyup)="validarIva()">
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" type="text" formControlName="IvaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.IvaContrato.errors }" [readonly]="Guardado === true"
+                (keyup)="validarIva()">
             <div *ngIf="submitted && f.IvaContrato.errors" class="invalid-feedback">
                 <div *ngIf="f.IvaContrato.errors.required">Es requerido</div>
             </div>
@@ -260,7 +261,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">Valor contractual sin impuestos<span class="camposRequeridos">*</span></label>
-            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 2 }"  type="text" formControlName="ValorContractual" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }"
+            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 2 }" type="text" formControlName="ValorContractual" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ValorContractual.errors }"
                 [readonly]="Guardado === true" (keyup)="calcularAhorro()">
             <div *ngIf="submitted && f.ValorContractual.errors" class="invalid-feedback">
                 <div *ngIf="f.ValorContractual.errors.required">Es requerido</div>
@@ -353,21 +354,21 @@
             </div>
         </div> -->
         <div class="form-group col-md-4">
-                <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
-                <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }" [readonly]="Guardado === true">
-                <small id="emailHelp" class="form-text text-muted">Debe ser el nombre que está registrado en SAP</small>
-                <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
-                    <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
-                </div>
+            <label for="inputEmail4">Nombre/Razón Social del proveedor <span class="camposRequeridos">*</span></label>
+            <input type="text" formControlName="NombreRazonSocial" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.NombreRazonSocial.errors }" [readonly]="Guardado === true">
+            <small id="emailHelp" class="form-text text-muted">Debe ser el nombre que está registrado en SAP</small>
+            <div *ngIf="submitted && f.NombreRazonSocial.errors" class="invalid-feedback">
+                <div *ngIf="f.NombreRazonSocial.errors.required">Es requerido</div>
             </div>
-            <div class="form-group col-md-4">
-                <label for="inputEmail4">E-mail del proveedor <span class="camposRequeridos">*</span></label>
-                <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }" [readonly]="Guardado === true">
-                <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
-                    <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
-                    <div *ngIf="f.EmailProveedor.errors.email">El E-mail es inválido</div>
-                </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputEmail4">E-mail del proveedor <span class="camposRequeridos">*</span></label>
+            <input type="email" formControlName="EmailProveedor" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EmailProveedor.errors }" [readonly]="Guardado === true">
+            <div *ngIf="submitted && f.EmailProveedor.errors" class="invalid-feedback">
+                <div *ngIf="f.EmailProveedor.errors.required">Es requerido</div>
+                <div *ngIf="f.EmailProveedor.errors.email">El E-mail es inválido</div>
             </div>
+        </div>
     </div>
     <div class="row">
         <div class="form-group col-md-6">
@@ -378,17 +379,14 @@
             </div>
         </div>
         <div class="form-group col-md-6">
-                <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
-                <ng-template #tolTemplate>el usuario no existe</ng-template>
-                <input formControlName="Comprador" [typeahead]="listaCompradores" 
-                [ngClass]="{ 'is-invalid': submitted && f.Comprador.errors }" 
-                typeaheadOptionField="compradorNombre" 
-                (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate" [typeaheadOptionsLimit]="7" triggers="" #customTooltip="bs-tooltip" placement="bottom" class="form-control"
-                    [readonly]="Guardado === true">
-                <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
-                    <div *ngIf="f.Comprador.errors.required">Es requerido</div>
-                </div>
+            <label for="inputEmail4">Comprador <span class="camposRequeridos">*</span></label>
+            <ng-template #tolTemplate>el usuario no existe</ng-template>
+            <input formControlName="Comprador" [typeahead]="listaCompradores" [ngClass]="{ 'is-invalid': submitted && f.Comprador.errors }" typeaheadOptionField="compradorNombre" (typeaheadOnSelect)="onSelect($event)" (blur)="ValidarUsuario()" [tooltip]="tolTemplate"
+                [typeaheadOptionsLimit]="7" triggers="" #customTooltip="bs-tooltip" placement="bottom" class="form-control" [readonly]="Guardado === true">
+            <div *ngIf="submitted && f.Comprador.errors" class="invalid-feedback">
+                <div *ngIf="f.Comprador.errors.required">Es requerido</div>
             </div>
+        </div>
     </div>
     <div class="row">
         <div class="form-group col-md-12">
@@ -403,7 +401,7 @@
     <div class="row">
         <div class="col-md-3">
             <label for="Ariba">Ariba Sourcing<span class="camposRequeridos">*</span></label>
-            <select type="text" class="form-control" formControlName="ariba" (change)="leerAribaValue()" >
+            <select type="text" class="form-control" formControlName="ariba" (change)="leerAribaValue()">
                 <option value="SI">SI</option>
                 <option value="N/A">N/A</option>
             </select>
@@ -427,8 +425,7 @@
     <div class="row form-group">
         <div class="col-md-6">
             <label for="inputEmail4">Puntaje actual de la evaluación del proveedor<span class="camposRequeridos">*</span></label>
-            <select name="" id="" class="form-control" formControlName="puntaje"
-                [ngClass]="{ 'is-invalid': submitted && f.puntaje.errors }" (change)="Puntaje()">
+            <select name="" id="" class="form-control" formControlName="puntaje" [ngClass]="{ 'is-invalid': submitted && f.puntaje.errors }" (change)="Puntaje()">
                 <option value="">Seleccione</option>
                 <option value="No se ha evaluado previamente" [disabled]="Guardado === true">No se ha evaluado previamente</option>
                 <option value="Agregar un puntaje" [disabled]="Guardado === true">Agregar un puntaje</option>
@@ -443,7 +440,7 @@
                 <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision: 0 }" type="text" formControlName="valorPuntaje" class="form-control" (keyup)="validarPuntaje()">
             </div>
         </ng-container>
-        
+
     </div>
     <br>
     <div class="form-group row">
