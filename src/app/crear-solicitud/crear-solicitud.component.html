@@ -163,9 +163,9 @@
                         <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTB">
                             <th class="columnaBienes" mat-header-cell *matHeaderCellDef> {{column}} </th>
                             <div *ngIf="column == 'Acciones'; else contenidoCTB">
-                                <td mat-cell *matCellDef="let element"><img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/editar.png"  class="icono-tabla"  alt="editar"  (click)="editarBienes(element, templateCondicionesTecnicasBienes);" (click)="reservarDatosContablesBienesExcel()"  tooltip="Editar bien"
-                                        placement="bottom"  />&nbsp;<img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/borrar.png"  class="icono-tabla"  alt="borrar"  (click)="borrarBienes(element);"  tooltip="Borrar bien"
-                                        placement="bottom"  /></td>
+                                <td mat-cell *matCellDef="let element"><img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/editar.png"  class="icono-tabla"  alt="editar"  (click)="editarBienes(element, templateCondicionesTecnicasBienes);" (click)="reservarDatosContablesBienesExcel()"
+                                         tooltip="Editar bien" placement="bottom"  />&nbsp;<img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/borrar.png"  class="icono-tabla"  alt="borrar"  (click)="borrarBienes(element);"
+                                         tooltip="Borrar bien" placement="bottom"  /></td>
                             </div>
                             <ng-template #contenidoCTB>
                                 <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
@@ -348,10 +348,8 @@
                             />
                         </div>
                         <div class="col-md-6">
-                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTB"
-                                class="asterisco-obligatorio">*</span>
-                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control"
-                                [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
+                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTB" class="asterisco-obligatorio">*</span>
+                            <select id="tipoMonedaCTB" name="tipoMonedaCTB" formControlName="tipoMonedaCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.tipoMonedaCTB.errors }">
                                 <option value="">Seleccione</option>
                                 <option value="ARS">ARS</option>
                                 <option value="BRL">BRL</option>
@@ -375,8 +373,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
-                                <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
+                                <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
@@ -397,20 +394,16 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteBienes"
-                                            (change)="validarLengthBusqueda()" name="cliente">
+                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteBienes" (change)="validarLengthBusqueda()" name="cliente">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenBienes"
-                                            (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenBienes" (change)="validarLengthBusqueda()">
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="IdServicioBienes"
-                                            (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="IdServicioBienes" (change)="validarLengthBusqueda()">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio"
-                                            formControlName="nombreIdServicioBienes" (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicioBienes" (change)="validarLengthBusqueda()">
                                     </div>
                                     <div class="col-md-1">
                                         <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
@@ -426,7 +419,7 @@
                                     <mat-checkbox color="primary" (change)="seleccionarTodos($event)">Seleccionar todos los ID de servicio
                                     </mat-checkbox>
                                 </div>
-                                <table mat-table [dataSource]="datos">
+                                <table mat-table [dataSource]="dataSourceDatos">
                                     <ng-container matColumnDef="seleccionar">
                                         <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                                         <td mat-cell *matCellDef="let element">
@@ -561,10 +554,8 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTS"
-                                class="asterisco-obligatorio">*</span>
-                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control"
-                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
+                            <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTS" class="asterisco-obligatorio">*</span>
+                            <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
                                 <option value="">Seleccione</option>
                                 <option value="ARS">ARS</option>
                                 <option value="BRL">BRL</option>
@@ -587,8 +578,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
-                                <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
+                                <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
@@ -599,8 +589,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 d-flex align-items-center" style="padding-top: 30px;">
-                                <mat-checkbox color="primary" [disabled]="!enableCheckDatosContablesServicios"
-                                    (change)="usarDatosContablesServicios($event)">Usar datos contables del servicio anterior
+                                <mat-checkbox color="primary" [disabled]="!enableCheckDatosContablesServicios" (change)="usarDatosContablesServicios($event)">Usar datos contables del servicio anterior
                                 </mat-checkbox>
                             </div>
                         </div>
@@ -633,17 +622,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
-                            <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control"
-                                formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }">
+                            <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }">
                             <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="Numero de cuenta">Número de cuenta</label>
-                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control"
-                                formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }"
-                                (keypress)="numberOnly($event)">
+                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" (keypress)="numberOnly($event)">
                             <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
                             </div>

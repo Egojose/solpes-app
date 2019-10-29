@@ -145,7 +145,7 @@ export class CrearSolicitudComponent implements OnInit {
   selectAll: boolean;
   disableIdServicio: boolean;
   mostrarTable: boolean;
-  dataSource = new MatTableDataSource();
+  dataSourceDatos = new MatTableDataSource();
   dataSelecionados = [];
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
@@ -250,9 +250,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.enableCheckDatosContablesServicios = false
     this.setDatosContablesBienes = false;
     this.setDatosContablesServicios = false;
-    this.cargaDesdeExcel = false;
-    this.dataSource.data = this.arrayPrueba;
-    this.dataSource.filterPredicate = this.createFilter();
+    this.cargaDesdeExcel = false;    
     // this.cargaExcel = false; se debe habilitar para datos contables no obligatorios
     
   }
@@ -272,13 +270,13 @@ export class CrearSolicitudComponent implements OnInit {
     this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
     this.obtenerQueryParams();
-    this.clientBienes.valueChanges
-    .subscribe(
-      (cliente) => {
-        this.filterValues.cliente = cliente;
-        this.dataSource.filter = JSON.stringify(this.filterValues);
-      }
-    )
+    // this.clientBienes.valueChanges
+    // .subscribe(
+    //   (cliente) => {
+    //     this.filterValues.cliente = cliente;
+    //     this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
+    //   }
+    // )
   }
 
   obtenerQueryParams() {
@@ -350,18 +348,21 @@ export class CrearSolicitudComponent implements OnInit {
       this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
       return false;
     }
-    // let stringIdServicios = this.datos.map(x=> {
-    //   return x.idServicio
-    // })
-    // this.ctbFormulario.controls['numCicoCTB'].setValue(stringIdServicios.toString())
-    // this.dataSource.data = (this.datos);
+
+    this.dataSourceDatos.data = this.datos;
+    this.dataSourceDatos.filterPredicate = this.createFilter();
+    this.leerFiltros();    
   }
   
   createFilter(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      console.log(searchTerms);
+      console.log(data.cliente.toLowerCase().indexOf(searchTerms.cliente) !== -1
+      && data.idOrdenServicio.toString().toLowerCase().indexOf(searchTerms.idOrdenServicio) !== -1
+      && data.idServicio.toLowerCase().indexOf(searchTerms.idServicio) !== -1
+      && data.nombreIdServicio.toLowerCase().indexOf(searchTerms.nombreIdServicio) !== -1);
+    
       return data.cliente.toLowerCase().indexOf(searchTerms.cliente) !== -1
         && data.idOrdenServicio.toString().toLowerCase().indexOf(searchTerms.idOrdenServicio) !== -1
         && data.idServicio.toLowerCase().indexOf(searchTerms.idServicio) !== -1
@@ -519,35 +520,35 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   leerFiltros() {
-    this.ctbFormulario.controls['clientBienes'].valueChanges
+    this.clientBienes.valueChanges
     .subscribe(
-      cliente => {
+      (cliente) => {
         this.filterValues.cliente = cliente;
-        this.dataSource.filter = JSON.stringify(this.filterValues);
+        this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
       }
     )
 
-  this.ctbFormulario.controls['ordenServBienes'].valueChanges
+    this.ordenServBienes.valueChanges
     .subscribe(
-      os => {
-        this.filterValues.idOrdenServicio = os;
-        this.dataSource.filter = JSON.stringify(this.filterValues);
+      (ordenServicio) => {
+        this.filterValues.idOrdenServicio = ordenServicio;
+        this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
       }
-    )
+    )  
 
-  this.ctbFormulario.controls['idServBienes'].valueChanges
+  this.idServBienes.valueChanges
     .subscribe(
       id => {
         this.filterValues.idServicio = id;
-        this.dataSource.filter = JSON.stringify(this.filterValues);
+        this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
       }
     ) 
 
-  this.ctbFormulario.controls['nombreIdServBienes'].valueChanges
+  this.nombreIdServBienes.valueChanges
     .subscribe(
       nombre => {
         this.filterValues.nombreIdServicio = nombre;
-        this.dataSource.filter = JSON.stringify(this.filterValues);
+        this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
       }
     )
   }
