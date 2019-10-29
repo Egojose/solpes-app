@@ -130,8 +130,8 @@ export class AppComponent implements OnInit {
       this.PermisosReporteSolicitud = true;
     }
 
-    let existeGrupoSoporte = this.grupos.find(x => x.title === grupoSoporte);
-    if(existeGrupoSoporte !== null) {
+    let existeGrupoSoporte = this.grupos.find(x => x.title == grupoSoporte);
+    if(existeGrupoSoporte != null) {
       this.PermisosSoporte = true;
     }
 

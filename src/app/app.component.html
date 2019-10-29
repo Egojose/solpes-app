@@ -37,7 +37,7 @@
             <li>
                 <a routerLink="/consulta-general" routerLinkActive="active">Consulta general</a>
             </li>
-            <li>
+            <li *ngIf="PermisosSoporte">
                 <a routerLink="/gestion-errores" routerLinkActive="active">Soporte</a>
             </li>
         </ul>
