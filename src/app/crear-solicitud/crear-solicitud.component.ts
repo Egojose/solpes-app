@@ -144,6 +144,7 @@ export class CrearSolicitudComponent implements OnInit {
   datos: any=[];
   selectAll: boolean;
   disableIdServicio: boolean;
+  disabledIdServicioServicios: boolean;
   mostrarTable: boolean;
   dataSourceDatos = new MatTableDataSource();
   dataSelecionados = [];
@@ -213,7 +214,8 @@ export class CrearSolicitudComponent implements OnInit {
   setDatosContablesBienes: boolean;
   setDatosContablesServicios: boolean;
   cargaDesdeExcel: boolean;
-
+  cargaDesdeExcelServicios: any;
+  
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute) {
     setTheme('bs4');
     this.PermisosCreacion = false;
@@ -246,6 +248,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.mostrarFiltroServicios = false;
     this.selectAll = false;
     this.disableIdServicio = false;
+    this.disabledIdServicioServicios = false;
     this.enableCheckDatosContablesBienes = false;
     this.enableCheckDatosContablesServicios = false
     this.setDatosContablesBienes = false;
@@ -328,6 +331,11 @@ export class CrearSolicitudComponent implements OnInit {
   showFilterServicios ($event) {
     if ($event.target.value === "ID de Servicios") {
       this.mostrarFiltroServicios = true;
+      this.idClient !== null ? this.ctsFormulario.controls['clienteServicios'].setValue(this.idClient) : this.ctsFormulario.controls['clienteServicios'].setValue('');
+      this.idServiceOrder !== null ? this.ctsFormulario.controls['ordenServicios'].setValue(this.idServiceOrder) : this.ctsFormulario.controls['ordenServicios'].setValue('');
+      this.idService !== null ? this.ctsFormulario.controls['idServicio'].setValue(this.idService) : this.ctsFormulario.controls['idServicio'].setValue('');
+      this.idService !== null ? this.disabledIdServicioServicios = false : this.disabledIdServicioServicios = true;
+
     }
     else {
       this.mostrarFiltroServicios = false;
@@ -355,7 +363,6 @@ export class CrearSolicitudComponent implements OnInit {
   }
   
   createFilter(): (data: any, filter: string) => boolean {
-
     let filterFunction = function(data, filter): boolean {
       let searchTerms = JSON.parse(filter);
       console.log(data.cliente.toLowerCase().indexOf(searchTerms.cliente) !== -1
@@ -370,7 +377,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
     
     return filterFunction;
-    
+
   }
 
   seleccionarTodos($event) {
@@ -445,7 +452,7 @@ export class CrearSolicitudComponent implements OnInit {
 
   usarDatosContablesBienes($event) {
     $event.checked ? this.setDatosContablesBienes = true : this.setDatosContablesBienes = false;
-    if(this.cargaDesdeExcel && this.setDatosContablesBienes) {
+    if(this.cargaDesdeExcel) {
       this.reservarDatosContablesBienesExcel();
     }
     else if(this.setDatosContablesBienes) {
@@ -455,13 +462,18 @@ export class CrearSolicitudComponent implements OnInit {
 
   usarDatosContablesServicios($event) {
     $event.checked ? this.setDatosContablesServicios = true : this.setDatosContablesServicios = false;
-    this.reservarDatosContablesServicios(); 
+    if(this.cargaDesdeExcelServicios) {
+      this.reservarDatosContablesServiciosExcel();
+    }
+    else if(this.setDatosContablesServicios) {
+      this.reservarDatosContablesServicios();
+    }
   }
 
   reservarDatosContablesBienesExcel() {
     this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
       (respuesta) => {
-        let id: any = this.idCondicionTBGuardada
+        let id: any = this.idCondicionTBGuardada;
         let indexId: any = (parseInt(id) - 1);
         let indexArray;
 
@@ -470,10 +482,6 @@ export class CrearSolicitudComponent implements OnInit {
             return x.Id
           })
           indexArray = mapArray.findIndex(x => x === indexId)
-          console.log(mapArray);
-          console.log(indexArray);
-          console.log(respuesta);
-          console.log(respuesta[indexArray]);
           indexArray === -1 ? this.enableCheckDatosContablesBienes = false : this.enableCheckDatosContablesBienes = true;
         }
   
@@ -482,11 +490,40 @@ export class CrearSolicitudComponent implements OnInit {
           this.ctbFormulario.controls['numCicoCTB'].setValue(respuesta[indexArray].numeroCostoInversion);
           this.ctbFormulario.controls['numCuentaCTB'].setValue(respuesta[indexArray].numeroCuenta);
         }
-        // else if() {
-        //   this.ctbFormulario.controls['cecoCTB'].setValue('');
-        //   this.ctbFormulario.controls['numCicoCTB'].setValue('');
-        //   this.ctbFormulario.controls['numCuentaCTB'].setValue('');
-        // }
+        else {
+          this.ctbFormulario.controls['cecoCTB'].setValue(respuesta[indexArray + 1].costoInversion);
+          this.ctbFormulario.controls['numCicoCTB'].setValue(respuesta[indexArray + 1].numeroCostoInversion);
+          this.ctbFormulario.controls['numCuentaCTB'].setValue(respuesta[indexArray + 1].numeroCuenta);
+        }
+      }
+    )
+  }
+
+  reservarDatosContablesServiciosExcel() {
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        let id: any = this.idCondicionTSGuardada;
+        let indexId: any = (parseInt(id) - 1);
+        let indexArray;
+
+        if(respuesta.length > 0) {
+          let mapArray = respuesta.map(x => {
+            return x.Id
+          })
+          indexArray = mapArray.findIndex(x => x === indexId);
+          indexArray !== -1 ? this.enableCheckDatosContablesServicios = true : this.enableCheckDatosContablesServicios = false;
+        }
+
+        if(this.setDatosContablesServicios && indexArray !== -1) {
+          this.ctsFormulario.controls['cecoCTS'].setValue(respuesta[indexArray].costoInversion);
+          this.ctsFormulario.controls['numCicoCTS'].setValue(respuesta[indexArray].numeroCostoInversion);
+          this.ctsFormulario.controls['numCuentaCTS'].setValue(respuesta[indexArray].numeroCuenta);
+        }
+        else {
+          this.ctsFormulario.controls['cecoCTS'].setValue(respuesta[indexArray + 1].costoInversion);
+          this.ctsFormulario.controls['numCicoCTS'].setValue(respuesta[indexArray + 1].numeroCostoInversion);
+          this.ctsFormulario.controls['numCuentaCTS'].setValue(respuesta[indexArray + 1].numeroCuenta);
+        }
       }
     )
   }
@@ -1511,6 +1548,7 @@ leerArchivoServicios(inputValue: any): void {
             }
           }
           if (this.cantidadErrorFileCTS === 0) {
+            this.cargaDesdeExcelServicios = true;
             let contador = 0;
             this.ObjCTS.forEach(element => {
               this.servicio.agregarCondicionesTecnicasServiciosExcel(element).then(
@@ -3145,7 +3183,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.textoBotonGuardarCTB = "Guardar";
     this.modalRef = this.modalServicio.show(
       template,
-      Object.assign({}, { class: 'gray modal-lg', width: '600px' })
+      Object.assign({}, { class: 'gray modal-lg' })
     );
     }
   }
