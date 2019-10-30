@@ -143,6 +143,7 @@ export class CrearSolicitudComponent implements OnInit {
   nombreIdServicioBienes: string;
   datos: any=[];
   datosServicios: any =[];
+  datosFiltradosBienes: any = [];
   selectAll: boolean;
   disableIdServicio: boolean;
   disabledIdServicioServicios: boolean;
@@ -425,17 +426,25 @@ export class CrearSolicitudComponent implements OnInit {
 
   seleccionarTodos($event) {
     $event.checked === true ? this.selectAll = true : this.selectAll = false;
-    
-    if(this.selectAll === true) {
+    let cliente = this.clientBienes.value
+    let idServ = this.idServBienes.value;
+    let nombreServ = this.nombreIdServBienes.value;
+    let os = this.ordenServBienes .value;
+    if(this.selectAll === true && (cliente === '' && idServ === '' && nombreServ === '' && os === '' )) {
       this.dataSeleccionados = this.datos.map(x => {
         return x.idServicio
       })
-      this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
+    }
+    else if (this.selectAll === true && (cliente !== '' || idServ !== '' || nombreServ !== '' || os !== '')) {
+      this.datosFiltradosBienes = this.dataSourceDatos;
+      this.dataSeleccionados = this.datosFiltradosBienes.filteredData.map(x => {
+       return x.idServicio
+      })
     }
     else {
       this.dataSeleccionados = [];
-      this.ctbFormulario.controls['numCicoCTB'].setValue('');
     }
+    this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
   }
 
   seleccionado($event) {
@@ -446,6 +455,9 @@ export class CrearSolicitudComponent implements OnInit {
     else {
       let index = this.dataSeleccionados.findIndex(x => x === idServicioSeleccionado);
       this.dataSeleccionados.splice(index, 1);
+      if(index === -1 ) {
+        this.selectAll = false;
+      }
     }
     this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
   }
