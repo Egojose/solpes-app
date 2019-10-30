@@ -142,13 +142,16 @@ export class CrearSolicitudComponent implements OnInit {
   IdServicioBienes: string;
   nombreIdServicioBienes: string;
   datos: any=[];
+  datosServicios: any =[];
   selectAll: boolean;
   disableIdServicio: boolean;
   disabledIdServicioServicios: boolean;
   mostrarTable: boolean;
   dataSourceDatos = new MatTableDataSource();
-  dataSelecionados = [];
+  dataSeleccionados = [];
+  dataSeleccionadosServicios = [];
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
+  displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
 
   arrayPrueba = [{
@@ -194,7 +197,6 @@ export class CrearSolicitudComponent implements OnInit {
     nombreIdServicio: 'compañia1-9871'
   }]
   
-  
   clientBienes = new FormControl('');
   ordenServBienes = new FormControl('');
   idServBienes = new FormControl('');
@@ -205,6 +207,18 @@ export class CrearSolicitudComponent implements OnInit {
     idServicio: '',
     nombreIdServicio: ''
   };
+
+  clientServicios = new FormControl('');
+  ordenServServicios = new FormControl('');
+  idServServicios = new FormControl('');
+  nombreIdServServicios = new FormControl('');
+  filterValuesServicios = {
+    cliente: '',
+    idOrdenServicio: '',
+    idServicio: '',
+    nombreIdServicio: ''
+  };  
+
   idClient: any;
   idServiceOrder: any;
   idService: any;
@@ -215,6 +229,10 @@ export class CrearSolicitudComponent implements OnInit {
   setDatosContablesServicios: boolean;
   cargaDesdeExcel: boolean;
   cargaDesdeExcelServicios: any;
+  mostrarTableServicios: boolean;
+  selectAllServicios: boolean;
+  
+  
   
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute) {
     setTheme('bs4');
@@ -361,9 +379,24 @@ export class CrearSolicitudComponent implements OnInit {
     this.dataSourceDatos.filterPredicate = this.createFilter();
     this.leerFiltros();    
   }
+
+  filtrarArrayServicios() {
+    let cliente = this.ctsFormulario.get('clienteServicios').value;
+    let idServ = this.ctsFormulario.get('idServicio').value;
+    let nombreServ = this.ctsFormulario.get('nombreIdServicio').value;
+    let os = this.ctsFormulario.get('ordenServicios').value;
+    this.mostrarTableServicios = true;
+    this.datosServicios = this.arrayPrueba.filter(x => {
+      return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
+    })
+    if(this.datosServicios.length === 0) {
+      this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+      return false;
+    }
+  }
   
   createFilter(): (data: any, filter: string) => boolean {
-    let filterFunction = function(data, filter): boolean {
+    let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
       console.log(data.cliente.toLowerCase().indexOf(searchTerms.cliente) !== -1
       && data.idOrdenServicio.toString().toLowerCase().indexOf(searchTerms.idOrdenServicio) !== -1
@@ -375,20 +408,32 @@ export class CrearSolicitudComponent implements OnInit {
         && data.idServicio.toLowerCase().indexOf(searchTerms.idServicio) !== -1
         && data.nombreIdServicio.toLowerCase().indexOf(searchTerms.nombreIdServicio) !== -1;
     }
-    
     return filterFunction;
+  }
 
+  createFilterServicios(): (data: any, filter: string) => boolean {
+    let filterFunction = function (data, filter): boolean {
+      let searchTerms = JSON.parse(filter);
+      console.log(searchTerms);
+      return data.cliente.toLowerCase().indexOf(searchTerms.cliente) !== -1
+        && data.idOrdenServicio.toString().toLowerCase().indexOf(searchTerms.idOrdenServicio) !== -1
+        && data.idServicio.toLowerCase().indexOf(searchTerms.idServicio) !== -1
+        && data.nombreIdServicio.toLowerCase().indexOf(searchTerms.nombreIdServicio) !== -1;
+    }
+    return filterFunction;
   }
 
   seleccionarTodos($event) {
     $event.checked === true ? this.selectAll = true : this.selectAll = false;
-    this.dataSelecionados = this.datos.map(x => {
-      return x.idServicio
-    })
+    
     if(this.selectAll === true) {
-      this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSelecionados.toString());
+      this.dataSeleccionados = this.datos.map(x => {
+        return x.idServicio
+      })
+      this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
     }
     else {
+      this.dataSeleccionados = [];
       this.ctbFormulario.controls['numCicoCTB'].setValue('');
     }
   }
@@ -396,17 +441,46 @@ export class CrearSolicitudComponent implements OnInit {
   seleccionado($event) {
     let idServicioSeleccionado = $event.source.value
     if ($event.checked === true) {
-      this.dataSelecionados.push(idServicioSeleccionado);
+      this.dataSeleccionados.push(idServicioSeleccionado);
     }
     else {
-      let index = this.dataSelecionados.findIndex(x => x === idServicioSeleccionado);
-      this.dataSelecionados.splice(index, 1);
+      let index = this.dataSeleccionados.findIndex(x => x === idServicioSeleccionado);
+      this.dataSeleccionados.splice(index, 1);
     }
-    this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSelecionados.toString());
+    this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
   }
 
   terminarSeleccion() {
     this.mostrarTable = false;
+  }
+
+  seleccionarTodosServicios($event) {
+    $event.checked === true ? this.selectAllServicios = true : this.selectAllServicios = false;
+    if (this.selectAllServicios === true) {
+      this.dataSeleccionadosServicios = this.datosServicios.map(x => {
+        return x.idServicio
+      })
+    }
+    else {
+      this.dataSeleccionadosServicios = [];
+    }
+    this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
+  }
+
+  seleccionadoServicios($event) {
+    let idServicioSeleccionado = $event.source.value
+    if ($event.checked === true) {
+      this.dataSeleccionadosServicios.push(idServicioSeleccionado);
+    }
+    else {
+      let index = this.dataSeleccionadosServicios.findIndex(x => x === idServicioSeleccionado);
+      this.dataSeleccionadosServicios.splice(index, 1);
+    }
+    this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
+  }
+
+  terminarSeleccionServicios() {
+    this.mostrarTableServicios = false;
   }
 
   reservarDatosContablesBienes() {
