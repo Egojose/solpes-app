@@ -809,7 +809,6 @@ export class CrearSolicitudComponent implements OnInit {
         this.mostrarError('El archivo no es el correcto, por favor verifiquelo o descargue la plantilla estándar');
         return false;
       }
-      this.reservarDatosContablesBienesExcel();
     }
     if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' || file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
@@ -3968,6 +3967,9 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   editarBienes(element, template: TemplateRef<any>) {
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
+    if(this.ctbFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
+      this.mostrarFiltroBienes = true;
+    }
     if (element.archivoAdjunto != null) {
       this.mostrarAdjuntoCTB = true;
       if(element.rutaAdjunto.toString() == "[object Object]")
@@ -4017,6 +4019,9 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   editarServicios(element, template: TemplateRef<any>) {
     this.indiceCTSActualizar = element.indice;
     this.idCondicionTSGuardada = element.id;
+    if(this.ctsFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
+      this.mostrarFiltroServicios = true;
+    }
     if (element.archivoAdjunto != null) {
       this.mostrarAdjuntoCTS = true;
       if(element.rutaAdjunto.toString() == "[object Object]") {
