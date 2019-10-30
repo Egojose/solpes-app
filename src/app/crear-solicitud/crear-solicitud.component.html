@@ -293,8 +293,8 @@
     <div class="modal-header">
         <h4 class="modal-title pull-left">{{tituloModalCTB}}</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
         <div class="container">
@@ -477,7 +477,7 @@
                     <br>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
+                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID servicio</label>
                             <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }">
                             <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
