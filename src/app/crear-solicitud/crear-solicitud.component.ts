@@ -144,11 +144,13 @@ export class CrearSolicitudComponent implements OnInit {
   datos: any=[];
   datosServicios: any =[];
   datosFiltradosBienes: any = [];
+  datosFiltradosServicios: any = [];
   selectAll: boolean;
   disableIdServicio: boolean;
   disabledIdServicioServicios: boolean;
   mostrarTable: boolean;
   dataSourceDatos = new MatTableDataSource();
+  dataSourceDatosServicios = new MatTableDataSource();
   dataSeleccionados = [];
   dataSeleccionadosServicios = [];
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
@@ -394,6 +396,8 @@ export class CrearSolicitudComponent implements OnInit {
       this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
       return false;
     }
+    this.dataSourceDatosServicios.data = this.datosServicios;
+    this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
   }
   
   createFilter(): (data: any, filter: string) => boolean {
@@ -415,7 +419,11 @@ export class CrearSolicitudComponent implements OnInit {
   createFilterServicios(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      console.log(searchTerms);
+      console.log(data.cliente.toLowerCase().indexOf(searchTerms.cliente) !== -1
+      && data.idOrdenServicio.toString().toLowerCase().indexOf(searchTerms.idOrdenServicio) !== -1
+      && data.idServicio.toLowerCase().indexOf(searchTerms.idServicio) !== -1
+      && data.nombreIdServicio.toLowerCase().indexOf(searchTerms.nombreIdServicio) !== -1);
+    
       return data.cliente.toLowerCase().indexOf(searchTerms.cliente) !== -1
         && data.idOrdenServicio.toString().toLowerCase().indexOf(searchTerms.idOrdenServicio) !== -1
         && data.idServicio.toLowerCase().indexOf(searchTerms.idServicio) !== -1
@@ -468,8 +476,18 @@ export class CrearSolicitudComponent implements OnInit {
 
   seleccionarTodosServicios($event) {
     $event.checked === true ? this.selectAllServicios = true : this.selectAllServicios = false;
-    if (this.selectAllServicios === true) {
+    let cliente = this.clientServicios.value;
+    let orden = this.ordenServServicios.value;
+    let idServicios = this.idServServicios.value;
+    let nombreServicios = this.nombreIdServServicios.value;
+    if (this.selectAllServicios === true && (cliente === '' && orden === '' && idServicios === '' && nombreServicios === '')) {
       this.dataSeleccionadosServicios = this.datosServicios.map(x => {
+        return x.idServicio
+      })
+    }
+    else if(this.selectAllServicios === true && (cliente !== '' || orden !== '' || idServicios !== '' || nombreServicios !== '')) {
+     this.datosFiltradosServicios = this.dataSourceDatosServicios
+      this.dataSeleccionadosServicios = this.datosFiltradosServicios.filteredData.map(x => {
         return x.idServicio
       })
     }
