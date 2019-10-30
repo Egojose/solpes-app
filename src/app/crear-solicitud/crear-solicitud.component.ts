@@ -3970,6 +3970,9 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     if(this.ctbFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
       this.mostrarFiltroBienes = true;
     }
+    else {
+      this.mostrarFiltroBienes = false;
+    }
     if (element.archivoAdjunto != null) {
       this.mostrarAdjuntoCTB = true;
       if(element.rutaAdjunto.toString() == "[object Object]")
@@ -4019,8 +4022,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   editarServicios(element, template: TemplateRef<any>) {
     this.indiceCTSActualizar = element.indice;
     this.idCondicionTSGuardada = element.id;
+    console.log(this.ctsFormulario.controls['cecoCTS'].value);
     if(this.ctsFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
       this.mostrarFiltroServicios = true;
+    }
+    else {
+      this.mostrarFiltroServicios = false;
     }
     if (element.archivoAdjunto != null) {
       this.mostrarAdjuntoCTS = true;
