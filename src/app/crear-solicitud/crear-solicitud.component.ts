@@ -147,7 +147,7 @@ export class CrearSolicitudComponent implements OnInit {
   disabledIdServicioServicios: boolean;
   mostrarTable: boolean;
   dataSource = new MatTableDataSource();
-  dataSelecionados = [];
+  dataSeleccionados = [];
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
 
@@ -382,13 +382,15 @@ export class CrearSolicitudComponent implements OnInit {
 
   seleccionarTodos($event) {
     $event.checked === true ? this.selectAll = true : this.selectAll = false;
-    this.dataSelecionados = this.datos.map(x => {
-      return x.idServicio
-    })
+    
     if(this.selectAll === true) {
-      this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSelecionados.toString());
+      this.dataSeleccionados = this.datos.map(x => {
+        return x.idServicio
+      })
+      this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
     }
     else {
+      this.dataSeleccionados = [];
       this.ctbFormulario.controls['numCicoCTB'].setValue('');
     }
   }
@@ -396,13 +398,13 @@ export class CrearSolicitudComponent implements OnInit {
   seleccionado($event) {
     let idServicioSeleccionado = $event.source.value
     if ($event.checked === true) {
-      this.dataSelecionados.push(idServicioSeleccionado);
+      this.dataSeleccionados.push(idServicioSeleccionado);
     }
     else {
-      let index = this.dataSelecionados.findIndex(x => x === idServicioSeleccionado);
-      this.dataSelecionados.splice(index, 1);
+      let index = this.dataSeleccionados.findIndex(x => x === idServicioSeleccionado);
+      this.dataSeleccionados.splice(index, 1);
     }
-    this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSelecionados.toString());
+    this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
   }
 
   terminarSeleccion() {
