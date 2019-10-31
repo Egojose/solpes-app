@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { CrmServicioService } from '../servicios/crm-servicio.service';
+import { tokenKey } from '@angular/core/src/view';
 
 
 @Component({
@@ -80,20 +81,26 @@ export class GestionErroresComponent implements OnInit {
   async CargarCrmSolicitudes(element): Promise<any>{
     let intentos = 0;
     let respuesta;
-    for (let index = 0; index < 3; index++) {
-      respuesta = false;
-      let obj = {
-        "id": "1",
-        "Nombre": "Norma",
-        "Email": "Norma@gmail.com",
-        "Telefono": "986"
-      }
-
-      respuesta = await this.enviarServicio(obj);
-      if (respuesta === true) {
-        break;
-      }
+    let access;
+    let obj = {        
+      "linksolp": "Este es el link de solp",        
+      "idservicios": ["665","656"]        
     }
+  
+    access = await this.ObtenerToken();
+    respuesta = await this.enviarServicio(obj, access);
+    // for (let index = 0; index < 3; index++) {
+    //   respuesta = false;
+    //   let obj = {        
+    //     "linksolp": "Este es el link de solp",        
+    //     "idservicios": ["665","656"]        
+    //   }
+
+    //   respuesta = await this.enviarServicio(obj);
+    //   if (respuesta === true) {
+    //     break;
+    //   }
+    // }
 
     console.log("Prueba");
   }
@@ -102,10 +109,25 @@ export class GestionErroresComponent implements OnInit {
     
   }
 
-  async enviarServicio(obj): Promise<any>{
+  async ObtenerToken(): Promise<any>{
+    let token;
+    await this.servicioCrm.obtenerToken().then(
+      (res)=>{
+        token = res["access_token"];
+      }
+    ).catch(
+      (error)=>{
+        token = "false";
+      }
+    )
+
+    return token;
+  }
+
+  async enviarServicio(obj, access): Promise<any>{
     let respuesta;
 
-    await this.servicioCrm.ActualizarEmpleado(obj).then(
+    await this.servicioCrm.ActualizarEmpleado(obj, access).then(
       (res)=>{
         respuesta = true;
       }
