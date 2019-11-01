@@ -5,7 +5,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { CrmServicioService } from '../servicios/crm-servicio.service';
-import { tokenKey } from '@angular/core/src/view';
 
 
 @Component({
@@ -30,7 +29,9 @@ export class GestionErroresComponent implements OnInit {
     private router: Router, 
     private spinner: NgxSpinnerService, 
     public toastr: ToastrManager,
-    public servicioCrm: CrmServicioService) { }
+    public servicioCrm: CrmServicioService) { 
+      this.ObtenerToken();
+    }
 
   displayedColumns: string[] = ['numerosolp', 'idservicios', 'NombreProceso', 'Acciones'];
   displayedColumnsContratos: string[] = ['numerosolp', 'numeroContrato', 'nombreProveedor', 'Acciones'];
@@ -78,50 +79,60 @@ export class GestionErroresComponent implements OnInit {
     )
   }
 
-  async CargarCrmSolicitudes(element): Promise<any>{
-    let intentos = 0;
-    let respuesta;
-    let access;
-    let obj = {        
-      "linksolp": "Este es el link de solp",        
-      "idservicios": ["665","656"]        
-    }
-  
-    access = await this.ObtenerToken();
-    respuesta = await this.enviarServicio(obj, access);
-    // for (let index = 0; index < 3; index++) {
-    //   respuesta = false;
-    //   let obj = {        
-    //     "linksolp": "Este es el link de solp",        
-    //     "idservicios": ["665","656"]        
-    //   }
+  pp(element){
 
-    //   respuesta = await this.enviarServicio(obj);
-    //   if (respuesta === true) {
-    //     break;
-    //   }
-    // }
-
-    console.log("Prueba");
   }
+
+  // async CargarCrmSolicitudes(element): Promise<any>{
+  //   let intentos = 0;
+  //   let respuesta;
+  //   let resCambioExitoso;
+  //   let access;
+  //   // let obj = {
+  //   //   "numerosolp": "1",
+  //   //   "linksolp": "Este es el link de solp",
+  //   //   "idservicios": ["665", "656"]      
+  //   // }
+  
+  //   // respuesta = await this.enviarServicio(obj, access);
+
+
+  //   // for (let index = 0; index < 3; index++) {      
+  //   //   let obj = {
+  //   //     "numerosolp": "3",
+  //   //     "linksolp": "Este es el link de solp",
+  //   //     "idservicios": ["665", "656"]      
+  //   //   }
+    
+  //   //   // respuesta = await this.enviarServicio(obj, access);
+  //   //   // if (respuesta.StatusCode === 200) {
+
+  //   //   //   this.MostrarExitoso(respuesta["MensajeExito"]);
+  //   //   //   break;
+  //   //   // }
+  //   // }
+  //   // if (respuesta["StatusCode"] === 400) {
+  //   //   this.mostrarError("Codigo error: "+respuesta["CodigoError"] + " - " + respuesta["MensajeError"])
+  //   // }    
+  //   console.log("Prueba");
+  // }
 
   CargarCrmContratos(element){
     
   }
 
-  async ObtenerToken(): Promise<any>{
+  ObtenerToken(){
     let token;
-    await this.servicioCrm.obtenerToken().then(
-      (res)=>{
+    this.servicioCrm.obtenerToken().then(
+      (res)=>{        
         token = res["access_token"];
+        localStorage.setItem("id_token",token)
       }
     ).catch(
       (error)=>{
-        token = "false";
+        localStorage.setItem("id_token","false")
       }
     )
-
-    return token;
   }
 
   async enviarServicio(obj, access): Promise<any>{
@@ -129,14 +140,13 @@ export class GestionErroresComponent implements OnInit {
 
     await this.servicioCrm.ActualizarEmpleado(obj, access).then(
       (res)=>{
-        respuesta = true;
+        respuesta = res;
       }
     ).catch(
       (error)=>{
-         respuesta = false;
+         respuesta = error.error;
       }
-    )
-        
+    )        
     return respuesta;
   }
 
