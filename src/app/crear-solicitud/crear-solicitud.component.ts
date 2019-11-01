@@ -294,13 +294,6 @@ export class CrearSolicitudComponent implements OnInit {
     this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
     this.obtenerQueryParams();
-    // this.clientBienes.valueChanges
-    // .subscribe(
-    //   (cliente) => {
-    //     this.filterValues.cliente = cliente;
-    //     this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
-    //   }
-    // )
   }
 
   obtenerQueryParams() {
@@ -559,7 +552,7 @@ export class CrearSolicitudComponent implements OnInit {
     if(this.cargaDesdeExcel) {
       this.reservarDatosContablesBienesExcel();
     }
-    else if(this.setDatosContablesBienes) {
+    else {
       this.reservarDatosContablesBienes();
     }
   }
@@ -569,7 +562,7 @@ export class CrearSolicitudComponent implements OnInit {
     if(this.cargaDesdeExcelServicios) {
       this.reservarDatosContablesServiciosExcel();
     }
-    else if(this.setDatosContablesServicios) {
+    else {
       this.reservarDatosContablesServicios();
     }
   }
@@ -3270,6 +3263,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   abrirModalCTB(template: TemplateRef<any>) {
+    this.setDatosContablesBienes = false;
     this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
@@ -3292,6 +3286,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   abrirModalCTS(template: TemplateRef<any>) {
+    this.setDatosContablesServicios = false;
     this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
@@ -3967,6 +3962,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   editarBienes(element, template: TemplateRef<any>) {
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
+    this.setDatosContablesBienes = false;
     if(this.ctbFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
       this.mostrarFiltroBienes = true;
     }
@@ -4020,6 +4016,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   editarServicios(element, template: TemplateRef<any>) {
+    this.setDatosContablesServicios = false;
     this.indiceCTSActualizar = element.indice;
     this.idCondicionTSGuardada = element.id;
     console.log(this.ctsFormulario.controls['cecoCTS'].value);
