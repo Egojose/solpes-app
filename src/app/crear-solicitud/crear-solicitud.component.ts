@@ -294,13 +294,6 @@ export class CrearSolicitudComponent implements OnInit {
     this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
     this.obtenerQueryParams();
-    // this.clientBienes.valueChanges
-    // .subscribe(
-    //   (cliente) => {
-    //     this.filterValues.cliente = cliente;
-    //     this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
-    //   }
-    // )
   }
 
   obtenerQueryParams() {
@@ -559,7 +552,7 @@ export class CrearSolicitudComponent implements OnInit {
     if(this.cargaDesdeExcel) {
       this.reservarDatosContablesBienesExcel();
     }
-    else if(this.setDatosContablesBienes) {
+    else {
       this.reservarDatosContablesBienes();
     }
   }
@@ -569,7 +562,7 @@ export class CrearSolicitudComponent implements OnInit {
     if(this.cargaDesdeExcelServicios) {
       this.reservarDatosContablesServiciosExcel();
     }
-    else if(this.setDatosContablesServicios) {
+    else {
       this.reservarDatosContablesServicios();
     }
   }
