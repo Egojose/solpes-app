@@ -24,23 +24,8 @@ export class CrmServicioService {
     return this.http.post(this.urlLogin, formData).toPromise();
   }
 
-  ActualizarEmpleado(ObjEmpleado, access){
-    // let headers: HttpHeaders = new HttpHeaders();
-    // headers.append('Authorization', 'Bearer ' + access);
-    // headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json; odata=verbose',
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + access
-      })
-    };
-    // let headers = {      
-    //   Authorization: 'Bearer ' + access
-    // }
-    // headers = headers.set('Authorization', 'Bearer ' + access);
-    
-    return this.http.put<any>(this.urlApi,ObjEmpleado, httpOptions).toPromise();
+  ActualizarEmpleado(ObjEmpleado, access){    
+    return this.http.put(this.urlApi,ObjEmpleado).toPromise();
   }
 
   consultarDatosBodega (): Observable<any> {
