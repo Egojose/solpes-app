@@ -42,4 +42,23 @@ export class CrmServicioService {
     
     return this.http.put<any>(this.urlApi,ObjEmpleado, httpOptions).toPromise();
   }
+
+  consultarDatosBodega (): Observable<any> {
+    let token = '03f4673dd6b04790be91da8e57fddb52'
+    let params = {
+      // Request parameters
+      "idservicio": "{string}",
+      "cliente": "{string}",
+      "nombreservicio": "{string}",
+      "os": "{string}",
+  };
+    // const header = {
+    //   headers: new HttpHeaders({
+    //     'Accept': 'application/json; odata=verbose',
+    //     'Content-Type':  'application/json',
+    //     'Authorization': 'Bearer ' + token
+    //   })
+    // }
+   return this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/Bodega?'+ params)
+  }
 }
