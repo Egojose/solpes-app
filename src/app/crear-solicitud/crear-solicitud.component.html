@@ -434,7 +434,7 @@
                                                 <input matInput [formControl]="clientBienes">
                                             </mat-form-field>
                                         </th>
-                                        <td mat-cell *matCellDef="let element">{{element.cliente}}</td>
+                                        <td mat-cell *matCellDef="let element">{{element.Cliente}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="OS">
                                         <th class="header" mat-header-cell *matHeaderCellDef>
@@ -444,7 +444,7 @@
                                                 <input matInput [formControl]="ordenServBienes">
                                             </mat-form-field>
                                         </th>
-                                        <td mat-cell *matCellDef="let element">{{element.idOrdenServicio}}</td>
+                                        <td mat-cell *matCellDef="let element">{{element.OS}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="idServicio">
                                         <th class="header" mat-header-cell *matHeaderCellDef>
@@ -454,7 +454,7 @@
                                                 <input matInput [formControl]="idServBienes">
                                             </mat-form-field>
                                         </th>
-                                        <td mat-cell *matCellDef="let element">{{element.idServicio}}</td>
+                                        <td mat-cell *matCellDef="let element">{{element.IdServicio}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="nombreIdServicio">
                                         <th class="header" mat-header-cell *matHeaderCellDef>
@@ -464,7 +464,7 @@
                                                 <input matInput [formControl]="nombreIdServBienes">
                                             </mat-form-field>
                                         </th>
-                                        <td mat-cell *matCellDef="let element">{{element.nombreIdServicio}}</td>
+                                        <td mat-cell *matCellDef="let element">{{element.Nombre_Servicio}}</td>
                                     </ng-container>
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -33,6 +33,7 @@ import { CondicionesTecnicasBienes } from '../entrega-bienes/condicionTecnicaBie
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 import { CondicionesTecnicasServicios } from '../entrega-servicios/condicionTecnicaServicio';
 import { forEach } from '@angular/router/src/utils/collection';
+import { CrmServicioService } from '../servicios/crm-servicio.service';
 
 
 @Component({
@@ -153,52 +154,53 @@ export class CrearSolicitudComponent implements OnInit {
   dataSourceDatosServicios = new MatTableDataSource();
   dataSeleccionados = [];
   dataSeleccionadosServicios = [];
+  arrayPrueba: any = [];
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
 
-  arrayPrueba = [{
-    cliente: 'cliente1',
-    idOrdenServicio: 'OS-1234',
-    idServicio: '001234',
-    nombreIdServicio: 'cliente1-0234'
-  },
-  {
-    cliente: 'cliente1',
-    idOrdenServicio: 'OS-1235',
-    idServicio: '001235',
-    nombreIdServicio: 'cliente1-0235'
-  },
-  {
-    cliente: 'cliente1',
-    idOrdenServicio: 'OS-1236',
-    idServicio: '001236',
-    nombreIdServicio: 'cliente1-0236'
-  },
-  {
-    cliente: 'cliente1',
-    idOrdenServicio: 'OS-1237',
-    idServicio: '001237',
-    nombreIdServicio: 'cliente1-0237'
-  },
-  {
-    cliente: 'empresa1',
-    idOrdenServicio: 'OS-5678',
-    idServicio: '001237',
-    nombreIdServicio: 'empresa1-0234'
-  },
-  {
-    cliente: 'Compañia1',
-    idOrdenServicio: 'OS-9870',
-    idServicio: '987',
-    nombreIdServicio: 'compañia1-9870'
-  },
-  {
-    cliente: 'Compañia1',
-    idOrdenServicio: 'OS-9871',
-    idServicio: '988',
-    nombreIdServicio: 'compañia1-9871'
-  }]
+  // arrayPrueba = [{
+  //   cliente: 'cliente1',
+  //   idOrdenServicio: 'OS-1234',
+  //   idServicio: '001234',
+  //   nombreIdServicio: 'cliente1-0234'
+  // },
+  // {
+  //   cliente: 'cliente1',
+  //   idOrdenServicio: 'OS-1235',
+  //   idServicio: '001235',
+  //   nombreIdServicio: 'cliente1-0235'
+  // },
+  // {
+  //   cliente: 'cliente1',
+  //   idOrdenServicio: 'OS-1236',
+  //   idServicio: '001236',
+  //   nombreIdServicio: 'cliente1-0236'
+  // },
+  // {
+  //   cliente: 'cliente1',
+  //   idOrdenServicio: 'OS-1237',
+  //   idServicio: '001237',
+  //   nombreIdServicio: 'cliente1-0237'
+  // },
+  // {
+  //   cliente: 'empresa1',
+  //   idOrdenServicio: 'OS-5678',
+  //   idServicio: '001237',
+  //   nombreIdServicio: 'empresa1-0234'
+  // },
+  // {
+  //   cliente: 'Compañia1',
+  //   idOrdenServicio: 'OS-9870',
+  //   idServicio: '987',
+  //   nombreIdServicio: 'compañia1-9870'
+  // },
+  // {
+  //   cliente: 'Compañia1',
+  //   idOrdenServicio: 'OS-9871',
+  //   idServicio: '988',
+  //   nombreIdServicio: 'compañia1-9871'
+  // }]
   
   clientBienes = new FormControl('');
   ordenServBienes = new FormControl('');
@@ -237,8 +239,9 @@ export class CrearSolicitudComponent implements OnInit {
   
   
   
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
     setTheme('bs4');
+    localStorage.setItem('id_token', '03f4673dd6b04790be91da8e57fddb52')
     this.PermisosCreacion = false;
     this.mostrarContratoMarco = false;
     this.spinner.hide();
@@ -294,6 +297,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
     this.obtenerQueryParams();
+    this.consultaDatos();
   }
 
   obtenerQueryParams() {
@@ -356,6 +360,32 @@ export class CrearSolicitudComponent implements OnInit {
       this.ctbFormulario.controls['numCicoCTS'].setValue('');
     }
   }
+
+  consultaDatos() {
+    let parametros = {
+      "idservicio": this.ctbFormulario.get('IdServicioBienes').value,
+      "cliente": this.ctbFormulario.get('clienteBienes').value,
+      "nombreservicio": this.ctbFormulario.get('nombreIdServicioBienes').value,
+      "os": this.ctbFormulario.get('ordenBienes').value,
+    }
+    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+      (respuesta) => {
+        this.arrayPrueba = respuesta;
+        this.mostrarTable = true;
+        this.datos = this.arrayPrueba;
+        if (this.datos.length === 0) {
+          this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          return false;
+        }
+        this.dataSourceDatos.data = this.datos;
+        this.dataSourceDatos.filterPredicate = this.createFilter();
+        this.leerFiltros();
+        console.log(respuesta);
+      }, err => {
+        console.log(err);
+      }
+    )
+  }
   
   filtrarArrayPrueba() {
     let cliente = this.ctbFormulario.get('clienteBienes').value;
@@ -363,9 +393,10 @@ export class CrearSolicitudComponent implements OnInit {
     let nombreServ = this.ctbFormulario.get('nombreIdServicioBienes').value;
     let os = this.ctbFormulario.get('ordenBienes').value;
     this.mostrarTable = true;
-    this.datos = this.arrayPrueba.filter(x=> {
-      return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
-    })
+    this.datos = this.arrayPrueba;
+    // this.datos = this.arrayPrueba.filter(x=> {
+    //   return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
+    // })
     if(this.datos.length === 0) {
       this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
       return false;
@@ -716,7 +747,8 @@ export class CrearSolicitudComponent implements OnInit {
       this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
       return false;
     }
-    this.filtrarArrayPrueba();
+    this.consultaDatos();
+    // this.filtrarArrayPrueba();
   }
 
   leerArchivo(inputValue: any): void {
