@@ -541,6 +541,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
   }
+  
 
   seleccionadoServicios($event) {
     let idServicioSeleccionado = $event.source.value
