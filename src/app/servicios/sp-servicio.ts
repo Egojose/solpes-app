@@ -7,11 +7,12 @@ import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
 import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 import { RecepcionBienes } from "../entrega-bienes/recepcionBienes";
 import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
+import { HttpClient } from "@angular/common/http";
 import { promised } from "q";
 
 @Injectable()
 export class SPServicio {
-    constructor() { }
+    constructor(private httpClient: HttpClient) { }
 
     public ObtenerConfiguracion() {
         const configuracionSharepoint = pnp.sp.configure({
@@ -28,13 +29,13 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyIsImtpZCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTcxMTUwMjQ0LCJuYmYiOjE1NzExNTAyNDQsImV4cCI6MTU3MTE3OTM0NCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.QINMOwHKgINllrIsUp-8NZX_7sQDfGUCAfbullkZG1tLjXRTcBbhcDiIOdobjZdeJIOgtXPgwZ3vU3FRHiy325KpiJ6RuABDHhI2w3iaABpIu6zVsv-x3NyML22Hm61M4tmQZR68PE-Vjw_haXaE19h564EWjcE5Mc9KPFWSxBqV2K_GCLxM_zApXJQCygBGKdmMjHuQswN08Kodmlh072EwXWxpB5IBIzHT-nHu6hKrwoVKnKDppC8nnAGR56um6izCLkxUqUb5hmr7If2r7lZpC8jWCLcKjnSeihmSi-3AVtScXuN4gZGls3HiqRbTMgNnYjJ_wiboE_5rWEeCwQ'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTczMDQ2NzAzLCJuYmYiOjE1NzMwNDY3MDMsImV4cCI6MTU3MzA3NTgwMywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.i0q4shcl6CRr_CUflxYVbcha63O30aF_4DORww6HRUpMih6V0g_bEWR20WI2BpTd8RuXCyxF_LI8RT6MNyJ9sSK4Ma59O_6Qw7JHnyfj8V9knnlqo8OPU-w7UsE9Jwq0NeGa3UmuqNMkqweLxvHMVU1JwjyMC8AUDsHqjd1JRlqfSvpreQHs5KFoIDkulUHqMRd4IzWeKGobEkt08C7DhlT3WaVwshKKPkBi34eZvhyqyvrXvm3xzG0xxthjciY7j-klWj8HYYSFQYn0b-UrBiLCpwzo3fs-yLL78R-qSlkOrfNOSUZbTvnJydALBkaXCtHQqg1QZsEzhjxKYscefg'
             }
         }, environment.urlWeb);
 
         return configuracionSharepoint;
     }
-
+    
     ObtenerUsuarioActual() {
         let respuesta = from(this.ObtenerConfiguracion().web.currentUser.get());
         return respuesta;
@@ -185,7 +186,8 @@ export class SPServicio {
             MonedaSondeo: condicionTecnicaBienes.tipoMoneda,
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaBienes.numeroCuenta
+            numeroCuenta: condicionTecnicaBienes.numeroCuenta,
+            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio
         });
     }
     
@@ -207,7 +209,8 @@ export class SPServicio {
             MonedaSondeo: condicionTecnicaBienes.tipoMoneda,
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaBienes.numeroCuenta
+            numeroCuenta: condicionTecnicaBienes.numeroCuenta,
+            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio
         });
     }
 
@@ -272,7 +275,8 @@ export class SPServicio {
             Comentario: condicionTecnicaServicios.comentarios,
             costoInversion: condicionTecnicaServicios.costoInversion,
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaServicios.numeroCuenta
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta,
+            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio
         });
     }
 
@@ -296,7 +300,8 @@ export class SPServicio {
             Comentario: condicionTecnicaServicios.comentarios,
             costoInversion: condicionTecnicaServicios.costoInversion,
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaServicios.numeroCuenta
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta,
+            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio
         });
     }
 
@@ -645,6 +650,11 @@ export class SPServicio {
 
     ObtenerCondicionesTecnicasServiciosxContrato(IdContrato){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("IdContrato eq " + IdContrato).select("*","AttachmentFiles").expand("AttachmentFiles").get());
+        return respuesta;
+    }
+
+    ObtenerSolicitudesCrm(){
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudesCrm).items.filter("Exitoso eq '0'").get();
         return respuesta;
     }
 

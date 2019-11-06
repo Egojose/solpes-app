@@ -17,7 +17,8 @@ export class CondicionTecnicaBienes {
         public costoInversion?: string,
         public numeroCostoInversion?: string,
         public numeroCuenta?: string,
-        public orden?: number) { }
+        public orden?: number,
+        public tieneIdServicio?: boolean) { }
 
     public static fromJson(element: any) {
         return new CondicionTecnicaBienes(
@@ -38,7 +39,8 @@ export class CondicionTecnicaBienes {
             element.costoInversion,
             element.numeroCostoInversion,
             element.numeroCuenta,
-            element.Orden);
+            element.Orden,
+            element.tieneIdServicio);
     }
 
     public static fromJsonList(elements: any) {

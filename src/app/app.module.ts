@@ -37,6 +37,8 @@ import { ConsultaGeneralComponent } from './consulta-general/consulta-general.co
 import { ReportarContratosComponent } from './reportar-contratos/reportar-contratos.component';
 import { ReportarSolicitudComponent } from './reportar-solicitud/reportar-solicitud.component';
 import { ExcelService } from './servicios/excel.service';
+import { GestionErroresComponent } from './gestion-errores/gestion-errores.component';
+import { CrmServicioService } from './servicios/crm-servicio.service';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,8 @@ import { ExcelService } from './servicios/excel.service';
     VistaContratosComponent,
     ConsultaGeneralComponent,
     ReportarContratosComponent,
-    ReportarSolicitudComponent
+    ReportarSolicitudComponent,
+    GestionErroresComponent
   ],
   entryComponents: [ReasignarComponent],
   imports: [
@@ -95,6 +98,7 @@ import { ExcelService } from './servicios/excel.service';
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
     NgxSpinnerModule,
+    HttpClientModule,
     RouterModule.forRoot([
       {path:'',redirectTo:'/mis-solicitudes',pathMatch:'full'},
       {path:'aprobar-sondeo', component:AprobarSondeoComponent},
@@ -116,10 +120,11 @@ import { ExcelService } from './servicios/excel.service';
       {path:'vista-contratos', component:VistaContratosComponent},
       {path:'consulta-general', component:ConsultaGeneralComponent},
       {path:'reportar-contratos', component:ReportarContratosComponent},
-      {path:'reportar-solicitud', component:ReportarSolicitudComponent}
+      {path:'reportar-solicitud', component:ReportarSolicitudComponent},
+      {path:'gestion-errores', component:GestionErroresComponent}
     ])
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent, ExcelService],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent, ExcelService, CrmServicioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

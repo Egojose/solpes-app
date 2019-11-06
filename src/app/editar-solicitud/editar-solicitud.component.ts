@@ -23,7 +23,8 @@ import { responsableProceso } from '../dominio/responsableProceso';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as $ from 'jquery';
 import readXlsxFile from 'read-excel-file';
-
+import { ActivatedRoute } from "@angular/router";
+import { CrmServicioService } from '../servicios/crm-servicio.service';
 @Component({
   selector: 'app-editar-solicitud',
   templateUrl: './editar-solicitud.component.html',
@@ -125,9 +126,65 @@ export class EditarSolicitudComponent implements OnInit {
   ArrayErrorFileCTS: any=[];
   ObjCTS = [];
   idSolicitudGuardada: number;
+  mostrarFiltro: boolean;
+  mostrarFiltroBienes: boolean;
+  mostrarFiltroServicios: boolean;
+  ordenBienes: string;
+  IdServicioBienes: string;
+  nombreIdServicioBienes: string;
+  datos: any=[];
+  datosServicios: any =[];
+  datosFiltradosBienes: any = [];
+  datosFiltradosServicios: any = [];
+  selectAll: boolean;
+  disableIdServicio: boolean;
+  disabledIdServicioServicios: boolean;
+  mostrarTable: boolean;
+  dataSourceDatos = new MatTableDataSource();
+  dataSourceDatosServicios = new MatTableDataSource();
+  dataSeleccionados = [];
+  dataSeleccionadosServicios = [];
+  arrayPrueba: any = [];
+  displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
+  displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  Habilitar cuando datos contables no obligatorios
 
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
+  clientBienes = new FormControl('');
+  ordenServBienes = new FormControl('');
+  idServBienes = new FormControl('');
+  nombreIdServBienes = new FormControl('');
+  filterValues = {
+    Cliente: '',
+    OS: '',
+    IdServicio: '',
+    Nombre_Servicio: ''
+  };
+
+  clientServicios = new FormControl('');
+  ordenServServicios = new FormControl('');
+  idServServicios = new FormControl('');
+  nombreIdServServicios = new FormControl('');
+  filterValuesServicios = {
+    Cliente: '',
+    OS: '',
+    IdServicio: '',
+    Nombre_Servicio: ''
+  };  
+
+  idClient: any;
+  idServiceOrder: any;
+  idService: any;
+  tieneParams: boolean;
+  enableCheckDatosContablesBienes: boolean;
+  enableCheckDatosContablesServicios: boolean;
+  setDatosContablesBienes: boolean;
+  setDatosContablesServicios: boolean;
+  cargaDesdeExcel: boolean;
+  cargaDesdeExcelServicios: any;
+  mostrarTableServicios: boolean;
+  selectAllServicios: boolean;
+
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.IdSolicitud = this.solicitudRecuperada.id;
@@ -159,8 +216,398 @@ export class EditarSolicitudComponent implements OnInit {
     this.emptyNumeroOrdenEstadistica = false;
     this.fueSondeo = false;
     this.mostrarDatosContables = false;
+    this.mostrarFiltroBienes = false;
+    this.mostrarFiltroServicios = false;
+    this.selectAll = false;
+    this.disableIdServicio = false;
+    this.disabledIdServicioServicios = false;
+    this.enableCheckDatosContablesBienes = false;
+    this.enableCheckDatosContablesServicios = false
+    this.setDatosContablesBienes = false;
+    this.setDatosContablesServicios = false;
+    this.cargaDesdeExcel = false; 
     // this.cargaExcel = false;  Habilitar cuando datos contables no obligatorios
   }
+
+  ngOnInit() {
+    this.spinner.show();
+    this.aplicarTemaCalendario();
+    this.RegistrarFormularioSolp();
+    this.RegistrarFormularioCTB();
+    this.RegistrarFormularioCTS();
+    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
+    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
+    // this.ValidarOnInitTipoSolicitud(); //----------Habilitar ValidarOnInitTipoSolicitud cuando datos contables no obligatorios----------------
+    this.AsignarRequeridosDatosContables();  //---------Deshabilitar cuando datos contables no obligatorios--------------
+    this.obtenerTiposSolicitud();
+    // this.showFilterAlCargar();
+  }
+
+  obtenerQueryParams() {
+    // this.tieneParams = (this.route.snapshot.queryParamMap.has('idCliente') || this.route.snapshot.queryParamMap.has('idOrdenServicio') || this.route.snapshot.queryParamMap.has('idServicio'));
+    this.idClient = this.route.snapshot.queryParamMap.get('idCliente');
+    this.idServiceOrder = this.route.snapshot.queryParamMap.get('idOrdenServicio');
+    this.idService = this.route.snapshot.queryParamMap.get('idServicio');
+    this.verificarQueryParams();
+  }
+
+  verificarQueryParams() {
+    // this.mostrarInformacion('Usted seleccionó el id de cliente: '+ this.idClient + ', el id de orden de servicio: '+ this.idServiceOrder+ ' , y el id de servicio: ' + this.idService);
+    // alert('Usted seleccionó el id de cliente: '+ this.idClient + ', el id de orden de servicio: '+ this.idServiceOrder+ ' , y id de servicio: ' + this.idService)
+    if(this.route.snapshot.queryParamMap.has('idCliente') || this.route.snapshot.queryParamMap.has('idOrdenServicio') || this.route.snapshot.queryParamMap.has('idServicio')) {
+      this.tieneParams = true
+    }
+    else {
+      this.tieneParams = false;
+    }
+  }
+
+  consultaDatos() {
+    let parametros = {
+      "idservicio": this.ctbFormulario.get('IdServicioBienes').value,
+      "cliente": this.ctbFormulario.get('clienteBienes').value,
+      "nombreservicio": this.ctbFormulario.get('nombreIdServicioBienes').value,
+      "os": this.ctbFormulario.get('ordenBienes').value,
+    }
+    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+      (respuesta) => {
+        console.log(respuesta);
+        this.mostrarTable = true;
+        this.datos = respuesta;
+        if (this.datos.length === 0) {
+          this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          return false;
+        }
+        this.dataSourceDatos.data = this.datos;
+        this.dataSourceDatos.filterPredicate = this.createFilter();
+        this.leerFiltros();
+      }, err => {
+        console.log(err);
+      }
+    )
+  }
+
+  consultarDatosServicios() {
+    let parametros = {
+      "idservicio": this.ctsFormulario.get('idServicio').value,
+      "cliente": this.ctsFormulario.get('clienteServicios').value,
+      "nombreservicio": this.ctsFormulario.get('nombreIdServicio').value,
+      "os": this.ctsFormulario.get('ordenServicios').value,
+    }
+    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+      (respuesta) => {
+        this.mostrarTableServicios = true;
+        this.datosServicios = respuesta;
+        if (this.datosServicios.length === 0) {
+          this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          return false;
+        }
+        this.dataSourceDatosServicios.data = this.datosServicios;
+        this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
+        this.leerFiltrosServicios();
+      }
+    )
+  }
+
+  leerFiltros() {
+    this.clientBienes.valueChanges
+      .subscribe(
+        (cliente) => {
+          this.filterValues.Cliente = cliente;
+          this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
+        }
+      )
+
+    this.ordenServBienes.valueChanges
+      .subscribe(
+        (ordenServicio) => {
+          this.filterValues.OS = ordenServicio;
+          this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
+        }
+      )
+
+    this.idServBienes.valueChanges
+      .subscribe(
+        id => {
+          this.filterValues.IdServicio = id;
+          this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
+        }
+      )
+
+    this.nombreIdServBienes.valueChanges
+      .subscribe(
+        nombre => {
+          this.filterValues.Nombre_Servicio = nombre;
+          this.dataSourceDatos.filter = JSON.stringify(this.filterValues);
+        }
+      )
+  }
+
+  leerFiltrosServicios() {
+    this.clientServicios.valueChanges
+      .subscribe(
+        (cliente) => {
+          this.filterValues.Cliente = cliente;
+          this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
+        }
+      )
+    this.ordenServServicios.valueChanges
+      .subscribe(
+        (orden) => {
+          this.filterValues.OS = orden;
+          this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
+        }
+      )
+    this.idServServicios.valueChanges
+      .subscribe(
+        (id) => {
+          this.filterValues.IdServicio = id;
+          this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
+        }
+      )
+    this.nombreIdServServicios.valueChanges
+      .subscribe(
+        (nombre) => {
+          this.filterValues.Nombre_Servicio = nombre;
+          this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
+        }
+      )
+  }
+
+  createFilter(): (data: any, filter: string) => boolean {
+    let filterFunction = function (data, filter): boolean {
+      let searchTerms = JSON.parse(filter);
+      console.log(data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1);
+    
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+    }
+    return filterFunction;
+  }
+
+  createFilterServicios(): (data: any, filter: string) => boolean {
+    let filterFunction = function (data, filter): boolean {
+      let searchTerms = JSON.parse(filter);
+      console.log(data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1);
+    
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+    }
+    return filterFunction;
+  }
+
+  seleccionarTodos($event) {
+    $event.checked === true ? this.selectAll = true : this.selectAll = false;
+    let cliente = this.clientBienes.value
+    let idServ = this.idServBienes.value;
+    let nombreServ = this.nombreIdServBienes.value;
+    let os = this.ordenServBienes .value;
+    if(this.selectAll === true && (cliente === '' && idServ === '' && nombreServ === '' && os === '' )) {
+      this.dataSeleccionados = this.datos.map(x => {
+        return x.IdServicio
+      })
+    }
+    else if (this.selectAll === true && (cliente !== '' || idServ !== '' || nombreServ !== '' || os !== '')) {
+      this.datosFiltradosBienes = this.dataSourceDatos;
+      this.dataSeleccionados = this.datosFiltradosBienes.filteredData.map(x => {
+       return x.IdServicio
+      })
+    }
+    else {
+      this.dataSeleccionados = [];
+    }
+    this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
+  }
+
+  seleccionado($event) {
+    let idServicioSeleccionado = $event.source.value
+    console.log($event);
+    if ($event.checked === true) {
+      this.dataSeleccionados.push(idServicioSeleccionado);
+    }
+    else {
+      let index = this.dataSeleccionados.findIndex(x => x === idServicioSeleccionado);
+      this.dataSeleccionados.splice(index, 1);
+      if(index === -1 ) {
+        this.selectAll = false;
+      }
+    }
+    this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
+  }
+
+  terminarSeleccion() {
+    this.mostrarTable = false;
+  }
+
+  seleccionarTodosServicios($event) {
+    $event.checked === true ? this.selectAllServicios = true : this.selectAllServicios = false;
+    let cliente = this.clientServicios.value;
+    let orden = this.ordenServServicios.value;
+    let idServicios = this.idServServicios.value;
+    let nombreServicios = this.nombreIdServServicios.value;
+    if (this.selectAllServicios === true && (cliente === '' && orden === '' && idServicios === '' && nombreServicios === '')) {
+      this.dataSeleccionadosServicios = this.datosServicios.map(x => {
+        return x.IdServicio
+      })
+    }
+    else if(this.selectAllServicios === true && (cliente !== '' || orden !== '' || idServicios !== '' || nombreServicios !== '')) {
+     this.datosFiltradosServicios = this.dataSourceDatosServicios
+      this.dataSeleccionadosServicios = this.datosFiltradosServicios.filteredData.map(x => {
+        return x.IdServicio
+      })
+    }
+    else {
+      this.dataSeleccionadosServicios = [];
+    }
+    this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
+  }
+
+  seleccionadoServicios($event) {
+    let idServicioSeleccionado = $event.source.value
+    if ($event.checked === true) {
+      this.dataSeleccionadosServicios.push(idServicioSeleccionado);
+    }
+    else {
+      let index = this.dataSeleccionadosServicios.findIndex(x => x === idServicioSeleccionado);
+      this.dataSeleccionadosServicios.splice(index, 1);
+    }
+    this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
+  }
+
+  terminarSeleccionServicios() {
+    this.mostrarTableServicios = false;
+  }
+
+  reservarDatosContablesBienes() {
+    this.cargaDesdeExcel = false;
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        if(respuesta.length > 0) {
+          this.enableCheckDatosContablesBienes = true;
+        }
+        if(this.setDatosContablesBienes) {
+          this.ctbFormulario.controls['cecoCTB'].setValue(respuesta[respuesta.length -1].costoInversion);
+          this.ctbFormulario.controls['numCicoCTB'].setValue(respuesta[respuesta.length -1].numeroCostoInversion);
+          this.ctbFormulario.controls['numCuentaCTB'].setValue(respuesta[respuesta.length -1].numeroCuenta);
+        }
+        else {
+          this.ctbFormulario.controls['cecoCTB'].setValue('');
+          this.ctbFormulario.controls['numCicoCTB'].setValue('');
+          this.ctbFormulario.controls['numCuentaCTB'].setValue('');
+        }
+      }
+    )
+  }
+
+  reservarDatosContablesServicios() {
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        if(respuesta.length > 0) {
+          this.enableCheckDatosContablesServicios = true;
+        }
+        if(this.setDatosContablesServicios) {
+          this.ctsFormulario.controls['cecoCTS'].setValue(respuesta[respuesta.length -1].costoInversion);
+          this.ctsFormulario.controls['numCicoCTS'].setValue(respuesta[respuesta.length -1].numeroCostoInversion);
+          this.ctsFormulario.controls['numCuentaCTS'].setValue(respuesta[respuesta.length -1].numeroCuenta);
+        }
+        else {
+          this.ctsFormulario.controls['cecoCTS'].setValue('');
+          this.ctsFormulario.controls['numCicoCTS'].setValue('');
+          this.ctsFormulario.controls['numCuentaCTS'].setValue('');
+        }
+      }
+    )
+  }
+
+  usarDatosContablesBienes($event) {
+    $event.checked ? this.setDatosContablesBienes = true : this.setDatosContablesBienes = false;
+    if(this.cargaDesdeExcel) {
+      this.reservarDatosContablesBienesExcel();
+    }
+    else {
+      this.reservarDatosContablesBienes();
+    }
+  }
+
+  usarDatosContablesServicios($event) {
+    $event.checked ? this.setDatosContablesServicios = true : this.setDatosContablesServicios = false;
+    if(this.cargaDesdeExcelServicios) {
+      this.reservarDatosContablesServiciosExcel();
+    }
+    else {
+      this.reservarDatosContablesServicios();
+    }
+  }
+
+  reservarDatosContablesBienesExcel() {
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        let id: any = this.idCondicionTBGuardada;
+        let indexId: any = (parseInt(id) - 1);
+        let indexArray;
+
+        if(respuesta.length > 0 ) {
+          let mapArray = respuesta.map(x => {
+            return x.Id
+          })
+          indexArray = mapArray.findIndex(x => x === indexId)
+          indexArray === -1 ? this.enableCheckDatosContablesBienes = false : this.enableCheckDatosContablesBienes = true;
+        }
+  
+        if(this.setDatosContablesBienes && indexArray !== -1) {
+          this.ctbFormulario.controls['cecoCTB'].setValue(respuesta[indexArray].costoInversion);
+          this.ctbFormulario.controls['numCicoCTB'].setValue(respuesta[indexArray].numeroCostoInversion);
+          this.ctbFormulario.controls['numCuentaCTB'].setValue(respuesta[indexArray].numeroCuenta);
+        }
+        else {
+          this.ctbFormulario.controls['cecoCTB'].setValue(respuesta[indexArray + 1].costoInversion);
+          this.ctbFormulario.controls['numCicoCTB'].setValue(respuesta[indexArray + 1].numeroCostoInversion);
+          this.ctbFormulario.controls['numCuentaCTB'].setValue(respuesta[indexArray + 1].numeroCuenta);
+        }
+      }
+    )
+  }
+
+  reservarDatosContablesServiciosExcel() {
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        let id: any = this.idCondicionTSGuardada;
+        let indexId: any = (parseInt(id) - 1);
+        let indexArray;
+
+        if(respuesta.length > 0) {
+          let mapArray = respuesta.map(x => {
+            return x.Id
+          })
+          indexArray = mapArray.findIndex(x => x === indexId);
+          indexArray !== -1 ? this.enableCheckDatosContablesServicios = true : this.enableCheckDatosContablesServicios = false;
+        }
+
+        if(this.setDatosContablesServicios && indexArray !== -1) {
+          this.ctsFormulario.controls['cecoCTS'].setValue(respuesta[indexArray].costoInversion);
+          this.ctsFormulario.controls['numCicoCTS'].setValue(respuesta[indexArray].numeroCostoInversion);
+          this.ctsFormulario.controls['numCuentaCTS'].setValue(respuesta[indexArray].numeroCuenta);
+        }
+        else {
+          this.ctsFormulario.controls['cecoCTS'].setValue(respuesta[indexArray + 1].costoInversion);
+          this.ctsFormulario.controls['numCicoCTS'].setValue(respuesta[indexArray + 1].numeroCostoInversion);
+          this.ctsFormulario.controls['numCuentaCTS'].setValue(respuesta[indexArray + 1].numeroCuenta);
+        }
+      }
+    )
+  }
+
+  
 
   private perfilacionEstado() {
     console.log(this.solicitudRecuperada);
@@ -223,18 +670,6 @@ export class EditarSolicitudComponent implements OnInit {
     this.toastr.customToastr(mensaje, null, { enableHTML: true });
   }
 
-  ngOnInit() {
-    this.spinner.show();
-    this.aplicarTemaCalendario();
-    this.RegistrarFormularioSolp();
-    this.RegistrarFormularioCTB();
-    this.RegistrarFormularioCTS();
-    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTB();
-    this.ValidarTipoMonedaObligatoriaSiHayValorEstimadoCTS();
-    // this.ValidarOnInitTipoSolicitud(); //----------Habilitar ValidarOnInitTipoSolicitud cuando datos contables no obligatorios----------------
-    this.AsignarRequeridosDatosContables();  //---------Deshabilitar cuando datos contables no obligatorios--------------
-    this.obtenerTiposSolicitud();
-  }
 
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
@@ -242,6 +677,55 @@ export class EditarSolicitudComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  validarLengthBusqueda() {
+    let cliente = this.ctbFormulario.get('clienteBienes').value;
+    let ordenBienes = this.ctbFormulario.get('ordenBienes').value;
+    let IdServicioBienes = this.ctbFormulario.get('IdServicioBienes').value;
+    let nombreIdServicioBienes = this.ctbFormulario.get('nombreIdServicioBienes').value;
+   
+    if(cliente === '' && ordenBienes === '' && IdServicioBienes === '' && nombreIdServicioBienes === '') {
+      this.mostrarAdvertencia('Los campos están vacíos. No hay nada que consultar');
+      return false;
+    }
+    if(cliente !== '' && cliente.length < 4) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Cliente"');
+      return false;
+    }
+    if(IdServicioBienes !== '' && IdServicioBienes.length < 3) {
+      this.mostrarAdvertencia('Se requieren al menos 3 caracteres si va a utilizar el campo "Id de servicios"')
+      return false;
+    }
+    if(nombreIdServicioBienes !== '' && nombreIdServicioBienes.length < 4) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
+      return false;
+    }
+    this.consultaDatos();
+  }
+
+  validarLengthBusquedaServicios() {
+    let clienteServicios = this.ctsFormulario.get('clienteServicios').value;
+    let ordenServicios = this.ctsFormulario.get('ordenServicios').value;
+    let idServicio = this.ctsFormulario.get('idServicio').value;
+    let nombreIdServicio = this.ctsFormulario.get('nombreIdServicio').value;
+    if(clienteServicios === '' && ordenServicios === '' && idServicio === '' && nombreIdServicio === '') {
+      this.mostrarAdvertencia('Los campos están vacíos. No hay nada que consultar');
+      return false;
+    }
+    if(clienteServicios !== '' && clienteServicios.length < 4) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Cliente"');
+      return false;
+    }
+    if(idServicio !== '' && idServicio.length < 3) {
+      this.mostrarAdvertencia('Se requieren al menos 3 caracteres si va a utilizar el campo "Id de servicios"')
+      return false;
+    }
+    if(nombreIdServicio !== '' && nombreIdServicio.length < 4) {
+      this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
+      return false;
+    }
+    this.consultarDatosServicios()
   }
 
   AsignarRequeridosDatosContables(): any {
@@ -291,6 +775,44 @@ export class EditarSolicitudComponent implements OnInit {
     this.leerArchivo($event.target);
   }
 
+  showFilterAlCargar() {
+    if(this.solpFormulario.get('cecoCTB').value === "ID de Servicios") {
+      this.mostrarFiltroBienes = true;
+    }
+    if(this.solpFormulario.get('cecoCTS').value === 'ID de Servicios') {
+      this.mostrarFiltroServicios = true;
+    }
+  }
+
+  showFilterBienes ($event) {
+    if ($event.target.value === "ID de Servicios") {
+      this.mostrarFiltroBienes = true;
+      this.idClient !== null ? this.ctbFormulario.controls['clienteBienes'].setValue(this.idClient) : this.ctbFormulario.controls['clienteBienes'].setValue('');
+      this.idServiceOrder !== null ? this.ctbFormulario.controls['ordenBienes'].setValue(this.idServiceOrder) : this.ctbFormulario.controls['ordenBienes'].setValue('');
+      this.idService !== null ? this.ctbFormulario.controls['IdServicioBienes'].setValue(this.idService) : this.ctbFormulario.controls['IdServicioBienes'].setValue('');
+      this.idService !== null ? this.disableIdServicio = true : this.disableIdServicio = false
+    }
+    else {
+      this.mostrarFiltroBienes = false;
+      this.ctbFormulario.controls['numCicoCTB'].setValue('');
+    }
+  }
+
+  showFilterServicios ($event) {
+    if ($event.target.value === "ID de Servicios") {
+      this.mostrarFiltroServicios = true;
+      this.idClient !== null ? this.ctsFormulario.controls['clienteServicios'].setValue(this.idClient) : this.ctsFormulario.controls['clienteServicios'].setValue('');
+      this.idServiceOrder !== null ? this.ctsFormulario.controls['ordenServicios'].setValue(this.idServiceOrder) : this.ctsFormulario.controls['ordenServicios'].setValue('');
+      this.idService !== null ? this.ctsFormulario.controls['idServicio'].setValue(this.idService) : this.ctsFormulario.controls['idServicio'].setValue('');
+      this.idService !== null ? this.disabledIdServicioServicios = false : this.disabledIdServicioServicios = true;
+
+    }
+    else {
+      this.mostrarFiltroServicios = false;
+      this.ctbFormulario.controls['numCicoCTS'].setValue('');
+    }
+  }
+
   leerArchivo(inputValue: any): void {
     this.spinner.show();
     let file: File = inputValue.files[0];
@@ -330,6 +852,7 @@ export class EditarSolicitudComponent implements OnInit {
             }
           }
           if (this.cantidadErrorFile === 0) {
+            this.cargaDesdeExcel = true;
             let contador = 0;
             this.ObjCTB.forEach(element => {
               this.servicio.agregarCondicionesTecnicasBienesExcel(element).then(
@@ -1226,6 +1749,7 @@ export class EditarSolicitudComponent implements OnInit {
             }                      
           } 
           if (this.cantidadErrorFileCTS === 0) {
+            this.cargaDesdeExcelServicios = true;
             let contador = 0;
             this.ObjCTS.forEach(element => {
                 this.servicio.agregarCondicionesTecnicasServiciosExcel(element).then(
@@ -2005,7 +2529,11 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       comentariosCTB: [''],
       cecoCTB: [''],
       numCicoCTB: [''],
-      numCuentaCTB: ['']
+      numCuentaCTB: [''],
+      clienteBienes: [''],
+      ordenBienes: [''],
+      IdServicioBienes: [''],
+      nombreIdServicioBienes: ['']
     });
   }
 
@@ -2020,7 +2548,11 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       comentariosCTS: [''],
       cecoCTS: [''],
       numCicoCTS: [''],
-      numCuentaCTS: ['']
+      numCuentaCTS: [''],
+      clienteServicios: [''],
+      ordenServicios: [''],
+      idServicio: [''],
+      nombreIdServicio: ['']
     });
   }
 
@@ -2521,6 +3053,8 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
     let costoInversion = this.ctsFormulario.controls["cecoCTS"].value;
     let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
     let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
+    let tieneIdServicio;
+    costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
     //----------------------------------Hasta aquí---------------------------------------------
 
 
@@ -2572,6 +3106,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       this.condicionTS.costoInversion = costoInversion;
       this.condicionTS.numeroCostoInversion = numeroCostoInversion;
       this.condicionTS.numeroCuenta = numeroCuenta;
+      this.condicionTS.tieneIdServicio = tieneIdServicio;
       if (adjunto != null) {
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
         this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
@@ -2638,6 +3173,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
             this.condicionesTS[objIndex].numeroCostoInversion = this.condicionTS.numeroCostoInversion;
             this.condicionesTS[objIndex].numeroCuenta = this.condicionTS.numeroCuenta;
             this.condicionesTS[objIndex].id = this.condicionTS.id;
+            this.condicionesTS[objIndex].tieneIdServicio = this.condicionTS.tieneIdServicio;
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
@@ -2663,6 +3199,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
         this.condicionTS.numeroCostoInversion = numeroCostoInversion;
         this.condicionTS.numeroCuenta = numeroCuenta;
         this.condicionTS.tipoMoneda = tipoMoneda;
+        this.condicionTS.tieneIdServicio = tieneIdServicio;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
         let nombreArchivoBorrar = this.rutaAdjuntoCTS.split('/');
         if (this.rutaAdjuntoCTS == '') {
@@ -2685,6 +3222,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
                   this.condicionesTS[objIndex].archivoAdjunto = this.condicionTS.archivoAdjunto;
                   this.condicionesTS[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                   this.condicionesTS[objIndex].id = this.condicionTS.id;
+                  this.condicionesTS[objIndex].tieneIdServicio = this.condicionTS.tieneIdServicio;
                   this.CargarTablaCTS();
                   this.limpiarControlesCTS();
                   this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
@@ -2723,6 +3261,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
                       this.condicionesTS[objIndex].archivoAdjunto = this.condicionTS.archivoAdjunto;
                       this.condicionesTS[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                       this.condicionesTS[objIndex].id = this.condicionTS.id;
+                      this.condicionesTS[objIndex].tieneIdServicio = this.condicionTS.tieneIdServicio;
                       this.CargarTablaCTS();
                       this.limpiarControlesCTS();
                       this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
@@ -2779,6 +3318,8 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
     let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
     let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
+    let tieneIdServicio;
+    costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
     //-----------------------------------Hasta aquí-----------------------------------------
 
     //----------------------Habilitar cuando datos contables no obligatorios----------------
@@ -2832,6 +3373,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       this.condicionTB.costoInversion = costoInversion;
       this.condicionTB.numeroCostoInversion = numeroCostoInversion;
       this.condicionTB.numeroCuenta = numeroCuenta;
+      this.condicionTB.tieneIdServicio = tieneIdServicio
       if (adjunto != null) {
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
         this.servicio.agregarCondicionesTecnicasBienes(this.condicionTB).then(
@@ -2901,6 +3443,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
             this.condicionesTB[objIndex].numeroCostoInversion = this.condicionTB.numeroCostoInversion;
             this.condicionesTB[objIndex].numeroCuenta = this.condicionTB.numeroCuenta;
             this.condicionesTB[objIndex].id = this.condicionTB.id;
+            this.condicionesTB[objIndex].tieneIdServicio = this.condicionTB.tieneIdServicio;
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
@@ -2928,6 +3471,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
         this.condicionTB.numeroCostoInversion = numeroCostoInversion;
         this.condicionTB.numeroCuenta = numeroCuenta;
         this.condicionTB.tipoMoneda = tipoMoneda;
+        this.condicionTB.tieneIdServicio = tieneIdServicio;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
         let nombreArchivoBorrar = this.rutaAdjuntoCTB.split('/');
         if (this.rutaAdjuntoCTB == '') {
@@ -2952,6 +3496,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
                   this.condicionesTB[objIndex].archivoAdjunto = this.condicionTB.archivoAdjunto;
                   this.condicionesTB[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                   this.condicionesTB[objIndex].id = this.condicionTB.id;
+                  this.condicionesTB[objIndex].tieneIdServicio = this.condicionTB.tieneIdServicio;
                   this.CargarTablaCTB();
                   this.limpiarControlesCTB();
                   this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
@@ -2992,6 +3537,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
                       this.condicionesTB[objIndex].archivoAdjunto = this.condicionTB.archivoAdjunto;
                       this.condicionesTB[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                       this.condicionesTB[objIndex].id = this.condicionTB.id;
+                      this.condicionesTB[objIndex].tieneIdServicio = this.condicionTB.tieneIdServicio;
                       this.CargarTablaCTB();
                       this.limpiarControlesCTB();
                       this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
