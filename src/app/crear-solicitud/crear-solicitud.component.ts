@@ -4138,7 +4138,6 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   }
 
   editarServicios(element, template: TemplateRef<any>) {
-    this.setDatosContablesServicios = false;
     this.indiceCTSActualizar = element.indice;
     this.idCondicionTSGuardada = element.id;
     console.log(this.ctsFormulario.controls['cecoCTS'].value);
