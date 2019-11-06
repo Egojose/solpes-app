@@ -394,16 +394,16 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteBienes" (change)="validarLengthBusqueda()" name="cliente">
+                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteBienes">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenBienes" (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenBienes">
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="IdServicioBienes" (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="IdServicioBienes">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicioBienes" (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicioBienes">
                                     </div>
                                     <div class="col-md-1">
                                         <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
@@ -423,7 +423,7 @@
                                     <ng-container matColumnDef="seleccionar">
                                         <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                                         <td mat-cell *matCellDef="let element">
-                                            <mat-checkbox color="primary" value="{{element.idServicio}}" [checked]="selectAll" (change)="seleccionado($event)"></mat-checkbox>
+                                            <mat-checkbox color="primary" value="{{element.IdServicio}}" [checked]="selectAll" (change)="seleccionado($event)"></mat-checkbox>
                                         </td>
                                     </ng-container>
                                     <ng-container matColumnDef="cliente">
@@ -478,7 +478,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID servicio</label>
-                            <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }">
+                            <!-- <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"> -->
+                            <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTB"  [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"></textarea>
                             <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
                             </div>
@@ -596,7 +597,7 @@
                     </div>
                     <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios" (change)="validarLengthBusqueda()">
@@ -612,7 +613,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
-                                        <button class="btn btn-outline-primary" type="button" (click)="filtrarArrayServicios()">IR</button>
+                                        <button class="btn btn-outline-primary" type="button" (click)="validarLengthBusquedaServicios()">IR</button>
                                     </div>
                                 </div>
                             </div>
@@ -624,11 +625,11 @@
                                     <mat-checkbox color="primary" (change)="seleccionarTodosServicios($event)">Seleccionar todos los ID de servicio
                                     </mat-checkbox>
                                 </div>
-                                <table mat-table [dataSource]="datosServicios">
+                                <table mat-table [dataSource]="dataSourceDatosServicios">
                                     <ng-container matColumnDef="seleccionar">
                                         <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                                         <td mat-cell *matCellDef="let element">
-                                            <mat-checkbox color="primary" value="{{element.idServicio}}" [checked]="selectAllServicios" (change)="seleccionadoServicios($event)"></mat-checkbox>
+                                            <mat-checkbox color="primary" value="{{element.IdServicio}}" [checked]="selectAllServicios" (change)="seleccionadoServicios($event)"></mat-checkbox>
                                         </td>
                                     </ng-container>
                                     <ng-container matColumnDef="cliente">
@@ -639,7 +640,7 @@
                                                 <input matInput [formControl]="clientServicios">
                                             </mat-form-field>
                                         </th>
-                                        <td mat-cell *matCellDef="let element">{{element.cliente}}</td>
+                                        <td mat-cell *matCellDef="let element">{{element.Cliente}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="OS">
                                         <th class="header" mat-header-cell *matHeaderCellDef>
@@ -649,7 +650,7 @@
                                                 <input matInput [formControl]="ordenServServicios">
                                             </mat-form-field>
                                         </th>
-                                        <td mat-cell *matCellDef="let element">{{element.idOrdenServicio}}</td>
+                                        <td mat-cell *matCellDef="let element">{{element.OS}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="idServicio">
                                         <th class="header" mat-header-cell *matHeaderCellDef>
@@ -659,7 +660,7 @@
                                                 <input matInput [formControl]="idServServicios">
                                             </mat-form-field>
                                         </th>
-                                        <td mat-cell *matCellDef="let element">{{element.idServicio}}</td>
+                                        <td mat-cell *matCellDef="let element">{{element.IdServicio}}</td>
                                     </ng-container>
                                     <ng-container matColumnDef="nombreIdServicio">
                                         <th class="header" mat-header-cell *matHeaderCellDef>
@@ -669,7 +670,7 @@
                                                 <input matInput [formControl]="nombreIdServServicios">
                                             </mat-form-field>
                                         </th>
-                                        <td mat-cell *matCellDef="let element">{{element.nombreIdServicio}}</td>
+                                        <td mat-cell *matCellDef="let element">{{element.Nombre_Servicio}}</td>
                                     </ng-container>
                                     <tr mat-header-row *matHeaderRowDef="displayedColumnsServicios"></tr>
                                     <tr mat-row *matRowDef="let row; columns: displayedColumnsServicios;"></tr>
@@ -682,8 +683,9 @@
                     <br>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
-                            <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }">
+                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID de servicio</label>
+                            <!-- <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"> -->
+                            <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"></textarea>
                             <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
                             </div>

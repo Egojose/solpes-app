@@ -186,7 +186,8 @@ export class SPServicio {
             MonedaSondeo: condicionTecnicaBienes.tipoMoneda,
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaBienes.numeroCuenta
+            numeroCuenta: condicionTecnicaBienes.numeroCuenta,
+            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio
         });
     }
     
@@ -208,7 +209,8 @@ export class SPServicio {
             MonedaSondeo: condicionTecnicaBienes.tipoMoneda,
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaBienes.numeroCuenta
+            numeroCuenta: condicionTecnicaBienes.numeroCuenta,
+            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio
         });
     }
 
@@ -273,7 +275,8 @@ export class SPServicio {
             Comentario: condicionTecnicaServicios.comentarios,
             costoInversion: condicionTecnicaServicios.costoInversion,
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaServicios.numeroCuenta
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta,
+            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio
         });
     }
 
@@ -297,7 +300,8 @@ export class SPServicio {
             Comentario: condicionTecnicaServicios.comentarios,
             costoInversion: condicionTecnicaServicios.costoInversion,
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaServicios.numeroCuenta
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta,
+            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio
         });
     }
 
