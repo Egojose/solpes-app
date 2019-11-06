@@ -219,7 +219,7 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
                 <div class="btn-agregar-condiciones-servicios">
-                    <button class="btn btn-primary" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
+                    <button class="btn btn-primary" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)" (click)="reservarDatosContablesServicios()">Agregar servicio</button>
                     <button class="btn btn-default justify-content-center" id="textInfo" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button>
                 </div>
                 <br/>
@@ -600,16 +600,16 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios" (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenServicios" (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenServicios">
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio" (change)="validarLengthBusqueda()" [disabled]="disabledIdServicioServicios">
+                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio" [disabled]="disabledIdServicioServicios">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio" (change)="validarLengthBusqueda()">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio">
                                     </div>
                                     <div class="col-md-1">
                                         <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->

@@ -580,6 +580,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   reservarDatosContablesServicios() {
+    this.cargaDesdeExcel = false;
     this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
       (respuesta) => {
         if(respuesta.length > 0) {
@@ -3484,6 +3485,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 
   ctbOnSubmit() {
     this.ctbSubmitted = true;
+    this.mostrarFiltroBienes = false;
     if (this.ctbFormulario.invalid) {
       return;
     }
@@ -3801,6 +3803,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 
   ctsOnSubmit() {
     this.ctsSubmitted = true;
+    this.mostrarFiltroServicios = false;
     if (this.ctsFormulario.invalid) {
       return;
     }
