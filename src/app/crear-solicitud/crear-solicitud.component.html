@@ -478,7 +478,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID servicio</label>
-                            <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }">
+                            <!-- <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"> -->
+                            <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTB"  [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"></textarea>
                             <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
                             </div>
@@ -596,7 +597,7 @@
                     </div>
                     <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios" (change)="validarLengthBusqueda()">
@@ -682,8 +683,9 @@
                     <br>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion</label>
-                            <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }">
+                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID de servicio</label>
+                            <!-- <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"> -->
+                            <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"></textarea>
                             <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
                             </div>
