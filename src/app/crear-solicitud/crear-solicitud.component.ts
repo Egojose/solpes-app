@@ -542,6 +542,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
   }
 
+
   seleccionadoServicios($event) {
     let idServicioSeleccionado = $event.source.value
     if ($event.checked === true) {
@@ -580,6 +581,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   reservarDatosContablesServicios() {
+    this.cargaDesdeExcel = false;
     this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
       (respuesta) => {
         if(respuesta.length > 0) {
@@ -743,28 +745,28 @@ export class CrearSolicitudComponent implements OnInit {
     this.clientServicios.valueChanges
       .subscribe(
         (cliente) => {
-          this.filterValues.Cliente = cliente;
+          this.filterValuesServicios.Cliente = cliente;
           this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
         }
       )
     this.ordenServServicios.valueChanges
       .subscribe(
         (orden) => {
-          this.filterValues.OS = orden;
+          this.filterValuesServicios.OS = orden;
           this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
         }
       )
     this.idServServicios.valueChanges
       .subscribe(
         (id) => {
-          this.filterValues.IdServicio = id;
+          this.filterValuesServicios.IdServicio = id;
           this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
         }
       )
     this.nombreIdServServicios.valueChanges
       .subscribe(
         (nombre) => {
-          this.filterValues.Nombre_Servicio = nombre;
+          this.filterValuesServicios.Nombre_Servicio = nombre;
           this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
         }
       )
@@ -3484,6 +3486,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 
   ctbOnSubmit() {
     this.ctbSubmitted = true;
+    this.mostrarFiltroBienes = false;
     if (this.ctbFormulario.invalid) {
       return;
     }
@@ -3801,6 +3804,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 
   ctsOnSubmit() {
     this.ctsSubmitted = true;
+    this.mostrarFiltroServicios = false;
     if (this.ctsFormulario.invalid) {
       return;
     }
