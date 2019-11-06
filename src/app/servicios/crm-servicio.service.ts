@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 })
 
 export class CrmServicioService {
-  private readonly urlApi = 'http://itxcrmwebapidllo.azurewebsites.net/api/crm/solp/registrarsolp';
+  private readonly urlApiSolicitudes = 'http://itxcrmwebapidllo.azurewebsites.net/api/crm/solp/registrarsolp';
+  private readonly urlApiContratos = 'http://itxcrmwebapidllo.azurewebsites.net/api/crm/solp/registrarcontratoproveedor';
   private readonly urlLogin = "https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token";
   
   constructor(private http: HttpClient) {
@@ -25,8 +26,12 @@ export class CrmServicioService {
     return this.http.post(this.urlLogin, formData).toPromise();
   }
 
-  ActualizarEmpleado(ObjEmpleado, access){    
-    return this.http.put(this.urlApi,ObjEmpleado).toPromise();
+  ActualizarSolicitud(ObjSolicitudes){    
+    return this.http.put(this.urlApiSolicitudes,ObjSolicitudes).toPromise();
+  }
+
+  ActualizarContratos(ObjContratos){    
+    return this.http.put(this.urlApiContratos,ObjContratos).toPromise();
   }
 
   consultarDatosBodega (parametros): Observable<any> {
