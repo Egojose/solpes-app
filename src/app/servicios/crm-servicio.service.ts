@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 })
 
 export class CrmServicioService {
-  private readonly urlApiSolicitudes = 'http://itxcrmwebapidllo.azurewebsites.net/api/crm/solp/registrarsolp';
-  private readonly urlApiContratos = 'http://itxcrmwebapidllo.azurewebsites.net/api/crm/solp/registrarcontratoproveedor';
+  private readonly urlApiSolicitudes = 'http://itxcrmwebapiprb.azurewebsites.net/api/crm/solp/registrarsolp';
+  private readonly urlApiContratos = 'http://itxcrmwebapiprb.azurewebsites.net/api/crm/solp/registrarcontratoproveedor';
   private readonly urlLogin = "https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token";
   
   constructor(private http: HttpClient) {
@@ -20,9 +20,9 @@ export class CrmServicioService {
   obtenerToken(){
     const formData = new FormData();
     formData.append('grant_type', 'client_credentials');
-    formData.append('client_id', '43eb0956-9ff2-447d-9914-67c6be0e156d');
-    formData.append('client_secret', 'kGQKKdeJjfgx7YFgnMQC8iGokUnDJCUYwkjqdULMVTQ=');
-    formData.append('resource', 'https://isaempresas.onmicrosoft.com/1ccf92d1-cae8-4da6-9a89-cd9090736466')
+    formData.append('client_id', '7d9d4669-0053-4859-98bd-3b76db1e78e9');
+    formData.append('client_secret', 'dtR7rwbU2yVEIOmZedecXlU52IJw2gxh9PoDaH5baYo=');
+    formData.append('resource', 'https://isaempresas.onmicrosoft.com/76c615d8-b58c-4bf0-8470-f90d6df94b9a')
     return this.http.post(this.urlLogin, formData).toPromise();
   }
 

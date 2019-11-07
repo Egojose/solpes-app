@@ -87,17 +87,17 @@ export class GestionErroresComponent implements OnInit {
     let resCambioExitoso;
     let access;
     let idServicios = element.IdServicios.split(",");
-    let obj = {
-      "numerosolp": element.NroSolp,
-      "linksolp": element.EnlaceSolp,
-      "idservicios": idServicios      
-    } 
-
     // let obj = {
-    //   "numerosolp": "9",
-    //   "linksolp": "Este es el link de solp",
-    //   "idservicios": ["665","656"]      
-    // }
+    //   "numerosolp": element.NroSolp,
+    //   "linksolp": element.EnlaceSolp,
+    //   "idservicios": idServicios      
+    // } 
+
+    let obj = {
+      "numerosolp": "9",
+      "linksolp": "Este es el link de solp",
+      "idservicios": ["665","656"]      
+    }
 
     for (let index = 0; index < 3; index++) { 
       respuesta = await this.enviarServicioSolicitud(obj);
@@ -157,14 +157,11 @@ export class GestionErroresComponent implements OnInit {
         if (RespuestaCrmSP === true) {
           this.ActualizarTablaSolicitudes(element.Id);
           this.MostrarExitoso(respuesta["MensajeExito"]); 
-        }
-        else {
-          this.mostrarError("Error al cargar la Solp con número "+element.NroSolp+" Codigo error: "+respuesta["CodigoError"] + " - " + respuesta["MensajeError"])
-        }
-              
+        }     
       }
-      
-      
+      else {
+        this.mostrarError("Error al cargar la Solp con número "+element.NroSolp+" Codigo error: "+respuesta["CodigoError"] + " - " + respuesta["MensajeError"])
+      }      
     }
   }
 
