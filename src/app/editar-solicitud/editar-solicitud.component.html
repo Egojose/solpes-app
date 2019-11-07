@@ -176,7 +176,7 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
                 <div class="btn-agregar-condiciones-bienes">
-                    <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)">Agregar bien</button>
+                    <button class="btn btn-info" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)" (click)="reservarDatosContablesBienes()">Agregar bien</button>
                     <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes desde archivo</button>
                 </div>
                 <br />
@@ -251,7 +251,7 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
                 <div class="btn-agregar-condiciones-servicios">
-                    <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)">Agregar servicio</button>
+                    <button class="btn btn-info" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)" (click)="reservarDatosContablesServicios()">Agregar servicio</button>
                     <button class="btn btn-primary justify-content-center" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button>
                 </div>
                 <br />
@@ -430,11 +430,9 @@
                 <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
-                                <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }"
-                                    (change)="showFilterBienes($event)">
+                                <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
@@ -443,6 +441,10 @@
                                 <div *ngIf="ctbSubmitted && f.cecoCTB.errors" class="invalid-feedback">
                                     <div *ngIf="f.cecoCTB.errors.required">Este campo es requerido</div>
                                 </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center" style="padding-top: 30px;">
+                                <mat-checkbox color="primary" [disabled]="!enableCheckDatosContablesBienes" (change)="usarDatosContablesBienes($event)">Usar datos contables del bien anterior
+                                </mat-checkbox>
                             </div>
                         </div>
                     </div>
@@ -658,11 +660,9 @@
                 <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="ceco">Centro de costos / Orden de inversión</label>
-                                <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control"
-                                    [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }"
-                                    (change)="showFilterServicios($event)">
+                                <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
                                     <option value="">Seleccione</option>
                                     <option value="Centro de costos">Centro de costos</option>
                                     <option value="Orden de inversión">Orden de inversión</option>
@@ -671,6 +671,10 @@
                                 <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">
                                     <div *ngIf="f2.cecoCTS.errors.required">Este campo es requerido</div>
                                 </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center" style="padding-top: 30px;">
+                                <mat-checkbox color="primary" [disabled]="!enableCheckDatosContablesServicios" (change)="usarDatosContablesServicios($event)">Usar datos contables del servicio anterior
+                                </mat-checkbox>
                             </div>
                         </div>
                     </div>

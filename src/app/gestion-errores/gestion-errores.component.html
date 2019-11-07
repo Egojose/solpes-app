@@ -37,8 +37,11 @@
                             <ng-container matColumnDef="Acciones">
                                 <th mat-header-cell *matHeaderCellDef> Cargar nuevamente </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <div class="col-md-12">
-                                        <button class="btn btn-success" (click)="pp(element)">Cargar</button>
+                                    <div class="col-md-12" *ngIf="element.Exitoso === false">
+                                        <button class="btn btn-success" (click)="CargarSolicitudCrm(element)">Cargar</button>
+                                    </div>
+                                    <div class="col-md-12" style="color: green; font-weight: bold;" *ngIf="element.Exitoso === true">
+                                        Cargado con éxito
                                     </div>
                                 </td>
                             </ng-container>
@@ -52,7 +55,7 @@
 
             </div>
             <br>
-            <div class="row">
+            <div class="row" [hidden]="emptySolicitudes">
                 <div class="col-3">
                     <button class="btn btn-success" (click)="CargarTodosSolicitudes(element)">Volver a cargar solicitudes</button>
                 </div>
@@ -99,7 +102,7 @@
                             <ng-container matColumnDef="Acciones">
                                 <th mat-header-cell *matHeaderCellDef> Cargar nuevamente </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" *ngIf="element.Exitoso === false">
                                         <button class="btn btn-success" (click)="CargarCrmContratos(element)">Cargar</button>
                                     </div>
                                 </td>
@@ -114,7 +117,7 @@
 
             </div>
             <br>
-            <div class="row">
+            <div class="row" [hidden]="emptyContratos">
                 <div class="col-3">
                     <button class="btn btn-success" (click)="CargarTodosContratos(element)">Volver a cargar contratos</button>
                 </div>

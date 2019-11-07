@@ -39,6 +39,7 @@ export class CondicionesTecnicasBienes {
         let adjuntosBienes: Adjunto [] = [];
         let adjuntoCreacion: Adjunto;
         let adjuntoSondeo: Adjunto;
+        let numeroCostoInversion = element.tieneIdServicio === true? element.IdOrdenServicio: element.numeroCostoInversion;
        
         let arrayAdjuntos = element.AttachmentFiles.results;
         for (let i = 0; i < arrayAdjuntos.length; i++){
@@ -79,7 +80,7 @@ export class CondicionesTecnicasBienes {
             adjuntoSondeo,
             adjuntoCreacion,
             element.costoInversion,
-            element.numeroCostoInversion,
+            numeroCostoInversion,
             element.numeroCuenta);
     }
 
