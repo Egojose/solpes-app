@@ -263,11 +263,27 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   consultaDatos() {
+    let idServicio = this.ctbFormulario.get('IdServicioBienes').value;
+    if (idServicio === undefined) {
+      idServicio = ''
+    }
+    let cliente = this.ctbFormulario.get('clienteBienes').value;
+    if (cliente === undefined) {
+      cliente = ''
+    }
+    let nombreServicio = this.ctbFormulario.get('nombreIdServicioBienes').value;
+    if (nombreServicio === undefined) {
+      nombreServicio = ''
+    }
+    let os = this.ctbFormulario.get('ordenBienes').value;
+    if (os === undefined) {
+      os = '';
+    }
     let parametros = {
-      "idservicio": this.ctbFormulario.get('IdServicioBienes').value,
-      "cliente": this.ctbFormulario.get('clienteBienes').value,
-      "nombreservicio": this.ctbFormulario.get('nombreIdServicioBienes').value,
-      "os": this.ctbFormulario.get('ordenBienes').value,
+      "idservicio": idServicio,
+      "cliente": cliente,
+      "nombreservicio": nombreServicio,
+      "os": os,
     }
     this.servicioCrm.consultarDatosBodega(parametros).subscribe(
       (respuesta) => {
@@ -288,11 +304,27 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   consultarDatosServicios() {
+    let idServicio = this.ctsFormulario.get('idServicio').value;
+    if(idServicio === undefined) {
+      idServicio = '';
+    }
+    let cliente = this.ctsFormulario.get('clienteServicios').value;
+    if(cliente === undefined) {
+      cliente = '';
+    }
+    let nombreServicio = this.ctsFormulario.get('nombreIdServicio').value;
+    if(nombreServicio === undefined) {
+      nombreServicio = '';
+    }
+    let os = this.ctsFormulario.get('ordenServicios').value;
+    if(os === undefined) {
+      os = '';
+    }
     let parametros = {
-      "idservicio": this.ctsFormulario.get('idServicio').value,
-      "cliente": this.ctsFormulario.get('clienteServicios').value,
-      "nombreservicio": this.ctsFormulario.get('nombreIdServicio').value,
-      "os": this.ctsFormulario.get('ordenServicios').value,
+      "idservicio": idServicio,
+      "cliente": cliente,
+      "nombreservicio": nombreServicio,
+      "os": os,
     }
     this.servicioCrm.consultarDatosBodega(parametros).subscribe(
       (respuesta) => {
@@ -490,7 +522,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   reservarDatosContablesBienes() {
     this.cargaDesdeExcel = false;
-    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.solicitudRecuperada.id).subscribe(
       (respuesta) => {
         if(respuesta.length > 0) {
           this.enableCheckDatosContablesBienes = true;
@@ -510,7 +542,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   reservarDatosContablesServicios() {
-    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.solicitudRecuperada.id).subscribe(
       (respuesta) => {
         if(respuesta.length > 0) {
           this.enableCheckDatosContablesServicios = true;
@@ -550,7 +582,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   reservarDatosContablesBienesExcel() {
-    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.solicitudRecuperada.id).subscribe(
       (respuesta) => {
         let id: any = this.idCondicionTBGuardada;
         let indexId: any = (parseInt(id) - 1);
@@ -579,7 +611,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   reservarDatosContablesServiciosExcel() {
-    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.solicitudRecuperada.id).subscribe(
       (respuesta) => {
         let id: any = this.idCondicionTSGuardada;
         let indexId: any = (parseInt(id) - 1);
@@ -685,19 +717,19 @@ export class EditarSolicitudComponent implements OnInit {
     let IdServicioBienes = this.ctbFormulario.get('IdServicioBienes').value;
     let nombreIdServicioBienes = this.ctbFormulario.get('nombreIdServicioBienes').value;
    
-    if(cliente === '' && ordenBienes === '' && IdServicioBienes === '' && nombreIdServicioBienes === '') {
+    if((cliente === '' || cliente === undefined) && (ordenBienes === '' || ordenBienes === undefined) && (IdServicioBienes === '' || IdServicioBienes === undefined) && (nombreIdServicioBienes === '' || nombreIdServicioBienes === undefined)) {
       this.mostrarAdvertencia('Los campos están vacíos. No hay nada que consultar');
       return false;
     }
-    if(cliente !== '' && cliente.length < 4) {
+    if((cliente !== '' && cliente!== undefined) && cliente.length < 4) {
       this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Cliente"');
       return false;
     }
-    if(IdServicioBienes !== '' && IdServicioBienes.length < 3) {
+    if((IdServicioBienes !== '' && IdServicioBienes !== undefined) && IdServicioBienes.length < 3) {
       this.mostrarAdvertencia('Se requieren al menos 3 caracteres si va a utilizar el campo "Id de servicios"')
       return false;
     }
-    if(nombreIdServicioBienes !== '' && nombreIdServicioBienes.length < 4) {
+    if((nombreIdServicioBienes !== '' && nombreIdServicioBienes !== undefined) && nombreIdServicioBienes.length < 4) {
       this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
       return false;
     }
@@ -3038,6 +3070,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
 
   ctsOnSubmit() {
     this.ctsSubmitted = true;
+    this.mostrarFiltroServicios = false;
     if (this.ctsFormulario.invalid) {
       return;
     }
@@ -3300,6 +3333,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
 
   ctbOnSubmit() {
     this.ctbSubmitted = true;
+    this.mostrarFiltroBienes = false;
     if (this.ctbFormulario.invalid) {
       return;
     }
