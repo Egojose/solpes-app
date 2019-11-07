@@ -379,28 +379,28 @@ export class EditarSolicitudComponent implements OnInit {
     this.clientServicios.valueChanges
       .subscribe(
         (cliente) => {
-          this.filterValues.Cliente = cliente;
+          this.filterValuesServicios.Cliente = cliente;
           this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
         }
       )
     this.ordenServServicios.valueChanges
       .subscribe(
         (orden) => {
-          this.filterValues.OS = orden;
+          this.filterValuesServicios.OS = orden;
           this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
         }
       )
     this.idServServicios.valueChanges
       .subscribe(
         (id) => {
-          this.filterValues.IdServicio = id;
+          this.filterValuesServicios.IdServicio = id;
           this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
         }
       )
     this.nombreIdServServicios.valueChanges
       .subscribe(
         (nombre) => {
-          this.filterValues.Nombre_Servicio = nombre;
+          this.filterValuesServicios.Nombre_Servicio = nombre;
           this.dataSourceDatosServicios.filter = JSON.stringify(this.filterValuesServicios);
         }
       )
