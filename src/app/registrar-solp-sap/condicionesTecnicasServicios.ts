@@ -50,7 +50,9 @@ export class CondicionTecnicaServicios{
                    }                
                }
            });
-        }       
+        }    
+        
+        let numeroCostoInversion = element.tieneIdServicio === true? element.IdOrdenServicio: element.numeroCostoInversion;
 
         return new CondicionTecnicaServicios(element.Title,
             element.Solicitud,
@@ -69,7 +71,7 @@ export class CondicionTecnicaServicios{
             element.MonedaSondeo,
             element.ID,
             element.costoInversion,
-            element.numeroCostoInversion,
+            numeroCostoInversion,
             element.numeroCuenta);
     }
 
