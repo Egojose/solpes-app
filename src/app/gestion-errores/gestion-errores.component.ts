@@ -257,6 +257,36 @@ export class GestionErroresComponent implements OnInit {
       this.emptyContratos = true;
     }
   }
+
+  async CargarTodosContratos(){
+    let ObjSolicitudes = this.ObjContratos.filter(x=> x.Exitoso !== true);
+    for (let index = 0; index < ObjSolicitudes.length; index++) {
+      let respuesta;
+      let RespuestaCrmSP;
+      const element = ObjSolicitudes[index];
+      let idServicios = element.IdServicios.split(",");
+      let obj = {
+        "numerocontratoproveedor": element.NroContrato,      
+        "numerosolp": element.NroSolp,      
+        "fechainiciocontrato": element.FechaInicio,      
+        "duracioncontrato": element.Duracion,      
+        "nombreproveedor": element.NombreProveedor,      
+        "objetocontrato": element.ObjetoContrato,      
+        "idservicios": idServicios      
+      }
+      respuesta = await this.enviarServicioContratos(obj);
+      if (respuesta.StatusCode === 200) {
+        RespuestaCrmSP = await this.ModificarGestionErroresSolicitudes(element.Id);
+        if (RespuestaCrmSP === true) {
+          this.ActualizarTablaContratos(element.Id);
+          this.MostrarExitoso(respuesta["MensajeExito"]); 
+        }     
+      }
+      else {
+        this.mostrarError("Error al cargar el contrato de la Solp con número "+element.NroSolp+" Codigo error: "+respuesta["CodigoError"] + " - " + respuesta["MensajeError"])
+      }      
+    }
+  }
   
 
   ObtenerToken(){

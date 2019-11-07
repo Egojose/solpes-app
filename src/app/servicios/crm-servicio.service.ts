@@ -47,6 +47,8 @@ export class CrmServicioService {
     const header = {
       'Accept': 'application/json; odata=verbose',
       'Content-Type':  'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET',
       'Ocp-Apim-Subscription-Key':  token
     }
 
