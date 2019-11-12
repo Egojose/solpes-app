@@ -236,9 +236,9 @@ export class SPServicio {
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
-    agregarAdjuntoContratos(IdContrato: number, nombreArchivo: string, archivo: File) {
+    async agregarAdjuntoContratos(IdContrato: number, nombreArchivo: string, archivo: File): Promise<any> {
         let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.getById(IdContrato);
-        return item.attachmentFiles.add(nombreArchivo, archivo);
+        return await item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     agregarAdjuntoActivosBienes(IdSolicitud: number, nombreArchivo: string, archivo: File) {
@@ -424,8 +424,8 @@ export class SPServicio {
         );
     } 
 
-    actualizarFechaContratos(IdSolicitud, ContratoOC){
-        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+    async actualizarFechaContratos(IdSolicitud, ContratoOC): Promise<any>{
+        return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
               {
                 FechaRegistrarContrato: new Date(),
                 NumeroDeContrato: ContratoOC
@@ -496,12 +496,12 @@ export class SPServicio {
         }); 
     }
 
-    GuardarContrato(ObjContrato){
-        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
+    async GuardarContrato(ObjContrato): Promise<any>{
+        return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
     }
 
-    cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor){
-        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+    async cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor): Promise<any>{
+        return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
             {
                 Estado: nombreEstado,
                 ResponsableId: autor
@@ -615,8 +615,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    guardarIdContratoBienes(idBienes, idContrato){
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
+    async guardarIdContratoBienes(idBienes, idContrato): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
             {
                 IdContrato: idContrato
             }
@@ -638,8 +638,8 @@ export class SPServicio {
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaHistorial).items.getById(idHistoria).update(objHistorial);
     }
 
-    guardarIdContratoServicios(idBienes, idContrato){
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
+    async guardarIdContratoServicios(idBienes, idContrato): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
             {
                 IdContrato: idContrato
             }
@@ -666,6 +666,11 @@ export class SPServicio {
         let respuesta = await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudesCrm).items.getById(idSolicitud).update({
             Exitoso: true
         })
+        return respuesta;
+    }
+
+    async GuardarSolicitudCrm(obj): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudesCrm).items.add(obj);
         return respuesta;
     }
 
