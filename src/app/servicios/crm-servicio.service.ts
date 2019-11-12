@@ -40,9 +40,7 @@ export class CrmServicioService {
  
     const header = {
       'Accept': 'application/json; odata=verbose',
-      'Content-Type':  'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET',
+      'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key':  token
     }
    return this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/Bodega?', {headers: header, params: parametros })
@@ -53,7 +51,7 @@ export class CrmServicioService {
  
     const header = {
       'Accept': 'application/json; odata=verbose',
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key':  token
     }
     return this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/ValidarBodega?', {headers: header, params: parametros})
