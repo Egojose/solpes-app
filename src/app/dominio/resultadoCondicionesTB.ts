@@ -21,7 +21,9 @@ export class resultadoCondicionesTB {
         public comentariosBienes?: string,
         public adjuntoCreacion?: any,
         public adjuntoSondeo?: any,
-        public idContrato?: string) { }
+        public idContrato?: string,
+        public tieneIdServicio?: any,
+        public numeroCostoInversion?: any) { }
        
 
     public static fromJson(element: any) {
@@ -56,7 +58,9 @@ export class resultadoCondicionesTB {
             element.Comentarios,
             adjuntoCreacion, 
             adjuntoSondeo,
-            element.IdContrato);
+            element.IdContrato,
+            element.tieneIdServicio,
+            element.numeroCostoInversion);
     }
 
     private static ObtenerAdjunto(identificadorAdjunto: string, adjuntosBienes: Adjunto[], adjuntoRetornar: Adjunto) {
