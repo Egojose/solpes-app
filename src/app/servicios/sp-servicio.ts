@@ -29,7 +29,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTczMTQzNDA0LCJuYmYiOjE1NzMxNDM0MDQsImV4cCI6MTU3MzE3MjUwNCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.VB6jUqJxgM_hu7CEzlTROxqPb5XnWqBJdl0ASXHG_X88zLC8ShEyCWTA7I9gVr1v7bmBBHz3ZKm7zbJr0gRzRHOTUPRHqZL6EeCnnRiBaVYJJolBHNG7_3NoH8n_PuB-UjLFsnmnwfJI7RAq68j-lNVpf8IKjtw57v1ef-pAunTYJ_IEz6-vDDrs8CIkbWe_5Mt1RWGQ1cqNgi1SjGwlt9YZsRTMRoBMnNyTlzbU9QDlf-LVr46TDlZEfMnaxFLf7atc_DtcaYQVibGcxl-dUw5ifkCUN0FT1K92o4YiNhS7Ix-aVO6W7LV4j8PwmQ0FjoMdfmJ0DFZ8BdqQrGcdFA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTczNTcwODQ4LCJuYmYiOjE1NzM1NzA4NDgsImV4cCI6MTU3MzU5OTk0OCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.h-r64HcVX-yGPfX9wNjmmM09szuIpP31wJNb6JSORbMLDCuT0yCVArhGEVCFTlX7nc6YVm_dMTxLwOLqCZzl1JEUs4CULIR8SWN6vma3UYbh24qVn6pY5B3yam-61Mzgwd1WvOkjTQJRtQ8twbeIHUKtJNqfdldKMI0SWY6kTNszJW43UApyU_lXeYBqHQszVWOpWjF9SIITPvfp8JncSU0FcIr_JR7lt-1sZiVGkGGrkAkUR6HXgRHV9rAaRjM3tHckCS5I9p0MGMU13pf5loAod4n-86cmQ07eIqFGpqZX-iftWhCb6FWVV2WqLezVbZymmdSF7W8ZOoPKd6CPJQ'
             }
         }, environment.urlWeb);
 
@@ -187,7 +187,8 @@ export class SPServicio {
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
             numeroCuenta: condicionTecnicaBienes.numeroCuenta,
-            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio
+            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio,
+            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio
         });
     }
     
@@ -210,7 +211,8 @@ export class SPServicio {
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
             numeroCuenta: condicionTecnicaBienes.numeroCuenta,
-            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio
+            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio,
+            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio
         });
     }
 
@@ -234,9 +236,9 @@ export class SPServicio {
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
-    agregarAdjuntoContratos(IdContrato: number, nombreArchivo: string, archivo: File) {
-        let item = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.getById(IdContrato);
-        return item.attachmentFiles.add(nombreArchivo, archivo);
+    async agregarAdjuntoContratos(IdContrato: number, nombreArchivo: string, archivo: File): Promise<any> {
+        let item = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.getById(IdContrato);
+        return await item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     agregarAdjuntoActivosBienes(IdSolicitud: number, nombreArchivo: string, archivo: File) {
@@ -276,7 +278,8 @@ export class SPServicio {
             costoInversion: condicionTecnicaServicios.costoInversion,
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
             numeroCuenta: condicionTecnicaServicios.numeroCuenta,
-            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio
+            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio,
+            IdOrdenServicio: condicionTecnicaServicios.idOrdenServicio
         });
     }
 
@@ -301,7 +304,8 @@ export class SPServicio {
             costoInversion: condicionTecnicaServicios.costoInversion,
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
             numeroCuenta: condicionTecnicaServicios.numeroCuenta,
-            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio
+            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio,
+            IdOrdenServicio: condicionTecnicaServicios.idOrdenServicio
         });
     }
 
@@ -420,8 +424,8 @@ export class SPServicio {
         );
     } 
 
-    actualizarFechaContratos(IdSolicitud, ContratoOC){
-        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+    async actualizarFechaContratos(IdSolicitud, ContratoOC): Promise<any>{
+        return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
               {
                 FechaRegistrarContrato: new Date(),
                 NumeroDeContrato: ContratoOC
@@ -492,12 +496,12 @@ export class SPServicio {
         }); 
     }
 
-    GuardarContrato(ObjContrato){
-        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
+    async GuardarContrato(ObjContrato): Promise<any>{
+        return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
     }
 
-    cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor){
-        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+    async cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor): Promise<any>{
+        return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
             {
                 Estado: nombreEstado,
                 ResponsableId: autor
@@ -611,8 +615,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    guardarIdContratoBienes(idBienes, idContrato){
-        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
+    async guardarIdContratoBienes(idBienes, idContrato): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
             {
                 IdContrato: idContrato
             }
@@ -634,8 +638,8 @@ export class SPServicio {
         return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaHistorial).items.getById(idHistoria).update(objHistorial);
     }
 
-    guardarIdContratoServicios(idBienes, idContrato){
-        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
+    async guardarIdContratoServicios(idBienes, idContrato): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
             {
                 IdContrato: idContrato
             }
@@ -662,6 +666,11 @@ export class SPServicio {
         let respuesta = await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudesCrm).items.getById(idSolicitud).update({
             Exitoso: true
         })
+        return respuesta;
+    }
+
+    async GuardarSolicitudCrm(obj): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudesCrm).items.add(obj);
         return respuesta;
     }
 

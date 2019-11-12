@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { headersToString } from 'selenium-webdriver/http';
 
 
 
@@ -36,23 +37,23 @@ export class CrmServicioService {
 
   consultarDatosBodega (parametros): Observable<any> {
     let token = '03f4673dd6b04790be91da8e57fddb52'
-  //   let parametros = {
-  //     Request parameters
-  //     "idservicio": "16330",
-  //     "cliente": "ENERGIA",
-  //     "nombreservicio": "{string}",
-  //     "os": "{string}",
-  // };
-   
+ 
     const header = {
       'Accept': 'application/json; odata=verbose',
-      'Content-Type':  'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET',
+      'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key':  token
     }
-
-   
    return this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/Bodega?', {headers: header, params: parametros })
+  }
+
+  validarIdServiciosExcel(parametros): Observable<any> {
+    let token = '03f4673dd6b04790be91da8e57fddb52'
+ 
+    const header = {
+      'Accept': 'application/json; odata=verbose',
+      'Content-Type': 'application/json',
+      'Ocp-Apim-Subscription-Key':  token
+    }
+    return this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/ValidarBodega?', {headers: header, params: parametros})
   }
 }
