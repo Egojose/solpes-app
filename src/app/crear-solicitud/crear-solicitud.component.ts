@@ -155,6 +155,7 @@ export class CrearSolicitudComponent implements OnInit {
   dataSeleccionados = [];
   dataIdOrdenSeleccionados = [];
   dataIdOrdenSeleccionadosServicios = [];
+  dataIdOrdenTotales = [];
   dataSeleccionadosServicios = [];
   arrayPrueba: any = [];
   dataIdServiciosBienes: any = [];
@@ -589,6 +590,17 @@ export class CrearSolicitudComponent implements OnInit {
 
   terminarSeleccionServicios() {
     this.mostrarTableServicios = false;
+  }
+
+  unificarIdServicios() {
+    let arr1 = this.dataIdOrdenSeleccionados.toString();
+    let arr2 = this.dataIdOrdenSeleccionadosServicios.toString();
+    let arr1a = arr1.split(',');
+    let arr2a = arr2.split(',');
+    this.dataIdOrdenTotales = arr1a.concat(arr2a).sort().filter((x, y)=> {
+      return this.dataIdOrdenTotales.indexOf(x) === y;
+    })
+    console.log(this.dataIdOrdenTotales);
   }
 
   reservarDatosContablesBienes() {

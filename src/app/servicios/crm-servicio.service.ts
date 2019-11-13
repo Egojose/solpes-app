@@ -10,8 +10,8 @@ import { headersToString } from 'selenium-webdriver/http';
 })
 
 export class CrmServicioService {
-  private readonly urlApiSolicitudes = 'http://itxcrmwebapiprb.azurewebsites.net/api/crm/solp/registrarsolp';
-  private readonly urlApiContratos = 'http://itxcrmwebapiprb.azurewebsites.net/api/crm/solp/registrarcontratoproveedor';
+  private readonly urlApiSolicitudes = 'https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarsolp';//c3d10e5bd16e48d3bd936bb9460bddef 
+  private readonly urlApiContratos = 'https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarcontratoproveedor';//c3d10e5bd16e48d3bd936bb9460bddef 
   private readonly urlLogin = "https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token";
   
   constructor(private http: HttpClient) {
