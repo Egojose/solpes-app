@@ -683,27 +683,31 @@
                     </div>
                     <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
                             <div class="card">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenServicios">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio" [disabled]="disabledIdServicioServicios">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio">
-                                            </div>
-                                            <div class="col-md-1">
-                                                <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
-                                                <button class="btn btn-outline-primary" type="button" (click)="validarLengthBusquedaServicios()">IR</button>
-                                            </div>
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" placeholder="Orden de Servicio"
+                                                formControlName="ordenServicios">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio"
+                                                [disabled]="disabledIdServicioServicios">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" placeholder="Nombre ID Servicio"
+                                                formControlName="nombreIdServicio">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
+                                            <button class="btn btn-outline-primary" type="button"
+                                                (click)="validarLengthBusquedaServicios()">IR</button>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         <div class="row" *ngIf="mostrarTableServicios">
                             <div class="col-md-12">
                                 <br>
