@@ -484,7 +484,7 @@
                                         <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                                         <td mat-cell *matCellDef="let element">
                                             <mat-checkbox color="primary" value="{{element.IdServicio}}"
-                                                [checked]="selectAll" (change)="seleccionado($event)"></mat-checkbox>
+                                                [checked]="selectAll" (change)="seleccionado($event, element)"></mat-checkbox>
                                         </td>
                                     </ng-container>
                                     <ng-container matColumnDef="cliente">
@@ -717,7 +717,7 @@
                                         <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                                         <td mat-cell *matCellDef="let element">
                                             <mat-checkbox color="primary" value="{{element.IdServicio}}"
-                                                [checked]="selectAllServicios" (change)="seleccionadoServicios($event)">
+                                                [checked]="selectAllServicios" (change)="seleccionadoServicios($event, element)">
                                             </mat-checkbox>
                                         </td>
                                     </ng-container>
