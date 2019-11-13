@@ -22,5 +22,6 @@ export const environment = {
   listaMotivoSuspension: 'motivoSuspension',
   listaCausalExcepcion: 'CausalExcepcion',
   listaCompradores: 'Compradores',
-  listaHistorial: 'HistorialSuspensiones'
+  listaHistorial: 'HistorialSuspensiones',
+  listaSolicitudesCrm: 'SolicitudesCrm'
 };

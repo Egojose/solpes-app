@@ -7,11 +7,12 @@ import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
 import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 import { RecepcionBienes } from "../entrega-bienes/recepcionBienes";
 import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
+import { HttpClient } from "@angular/common/http";
 import { promised } from "q";
 
 @Injectable()
 export class SPServicio {
-    constructor() { }
+    constructor(private httpClient: HttpClient) { }
 
     public ObtenerConfiguracion() {
         const configuracionSharepoint = pnp.sp.configure({
@@ -28,13 +29,13 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyIsImtpZCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTcxNjg4NDM0LCJuYmYiOjE1NzE2ODg0MzQsImV4cCI6MTU3MTcxNzUzNCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.QINJsEaDynXLHARhTM2eh7HBwOpdn4iw1bWsrgTLcQx-F_bt9r1eOLqkiDylhKypwM_IXEHXVrHqSmbcogBdtvXus-GQh4ASJHuetUOSSDAGu9zHpAv6Gu7SW3P2TRNZc8k2D0-XJFOWqnSvn4jlPejiraMQwmKHgHjOXu4QZC1rmMswjH3GzibbcEWTYdEA6l-hEAPB_YW2mBSAXhpmcWEcwJggfLk8-S2lnsJXoH8G-wOVFVo0GswiWdNggNdRTYFx53o1Wi4kVyX-dmaA6a7ahet99j5nDUq8S95yIQqFzKcmzJdocCLlNdLdWfKK9wZFR6KBjdzqZH8Cc-y5IA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTczNTcwODQ4LCJuYmYiOjE1NzM1NzA4NDgsImV4cCI6MTU3MzU5OTk0OCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.h-r64HcVX-yGPfX9wNjmmM09szuIpP31wJNb6JSORbMLDCuT0yCVArhGEVCFTlX7nc6YVm_dMTxLwOLqCZzl1JEUs4CULIR8SWN6vma3UYbh24qVn6pY5B3yam-61Mzgwd1WvOkjTQJRtQ8twbeIHUKtJNqfdldKMI0SWY6kTNszJW43UApyU_lXeYBqHQszVWOpWjF9SIITPvfp8JncSU0FcIr_JR7lt-1sZiVGkGGrkAkUR6HXgRHV9rAaRjM3tHckCS5I9p0MGMU13pf5loAod4n-86cmQ07eIqFGpqZX-iftWhCb6FWVV2WqLezVbZymmdSF7W8ZOoPKd6CPJQ'
             }
         }, environment.urlWeb);
 
         return configuracionSharepoint;
     }
-
+    
     ObtenerUsuarioActual() {
         let respuesta = from(this.ObtenerConfiguracion().web.currentUser.get());
         return respuesta;
@@ -185,7 +186,9 @@ export class SPServicio {
             MonedaSondeo: condicionTecnicaBienes.tipoMoneda,
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaBienes.numeroCuenta
+            numeroCuenta: condicionTecnicaBienes.numeroCuenta,
+            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio,
+            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio
         });
     }
     
@@ -207,7 +210,9 @@ export class SPServicio {
             MonedaSondeo: condicionTecnicaBienes.tipoMoneda,
             costoInversion: condicionTecnicaBienes.costoInversion,
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaBienes.numeroCuenta
+            numeroCuenta: condicionTecnicaBienes.numeroCuenta,
+            tieneIdServicio: condicionTecnicaBienes.tieneIdServicio,
+            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio
         });
     }
 
@@ -231,9 +236,9 @@ export class SPServicio {
         return item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
-    agregarAdjuntoContratos(IdContrato: number, nombreArchivo: string, archivo: File) {
+    async agregarAdjuntoContratos(IdContrato: number, nombreArchivo: string, archivo: File): Promise<any> {
         let item = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.getById(IdContrato);
-        return item.attachmentFiles.add(nombreArchivo, archivo);
+        return await item.attachmentFiles.add(nombreArchivo, archivo);
     }
 
     agregarAdjuntoActivosBienes(IdSolicitud: number, nombreArchivo: string, archivo: File) {
@@ -272,7 +277,9 @@ export class SPServicio {
             Comentario: condicionTecnicaServicios.comentarios,
             costoInversion: condicionTecnicaServicios.costoInversion,
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaServicios.numeroCuenta
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta,
+            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio,
+            IdOrdenServicio: condicionTecnicaServicios.idOrdenServicio
         });
     }
 
@@ -296,7 +303,9 @@ export class SPServicio {
             Comentario: condicionTecnicaServicios.comentarios,
             costoInversion: condicionTecnicaServicios.costoInversion,
             numeroCostoInversion: condicionTecnicaServicios.numeroCostoInversion,
-            numeroCuenta: condicionTecnicaServicios.numeroCuenta
+            numeroCuenta: condicionTecnicaServicios.numeroCuenta,
+            tieneIdServicio: condicionTecnicaServicios.tieneIdServicio,
+            IdOrdenServicio: condicionTecnicaServicios.idOrdenServicio
         });
     }
 
@@ -415,8 +424,8 @@ export class SPServicio {
         );
     } 
 
-    actualizarFechaContratos(IdSolicitud, ContratoOC){
-        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+    async actualizarFechaContratos(IdSolicitud, ContratoOC): Promise<any>{
+        return await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
               {
                 FechaRegistrarContrato: new Date(),
                 NumeroDeContrato: ContratoOC
@@ -487,12 +496,12 @@ export class SPServicio {
         }); 
     }
 
-    GuardarContrato(ObjContrato){
-        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
+    async GuardarContrato(ObjContrato): Promise<any>{
+        return await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.add(ObjContrato);
     }
 
-    cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor){
-        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
+    async cambioEstadoSolicitud(IdSolicitud, nombreEstado, autor): Promise<any>{
+        return await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
             {
                 Estado: nombreEstado,
                 ResponsableId: autor
@@ -606,8 +615,8 @@ export class SPServicio {
         return respuesta;
     }
 
-    guardarIdContratoBienes(idBienes, idContrato){
-        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
+    async guardarIdContratoBienes(idBienes, idContrato): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBienes).update(
             {
                 IdContrato: idContrato
             }
@@ -616,7 +625,7 @@ export class SPServicio {
     }
 
     guardarHistorial(objHistorial){
-        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaHistorial).items.add(objHistorial);
+        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaHistorial).items.add(objHistorial);
     }
 
     obtenerReactivarHistorial(idSolicitud){
@@ -626,11 +635,11 @@ export class SPServicio {
 
 
     reactivarHistorial(objHistorial, idHistoria){       
-        return this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaHistorial).items.getById(idHistoria).update(objHistorial);
+        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaHistorial).items.getById(idHistoria).update(objHistorial);
     }
 
-    guardarIdContratoServicios(idBienes, idContrato){
-        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
+    async guardarIdContratoServicios(idBienes, idContrato): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idBienes).update(
             {
                 IdContrato: idContrato
             }
@@ -645,6 +654,23 @@ export class SPServicio {
 
     ObtenerCondicionesTecnicasServiciosxContrato(IdContrato){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("IdContrato eq " + IdContrato).select("*","AttachmentFiles").expand("AttachmentFiles").get());
+        return respuesta;
+    }
+
+    ObtenerSolicitudesCrm(){
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudesCrm).items.filter("Exitoso eq '0'").get();
+        return respuesta;
+    }
+
+    async CambiarEstadoSolicitudesCrm(idSolicitud): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudesCrm).items.getById(idSolicitud).update({
+            Exitoso: true
+        })
+        return respuesta;
+    }
+
+    async GuardarSolicitudCrm(obj): Promise<any>{
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudesCrm).items.add(obj);
         return respuesta;
     }
 

@@ -51,6 +51,9 @@ button {
 }
 
 table tr:nth-child(even) {
-    background-color: rgba(0,0,0,.03);
-  }
+    background-color: rgba(0, 0, 0, .03);
+}
 
+.gray {
+    max-width: 1125px !important;
+}

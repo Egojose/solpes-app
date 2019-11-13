@@ -1,0 +1,133 @@
+<h2>Gestión de errores</h2>
+
+
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <strong>Solicitudes no enviados</strong>
+            </mat-panel-title>
+            <mat-panel-description>
+                {{panelOpenState ? 'Abrir' : 'Cerrar'}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="container">
+            <mat-toolbar color="primary" [hidden]="!emptySolicitudes">No hay solicitudes no enviadas</mat-toolbar>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mat-elevation-z8" [hidden]="emptySolicitudes">
+                        <table mat-table [dataSource]="dataSourceSolicitudes" class="mat-elevation-z8">
+
+                            <ng-container matColumnDef="numerosolp">
+                                <th mat-header-cell *matHeaderCellDef> Número Solp </th>
+                                <td mat-cell *matCellDef="let element"> {{element.NroSolp}} </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="idservicios">
+                                <th mat-header-cell *matHeaderCellDef> Id Servicio </th>
+                                <td mat-cell *matCellDef="let element"> {{element.IdServicios}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="NombreProceso">
+                                <th mat-header-cell *matHeaderCellDef> Enlace </th>
+                                <td mat-cell *matCellDef="let element"> {{element.EnlaceSolp}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Acciones">
+                                <th mat-header-cell *matHeaderCellDef> Cargar nuevamente </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="col-md-12" *ngIf="element.Exitoso === false">
+                                        <button class="btn btn-success" (click)="CargarSolicitudCrm(element)">Cargar</button>
+                                    </div>
+                                    <div class="col-md-12" style="color: green; font-weight: bold;" *ngIf="element.Exitoso === true">
+                                        Cargado con éxito
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="row" [hidden]="emptySolicitudes">
+                <div class="col-3">
+                    <button class="btn btn-success" (click)="CargarTodosSolicitudes(element)">Volver a cargar solicitudes</button>
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<br>
+
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <strong>Contratos no enviados</strong>
+            </mat-panel-title>
+            <mat-panel-description>
+                {{panelOpenState ? 'Abrir' : 'Cerrar'}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="container">
+            <mat-toolbar color="primary" [hidden]="!emptyContratos">No hay contratos no enviados</mat-toolbar>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mat-elevation-z8" [hidden]="emptyContratos">
+                        <table mat-table [dataSource]="dataSourceContratos" class="mat-elevation-z8">
+
+                            <ng-container matColumnDef="numerosolp">
+                                <th mat-header-cell *matHeaderCellDef> Número Solp </th>
+                                <td mat-cell *matCellDef="let element"> {{element.NroSolp}} </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="numeroContrato">
+                                <th mat-header-cell *matHeaderCellDef> Número contrato </th>
+                                <td mat-cell *matCellDef="let element"> {{element.NroContrato}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nombreProveedor">
+                                <th mat-header-cell *matHeaderCellDef> Nombre Proveedor </th>
+                                <td mat-cell *matCellDef="let element"> {{element.NombreProveedor}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Acciones">
+                                <th mat-header-cell *matHeaderCellDef> Cargar nuevamente </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="col-md-12" *ngIf="element.Exitoso === false">
+                                        <button class="btn btn-success" (click)="CargarCrmContratos(element)">Cargar</button>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsContratos"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsContratos;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="row" [hidden]="emptyContratos">
+                <div class="col-3">
+                    <button class="btn btn-success" (click)="CargarTodosContratos(element)">Volver a cargar contratos</button>
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<br>
+
+<ngx-spinner>
+    <p style="font-size: 20px; color: white">PROCESANDO...</p>
+</ngx-spinner>
