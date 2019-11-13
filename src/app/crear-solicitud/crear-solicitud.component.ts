@@ -359,7 +359,6 @@ export class CrearSolicitudComponent implements OnInit {
       this.idServiceOrder !== null ? this.ctsFormulario.controls['ordenServicios'].setValue(this.idServiceOrder) : this.ctsFormulario.controls['ordenServicios'].setValue('');
       this.idService !== null ? this.ctsFormulario.controls['idServicio'].setValue(this.idService) : this.ctsFormulario.controls['idServicio'].setValue('');
       this.idService !== null ? this.disabledIdServicioServicios = false : this.disabledIdServicioServicios = true;
-
     }
     else {
       this.mostrarFiltroServicios = false;
@@ -506,6 +505,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.dataIdOrdenSeleccionados = this.datosFiltradosBienes.filteredData.map(x => {
         return x.Orden_SAP
       })
+      console.log(this.dataIdOrdenSeleccionados);
     }
     else {
       this.dataSeleccionados = [];
@@ -3557,10 +3557,16 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
     let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
-    let idOrdenServicio = this.dataIdOrdenSeleccionados.toString();
+    let idOrdenServicio;
     let tieneIdServicio;
-    costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
-    // tieneIdServicio = true ? idOrdenServicio = this.dataIdOrdenSeleccionados.toString() : idOrdenServicio = '';
+    if(costoInversion === 'ID de Servicios') {
+      tieneIdServicio = true;
+      idOrdenServicio = this.dataIdOrdenSeleccionados.toString();
+    }
+    else {
+      tieneIdServicio = false;
+      idOrdenServicio = '';
+    }
     //---------------------------------------------Hasta aquí---------------------------------------
 
     //--------------------------Habilitar cuando datos contables no obligatorios------------------
@@ -3934,8 +3940,14 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let adjunto = null;
     let idOrdenServicio 
     let tieneIdServicio;
-    costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
-    tieneIdServicio = true ? idOrdenServicio = this.dataIdOrdenSeleccionadosServicios.toString() : idOrdenServicio = '';
+    if(costoInversion === 'ID de Servicios') {
+      tieneIdServicio = true;
+      idOrdenServicio = this.dataIdOrdenSeleccionadosServicios.toString();
+    }
+    else {
+      tieneIdServicio = false;
+      idOrdenServicio = '';
+    }
     //-------------------------------------------------Hasta aquí--------------------------------------
 
 
