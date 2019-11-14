@@ -150,6 +150,7 @@ export class EditarSolicitudComponent implements OnInit {
   dataIdeServiciosServicios: any = [];
   dataTotalIds: any = [];
   arrayPrueba: any = [];
+  enviarCrm: boolean;
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  Habilitar cuando datos contables no obligatorios
@@ -231,6 +232,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.enableCheckDatosContablesServicios = false
     this.setDatosContablesBienes = false;
     this.setDatosContablesServicios = false;
+    this.enviarCrm = false;
     this.cargaDesdeExcel = false; 
     // this.cargaExcel = false;  Habilitar cuando datos contables no obligatorios
   }
@@ -4328,6 +4330,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
 
               this.servicio.actualizarSolicitud(this.solicitudRecuperada.id, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {
+
                   // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
                   //   (item: ItemAddResult) => {
 

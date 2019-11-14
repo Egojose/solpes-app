@@ -27,8 +27,16 @@ export class CrmServicioService {
     return this.http.post(this.urlLogin, formData).toPromise();
   }
 
-  ActualizarSolicitud(ObjSolicitudes){    
-    return this.http.put(this.urlApiSolicitudes,ObjSolicitudes).toPromise();
+  ActualizarSolicitud(ObjSolicitudes): Promise<any>{  
+    let token = 'cf312e4c52b24af1bcd4842fe6aca279'
+ 
+    const header = {
+      'Accept': 'application/json; odata=verbose',
+      'Content-Type': 'application/json',
+      'Ocp-Apim-Subscription-Key':  token
+    }
+    return this.http.put('https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarsolp',ObjSolicitudes, {headers: header}).toPromise();
+    // return this.http.put(this.urlApiSolicitudes,{headers: header},ObjSolicitudes).toPromise();
   }
 
   ActualizarContratos(ObjContratos){    

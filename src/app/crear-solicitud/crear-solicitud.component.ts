@@ -34,6 +34,7 @@ import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group
 import { CondicionesTecnicasServicios } from '../entrega-servicios/condicionTecnicaServicio';
 import { forEach } from '@angular/router/src/utils/collection';
 import { CrmServicioService } from '../servicios/crm-servicio.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -161,6 +162,7 @@ export class CrearSolicitudComponent implements OnInit {
   dataIdServiciosBienes: any = [];
   dataIdeServiciosServicios: any = [];
   dataTotalIds: any = [];
+  enviarCrm: boolean;
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
@@ -284,6 +286,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.enableCheckDatosContablesServicios = false
     this.setDatosContablesBienes = false;
     this.setDatosContablesServicios = false;
+    this.enviarCrm = false;
     this.cargaDesdeExcel = false;    
     // this.cargaExcel = false; se debe habilitar para datos contables no obligatorios
     
@@ -3177,6 +3180,18 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                 FechaDeCreacion);
               this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {
+                  this.obtenerIdsBienesServicios().subscribe(
+                    (respuesta) => {
+                      let objCrm = {
+                        "numerosolp": this.idSolicitudGuardada,
+                        "linksolp": "Este es el link de solp",
+                        "idservicios": this.dataTotalIds     
+                      }
+                      if(respuesta[0] !== '' && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
+                        this.servicioCrm.ActualizarSolicitud(objCrm)
+                      }
+                    }
+                  )
                   // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
                   //   (item: ItemAddResult) => {
                       let notificacion = {
@@ -3840,7 +3855,36 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.emptyCTB = false;
   }
 
-  obtenerIdsBienesServicios() {
+  validarSiEnviarCrm() {
+    let data;
+    let dataServicios;
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        data = respuesta.filter(x => {
+          return x.tieneIdServicio === true
+        });
+        if(data === undefined) {
+          data = '';
+        }
+      }
+    )
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        dataServicios = respuesta.filter(x => {
+          return x.tieneIdServicio === true
+        });
+        if (dataServicios === undefined) {
+          dataServicios = '';
+        }
+      }
+    );
+    if(data.length > 0 || dataServicios.length > 0) {
+      this.enviarCrm = true;
+    }
+    console.log(this.enviarCrm);
+  }
+
+  obtenerIdsBienesServicios(): Observable<any> {
     let data = [];
     let dataServicios = [];
     let dataTotales;
@@ -3886,7 +3930,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.dataTotalIds = dataTotalesArray.sort().filter((x, y) => {
       return dataTotalesArray.indexOf(x) === y;
     })
+    if(this.dataTotalIds[0] === '') {
+      this.enviarCrm = true;
+    }
     console.log(this.dataTotalIds);
+    console.log(this.enviarCrm);
+    return this.dataTotalIds;
   }
 
   limpiarControlesCTB(): any {
