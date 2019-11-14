@@ -3843,7 +3843,9 @@ validarCodigosBrasilCTS(codigoValidar, i) {
   obtenerIdsBienesServicios() {
     let data = [];
     let dataServicios = [];
-    let dataTotales
+    let dataTotales;
+    let dataTotalesString;
+    let dataTotalesArray;
 
     this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
       (respuesta) => {
@@ -3853,10 +3855,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
         if (data.length > 0) {
           data.map(x => {
             this.dataIdServiciosBienes.push(x.numeroCostoInversion);
-            console.log(this.dataIdServiciosBienes);
-            // console.log(this.dataIdServiciosBienes.filter((x, y) => {
-            //   return this.dataIdServiciosBienes.indexOf(x) === y;
-            // }));
+            // console.log(this.dataIdServiciosBienes);
           })
         }
         else {
@@ -3872,10 +3871,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
         if (dataServicios.length > 0) {
           dataServicios.map(x => {
             this.dataIdeServiciosServicios.push(x.numeroCostoInversion);
-            console.log(this.dataIdeServiciosServicios);
-            // console.log(this.dataIdeServiciosServicios.filter((x, y) => {
-            //   return this.dataIdeServiciosServicios.indexOf(x) === y;
-            // }));
+            // console.log(this.dataIdeServiciosServicios);
           })
         }
         else {
@@ -3884,12 +3880,13 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       }
     );
     dataTotales = this.dataIdServiciosBienes.concat(this.dataIdeServiciosServicios)
-    this.dataTotalIds = dataTotales.toString()
-    console.log(this.dataTotalIds.split(',').filter((x, y) => {
-        return this.dataTotalIds.indexOf(x) === y;
-        }
-      )
-    );
+    // console.log(dataTotales);
+    dataTotalesString = dataTotales.toString();
+    dataTotalesArray = dataTotalesString.split(',');
+    this.dataTotalIds = dataTotalesArray.sort().filter((x, y) => {
+      return dataTotalesArray.indexOf(x) === y;
+    })
+    console.log(this.dataTotalIds);
   }
 
   limpiarControlesCTB(): any {

@@ -146,6 +146,9 @@ export class EditarSolicitudComponent implements OnInit {
   dataSourceDatosServicios = new MatTableDataSource();
   dataSeleccionados = [];
   dataSeleccionadosServicios = [];
+  dataIdServiciosBienes: any = [];
+  dataIdeServiciosServicios: any = [];
+  dataTotalIds: any = [];
   arrayPrueba: any = [];
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
@@ -548,6 +551,55 @@ export class EditarSolicitudComponent implements OnInit {
       return this.dataIdOrdenTotales.indexOf(x) === y;
     })
     console.log(this.dataIdOrdenTotales);
+  }
+
+  obtenerIdsBienesServicios() {
+    let data = [];
+    let dataServicios = [];
+    let dataTotales;
+    let dataTotalesString;
+    let dataTotalesArray;
+
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        data = respuesta.filter(x => {
+          return x.tieneIdServicio === true
+        });
+        if (data.length > 0) {
+          data.map(x => {
+            this.dataIdServiciosBienes.push(x.numeroCostoInversion);
+            // console.log(this.dataIdServiciosBienes);
+          })
+        }
+        else {
+          this.dataIdServiciosBienes = [];
+        }
+      }
+    )
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        dataServicios = respuesta.filter(x => {
+          return x.tieneIdServicio === true
+        });
+        if (dataServicios.length > 0) {
+          dataServicios.map(x => {
+            this.dataIdeServiciosServicios.push(x.numeroCostoInversion);
+            // console.log(this.dataIdeServiciosServicios);
+          })
+        }
+        else {
+          this.dataIdeServiciosServicios = [];
+        }
+      }
+    );
+    dataTotales = this.dataIdServiciosBienes.concat(this.dataIdeServiciosServicios)
+    // console.log(dataTotales);
+    dataTotalesString = dataTotales.toString();
+    dataTotalesArray = dataTotalesString.split(',');
+    this.dataTotalIds = dataTotalesArray.sort().filter((x, y) => {
+      return dataTotalesArray.indexOf(x) === y;
+    })
+    console.log(this.dataTotalIds);
   }
 
   terminarSeleccionServicios() {
