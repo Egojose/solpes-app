@@ -34,6 +34,7 @@ import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group
 import { CondicionesTecnicasServicios } from '../entrega-servicios/condicionTecnicaServicio';
 import { forEach } from '@angular/router/src/utils/collection';
 import { CrmServicioService } from '../servicios/crm-servicio.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -161,6 +162,7 @@ export class CrearSolicitudComponent implements OnInit {
   dataIdServiciosBienes: any = [];
   dataIdeServiciosServicios: any = [];
   dataTotalIds: any = [];
+  enviarCrm: boolean;
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
@@ -284,6 +286,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.enableCheckDatosContablesServicios = false
     this.setDatosContablesBienes = false;
     this.setDatosContablesServicios = false;
+    this.enviarCrm = false;
     this.cargaDesdeExcel = false;    
     // this.cargaExcel = false; se debe habilitar para datos contables no obligatorios
     
@@ -359,7 +362,6 @@ export class CrearSolicitudComponent implements OnInit {
       this.idServiceOrder !== null ? this.ctsFormulario.controls['ordenServicios'].setValue(this.idServiceOrder) : this.ctsFormulario.controls['ordenServicios'].setValue('');
       this.idService !== null ? this.ctsFormulario.controls['idServicio'].setValue(this.idService) : this.ctsFormulario.controls['idServicio'].setValue('');
       this.idService !== null ? this.disabledIdServicioServicios = false : this.disabledIdServicioServicios = true;
-
     }
     else {
       this.mostrarFiltroServicios = false;
@@ -506,6 +508,7 @@ export class CrearSolicitudComponent implements OnInit {
       this.dataIdOrdenSeleccionados = this.datosFiltradosBienes.filteredData.map(x => {
         return x.Orden_SAP
       })
+      console.log(this.dataIdOrdenSeleccionados);
     }
     else {
       this.dataSeleccionados = [];
@@ -3177,6 +3180,37 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                 FechaDeCreacion);
               this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {
+                  this.obtenerIdsBienesServicios().subscribe(
+                    (respuesta) => {
+                      let objCrm = {
+                        "numerosolp": this.idSolicitudGuardada,
+                        "linksolp": "Este es el link de solp",
+                        "idservicios": this.dataTotalIds     
+                      }
+                      if(respuesta[0] !== '' && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
+                        this.servicioCrm.ActualizarSolicitud(objCrm).subscribe(
+                          (res) => {
+                            if(res.status === 200) {
+                              this.MostrarExitoso('Se envió correctamente a CRM')
+                            }
+                            else {
+                              let obj = {
+                                Title: `Solicitud ${this.idSolicitudGuardada}`,
+                                NroSolp: this.idSolicitudGuardada,
+                                EnlaceSolp: 'link de solp',
+                                IdServicios: this.dataTotalIds
+                              }
+                              this.servicio.enviarFallidosListaCrm(obj).then(
+                                (respuesta) => {
+                                  this.mostrarInformacion('Se ha enviado a la lista de espera solicitudes crm');
+                                }
+                              )
+                            }
+                          }
+                        )
+                      }
+                    }
+                  )
                   // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
                   //   (item: ItemAddResult) => {
                       let notificacion = {
@@ -3557,10 +3591,16 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
     let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
-    let idOrdenServicio = this.dataIdOrdenSeleccionados.toString();
+    let idOrdenServicio;
     let tieneIdServicio;
-    costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
-    // tieneIdServicio = true ? idOrdenServicio = this.dataIdOrdenSeleccionados.toString() : idOrdenServicio = '';
+    if(costoInversion === 'ID de Servicios') {
+      tieneIdServicio = true;
+      idOrdenServicio = this.dataIdOrdenSeleccionados.toString();
+    }
+    else {
+      tieneIdServicio = false;
+      idOrdenServicio = '';
+    }
     //---------------------------------------------Hasta aquí---------------------------------------
 
     //--------------------------Habilitar cuando datos contables no obligatorios------------------
@@ -3834,10 +3874,41 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.emptyCTB = false;
   }
 
-  obtenerIdsBienesServicios() {
+  validarSiEnviarCrm() {
+    let data;
+    let dataServicios;
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        data = respuesta.filter(x => {
+          return x.tieneIdServicio === true
+        });
+        if(data === undefined) {
+          data = '';
+        }
+      }
+    )
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        dataServicios = respuesta.filter(x => {
+          return x.tieneIdServicio === true
+        });
+        if (dataServicios === undefined) {
+          dataServicios = '';
+        }
+      }
+    );
+    if(data.length > 0 || dataServicios.length > 0) {
+      this.enviarCrm = true;
+    }
+    console.log(this.enviarCrm);
+  }
+
+  obtenerIdsBienesServicios(): Observable<any> {
     let data = [];
     let dataServicios = [];
-    let dataTotales
+    let dataTotales;
+    let dataTotalesString;
+    let dataTotalesArray;
 
     this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
       (respuesta) => {
@@ -3847,10 +3918,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
         if (data.length > 0) {
           data.map(x => {
             this.dataIdServiciosBienes.push(x.numeroCostoInversion);
-            console.log(this.dataIdServiciosBienes);
-            // console.log(this.dataIdServiciosBienes.filter((x, y) => {
-            //   return this.dataIdServiciosBienes.indexOf(x) === y;
-            // }));
+            // console.log(this.dataIdServiciosBienes);
           })
         }
         else {
@@ -3866,10 +3934,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
         if (dataServicios.length > 0) {
           dataServicios.map(x => {
             this.dataIdeServiciosServicios.push(x.numeroCostoInversion);
-            console.log(this.dataIdeServiciosServicios);
-            // console.log(this.dataIdeServiciosServicios.filter((x, y) => {
-            //   return this.dataIdeServiciosServicios.indexOf(x) === y;
-            // }));
+            // console.log(this.dataIdeServiciosServicios);
           })
         }
         else {
@@ -3878,12 +3943,18 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       }
     );
     dataTotales = this.dataIdServiciosBienes.concat(this.dataIdeServiciosServicios)
-    this.dataTotalIds = dataTotales.toString()
-    console.log(this.dataTotalIds.split(',').filter((x, y) => {
-        return this.dataTotalIds.indexOf(x) === y;
-        }
-      )
-    );
+    // console.log(dataTotales);
+    dataTotalesString = dataTotales.toString();
+    dataTotalesArray = dataTotalesString.split(',');
+    this.dataTotalIds = dataTotalesArray.sort().filter((x, y) => {
+      return dataTotalesArray.indexOf(x) === y;
+    })
+    if(this.dataTotalIds[0] === '') {
+      this.enviarCrm = true;
+    }
+    console.log(this.dataTotalIds);
+    console.log(this.enviarCrm);
+    return this.dataTotalIds;
   }
 
   limpiarControlesCTB(): any {
@@ -3934,8 +4005,14 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     let adjunto = null;
     let idOrdenServicio 
     let tieneIdServicio;
-    costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
-    tieneIdServicio = true ? idOrdenServicio = this.dataIdOrdenSeleccionadosServicios.toString() : idOrdenServicio = '';
+    if(costoInversion === 'ID de Servicios') {
+      tieneIdServicio = true;
+      idOrdenServicio = this.dataIdOrdenSeleccionadosServicios.toString();
+    }
+    else {
+      tieneIdServicio = false;
+      idOrdenServicio = '';
+    }
     //-------------------------------------------------Hasta aquí--------------------------------------
 
 

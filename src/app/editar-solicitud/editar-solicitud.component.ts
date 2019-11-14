@@ -136,6 +136,8 @@ export class EditarSolicitudComponent implements OnInit {
   datosServicios: any =[];
   datosFiltradosBienes: any = [];
   datosFiltradosServicios: any = [];
+  dataIdOrdenSeleccionados = [];
+  dataIdOrdenSeleccionadosServicios = [];
   selectAll: boolean;
   disableIdServicio: boolean;
   disabledIdServicioServicios: boolean;
@@ -144,7 +146,11 @@ export class EditarSolicitudComponent implements OnInit {
   dataSourceDatosServicios = new MatTableDataSource();
   dataSeleccionados = [];
   dataSeleccionadosServicios = [];
+  dataIdServiciosBienes: any = [];
+  dataIdeServiciosServicios: any = [];
+  dataTotalIds: any = [];
   arrayPrueba: any = [];
+  enviarCrm: boolean;
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  Habilitar cuando datos contables no obligatorios
@@ -183,6 +189,7 @@ export class EditarSolicitudComponent implements OnInit {
   cargaDesdeExcelServicios: any;
   mostrarTableServicios: boolean;
   selectAllServicios: boolean;
+  dataIdOrdenTotales = [];
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -225,6 +232,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.enableCheckDatosContablesServicios = false
     this.setDatosContablesBienes = false;
     this.setDatosContablesServicios = false;
+    this.enviarCrm = false;
     this.cargaDesdeExcel = false; 
     // this.cargaExcel = false;  Habilitar cuando datos contables no obligatorios
   }
@@ -448,28 +456,38 @@ export class EditarSolicitudComponent implements OnInit {
       this.dataSeleccionados = this.datos.map(x => {
         return x.IdServicio
       })
+      this.dataIdOrdenSeleccionados = this.datos.map(x => {
+        return x.Orden_SAP
+      })
     }
     else if (this.selectAll === true && (cliente !== '' || idServ !== '' || nombreServ !== '' || os !== '')) {
       this.datosFiltradosBienes = this.dataSourceDatos;
       this.dataSeleccionados = this.datosFiltradosBienes.filteredData.map(x => {
        return x.IdServicio
       })
+      this.dataIdOrdenSeleccionados = this.datosFiltradosBienes.filteredData.map(x => {
+        return x.Orden_SAP
+      })
     }
     else {
       this.dataSeleccionados = [];
+      this.dataIdOrdenSeleccionados = [];
     }
     this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
   }
 
-  seleccionado($event) {
+  seleccionado($event, element) {
     let idServicioSeleccionado = $event.source.value
     console.log($event);
     if ($event.checked === true) {
       this.dataSeleccionados.push(idServicioSeleccionado);
+      this.dataIdOrdenSeleccionados.push(element.Orden_SAP);
     }
     else {
       let index = this.dataSeleccionados.findIndex(x => x === idServicioSeleccionado);
+      let el = this.dataIdOrdenSeleccionados.findIndex(x => x === element.Orden_SAP)
       this.dataSeleccionados.splice(index, 1);
+      this.dataIdOrdenSeleccionados.splice(el, 1);
       if(index === -1 ) {
         this.selectAll = false;
       }
@@ -491,29 +509,99 @@ export class EditarSolicitudComponent implements OnInit {
       this.dataSeleccionadosServicios = this.datosServicios.map(x => {
         return x.IdServicio
       })
+      this.dataIdOrdenSeleccionadosServicios = this.datosServicios.map(x => {
+        return x.Orden_SAP
+      })
     }
     else if(this.selectAllServicios === true && (cliente !== '' || orden !== '' || idServicios !== '' || nombreServicios !== '')) {
      this.datosFiltradosServicios = this.dataSourceDatosServicios
       this.dataSeleccionadosServicios = this.datosFiltradosServicios.filteredData.map(x => {
         return x.IdServicio
       })
+      this.dataIdOrdenSeleccionadosServicios = this.datosFiltradosServicios.filteredData.map(x => {
+        return x.Orden_SAP
+      })
     }
     else {
       this.dataSeleccionadosServicios = [];
+      this.dataIdOrdenSeleccionadosServicios = [];
     }
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
   }
 
-  seleccionadoServicios($event) {
+  seleccionadoServicios($event, element) {
     let idServicioSeleccionado = $event.source.value
     if ($event.checked === true) {
       this.dataSeleccionadosServicios.push(idServicioSeleccionado);
+      this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
     }
     else {
       let index = this.dataSeleccionadosServicios.findIndex(x => x === idServicioSeleccionado);
+      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
       this.dataSeleccionadosServicios.splice(index, 1);
+      this.dataIdOrdenSeleccionadosServicios.splice(el, 1);
     }
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
+  }
+
+  unificarIdServicios() {
+    let arr1 = this.dataIdOrdenSeleccionados.toString();
+    let arr2 = this.dataIdOrdenSeleccionadosServicios.toString();
+    let arr1a = arr1.split(',');
+    let arr2a = arr2.split(',');
+    this.dataIdOrdenTotales = arr1a.concat(arr2a).sort().filter((x, y)=> {
+      return this.dataIdOrdenTotales.indexOf(x) === y;
+    })
+    console.log(this.dataIdOrdenTotales);
+  }
+
+  obtenerIdsBienesServicios() {
+    let data = [];
+    let dataServicios = [];
+    let dataTotales;
+    let dataTotalesString;
+    let dataTotalesArray;
+
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        data = respuesta.filter(x => {
+          return x.tieneIdServicio === true
+        });
+        if (data.length > 0) {
+          data.map(x => {
+            this.dataIdServiciosBienes.push(x.numeroCostoInversion);
+            // console.log(this.dataIdServiciosBienes);
+          })
+        }
+        else {
+          this.dataIdServiciosBienes = [];
+        }
+      }
+    )
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
+      (respuesta) => {
+        dataServicios = respuesta.filter(x => {
+          return x.tieneIdServicio === true
+        });
+        if (dataServicios.length > 0) {
+          dataServicios.map(x => {
+            this.dataIdeServiciosServicios.push(x.numeroCostoInversion);
+            // console.log(this.dataIdeServiciosServicios);
+          })
+        }
+        else {
+          this.dataIdeServiciosServicios = [];
+        }
+      }
+    );
+    dataTotales = this.dataIdServiciosBienes.concat(this.dataIdeServiciosServicios)
+    // console.log(dataTotales);
+    dataTotalesString = dataTotales.toString();
+    dataTotalesArray = dataTotalesString.split(',');
+    this.dataTotalIds = dataTotalesArray.sort().filter((x, y) => {
+      return dataTotalesArray.indexOf(x) === y;
+    })
+    console.log(this.dataTotalIds);
   }
 
   terminarSeleccionServicios() {
@@ -4240,6 +4328,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
 
               this.servicio.actualizarSolicitud(this.solicitudRecuperada.id, this.solicitudGuardar).then(
                 (item: ItemAddResult) => {
+
                   // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
                   //   (item: ItemAddResult) => {
 
