@@ -305,7 +305,7 @@ export class GestionErroresComponent implements OnInit {
 
   async enviarServicioSolicitud(obj): Promise<any>{
     let respuesta;
-    await this.servicioCrm.ActualizarSolicitud(obj).then(
+    await this.servicioCrm.ActualizarSolicitud(obj).subscribe(
       (res)=>{
         respuesta = res;
       },

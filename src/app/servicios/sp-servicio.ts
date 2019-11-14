@@ -674,4 +674,9 @@ export class SPServicio {
         return respuesta;
     }
 
+    enviarFallidosListaCrm(obj) {
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudesCrm).items.add(obj);
+        return respuesta;
+    }
+
 }

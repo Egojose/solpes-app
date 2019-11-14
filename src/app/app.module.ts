@@ -124,7 +124,7 @@ import { CrmServicioService } from './servicios/crm-servicio.service';
       {path:'gestion-errores', component:GestionErroresComponent}
     ])
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent, ExcelService, CrmServicioService],
+  providers: [SPServicio, BsModalService, ModalBackdropComponent, ExcelService, CrmServicioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

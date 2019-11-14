@@ -3188,7 +3188,26 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                         "idservicios": this.dataTotalIds     
                       }
                       if(respuesta[0] !== '' && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
-                        this.servicioCrm.ActualizarSolicitud(objCrm)
+                        this.servicioCrm.ActualizarSolicitud(objCrm).subscribe(
+                          (res) => {
+                            if(res.status === 200) {
+                              this.MostrarExitoso('Se envió correctamente a CRM')
+                            }
+                            else {
+                              let obj = {
+                                Title: `Solicitud ${this.idSolicitudGuardada}`,
+                                NroSolp: this.idSolicitudGuardada,
+                                EnlaceSolp: 'link de solp',
+                                IdServicios: this.dataTotalIds
+                              }
+                              this.servicio.enviarFallidosListaCrm(obj).then(
+                                (respuesta) => {
+                                  this.mostrarInformacion('Se ha enviado a la lista de espera solicitudes crm');
+                                }
+                              )
+                            }
+                          }
+                        )
                       }
                     }
                   )
