@@ -27,7 +27,7 @@ export class CrmServicioService {
     return this.http.post(this.urlLogin, formData).toPromise();
   }
 
-  ActualizarSolicitud(ObjSolicitudes): Observable<any>{  
+  ActualizarSolicitud(ObjSolicitudes): Promise<any>{  
     let token = 'cf312e4c52b24af1bcd4842fe6aca279'
  
     // const header = {
@@ -35,8 +35,8 @@ export class CrmServicioService {
     //   'Content-Type': 'application/json',
     //   'Ocp-Apim-Subscription-Key':  token
     // }
-    return this.http.put('https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarsolp',ObjSolicitudes);
-    // return this.http.put(this.urlApiSolicitudes,{headers: header},ObjSolicitudes).toPromise();
+    // return this.http.put('https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarsolp',ObjSolicitudes);
+    return this.http.put(this.urlApiSolicitudes,ObjSolicitudes).toPromise();
   }
 
   ActualizarContratos(ObjContratos){    

@@ -307,6 +307,21 @@ export class CrearSolicitudComponent implements OnInit {
     this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
     this.obtenerQueryParams();
+    this.ObtenerToken();
+  }
+
+  ObtenerToken(){
+    let token;
+    this.servicioCrm.obtenerToken().then(
+      (res)=>{        
+        token = res["access_token"];
+        localStorage.setItem("id_token",token)
+      }
+    ).catch(
+      (error)=>{
+        localStorage.setItem("id_token","false")
+      }
+    )
   }
 
   obtenerQueryParams() {
@@ -3188,7 +3203,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                         "idservicios": this.dataTotalIds     
                       }
                       if(respuesta[0] !== '' && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
-                        this.servicioCrm.ActualizarSolicitud(objCrm).subscribe(
+                        this.servicioCrm.ActualizarSolicitud(objCrm).then(
                           (res) => {
                             if(res.status === 200) {
                               this.MostrarExitoso('Se envió correctamente a CRM')

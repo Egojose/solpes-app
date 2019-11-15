@@ -112,7 +112,7 @@ export class ContratosComponent implements OnInit {
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
     this.Guardado = false;
-    // this.ObtenerToken();
+    this.ObtenerToken();
   }
 
   private ObtenerToken(){

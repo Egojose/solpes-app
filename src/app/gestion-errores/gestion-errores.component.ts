@@ -32,7 +32,7 @@ export class GestionErroresComponent implements OnInit {
     private spinner: NgxSpinnerService, 
     public toastr: ToastrManager,
     public servicioCrm: CrmServicioService) { 
-      // this.ObtenerToken();
+      this.ObtenerToken();
     }
 
   displayedColumns: string[] = ['numerosolp', 'idservicios', 'NombreProceso', 'Acciones'];
@@ -305,7 +305,7 @@ export class GestionErroresComponent implements OnInit {
 
   async enviarServicioSolicitud(obj): Promise<any>{
     let respuesta;
-    await this.servicioCrm.ActualizarSolicitud(obj).subscribe(
+    await this.servicioCrm.ActualizarSolicitud(obj).then(
       (res)=>{
         respuesta = res;
       },
