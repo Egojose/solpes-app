@@ -97,8 +97,7 @@ export class GestionErroresComponent implements OnInit {
       "numerosolp": "9",
       "linksolp": "Este es el link de solp",
       "idservicios": ["665","656"]      
-    }
-
+    }    
     for (let index = 0; index < 3; index++) { 
       respuesta = await this.enviarServicioSolicitud(obj);
       if (respuesta.StatusCode === 200) {
@@ -106,9 +105,9 @@ export class GestionErroresComponent implements OnInit {
         break;
       }
     }
-    // respuesta = {
-    //   StatusCode: 200
-    // }
+    respuesta = {
+      StatusCode: 200
+    }
 
     let RespuestaCrmSP;
 
