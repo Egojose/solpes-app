@@ -17,7 +17,7 @@ export class CacheInterceptor implements HttpInterceptor {
       req = req.clone({
         setHeaders:{
           Authorization : `Bearer ${jwt}`,
-          'Ocp-Apim-Subscription-Key': 'c3d10e5bd16e48d3bd936bb9460bddef'
+          // 'Ocp-Apim-Subscription-Key': 'c3d10e5bd16e48d3bd936bb9460bddef'
         }
       });
       

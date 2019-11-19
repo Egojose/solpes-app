@@ -29,7 +29,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTczODM4NjY3LCJuYmYiOjE1NzM4Mzg2NjcsImV4cCI6MTU3Mzg2Nzc2NywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.BIO3WAmWcC9JqOVIV6y8HQWx9nPUutxrzWSP8OW3tOyuMBsmW-lDeh-lWF6miyWU0dK9j1pWmnZjOJlDVrkN_cLKgdaWIbmaT63CCrGwpo3Ie_rhRQmEl_r62RdPQJGSERwLjoKjI2e7EcQMZm9VBXfeB0apnQLOKwWJsc447bNZA_ENXDs126HgaYJwV6pJNNdFTfOS3DAwKJSYLSd-hKyhqGUjoGrNH7vshdsQ8H32UcghofG4QMAmeV1QjnaZ5Us_gev_-EevrvYYmum9Jxf_prZqO0dWBjtHDD4WUPdgtoOINs6mdEAnLOfmGOhnnfUzYqWTY5_3V009pqoc2w'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTc0MTA1MTcyLCJuYmYiOjE1NzQxMDUxNzIsImV4cCI6MTU3NDEzNDI3MiwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.hsqkT02G6q5BRbAWhlog3Bqt6ojWK5a3PYZw6EONKPlsHR1NnwAgSqqQGqpA4IMxVGRRJUW6YOW0TsS68cLg35P_--36Dwmot_Pqetb8gkr90pccZqZdQGl-n6LGW_LB-V7kYyClJEQW-z5NnHEz4sIUcItMpYb_9EQ64P-dHJyhQ-fYiNISaNAiSJ_Sqox7bQmxmUbMku7x_bTLqgn_p1QDBEm6a8bWlkxM2PvI3nTufHKjPSoysMw9CgU3uTCZsldxDfmTST1CeHB8r6EwT3bmzuBY-tJcejxU67_hhTU2DuQw-igJKNbSjQ7g8TtVx_ZCZ0ypma2NThbaOSNApg'
             }
         }, environment.urlWeb);
 
@@ -368,7 +368,12 @@ export class SPServicio {
     ObtenerCondicionesTecnicasBienes(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
         return respuesta;
-    } 
+    }
+    
+    public async obtenerCtBienes(IdSolicitud): Promise<any> {
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get()); 
+        return await respuesta.toPromise() 
+    }
     
     ObtenerCondicionesTecnicasBienesExcel(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").orderBy("Orden").get());
@@ -436,6 +441,11 @@ export class SPServicio {
     ObtenerCondicionesTecnicasServicios(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());
         return respuesta;
+    }
+
+    public async obtenerCtServicios(IdSolicitud): Promise<any> {
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());
+        return await respuesta.toPromise(); 
     }
 
     ObtenerCondicionesTecnicasServiciosExcel(IdSolicitud){
