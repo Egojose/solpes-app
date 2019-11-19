@@ -112,7 +112,7 @@ export class ContratosComponent implements OnInit {
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
     this.Guardado = false;
-    // this.ObtenerToken();
+    this.ObtenerToken();
   }
 
   private ObtenerToken(){
@@ -554,8 +554,15 @@ export class ContratosComponent implements OnInit {
           if (this.BienesSeleccionados.length > 0) {
             this.BienesSeleccionados.map(
               (x)=>{
-                let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);          
-                let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+                let objServicio;
+                let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
+                if(obj !== undefined) {
+                  obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+                } 
+                else {
+                  objServicio = [];
+                }         
+                // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
                 let objCrm = {
                   "numerocontratoproveedor": ContratoOC,
                   "numerosolp": SolpSapRfp,            
@@ -572,8 +579,15 @@ export class ContratosComponent implements OnInit {
           if (this.ServiciosSeleccionados.length > 0) {
             this.ServiciosSeleccionados.map(
               (x)=>{
-                let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);          
-                let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+                let objServicio;
+                let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
+                if(obj !== undefined) {
+                  objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+                }
+                else {
+                  objServicio = [];
+                }          
+                // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
                 let objCrm = {
                   "numerocontratoproveedor": ContratoOC,
                   "numerosolp": SolpSapRfp,            
@@ -635,10 +649,19 @@ export class ContratosComponent implements OnInit {
 
       let fechaString = this.formatDate(fechaContrato);
       if (this.BienesSeleccionados.length > 0) {
+        console.log(this.BienesSeleccionados);
         this.BienesSeleccionados.map(
           (x)=>{
-            let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);          
-            let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+            let objServicio;
+            console.log(x);
+            let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
+            if (obj !== undefined) {
+              objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
+            }
+            else {
+              objServicio = [];
+            }          
+            // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
             let objCrm = {
               "numerocontratoproveedor": ContratoOC,
               "numerosolp": SolpSapRfp,            
@@ -655,8 +678,15 @@ export class ContratosComponent implements OnInit {
       if (this.ServiciosSeleccionados.length > 0) {
         this.ServiciosSeleccionados.map(
           (x)=>{
-            let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);          
-            let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+            let objServicio;
+            let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
+            if(obj !== undefined) {
+              objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
+            } 
+            else {
+              objServicio = [];
+            }         
+            // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
             let objCrm = {
               "numerocontratoproveedor": ContratoOC,
               "numerosolp": SolpSapRfp,            

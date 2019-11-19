@@ -148,6 +148,8 @@ export class EditarSolicitudComponent implements OnInit {
   dataSeleccionadosServicios = [];
   dataIdServiciosBienes: any = [];
   dataIdeServiciosServicios: any = [];
+  dataTieneIdServiciosBienes = [];
+  dataTieneIdServiciosServicios = [];
   dataTotalIds: any = [];
   arrayPrueba: any = [];
   enviarCrm: boolean;
@@ -495,6 +497,60 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
   }
 
+  async validarSiEnviarCrmBienes() {
+    let respuestaBienes = await this.servicio.obtenerCtBienes(this.idSolicitudGuardada);
+    let numCostoInversion;
+    let numCostoInversionString;
+    console.log(respuestaBienes);
+    this.dataTieneIdServiciosBienes = respuestaBienes.filter(x => {
+      return x.tieneIdServicio === true;
+    })
+    if(this.dataTieneIdServiciosBienes.length > 0) {
+      numCostoInversion = this.dataTieneIdServiciosBienes.map(x => {
+        return x.numeroCostoInversion
+      })
+      numCostoInversionString = numCostoInversion.toString();
+      this.dataIdServiciosBienes = numCostoInversionString.split(',');
+    }
+    else {
+      this.dataIdServiciosBienes = [];
+    }
+    console.log(this.dataIdServiciosBienes);
+   
+  }
+
+  async validarSiEnviarCrmServicios() {
+    let respuestaServicios = await this.servicio.obtenerCtServicios(this.idSolicitudGuardada);
+    let numCostoInversion;
+    let numCostoInversionString;
+    console.log(respuestaServicios);
+    this.dataTieneIdServiciosServicios = respuestaServicios.filter(x => {
+      return x.tieneIdServicio === true;
+    })
+    if(this.dataTieneIdServiciosServicios.length > 0) {
+      numCostoInversion = this.dataTieneIdServiciosServicios.map(x => {
+        return x.numeroCostoInversion;
+      });
+      numCostoInversionString = numCostoInversion.toString();
+      this.dataIdeServiciosServicios = numCostoInversionString.split(',');
+    }
+    else {
+      this.dataIdeServiciosServicios = [];
+    }
+  }
+
+  async validarSiEnviarCrm() {
+    let a = await this.validarSiEnviarCrmBienes();
+    let b = await this.validarSiEnviarCrmServicios();
+    if(this.dataTieneIdServiciosBienes.length > 0 || this.dataTieneIdServiciosServicios.length > 0) {
+      this.enviarCrm = true;
+      let totalIds = this.dataIdServiciosBienes.concat(this.dataIdeServiciosServicios);
+      this.dataTotalIds = totalIds.sort().filter((x, y)=> {
+        return totalIds.indexOf(x) === y;
+      })
+    }  
+  }
+
   terminarSeleccion() {
     this.mostrarTable = false;
   }
@@ -544,65 +600,6 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
   }
 
-  unificarIdServicios() {
-    let arr1 = this.dataIdOrdenSeleccionados.toString();
-    let arr2 = this.dataIdOrdenSeleccionadosServicios.toString();
-    let arr1a = arr1.split(',');
-    let arr2a = arr2.split(',');
-    this.dataIdOrdenTotales = arr1a.concat(arr2a).sort().filter((x, y)=> {
-      return this.dataIdOrdenTotales.indexOf(x) === y;
-    })
-    console.log(this.dataIdOrdenTotales);
-  }
-
-  obtenerIdsBienesServicios() {
-    let data = [];
-    let dataServicios = [];
-    let dataTotales;
-    let dataTotalesString;
-    let dataTotalesArray;
-
-    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
-      (respuesta) => {
-        data = respuesta.filter(x => {
-          return x.tieneIdServicio === true
-        });
-        if (data.length > 0) {
-          data.map(x => {
-            this.dataIdServiciosBienes.push(x.numeroCostoInversion);
-            // console.log(this.dataIdServiciosBienes);
-          })
-        }
-        else {
-          this.dataIdServiciosBienes = [];
-        }
-      }
-    )
-    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
-      (respuesta) => {
-        dataServicios = respuesta.filter(x => {
-          return x.tieneIdServicio === true
-        });
-        if (dataServicios.length > 0) {
-          dataServicios.map(x => {
-            this.dataIdeServiciosServicios.push(x.numeroCostoInversion);
-            // console.log(this.dataIdeServiciosServicios);
-          })
-        }
-        else {
-          this.dataIdeServiciosServicios = [];
-        }
-      }
-    );
-    dataTotales = this.dataIdServiciosBienes.concat(this.dataIdeServiciosServicios)
-    // console.log(dataTotales);
-    dataTotalesString = dataTotales.toString();
-    dataTotalesArray = dataTotalesString.split(',');
-    this.dataTotalIds = dataTotalesArray.sort().filter((x, y) => {
-      return dataTotalesArray.indexOf(x) === y;
-    })
-    console.log(this.dataTotalIds);
-  }
 
   terminarSeleccionServicios() {
     this.mostrarTableServicios = false;
@@ -610,6 +607,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   reservarDatosContablesBienes() {
     this.cargaDesdeExcel = false;
+    this.limpiarFiltrosBienes();
     this.servicio.ObtenerCondicionesTecnicasBienes(this.solicitudRecuperada.id).subscribe(
       (respuesta) => {
         if(respuesta.length > 0) {
@@ -630,6 +628,8 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   reservarDatosContablesServicios() {
+    this.cargaDesdeExcel = false;
+    this.limpiarFiltrosServicios();
     this.servicio.ObtenerCondicionesTecnicasServicios(this.solicitudRecuperada.id).subscribe(
       (respuesta) => {
         if(respuesta.length > 0) {
@@ -727,7 +727,19 @@ export class EditarSolicitudComponent implements OnInit {
     )
   }
 
-  
+  limpiarFiltrosBienes() {
+    this.clientBienes.setValue('');
+    this.ordenServBienes.setValue('');
+    this.idServBienes.setValue('');
+    this.nombreIdServBienes.setValue('');  
+  }
+
+  limpiarFiltrosServicios() {
+    this.clientServicios.setValue('');
+    this.ordenServServicios.setValue('');
+    this.idServServicios.setValue('');
+    this.nombreIdServServicios.setValue('');
+  }
 
   private perfilacionEstado() {
     console.log(this.solicitudRecuperada);
@@ -951,7 +963,7 @@ export class EditarSolicitudComponent implements OnInit {
     }       
   }
 
-  procesarArchivo(file) {
+  async procesarArchivo(file) {
 
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
@@ -966,7 +978,7 @@ export class EditarSolicitudComponent implements OnInit {
             let row = file[i];
             let codigo = row[0];
             this.validarCodigosBrasilCTB(codigo, i);
-            let obj = this.ValidarVaciosCTB(row, i);
+            let obj = await this.ValidarVaciosCTB(row, i);
             if (obj != "") {
               this.ObjCTB.push(obj);
             }
@@ -1027,7 +1039,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.modalRef.hide()
   }
 
-  ValidarVaciosCTB(row, i) {
+  async ValidarVaciosCTB(row, i) {
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let tipoSolicitud = this.solpFormulario.controls['tipoSolicitud'].value;
     let codigo = row[0];
@@ -1047,6 +1059,10 @@ export class EditarSolicitudComponent implements OnInit {
     let testeadoBienes = true;
     let cantidadTesteadoBienes = true;
     let numeroCuentaTesteadoBienes = true;
+    let idServicio = numeroCostoInversion;
+    let params = {
+      'idservicio': idServicio.toString().replace('.', ',')
+    }
     if (valorEstimado !== "" && valorEstimado !== null) {
       valorEstimadoStringBienes = `${valorEstimado}`;
       let regexletras = /^[0-9.]*$/gm;
@@ -1105,6 +1121,21 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
       }
+      if(costoInversion === 'ID de Servicios') {
+        let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+        let idServicio = []
+        let estado = respuestaServicioExcel.filter(x => {
+          return x.Estado === 'No Existe';
+        });
+        if(estado.length > 0) {
+          let cantidadIds = estado.map(x => {
+            return x.IdServicio
+          })
+          idServicio.push(cantidadIds);
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
+        }
+      }
       if(costoInversion === "" || costoInversion === null){
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
@@ -1139,7 +1170,7 @@ export class EditarSolicitudComponent implements OnInit {
           TipoMoneda: tipoMoneda,
           MonedaSondeo: tipoMoneda,
           costoInversion: costoInversion.toString(),
-          numeroCostoInversion: numeroCostoInversion.toString(),
+          numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaString,
           Orden: parseInt(i, 10)
       }
@@ -1188,6 +1219,21 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
         }
+        if(costoInversion === 'ID de Servicios') {
+          let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+          let idServicio = []
+          let estado = respuestaServicioExcel.filter(x => {
+            return x.Estado === 'No Existe';
+          });
+          if(estado.length > 0) {
+            let cantidadIds = estado.map(x => {
+              return x.IdServicio
+            })
+            idServicio.push(cantidadIds);
+            this.cantidadErrorFile++;
+            this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
+          }
+        }
         if(costoInversion === "" || costoInversion === null){
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error:"El campo Centro de costos/ Orden de inversión en la columna H fila "+ (i+1)})
@@ -1222,7 +1268,7 @@ export class EditarSolicitudComponent implements OnInit {
             TipoMoneda: tipoMoneda,
             MonedaSondeo: tipoMoneda,
             costoInversion: costoInversion.toString(),
-            numeroCostoInversion: numeroCostoInversion.toString(),
+            numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
             numeroCuenta: numeroCuentaString,
             Orden: parseInt(i, 10)
         }
@@ -1848,7 +1894,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
   }
 
-  procesarArchivoServicios(file) {
+ async procesarArchivoServicios(file) {
 
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
@@ -1863,7 +1909,7 @@ export class EditarSolicitudComponent implements OnInit {
             let row = file[i];
             let codigo = row[0];            
             this.validarCodigosBrasilCTS(codigo, i);           
-            let obj = this.ValidarVaciosCTS(row, i); 
+            let obj = await this.ValidarVaciosCTS(row, i); 
             if (obj != "") {
               this.ObjCTS.push(obj);
             }                      
@@ -1924,7 +1970,7 @@ export class EditarSolicitudComponent implements OnInit {
       this.modalRef.hide()
   }
 
-  ValidarVaciosCTS(row: any, i: number): any {
+ async ValidarVaciosCTS(row: any, i: number) {
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let tipoSolicitud = this.solpFormulario.controls['tipoSolicitud'].value;
     let codigo = row[0];
@@ -1942,6 +1988,10 @@ export class EditarSolicitudComponent implements OnInit {
     let testeado = true;
     let cantidadTesteadoServicios = true;
     let numeroCuentaTesteadoServicios = true;
+    let idServicio = numeroCostoInversion;
+    let params = {
+      'idservicio': idServicio.toString().replace('.', ',')
+    }
 
   if(valorEstimado !== "" && valorEstimado !== null){
     valorEstimadoString = `${valorEstimado}`
@@ -1994,6 +2044,21 @@ export class EditarSolicitudComponent implements OnInit {
       this.cantidadErrorFileCTS++;
       this.ArrayErrorFileCTS.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
     }
+    if(costoInversion === 'ID de Servicios') {
+      let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+      let idServicio = []
+      let estado = respuestaServicioExcel.filter(x => {
+        return x.Estado === 'No Existe';
+      });
+      if(estado.length > 0) {
+        let cantidadIds = estado.map(x => {
+          return x.IdServicio
+        })
+        idServicio.push(cantidadIds);
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
+      }
+    }
     if(costoInversion === "" || costoInversion === null){
       this.cantidadErrorFileCTS++;
       this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
@@ -2027,7 +2092,7 @@ export class EditarSolicitudComponent implements OnInit {
         MonedaSondeo: tipoMoneda,
         Comentario: comentarios,
         costoInversion: costoInversion.toString(),
-        numeroCostoInversion: numeroCostoInversion.toString(),
+        numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
         numeroCuenta: numeroCuentaStringCTS,
         Orden: i
       }
@@ -2069,6 +2134,21 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
       }
+      if(costoInversion === 'ID de Servicios') {
+        let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+        let idServicio = []
+        let estado = respuestaServicioExcel.filter(x => {
+          return x.Estado === 'No Existe';
+        });
+        if(estado.length > 0) {
+          let cantidadIds = estado.map(x => {
+            return x.IdServicio
+          })
+          idServicio.push(cantidadIds);
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
+        }
+      }
       if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión')) {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
@@ -2102,7 +2182,7 @@ export class EditarSolicitudComponent implements OnInit {
           MonedaSondeo: tipoMoneda,
           Comentario: comentarios,
           costoInversion: costoInversion.toString(),
-          numeroCostoInversion: numeroCostoInversion.toString(),
+          numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaStringCTS,
           Orden: i
         }
@@ -4132,7 +4212,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
   }
 
 
-  enviarSolicitud() {
+  async enviarSolicitud() {
 
     this.spinner.show();
     let respuesta;
@@ -4271,6 +4351,8 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       valorComprador = this.subcategoria.comprador.ID;
     }
 
+    let a = await this.validarSiEnviarCrm();
+
     this.servicio.obtenerResponsableProcesos(valorPais).subscribe(
       (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
@@ -4327,8 +4409,36 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
                 FechaDeCreacion);
 
               this.servicio.actualizarSolicitud(this.solicitudRecuperada.id, this.solicitudGuardar).then(
-                (item: ItemAddResult) => {
-
+                async (item: ItemAddResult) => {
+                  if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
+                    let respuesta;
+                    let objCrm = {
+                      "numerosolp": this.idSolicitudGuardada,
+                      "linksolp": "Este es el link de solp",
+                      "idservicios": this.dataTotalIds
+                    }
+                    let obj = {
+                      Title: `Solicitud ${this.idSolicitudGuardada}`,
+                      NroSolp: `${this.idSolicitudGuardada}`,
+                      EnlaceSolp: 'link de solp',
+                      IdServicios: this.dataTotalIds.toString()
+                    }
+                    respuesta = await this.enviarServicioSolicitud(objCrm);
+                    if (respuesta.statusCode === 200) {
+                      this.MostrarExitoso(respuesta["MensajeExito"]);
+                    }
+                    else {
+                      this.servicio.enviarFallidosListaCrm(obj).then(
+                        (item: ItemAddResult) => {
+                          this.mostrarInformacion('Se enviaron los datos para manejo más tarde')
+                        }
+                      ), error => {
+                        this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
+                      }
+                      // let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
+                      // this.mostrarError('No se pudo enviar a crm. Se guardaron los datos en la lista de gestión de errores');
+                    }
+                  }
                   // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
                   //   (item: ItemAddResult) => {
 
@@ -4403,6 +4513,34 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
   //   return respuesta;
   // }                                        // Hasta aquí
 
+  async enviarServicioSolicitud(obj): Promise<any>{
+    let respuesta;
+    await this.servicioCrm.ActualizarSolicitud(obj).then(
+      (res)=>{
+        respuesta = res;
+      },
+      (error)=> {
+        respuesta = error.error
+      }
+    )   
+    return respuesta;
+  }
+
+  async GuardarErrorSolicitudCrm(ObjSolicitudCrm): Promise<any>{
+    let respuesta;
+    await this.servicio.GuardarSolicitudCrm(ObjSolicitudCrm).then(
+      (res)=>{
+        respuesta = true;
+        this.mostrarInformacion('Se guardó la solicitud para que pueda ser enviada a CRM más tarde');
+      }
+    ).catch(
+      (error)=>{
+        respuesta = false;
+      }
+    );
+
+    return respuesta;
+  }
 
   private validarCondicionesTSdatosContables(): boolean {
     let respuesta = true;

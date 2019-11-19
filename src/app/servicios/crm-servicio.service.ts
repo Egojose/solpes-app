@@ -27,7 +27,7 @@ export class CrmServicioService {
     return this.http.post(this.urlLogin, formData).toPromise();
   }
 
-  ActualizarSolicitud(ObjSolicitudes): Observable<any>{  
+  ActualizarSolicitud(ObjSolicitudes): Promise<any>{  
     let token = 'cf312e4c52b24af1bcd4842fe6aca279'
  
     // const header = {
@@ -35,8 +35,8 @@ export class CrmServicioService {
     //   'Content-Type': 'application/json',
     //   'Ocp-Apim-Subscription-Key':  token
     // }
-    return this.http.put('https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarsolp',ObjSolicitudes);
-    // return this.http.put(this.urlApiSolicitudes,{headers: header},ObjSolicitudes).toPromise();
+    // return this.http.put('https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarsolp',ObjSolicitudes);
+    return this.http.put(this.urlApiSolicitudes,ObjSolicitudes).toPromise();
   }
 
   ActualizarContratos(ObjContratos){    
@@ -54,7 +54,7 @@ export class CrmServicioService {
    return this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/Bodega?', {headers: header, params: parametros })
   }
 
-  validarIdServiciosExcel(parametros): Observable<any> {
+  public async validarIdServiciosExcel(parametros): Promise<any> {
     let token = '03f4673dd6b04790be91da8e57fddb52'
  
     const header = {
@@ -62,6 +62,6 @@ export class CrmServicioService {
       'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key':  token
     }
-    return this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/ValidarBodega?', {headers: header, params: parametros})
+    return await this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/ValidarBodega?', {headers: header, params: parametros}).toPromise();
   }
 }
