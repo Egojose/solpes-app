@@ -434,43 +434,6 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
   
-  // filtrarArrayPrueba() {
-  //   let cliente = this.ctbFormulario.get('clienteBienes').value;
-  //   let idServ = this.ctbFormulario.get('IdServicioBienes').value;
-  //   let nombreServ = this.ctbFormulario.get('nombreIdServicioBienes').value;
-  //   let os = this.ctbFormulario.get('ordenBienes').value;
-  //   this.mostrarTable = true;
-  //   this.datos = this.arrayPrueba;
-  //   // this.datos = this.arrayPrueba.filter(x=> {
-  //   //   return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
-  //   // })
-  //   if(this.datos.length === 0) {
-  //     this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
-  //     return false;
-  //   }
-
-  //   this.dataSourceDatos.data = this.datos;
-  //   this.dataSourceDatos.filterPredicate = this.createFilter();
-  //   this.leerFiltros();    
-  // }
-
-  // filtrarArrayServicios() {
-  //   let cliente = this.ctsFormulario.get('clienteServicios').value;
-  //   let idServ = this.ctsFormulario.get('idServicio').value;
-  //   let nombreServ = this.ctsFormulario.get('nombreIdServicio').value;
-  //   let os = this.ctsFormulario.get('ordenServicios').value;
-  //   this.mostrarTableServicios = true;
-  //   this.datosServicios = this.arrayPrueba.filter(x => {
-  //     return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
-  //   })
-  //   if(this.datosServicios.length === 0) {
-  //     this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
-  //     return false;
-  //   }
-  //   this.dataSourceDatosServicios.data = this.datosServicios;
-  //   this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
-  // }
-  
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
