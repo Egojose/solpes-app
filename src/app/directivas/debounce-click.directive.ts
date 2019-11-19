@@ -25,5 +25,6 @@ export class DebounceClickDirective implements OnInit, OnDestroy  {
     event.preventDefault();
     event.stopPropagation();
     this.clicks.next(event);
+    console.log('Deshabilitado');
   }
 }
