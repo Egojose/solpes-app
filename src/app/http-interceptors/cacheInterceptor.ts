@@ -5,36 +5,34 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class CacheInterceptor implements HttpInterceptor {
-  
-  constructor(private http: HttpClient){
+
+  constructor(private http: HttpClient) {
 
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
-    const jwt = localStorage.getItem('id_token');
-    if (jwt !== "false") {
-      req = req.clone({
-        setHeaders:{
-          Authorization : `Bearer ${jwt}`,
-          // 'Ocp-Apim-Subscription-Key': 'c3d10e5bd16e48d3bd936bb9460bddef'
-        }
-      });
-      
-    }
-    
-    
-    return next.handle(req);
-  }
-  // intercept(req: HttpRequest<any>, next: HttpHandler) {
-  //   const httpRequest = req.clone({
-  //     headers: new HttpHeaders({
-  //       'Cache-Control': 'no-cache',
-  //       'Pragma': 'no-cache',
-  //       'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT'
-  //     })
-  //   });
 
-  //   return next.handle(httpRequest);
-  // }
+    const jwt = localStorage.getItem('ObjToken');
+    let objToken = JSON.parse(jwt);
+    if (jwt !== null) {      
+        req = req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${objToken.id_token}`,
+            'Ocp-Apim-Subscription-Key': objToken.SuscriptionKey
+          }
+        });
+      return next.handle(req);
+    }
+    else {
+      const httpRequest = req.clone({
+        headers: new HttpHeaders({
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT',
+          'Ocp-Apim-Subscription-Key': '03f4673dd6b04790be91da8e57fddb52'
+        })
+      });
+      return next.handle(httpRequest);
+    }
+  }
 }
