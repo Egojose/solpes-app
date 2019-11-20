@@ -246,12 +246,13 @@ export class CrearSolicitudComponent implements OnInit {
   cargaDesdeExcelServicios: any;
   mostrarTableServicios: boolean;
   selectAllServicios: boolean;
+  token: any;
   
   
   
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
     setTheme('bs4');
-    localStorage.setItem('id_token', '03f4673dd6b04790be91da8e57fddb52')
+    // localStorage.setItem('id_token', '03f4673dd6b04790be91da8e57fddb52')
     this.PermisosCreacion = false;
     this.mostrarContratoMarco = false;
     this.spinner.hide();
@@ -316,8 +317,8 @@ export class CrearSolicitudComponent implements OnInit {
     let token;
     this.servicioCrm.obtenerToken().then(
       (res)=>{        
-        token = res["access_token"];
-        localStorage.setItem("id_token",token)
+        this.token = res["access_token"];
+        // localStorage.setItem("id_token",token)
       }
     ).catch(
       (error)=>{
@@ -3237,6 +3238,12 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                 async (item: ItemAddResult) => {
                   if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
                     let respuesta;
+                    let objToken = {
+                      id_token: this.token,
+                      SuscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef"
+                    }
+                    let token = JSON.stringify(objToken);
+                    localStorage.setItem("ObjToken",token)
                     let objCrm = {
                       "numerosolp": this.idSolicitudGuardada,
                       "linksolp": "Este es el link de solp",
