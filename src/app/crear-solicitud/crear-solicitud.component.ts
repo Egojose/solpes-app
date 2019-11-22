@@ -362,6 +362,7 @@ export class CrearSolicitudComponent implements OnInit {
   showFilterBienes ($event) {
     if ($event.target.value === "ID de Servicios") {
       this.mostrarFiltroBienes = true;
+      this.ctbFormulario.controls['numCicoCTB'].disable();
       this.idClient !== null ? this.ctbFormulario.controls['clienteBienes'].setValue(this.idClient) : this.ctbFormulario.controls['clienteBienes'].setValue('');
       this.idServiceOrder !== null ? this.ctbFormulario.controls['ordenBienes'].setValue(this.idServiceOrder) : this.ctbFormulario.controls['ordenBienes'].setValue('');
       this.idService !== null ? this.ctbFormulario.controls['IdServicioBienes'].setValue(this.idService) : this.ctbFormulario.controls['IdServicioBienes'].setValue('');
@@ -369,6 +370,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
     else {
       this.mostrarFiltroBienes = false;
+      this.ctbFormulario.controls['numCicoCTB'].enable();
       this.ctbFormulario.controls['numCicoCTB'].setValue('');
     }
   }
@@ -376,6 +378,7 @@ export class CrearSolicitudComponent implements OnInit {
   showFilterServicios ($event) {
     if ($event.target.value === "ID de Servicios") {
       this.mostrarFiltroServicios = true;
+      this.ctsFormulario.controls['numCicoCTS'].disable();
       this.idClient !== null ? this.ctsFormulario.controls['clienteServicios'].setValue(this.idClient) : this.ctsFormulario.controls['clienteServicios'].setValue('');
       this.idServiceOrder !== null ? this.ctsFormulario.controls['ordenServicios'].setValue(this.idServiceOrder) : this.ctsFormulario.controls['ordenServicios'].setValue('');
       this.idService !== null ? this.ctsFormulario.controls['idServicio'].setValue(this.idService) : this.ctsFormulario.controls['idServicio'].setValue('');
@@ -383,6 +386,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
     else {
       this.mostrarFiltroServicios = false;
+      this.ctsFormulario.controls['numCicoCTS'].enable();
       this.ctsFormulario.controls['numCicoCTS'].setValue('');
     }
   }
@@ -394,7 +398,7 @@ export class CrearSolicitudComponent implements OnInit {
       "nombreservicio": this.ctbFormulario.get('nombreIdServicioBienes').value,
       "os": this.ctbFormulario.get('ordenBienes').value,
     }
-    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+    this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         console.log(respuesta);
         this.mostrarTable = true;
@@ -419,7 +423,7 @@ export class CrearSolicitudComponent implements OnInit {
       "nombreservicio": this.ctsFormulario.get('nombreIdServicio').value,
       "os": this.ctsFormulario.get('ordenServicios').value,
     }
-    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+    this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         console.log(respuesta);
         this.mostrarTableServicios = true;
@@ -975,6 +979,8 @@ export class CrearSolicitudComponent implements OnInit {
     let cantidadTesteadoBienes = true;
     let numeroCuentaTesteadoBienes = true;
     let idServicio = numeroCostoInversion;
+    let IdOrdenServicio;
+    let tieneIdServicio: boolean = false;
     let params = {
       'idservicio': idServicio.toString().replace('.', ',')
     }
@@ -1050,6 +1056,16 @@ export class CrearSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
         }
+        else if(estado.length === 0) {
+          let idServicios = [];
+          let datos = await this.servicioCrm.consultarDatosBodega(params);
+          let ids = datos.map(x => {
+            return x.Orden_SAP;
+          });
+          idServicios.push(ids);
+          IdOrdenServicio = idServicios;
+          tieneIdServicio = true;
+        }
       }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
@@ -1087,6 +1103,8 @@ export class CrearSolicitudComponent implements OnInit {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaString,
+          IdOrdenServicio: IdOrdenServicio.toString(),
+          tieneIdServicio: tieneIdServicio,
           Orden: parseInt(i, 10)
         }
         return Obj;
@@ -1150,6 +1168,16 @@ export class CrearSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
         }
+        else if(estado.length === 0) {
+          let idServicios = [];
+          let datos = await this.servicioCrm.consultarDatosBodega(params);
+          let ids = datos.map(x => {
+            return x.Orden_SAP;
+          });
+          idServicios.push(ids);
+          IdOrdenServicio = idServicios;
+          tieneIdServicio = true;
+        }
       }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
@@ -1188,6 +1216,8 @@ export class CrearSolicitudComponent implements OnInit {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaString,
+          IdOrdenServicio: IdOrdenServicio.toString(),
+          tieneIdServicio: tieneIdServicio,
           Orden: parseInt(i, 10)
         }
         return Obj;
@@ -1891,6 +1921,8 @@ async ValidarVaciosCTS(row: any, i: number) {
   let cantidadTesteadoServicios = true;
   let numeroCuentaTesteadoServicios = true;
   let idServicio = numeroCostoInversion;
+  let IdOrdenServicio;
+  let tieneIdServicio: boolean = false;
   let params = {
     'idservicio': idServicio.toString().replace('.', ',')
   }
@@ -1964,6 +1996,16 @@ async ValidarVaciosCTS(row: any, i: number) {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
       }
+      else if(estado.length === 0) {
+        let idServicios = [];
+        let datos = await this.servicioCrm.consultarDatosBodega(params);
+        let ids = datos.map(x => {
+          return x.Orden_SAP;
+        });
+        idServicios.push(ids);
+        IdOrdenServicio = idServicios;
+        tieneIdServicio = true;
+      }
     }
     if(costoInversion === "" || costoInversion === null){
       this.cantidadErrorFileCTS++;
@@ -2000,6 +2042,8 @@ async ValidarVaciosCTS(row: any, i: number) {
         costoInversion: costoInversion.toString(),
         numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
         numeroCuenta: numeroCuentaStringCTS,
+        IdOrdenServicio: IdOrdenServicio,
+        tieneIdServicio: tieneIdServicio,
         Orden: i
       }
         return Obj;         
@@ -2056,6 +2100,16 @@ async ValidarVaciosCTS(row: any, i: number) {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
         }
+        else if(estado.length === 0) {
+          let idServicios = [];
+          let datos = await this.servicioCrm.consultarDatosBodega(params);
+          let ids = datos.map(x => {
+            return x.Orden_SAP;
+          });
+          idServicios.push(ids);
+          IdOrdenServicio = idServicios;
+          tieneIdServicio = true;
+        }
       }
       if(costoInversion === "" || costoInversion === null){
         this.cantidadErrorFileCTS++;
@@ -2092,6 +2146,8 @@ async ValidarVaciosCTS(row: any, i: number) {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaStringCTS,
+          IdOrdenServicio: IdOrdenServicio,
+          tieneIdServicio: tieneIdServicio,
           Orden: i
         }
           return Obj;         
