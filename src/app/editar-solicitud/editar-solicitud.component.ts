@@ -919,6 +919,7 @@ export class EditarSolicitudComponent implements OnInit {
   showFilterBienes ($event) {
     if ($event.target.value === "ID de Servicios") {
       this.mostrarFiltroBienes = true;
+      this.ctbFormulario.controls['numCicoCTB'].disable();
       this.idClient !== null ? this.ctbFormulario.controls['clienteBienes'].setValue(this.idClient) : this.ctbFormulario.controls['clienteBienes'].setValue('');
       this.idServiceOrder !== null ? this.ctbFormulario.controls['ordenBienes'].setValue(this.idServiceOrder) : this.ctbFormulario.controls['ordenBienes'].setValue('');
       this.idService !== null ? this.ctbFormulario.controls['IdServicioBienes'].setValue(this.idService) : this.ctbFormulario.controls['IdServicioBienes'].setValue('');
@@ -926,6 +927,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
     else {
       this.mostrarFiltroBienes = false;
+      this.ctbFormulario.controls['numCicoCTB'].enable();
       this.ctbFormulario.controls['numCicoCTB'].setValue('');
     }
   }
@@ -933,6 +935,7 @@ export class EditarSolicitudComponent implements OnInit {
   showFilterServicios ($event) {
     if ($event.target.value === "ID de Servicios") {
       this.mostrarFiltroServicios = true;
+      this.ctsFormulario.controls['numCicoCTS'].disable();
       this.idClient !== null ? this.ctsFormulario.controls['clienteServicios'].setValue(this.idClient) : this.ctsFormulario.controls['clienteServicios'].setValue('');
       this.idServiceOrder !== null ? this.ctsFormulario.controls['ordenServicios'].setValue(this.idServiceOrder) : this.ctsFormulario.controls['ordenServicios'].setValue('');
       this.idService !== null ? this.ctsFormulario.controls['idServicio'].setValue(this.idService) : this.ctsFormulario.controls['idServicio'].setValue('');
@@ -941,6 +944,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
     else {
       this.mostrarFiltroServicios = false;
+      this.ctsFormulario.controls['numCicoCTS'].enable();
       this.ctbFormulario.controls['numCicoCTS'].setValue('');
     }
   }
@@ -1027,7 +1031,7 @@ export class EditarSolicitudComponent implements OnInit {
         return false;
       }
     }
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][8] !== 'Número de centro de costos/ Orden de inversión/ ID de Servicios' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       this.cantidadErrorFile = 0;
@@ -1138,6 +1142,7 @@ export class EditarSolicitudComponent implements OnInit {
           this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
         }
         else if(estado.length === 0) {
+          this.ctbFormulario.controls['numCicoCTB'].disable();
           let idServicios = [];
           let datos = await this.servicioCrm.consultarDatosBodega(params);
           // console.log(datos);
@@ -1145,7 +1150,7 @@ export class EditarSolicitudComponent implements OnInit {
             return x.Orden_SAP;
           });
           idServicios.push(ids);
-          IdOrdenServicio = idServicios;
+          IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
           tieneIdServicio = true;
         }
       }
@@ -1248,6 +1253,18 @@ export class EditarSolicitudComponent implements OnInit {
             this.cantidadErrorFile++;
             this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
           }
+          else if(estado.length === 0) {
+            this.ctbFormulario.controls['numCicoCTB'].disable();
+            let idServicios = [];
+            let datos = await this.servicioCrm.consultarDatosBodega(params);
+            console.log(datos);
+            let ids = datos.map(x => {
+              return x.Orden_SAP;
+            });
+            idServicios.push(ids);
+            IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+            tieneIdServicio = true;
+          }
         }
         if(costoInversion === "" || costoInversion === null){
           this.cantidadErrorFile++;
@@ -1285,7 +1302,7 @@ export class EditarSolicitudComponent implements OnInit {
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
             numeroCuenta: numeroCuentaString,
-            IdOrdenServicio: IdOrdenServicio.toString(),
+            // IdOrdenServicio: IdOrdenServicio.toString(),
             tieneIdServicio: tieneIdServicio,
             Orden: parseInt(i, 10)
         }
@@ -1975,7 +1992,7 @@ export class EditarSolicitudComponent implements OnInit {
         return false;
       }
     }
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][6] !== 'Número centro de costos/ Orden de inversión/ ID de Servicios' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       this.cantidadErrorFileCTS = 0;
@@ -2078,13 +2095,14 @@ export class EditarSolicitudComponent implements OnInit {
         this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
       }
       else if(estado.length === 0) {
+        this.ctsFormulario.controls['numCicoCTS'].disable();
         let idServicios = [];
         let datos = await this.servicioCrm.consultarDatosBodega(params);
         let ids = datos.map(x => {
           return x.Orden_SAP;
         });
         idServicios.push(ids);
-        IdOrdenServicio = idServicios;
+        IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
         tieneIdServicio = true;
       }
     }
@@ -2123,7 +2141,7 @@ export class EditarSolicitudComponent implements OnInit {
         costoInversion: costoInversion.toString(),
         numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
         numeroCuenta: numeroCuentaStringCTS,
-        IdOrdenServicio: IdOrdenServicio,
+        IdOrdenServicio: IdOrdenServicio.toString(),
         tieneIdServicio: tieneIdServicio,
         Orden: i
       }
@@ -2180,13 +2198,14 @@ export class EditarSolicitudComponent implements OnInit {
           this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
         }
         else if(estado.length === 0) {
+          this.ctsFormulario.controls['numCicoCTS'].disable();
           let idServicios = [];
           let datos = await this.servicioCrm.consultarDatosBodega(params);
           let ids = datos.map(x => {
             return x.Orden_SAP;
           });
           idServicios.push(ids);
-          IdOrdenServicio = idServicios;
+          IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
           tieneIdServicio = true;
         }
       }
@@ -2225,7 +2244,7 @@ export class EditarSolicitudComponent implements OnInit {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaStringCTS,
-          IdOrdenServicio: IdOrdenServicio,
+          IdOrdenServicio: IdOrdenServicio.toString(),
           tieneIdServicio: tieneIdServicio,
           Orden: i
         }
@@ -3300,7 +3319,15 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
     let numeroCostoInversion = this.ctsFormulario.controls["numCicoCTS"].value;
     let numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value;
     let tieneIdServicio;
-    costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
+    let idOrdenServicio
+    if(costoInversion === 'ID de Servicios') {
+      tieneIdServicio = true;
+      idOrdenServicio = this.dataIdOrdenSeleccionadosServicios.toString();
+    }
+    else {
+      tieneIdServicio = false;
+      idOrdenServicio = '';
+    }
     //----------------------------------Hasta aquí---------------------------------------------
 
 
@@ -3353,6 +3380,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       this.condicionTS.numeroCostoInversion = numeroCostoInversion;
       this.condicionTS.numeroCuenta = numeroCuenta;
       this.condicionTS.tieneIdServicio = tieneIdServicio;
+      this.condicionTS.idOrdenServicio = idOrdenServicio;
       if (adjunto != null) {
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
         this.servicio.agregarCondicionesTecnicasServicios(this.condicionTS).then(
@@ -3420,6 +3448,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
             this.condicionesTS[objIndex].numeroCuenta = this.condicionTS.numeroCuenta;
             this.condicionesTS[objIndex].id = this.condicionTS.id;
             this.condicionesTS[objIndex].tieneIdServicio = this.condicionTS.tieneIdServicio;
+            this.condicionesTS[objIndex].idOrdenServicio = this.condicionTS.idOrdenServicio;
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
@@ -3446,6 +3475,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
         this.condicionTS.numeroCuenta = numeroCuenta;
         this.condicionTS.tipoMoneda = tipoMoneda;
         this.condicionTS.tieneIdServicio = tieneIdServicio;
+        this.condicionTS.idOrdenServicio = idOrdenServicio;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTS.archivoAdjunto.name;
         let nombreArchivoBorrar = this.rutaAdjuntoCTS.split('/');
         if (this.rutaAdjuntoCTS == '') {
@@ -3469,6 +3499,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
                   this.condicionesTS[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                   this.condicionesTS[objIndex].id = this.condicionTS.id;
                   this.condicionesTS[objIndex].tieneIdServicio = this.condicionTS.tieneIdServicio;
+                  this.condicionesTS[objIndex].idOrdenServicio = this.condicionTS.idOrdenServicio;
                   this.CargarTablaCTS();
                   this.limpiarControlesCTS();
                   this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
@@ -3565,8 +3596,16 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
     let numeroCostoInversion = this.ctbFormulario.controls["numCicoCTB"].value;
     let numeroCuenta = this.ctbFormulario.controls["numCuentaCTB"].value;
     let adjunto = null;
+    let idOrdenServicio;
     let tieneIdServicio;
-    costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
+    if(costoInversion === 'ID de Servicios') {
+      tieneIdServicio = true;
+      idOrdenServicio = this.dataIdOrdenSeleccionados.toString();
+    }
+    else {
+      tieneIdServicio = false;
+      idOrdenServicio = '';
+    }
     //-----------------------------------Hasta aquí-----------------------------------------
 
     //----------------------Habilitar cuando datos contables no obligatorios----------------
@@ -3620,6 +3659,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
       this.condicionTB.costoInversion = costoInversion;
       this.condicionTB.numeroCostoInversion = numeroCostoInversion;
       this.condicionTB.numeroCuenta = numeroCuenta;
+      this.condicionTB.idOrdenServicio = idOrdenServicio;
       this.condicionTB.tieneIdServicio = tieneIdServicio
       if (adjunto != null) {
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
@@ -3691,6 +3731,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
             this.condicionesTB[objIndex].numeroCuenta = this.condicionTB.numeroCuenta;
             this.condicionesTB[objIndex].id = this.condicionTB.id;
             this.condicionesTB[objIndex].tieneIdServicio = this.condicionTB.tieneIdServicio;
+            this.condicionesTB[objIndex].idOrdenServicio = this.condicionTB.idOrdenServicio;
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
@@ -3719,6 +3760,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
         this.condicionTB.numeroCuenta = numeroCuenta;
         this.condicionTB.tipoMoneda = tipoMoneda;
         this.condicionTB.tieneIdServicio = tieneIdServicio;
+        this.condicionTB.idOrdenServicio = idOrdenServicio;
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
         let nombreArchivoBorrar = this.rutaAdjuntoCTB.split('/');
         if (this.rutaAdjuntoCTB == '') {
@@ -3744,6 +3786,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
                   this.condicionesTB[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                   this.condicionesTB[objIndex].id = this.condicionTB.id;
                   this.condicionesTB[objIndex].tieneIdServicio = this.condicionTB.tieneIdServicio;
+                  this.condicionesTB[objIndex].idOrdenServicio = this.condicionTB.idOrdenServicio;
                   this.CargarTablaCTB();
                   this.limpiarControlesCTB();
                   this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
@@ -3785,6 +3828,7 @@ else if(valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === nul
                       this.condicionesTB[objIndex].rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
                       this.condicionesTB[objIndex].id = this.condicionTB.id;
                       this.condicionesTB[objIndex].tieneIdServicio = this.condicionTB.tieneIdServicio;
+                      this.condicionesTB[objIndex].idOrdenServicio = this.condicionTB.idOrdenServicio;
                       this.CargarTablaCTB();
                       this.limpiarControlesCTB();
                       this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
