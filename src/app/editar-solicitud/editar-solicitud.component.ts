@@ -295,7 +295,7 @@ export class EditarSolicitudComponent implements OnInit {
       "nombreservicio": nombreServicio,
       "os": os,
     }
-    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+    this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         console.log(respuesta);
         this.mostrarTable = true;
@@ -336,7 +336,7 @@ export class EditarSolicitudComponent implements OnInit {
       "nombreservicio": nombreServicio,
       "os": os,
     }
-    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+    this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         this.mostrarTableServicios = true;
         this.datosServicios = respuesta;
@@ -1027,7 +1027,7 @@ export class EditarSolicitudComponent implements OnInit {
         return false;
       }
     }
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' ||file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       this.cantidadErrorFile = 0;
@@ -1060,6 +1060,8 @@ export class EditarSolicitudComponent implements OnInit {
     let cantidadTesteadoBienes = true;
     let numeroCuentaTesteadoBienes = true;
     let idServicio = numeroCostoInversion;
+    let IdOrdenServicio;
+    let tieneIdServicio: boolean = false;
     let params = {
       'idservicio': idServicio.toString().replace('.', ',')
     }
@@ -1135,6 +1137,17 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
         }
+        else if(estado.length === 0) {
+          let idServicios = [];
+          let datos = await this.servicioCrm.consultarDatosBodega(params);
+          // console.log(datos);
+          let ids = datos.map(x => {
+            return x.Orden_SAP;
+          });
+          idServicios.push(ids);
+          IdOrdenServicio = idServicios;
+          tieneIdServicio = true;
+        }
       }
       if(costoInversion === "" || costoInversion === null){
         this.cantidadErrorFile++;
@@ -1172,6 +1185,8 @@ export class EditarSolicitudComponent implements OnInit {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaString,
+          IdOrdenServicio: IdOrdenServicio.toString(),
+          tieneIdServicio: tieneIdServicio,
           Orden: parseInt(i, 10)
       }
           return Obj;         
@@ -1270,6 +1285,8 @@ export class EditarSolicitudComponent implements OnInit {
             costoInversion: costoInversion.toString(),
             numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
             numeroCuenta: numeroCuentaString,
+            IdOrdenServicio: IdOrdenServicio.toString(),
+            tieneIdServicio: tieneIdServicio,
             Orden: parseInt(i, 10)
         }
             return Obj;         
@@ -1958,7 +1975,7 @@ export class EditarSolicitudComponent implements OnInit {
         return false;
       }
     }
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' ||file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       this.cantidadErrorFileCTS = 0;
@@ -1989,6 +2006,8 @@ export class EditarSolicitudComponent implements OnInit {
     let cantidadTesteadoServicios = true;
     let numeroCuentaTesteadoServicios = true;
     let idServicio = numeroCostoInversion;
+    let IdOrdenServicio;
+    let tieneIdServicio;
     let params = {
       'idservicio': idServicio.toString().replace('.', ',')
     }
@@ -2058,6 +2077,16 @@ export class EditarSolicitudComponent implements OnInit {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
       }
+      else if(estado.length === 0) {
+        let idServicios = [];
+        let datos = await this.servicioCrm.consultarDatosBodega(params);
+        let ids = datos.map(x => {
+          return x.Orden_SAP;
+        });
+        idServicios.push(ids);
+        IdOrdenServicio = idServicios;
+        tieneIdServicio = true;
+      }
     }
     if(costoInversion === "" || costoInversion === null){
       this.cantidadErrorFileCTS++;
@@ -2094,6 +2123,8 @@ export class EditarSolicitudComponent implements OnInit {
         costoInversion: costoInversion.toString(),
         numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
         numeroCuenta: numeroCuentaStringCTS,
+        IdOrdenServicio: IdOrdenServicio,
+        tieneIdServicio: tieneIdServicio,
         Orden: i
       }
         return Obj;         
@@ -2148,6 +2179,16 @@ export class EditarSolicitudComponent implements OnInit {
           this.cantidadErrorFileCTS++;
           this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
         }
+        else if(estado.length === 0) {
+          let idServicios = [];
+          let datos = await this.servicioCrm.consultarDatosBodega(params);
+          let ids = datos.map(x => {
+            return x.Orden_SAP;
+          });
+          idServicios.push(ids);
+          IdOrdenServicio = idServicios;
+          tieneIdServicio = true;
+        }
       }
       if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión')) {
         this.cantidadErrorFileCTS++;
@@ -2184,6 +2225,8 @@ export class EditarSolicitudComponent implements OnInit {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaStringCTS,
+          IdOrdenServicio: IdOrdenServicio,
+          tieneIdServicio: tieneIdServicio,
           Orden: i
         }
           return Obj;         
