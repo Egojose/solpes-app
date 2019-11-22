@@ -19,7 +19,10 @@ export class CondicionesTecnicasBienes {
         public ValorEstimado?: string,
         public Comentarios?: string,
         public moneda?: string,
-        public monedaSondeo?: string) {}
+        public monedaSondeo?: string,
+        public costoInversion?: string,
+        public numeroCostoInversion?: string,
+        public numeroCuenta?: string) {}
 
     public static fromJson(element: any) {
 
@@ -53,7 +56,10 @@ export class CondicionesTecnicasBienes {
             element.ValorEstimado, 
             element.Comentarios,
             element.TipoMoneda,
-            element.MonedaSondeo);
+            element.MonedaSondeo,
+            element.costoInversion,
+            element.numeroCostoInversion,
+            element.numeroCuenta);
     }
 
 

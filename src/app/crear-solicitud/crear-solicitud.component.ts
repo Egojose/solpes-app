@@ -244,6 +244,7 @@ export class CrearSolicitudComponent implements OnInit {
   cargaDesdeExcelServicios: any;
   mostrarTableServicios: boolean;
   selectAllServicios: boolean;
+  token: any;
   
   
   
@@ -314,12 +315,16 @@ export class CrearSolicitudComponent implements OnInit {
     let token;
     this.servicioCrm.obtenerToken().then(
       (res)=>{        
-        token = res["access_token"];
-        localStorage.setItem("id_token",token)
+        this.token = res["access_token"];
+        // localStorage.setItem("id_token",token)
       }
     ).catch(
       (error)=>{
-        localStorage.setItem("id_token","false")
+        let objToken = {          
+          estado: "true"
+        }
+        let objTokenString = JSON.stringify(objToken);
+        localStorage.setItem("id_token",objTokenString);        
       }
     )
   }
@@ -391,6 +396,13 @@ export class CrearSolicitudComponent implements OnInit {
       "nombreservicio": this.ctbFormulario.get('nombreIdServicioBienes').value,
       "os": this.ctbFormulario.get('ordenBienes').value,
     }
+    let objToken = {
+      TipoConsulta: "Bodega",
+      suscriptionKey: "03f4673dd6b04790be91da8e57fddb52",
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     this.servicioCrm.consultarDatosBodega(parametros).subscribe(
       (respuesta) => {
         console.log(respuesta);
@@ -416,6 +428,13 @@ export class CrearSolicitudComponent implements OnInit {
       "nombreservicio": this.ctsFormulario.get('nombreIdServicio').value,
       "os": this.ctsFormulario.get('ordenServicios').value,
     }
+    let objToken = {
+      TipoConsulta: "Bodega",
+      suscriptionKey: "03f4673dd6b04790be91da8e57fddb52",
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     this.servicioCrm.consultarDatosBodega(parametros).subscribe(
       (respuesta) => {
         console.log(respuesta);
@@ -3215,6 +3234,14 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                                 EnlaceSolp: 'link de solp',
                                 IdServicios: this.dataTotalIds
                               }
+                              let objToken = {
+                                TipoConsulta: "crm",
+                                suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+                                token: this.token,
+                                estado: "true"
+                              }
+                              let objTokenString = JSON.stringify(objToken);
+                              localStorage.setItem("id_token",objTokenString);
                               this.servicio.enviarFallidosListaCrm(obj).then(
                                 (respuesta) => {
                                   this.mostrarInformacion('Se ha enviado a la lista de espera solicitudes crm');
