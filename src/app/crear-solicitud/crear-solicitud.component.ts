@@ -169,49 +169,6 @@ export class CrearSolicitudComponent implements OnInit {
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
 
-  // arrayPrueba = [{
-  //   cliente: 'cliente1',
-  //   idOrdenServicio: 'OS-1234',
-  //   idServicio: '001234',
-  //   nombreIdServicio: 'cliente1-0234'
-  // },
-  // {
-  //   cliente: 'cliente1',
-  //   idOrdenServicio: 'OS-1235',
-  //   idServicio: '001235',
-  //   nombreIdServicio: 'cliente1-0235'
-  // },
-  // {
-  //   cliente: 'cliente1',
-  //   idOrdenServicio: 'OS-1236',
-  //   idServicio: '001236',
-  //   nombreIdServicio: 'cliente1-0236'
-  // },
-  // {
-  //   cliente: 'cliente1',
-  //   idOrdenServicio: 'OS-1237',
-  //   idServicio: '001237',
-  //   nombreIdServicio: 'cliente1-0237'
-  // },
-  // {
-  //   cliente: 'empresa1',
-  //   idOrdenServicio: 'OS-5678',
-  //   idServicio: '001237',
-  //   nombreIdServicio: 'empresa1-0234'
-  // },
-  // {
-  //   cliente: 'Compañia1',
-  //   idOrdenServicio: 'OS-9870',
-  //   idServicio: '987',
-  //   nombreIdServicio: 'compañia1-9870'
-  // },
-  // {
-  //   cliente: 'Compañia1',
-  //   idOrdenServicio: 'OS-9871',
-  //   idServicio: '988',
-  //   nombreIdServicio: 'compañia1-9871'
-  // }]
-  
   clientBienes = new FormControl('');
   ordenServBienes = new FormControl('');
   idServBienes = new FormControl('');
@@ -392,6 +349,7 @@ export class CrearSolicitudComponent implements OnInit {
   }
 
   consultaDatos() {
+    this.spinner.show();
     let parametros = {
       "idservicio": this.ctbFormulario.get('IdServicioBienes').value,
       "cliente": this.ctbFormulario.get('clienteBienes').value,
@@ -405,18 +363,22 @@ export class CrearSolicitudComponent implements OnInit {
         this.datos = respuesta;
         if (this.datos.length === 0) {
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          this.spinner.hide();
           return false;
         }
+        this.spinner.hide();
         this.dataSourceDatos.data = this.datos;
         this.dataSourceDatos.filterPredicate = this.createFilter();
         this.leerFiltros();
       }, err => {
+        this.spinner.hide();
         console.log(err);
       }
     )
   }
 
   consultarDatosServicios() {
+    this.spinner.show();
     let parametros = {
       "idservicio": this.ctsFormulario.get('idServicio').value,
       "cliente": this.ctsFormulario.get('clienteServicios').value,
@@ -430,8 +392,10 @@ export class CrearSolicitudComponent implements OnInit {
         this.datosServicios = respuesta;
         if (this.datosServicios.length === 0) {
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          this.spinner.hide();
           return false;
         }
+        this.spinner.hide();
         this.dataSourceDatosServicios.data = this.datosServicios;
         this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
         this.leerFiltrosServicios();
@@ -592,11 +556,13 @@ export class CrearSolicitudComponent implements OnInit {
           this.ctbFormulario.controls['cecoCTB'].setValue(respuesta[respuesta.length -1].costoInversion);
           this.ctbFormulario.controls['numCicoCTB'].setValue(respuesta[respuesta.length -1].numeroCostoInversion);
           this.ctbFormulario.controls['numCuentaCTB'].setValue(respuesta[respuesta.length -1].numeroCuenta);
+          this.ctbFormulario.get('cecoCTB').value === 'ID de Servicios' ? this.ctbFormulario.controls['cecoCTB'].disable() : this.ctbFormulario.controls['cecoCTB'].enable();
         }
         else {
           this.ctbFormulario.controls['cecoCTB'].setValue('');
           this.ctbFormulario.controls['numCicoCTB'].setValue('');
           this.ctbFormulario.controls['numCuentaCTB'].setValue('');
+          this.ctbFormulario.controls['cecoCTB'].enable();
         }
       }
     )
@@ -614,11 +580,13 @@ export class CrearSolicitudComponent implements OnInit {
           this.ctsFormulario.controls['cecoCTS'].setValue(respuesta[respuesta.length -1].costoInversion);
           this.ctsFormulario.controls['numCicoCTS'].setValue(respuesta[respuesta.length -1].numeroCostoInversion);
           this.ctsFormulario.controls['numCuentaCTS'].setValue(respuesta[respuesta.length -1].numeroCuenta);
+          this.ctsFormulario.get('cecoCTS').value === 'ID de Servicios' ? this.ctsFormulario.controls['cecoCTS'].disable() : this.ctsFormulario.controls['cecoCTS'].enable();
         }
         else {
           this.ctsFormulario.controls['cecoCTS'].setValue('');
           this.ctsFormulario.controls['numCicoCTS'].setValue('');
           this.ctsFormulario.controls['numCuentaCTS'].setValue('');
+          this.ctsFormulario.controls['cecoCTS'].enable();
         }
       }
     )
@@ -979,7 +947,7 @@ export class CrearSolicitudComponent implements OnInit {
     let cantidadTesteadoBienes = true;
     let numeroCuentaTesteadoBienes = true;
     let idServicio = numeroCostoInversion;
-    let IdOrdenServicio;
+    let IdOrdenServicio = [];
     let tieneIdServicio: boolean = false;
     let params = {
       'idservicio': idServicio.toString().replace('.', ',')
@@ -1056,16 +1024,17 @@ export class CrearSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
         }
-        else if(estado.length === 0) {
-          let idServicios = [];
-          let datos = await this.servicioCrm.consultarDatosBodega(params);
-          let ids = datos.map(x => {
-            return x.Orden_SAP;
-          });
-          idServicios.push(ids);
-          IdOrdenServicio = idServicios;
-          tieneIdServicio = true;
-        }
+        // else if(estado.length === 0) {
+        //   this.ctbFormulario.controls['numCicoCTB'].disable();
+        //   let idServicios = [];
+        //   let datos = await this.servicioCrm.consultarDatosBodega(params);
+        //   let ids = datos.map(x => {
+        //     return x.Orden_SAP;
+        //   });
+        //   idServicios.push(ids);
+        //   IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+        //   tieneIdServicio = true;
+        // }
       }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
@@ -1168,16 +1137,18 @@ export class CrearSolicitudComponent implements OnInit {
           this.cantidadErrorFile++;
           this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
         }
-        else if(estado.length === 0) {
-          let idServicios = [];
-          let datos = await this.servicioCrm.consultarDatosBodega(params);
-          let ids = datos.map(x => {
-            return x.Orden_SAP;
-          });
-          idServicios.push(ids);
-          IdOrdenServicio = idServicios;
-          tieneIdServicio = true;
-        }
+        // else if(estado.length === 0) {
+        //   this.ctbFormulario.controls['numCicoCTB'].disable();
+        //   let idServicios = [];
+        //   let datos = await this.servicioCrm.consultarDatosBodega(params);
+        //   console.log(datos);
+        //   let ids = datos.map(x => {
+        //     return x.Orden_SAP;
+        //   });
+        //   idServicios.push(ids);
+        //   IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+        //   tieneIdServicio = true;
+        // }
       }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
@@ -1197,6 +1168,22 @@ export class CrearSolicitudComponent implements OnInit {
       }
 
       if (this.cantidadErrorFile === 0) {
+
+        if(costoInversion === 'ID de Servicios') {
+          this.ctbFormulario.controls['numCicoCTB'].disable();
+          let idServicios = [];
+          let datos = await this.servicioCrm.consultarDatosBodega(params);
+          console.log(datos);
+          let ids = datos.map(x => {
+            return x.Orden_SAP;
+          });
+          idServicios.push(ids);
+          IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+          tieneIdServicio = true;
+        }
+        else {
+          this.ctbFormulario.controls['numCicoCTB'].enable();
+        }
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
@@ -1890,7 +1877,7 @@ leerArchivoServicios(inputValue: any): void {
         return false;
       }
     }
-    if (file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' || file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
+    if (file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' || file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][6] !== 'Número centro de costos/ Orden de inversión/ ID de Servicios' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       this.cantidadErrorFileCTS = 0;
@@ -1997,13 +1984,14 @@ async ValidarVaciosCTS(row: any, i: number) {
         this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
       }
       else if(estado.length === 0) {
+        this.ctsFormulario.controls['numCicoCTS'].disable();
         let idServicios = [];
         let datos = await this.servicioCrm.consultarDatosBodega(params);
         let ids = datos.map(x => {
           return x.Orden_SAP;
         });
         idServicios.push(ids);
-        IdOrdenServicio = idServicios;
+        IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
         tieneIdServicio = true;
       }
     }
@@ -2042,7 +2030,7 @@ async ValidarVaciosCTS(row: any, i: number) {
         costoInversion: costoInversion.toString(),
         numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
         numeroCuenta: numeroCuentaStringCTS,
-        IdOrdenServicio: IdOrdenServicio,
+        IdOrdenServicio: IdOrdenServicio.toString(),
         tieneIdServicio: tieneIdServicio,
         Orden: i
       }
@@ -2101,13 +2089,14 @@ async ValidarVaciosCTS(row: any, i: number) {
           this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
         }
         else if(estado.length === 0) {
+          this.ctsFormulario.controls['numCicoCTS'].disable();
           let idServicios = [];
           let datos = await this.servicioCrm.consultarDatosBodega(params);
           let ids = datos.map(x => {
             return x.Orden_SAP;
           });
           idServicios.push(ids);
-          IdOrdenServicio = idServicios;
+          IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
           tieneIdServicio = true;
         }
       }
@@ -2146,7 +2135,7 @@ async ValidarVaciosCTS(row: any, i: number) {
           costoInversion: costoInversion.toString(),
           numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaStringCTS,
-          IdOrdenServicio: IdOrdenServicio,
+          IdOrdenServicio: IdOrdenServicio.toString(),
           tieneIdServicio: tieneIdServicio,
           Orden: i
         }
@@ -3744,7 +3733,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     }
     else {
       tieneIdServicio = false;
-      idOrdenServicio = '';
+      idOrdenServicio = [];
     }
     //---------------------------------------------Hasta aquí---------------------------------------
 
@@ -3860,7 +3849,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     if (this.textoBotonGuardarCTB == "Actualizar") {
       // this.validarCodigosBrasil();
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -3879,6 +3868,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
             this.condicionesTB[objIndex].numeroCuenta = this.condicionTB.numeroCuenta;
             this.condicionesTB[objIndex].id = this.condicionTB.id;
             this.condicionesTB[objIndex].tieneIdServicio = this.condicionTB.tieneIdServicio;
+            // this.condicionesTB[objIndex].idOrdenServicio = idOrdenServicio;
             this.condicionesTB[objIndex].idOrdenServicio = this.condicionTB.idOrdenServicio;
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
@@ -4236,7 +4226,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     if (this.textoBotonGuardarCTS == "Actualizar") {
       
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, tieneIdServicio, idOrdenServicio);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
           (item: ItemAddResult) => {
