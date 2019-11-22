@@ -557,22 +557,20 @@ export class ContratosComponent implements OnInit {
                 let objServicio;
                 let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
                 if(obj !== undefined) {
-                  obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
-                } 
-                else {
-                  objServicio = [];
-                }         
+                  obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): [];
+                  let objCrm = {
+                    "numerocontratoproveedor": ContratoOC,
+                    "numerosolp": SolpSapRfp,            
+                    "fechainiciocontrato": fechaString,           
+                    "duracioncontrato": parseInt(VigenciaContrato),            
+                    "nombreproveedor": NombreRazonSocial,            
+                    "objetocontrato": ObjetoContrato,            
+                    "idservicios": objServicio
+                  }
+                  ObjContratosCrm.push(objCrm);
+                }        
                 // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
-                let objCrm = {
-                  "numerocontratoproveedor": ContratoOC,
-                  "numerosolp": SolpSapRfp,            
-                  "fechainiciocontrato": fechaString,           
-                  "duracioncontrato": parseInt(VigenciaContrato),            
-                  "nombreproveedor": NombreRazonSocial,            
-                  "objetocontrato": ObjetoContrato,            
-                  "idservicios": objServicio
-                }
-                ObjContratosCrm.push(objCrm);
+                
               }
             )
           }
@@ -583,21 +581,18 @@ export class ContratosComponent implements OnInit {
                 let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
                 if(obj !== undefined) {
                   objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
-                }
-                else {
-                  objServicio = [];
-                }          
+                  let objCrm = {
+                    "numerocontratoproveedor": ContratoOC,
+                    "numerosolp": SolpSapRfp,            
+                    "fechainiciocontrato": fechaString,           
+                    "duracioncontrato": parseInt(VigenciaContrato),            
+                    "nombreproveedor": NombreRazonSocial,            
+                    "objetocontrato": ObjetoContrato,            
+                    "idservicios": objServicio
+                  }
+                  ObjContratosCrm.push(objCrm);
+                }        
                 // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
-                let objCrm = {
-                  "numerocontratoproveedor": ContratoOC,
-                  "numerosolp": SolpSapRfp,            
-                  "fechainiciocontrato": fechaString,           
-                  "duracioncontrato": parseInt(VigenciaContrato),            
-                  "nombreproveedor": NombreRazonSocial,            
-                  "objetocontrato": ObjetoContrato,            
-                  "idservicios": objServicio
-                }
-                ObjContratosCrm.push(objCrm);
               }
             )
           }
