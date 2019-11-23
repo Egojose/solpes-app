@@ -568,7 +568,7 @@ export class AprobarSondeoComponent implements OnInit {
     let objTokenString = JSON.stringify(objToken);
     localStorage.setItem("id_token",objTokenString);
     this.spinner.show();
-    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+    this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         console.log(respuesta);
         this.mostrarTableServicios = true;

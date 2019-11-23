@@ -162,54 +162,13 @@ export class CrearSolicitudComponent implements OnInit {
   dataIdServiciosBienes: any = [];
   dataIdeServiciosServicios: any = [];
   dataTotalIds: any = [];
+  dataTieneIdServiciosBienes = [];
+  dataTieneIdServiciosServicios = [];
   enviarCrm: boolean;
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   // cargaExcel: boolean;  se debe habilitar para eliminar dato contables obligatorios en sondeo
 
-  // arrayPrueba = [{
-  //   cliente: 'cliente1',
-  //   idOrdenServicio: 'OS-1234',
-  //   idServicio: '001234',
-  //   nombreIdServicio: 'cliente1-0234'
-  // },
-  // {
-  //   cliente: 'cliente1',
-  //   idOrdenServicio: 'OS-1235',
-  //   idServicio: '001235',
-  //   nombreIdServicio: 'cliente1-0235'
-  // },
-  // {
-  //   cliente: 'cliente1',
-  //   idOrdenServicio: 'OS-1236',
-  //   idServicio: '001236',
-  //   nombreIdServicio: 'cliente1-0236'
-  // },
-  // {
-  //   cliente: 'cliente1',
-  //   idOrdenServicio: 'OS-1237',
-  //   idServicio: '001237',
-  //   nombreIdServicio: 'cliente1-0237'
-  // },
-  // {
-  //   cliente: 'empresa1',
-  //   idOrdenServicio: 'OS-5678',
-  //   idServicio: '001237',
-  //   nombreIdServicio: 'empresa1-0234'
-  // },
-  // {
-  //   cliente: 'Compañia1',
-  //   idOrdenServicio: 'OS-9870',
-  //   idServicio: '987',
-  //   nombreIdServicio: 'compañia1-9870'
-  // },
-  // {
-  //   cliente: 'Compañia1',
-  //   idOrdenServicio: 'OS-9871',
-  //   idServicio: '988',
-  //   nombreIdServicio: 'compañia1-9871'
-  // }]
-  
   clientBienes = new FormControl('');
   ordenServBienes = new FormControl('');
   idServBienes = new FormControl('');
@@ -250,7 +209,7 @@ export class CrearSolicitudComponent implements OnInit {
   
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
     setTheme('bs4');
-    localStorage.setItem('id_token', '03f4673dd6b04790be91da8e57fddb52')
+    // localStorage.setItem('id_token', '03f4673dd6b04790be91da8e57fddb52')
     this.PermisosCreacion = false;
     this.mostrarContratoMarco = false;
     this.spinner.hide();
@@ -321,7 +280,7 @@ export class CrearSolicitudComponent implements OnInit {
     ).catch(
       (error)=>{
         let objToken = {          
-          estado: "true"
+          estado: "false"
         }
         let objTokenString = JSON.stringify(objToken);
         localStorage.setItem("id_token",objTokenString);        
@@ -364,6 +323,7 @@ export class CrearSolicitudComponent implements OnInit {
   showFilterBienes ($event) {
     if ($event.target.value === "ID de Servicios") {
       this.mostrarFiltroBienes = true;
+      this.ctbFormulario.controls['numCicoCTB'].disable();
       this.idClient !== null ? this.ctbFormulario.controls['clienteBienes'].setValue(this.idClient) : this.ctbFormulario.controls['clienteBienes'].setValue('');
       this.idServiceOrder !== null ? this.ctbFormulario.controls['ordenBienes'].setValue(this.idServiceOrder) : this.ctbFormulario.controls['ordenBienes'].setValue('');
       this.idService !== null ? this.ctbFormulario.controls['IdServicioBienes'].setValue(this.idService) : this.ctbFormulario.controls['IdServicioBienes'].setValue('');
@@ -371,6 +331,7 @@ export class CrearSolicitudComponent implements OnInit {
     }
     else {
       this.mostrarFiltroBienes = false;
+      this.ctbFormulario.controls['numCicoCTB'].enable();
       this.ctbFormulario.controls['numCicoCTB'].setValue('');
     }
   }
@@ -378,6 +339,7 @@ export class CrearSolicitudComponent implements OnInit {
   showFilterServicios ($event) {
     if ($event.target.value === "ID de Servicios") {
       this.mostrarFiltroServicios = true;
+      this.ctsFormulario.controls['numCicoCTS'].disable();
       this.idClient !== null ? this.ctsFormulario.controls['clienteServicios'].setValue(this.idClient) : this.ctsFormulario.controls['clienteServicios'].setValue('');
       this.idServiceOrder !== null ? this.ctsFormulario.controls['ordenServicios'].setValue(this.idServiceOrder) : this.ctsFormulario.controls['ordenServicios'].setValue('');
       this.idService !== null ? this.ctsFormulario.controls['idServicio'].setValue(this.idService) : this.ctsFormulario.controls['idServicio'].setValue('');
@@ -385,11 +347,13 @@ export class CrearSolicitudComponent implements OnInit {
     }
     else {
       this.mostrarFiltroServicios = false;
-      this.ctbFormulario.controls['numCicoCTS'].setValue('');
+      this.ctsFormulario.controls['numCicoCTS'].enable();
+      this.ctsFormulario.controls['numCicoCTS'].setValue('');
     }
   }
 
   consultaDatos() {
+    this.spinner.show();
     let parametros = {
       "idservicio": this.ctbFormulario.get('IdServicioBienes').value,
       "cliente": this.ctbFormulario.get('clienteBienes').value,
@@ -403,25 +367,31 @@ export class CrearSolicitudComponent implements OnInit {
     }
     let objTokenString = JSON.stringify(objToken);
     localStorage.setItem("id_token",objTokenString);
-    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+    this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         console.log(respuesta);
         this.mostrarTable = true;
         this.datos = respuesta;
         if (this.datos.length === 0) {
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          this.spinner.hide();
           return false;
         }
+        this.spinner.hide();
         this.dataSourceDatos.data = this.datos;
         this.dataSourceDatos.filterPredicate = this.createFilter();
         this.leerFiltros();
-      }, err => {
+      }
+    ).catch(
+      (err) => {
+        this.spinner.hide();
         console.log(err);
       }
     )
   }
 
   consultarDatosServicios() {
+    this.spinner.show();
     let parametros = {
       "idservicio": this.ctsFormulario.get('idServicio').value,
       "cliente": this.ctsFormulario.get('clienteServicios').value,
@@ -435,58 +405,28 @@ export class CrearSolicitudComponent implements OnInit {
     }
     let objTokenString = JSON.stringify(objToken);
     localStorage.setItem("id_token",objTokenString);
-    this.servicioCrm.consultarDatosBodega(parametros).subscribe(
+    this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         console.log(respuesta);
         this.mostrarTableServicios = true;
         this.datosServicios = respuesta;
         if (this.datosServicios.length === 0) {
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          this.spinner.hide();
           return false;
         }
+        this.spinner.hide();
         this.dataSourceDatosServicios.data = this.datosServicios;
         this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
         this.leerFiltrosServicios();
       }
+    ).catch(
+      (err) => {
+        this.spinner.hide();
+        console.log(err);
+      }
     )
   }
-  
-  // filtrarArrayPrueba() {
-  //   let cliente = this.ctbFormulario.get('clienteBienes').value;
-  //   let idServ = this.ctbFormulario.get('IdServicioBienes').value;
-  //   let nombreServ = this.ctbFormulario.get('nombreIdServicioBienes').value;
-  //   let os = this.ctbFormulario.get('ordenBienes').value;
-  //   this.mostrarTable = true;
-  //   this.datos = this.arrayPrueba;
-  //   // this.datos = this.arrayPrueba.filter(x=> {
-  //   //   return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
-  //   // })
-  //   if(this.datos.length === 0) {
-  //     this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
-  //     return false;
-  //   }
-
-  //   this.dataSourceDatos.data = this.datos;
-  //   this.dataSourceDatos.filterPredicate = this.createFilter();
-  //   this.leerFiltros();    
-  // }
-
-  // filtrarArrayServicios() {
-  //   let cliente = this.ctsFormulario.get('clienteServicios').value;
-  //   let idServ = this.ctsFormulario.get('idServicio').value;
-  //   let nombreServ = this.ctsFormulario.get('nombreIdServicio').value;
-  //   let os = this.ctsFormulario.get('ordenServicios').value;
-  //   this.mostrarTableServicios = true;
-  //   this.datosServicios = this.arrayPrueba.filter(x => {
-  //     return x.cliente === cliente || x.idServicio === idServ || x.nombreIdServicio === nombreServ || x.idOrdenServicio === os;
-  //   })
-  //   if(this.datosServicios.length === 0) {
-  //     this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
-  //     return false;
-  //   }
-  //   this.dataSourceDatosServicios.data = this.datosServicios;
-  //   this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
-  // }
   
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
@@ -629,19 +569,9 @@ export class CrearSolicitudComponent implements OnInit {
     this.mostrarTableServicios = false;
   }
 
-  unificarIdServicios() {
-    let arr1 = this.dataIdOrdenSeleccionados.toString();
-    let arr2 = this.dataIdOrdenSeleccionadosServicios.toString();
-    let arr1a = arr1.split(',');
-    let arr2a = arr2.split(',');
-    this.dataIdOrdenTotales = arr1a.concat(arr2a).sort().filter((x, y)=> {
-      return this.dataIdOrdenTotales.indexOf(x) === y;
-    })
-    console.log(this.dataIdOrdenTotales);
-  }
-
   reservarDatosContablesBienes() {
     this.cargaDesdeExcel = false;
+    this.limpiarFiltrosBienes();
     this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
       (respuesta) => {
         if(respuesta.length > 0) {
@@ -651,11 +581,13 @@ export class CrearSolicitudComponent implements OnInit {
           this.ctbFormulario.controls['cecoCTB'].setValue(respuesta[respuesta.length -1].costoInversion);
           this.ctbFormulario.controls['numCicoCTB'].setValue(respuesta[respuesta.length -1].numeroCostoInversion);
           this.ctbFormulario.controls['numCuentaCTB'].setValue(respuesta[respuesta.length -1].numeroCuenta);
+          this.ctbFormulario.get('cecoCTB').value === 'ID de Servicios' ? this.ctbFormulario.controls['cecoCTB'].disable() : this.ctbFormulario.controls['cecoCTB'].enable();
         }
         else {
           this.ctbFormulario.controls['cecoCTB'].setValue('');
           this.ctbFormulario.controls['numCicoCTB'].setValue('');
           this.ctbFormulario.controls['numCuentaCTB'].setValue('');
+          this.ctbFormulario.controls['cecoCTB'].enable();
         }
       }
     )
@@ -663,6 +595,7 @@ export class CrearSolicitudComponent implements OnInit {
 
   reservarDatosContablesServicios() {
     this.cargaDesdeExcel = false;
+    this.limpiarFiltrosServicios();
     this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
       (respuesta) => {
         if(respuesta.length > 0) {
@@ -672,11 +605,13 @@ export class CrearSolicitudComponent implements OnInit {
           this.ctsFormulario.controls['cecoCTS'].setValue(respuesta[respuesta.length -1].costoInversion);
           this.ctsFormulario.controls['numCicoCTS'].setValue(respuesta[respuesta.length -1].numeroCostoInversion);
           this.ctsFormulario.controls['numCuentaCTS'].setValue(respuesta[respuesta.length -1].numeroCuenta);
+          this.ctsFormulario.get('cecoCTS').value === 'ID de Servicios' ? this.ctsFormulario.controls['cecoCTS'].disable() : this.ctsFormulario.controls['cecoCTS'].enable();
         }
         else {
           this.ctsFormulario.controls['cecoCTS'].setValue('');
           this.ctsFormulario.controls['numCicoCTS'].setValue('');
           this.ctsFormulario.controls['numCuentaCTS'].setValue('');
+          this.ctsFormulario.controls['cecoCTS'].enable();
         }
       }
     )
@@ -758,6 +693,20 @@ export class CrearSolicitudComponent implements OnInit {
         }
       }
     )
+  }
+
+  limpiarFiltrosBienes() {
+    this.clientBienes.setValue('');
+    this.ordenServBienes.setValue('');
+    this.idServBienes.setValue('');
+    this.nombreIdServBienes.setValue('');  
+  }
+
+  limpiarFiltrosServicios() {
+    this.clientServicios.setValue('');
+    this.ordenServServicios.setValue('');
+    this.idServServicios.setValue('');
+    this.nombreIdServServicios.setValue('');
   }
 
   numberOnly(event): boolean {
@@ -924,7 +873,7 @@ export class CrearSolicitudComponent implements OnInit {
     }       
   }
 
-  procesarArchivo(file) {
+  async procesarArchivo(file) {
 
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
@@ -940,7 +889,7 @@ export class CrearSolicitudComponent implements OnInit {
             let codigo = row[0];
             let filas = i;
             this.validarCodigosBrasilCTB(codigo, i);
-            let obj = this.ValidarVaciosCTB(row, i);
+            let obj = await this.ValidarVaciosCTB(row, i);
             if (obj != "") {
               this.ObjCTB.push(obj);
             }
@@ -951,7 +900,7 @@ export class CrearSolicitudComponent implements OnInit {
             this.ObjCTB.forEach(element => {
               this.servicio.agregarCondicionesTecnicasBienesExcel(element).then(
                 (item: ItemAddResult) => {
-                  console.log(element.Codigo);
+                  // console.log(element.Codigo);
                   contador++;
                   if (this.ObjCTB.length === contador) {
                     this.servicio.ObtenerCondicionesTecnicasBienesExcel(this.idSolicitudGuardada).subscribe(
@@ -990,7 +939,7 @@ export class CrearSolicitudComponent implements OnInit {
         return false;
       }
     }
-    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' || file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][8] !== 'Número de centro de costos/ Orden de inversión' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
+    if(file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Modelo' || file[1][3] !== 'Fabricante' || file[1][4] !== 'Cantidad' || file[1][5] !== 'Valor estimado' || file[1][6] !== 'Tipo de moneda' || file[1][7] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][8] !== 'Número de centro de costos/ Orden de inversión/ ID de Servicios' || file[1][9] !== 'Número de cuenta' || file[1][10] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       this.cantidadErrorFile = 0;
@@ -1002,7 +951,7 @@ export class CrearSolicitudComponent implements OnInit {
    this.modalRef.hide()
   }
 
-  ValidarVaciosCTB(row, i) {
+  async ValidarVaciosCTB(row, i) {
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let tipoSolicitud = this.solpFormulario.controls['tipoSolicitud'].value;
     let codigo = row[0];
@@ -1022,6 +971,12 @@ export class CrearSolicitudComponent implements OnInit {
     let testeadoBienes = true;
     let cantidadTesteadoBienes = true;
     let numeroCuentaTesteadoBienes = true;
+    let idServicio = numeroCostoInversion;
+    let IdOrdenServicio = [];
+    let tieneIdServicio: boolean = false;
+    let params = {
+      'idservicio': idServicio.toString().replace('.', ',')
+    }
     if (valorEstimado !== "" && valorEstimado !== null) {
       valorEstimadoStringBienes = `${valorEstimado}`;
       let regexletras = /^[0-9.]*$/gm;
@@ -1080,6 +1035,32 @@ export class CrearSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
       }
+      if(costoInversion === 'ID de Servicios') {
+        let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+        let idServicio = []
+        let estado = respuestaServicioExcel.filter(x => {
+          return x.Estado === 'No Existe';
+        });
+        if(estado.length > 0) {
+          let cantidadIds = estado.map(x => {
+            return x.IdServicio
+          })
+          idServicio.push(cantidadIds);
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
+        }
+        // else if(estado.length === 0) {
+        //   this.ctbFormulario.controls['numCicoCTB'].disable();
+        //   let idServicios = [];
+        //   let datos = await this.servicioCrm.consultarDatosBodega(params);
+        //   let ids = datos.map(x => {
+        //     return x.Orden_SAP;
+        //   });
+        //   idServicios.push(ids);
+        //   IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+        //   tieneIdServicio = true;
+        // }
+      }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión en la columna H fila " + (i + 1) })
@@ -1114,8 +1095,10 @@ export class CrearSolicitudComponent implements OnInit {
           TipoMoneda: tipoMoneda,
           MonedaSondeo: tipoMoneda,
           costoInversion: costoInversion.toString(),
-          numeroCostoInversion: numeroCostoInversion.toString(),
+          numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaString,
+          IdOrdenServicio: IdOrdenServicio.toString(),
+          tieneIdServicio: tieneIdServicio,
           Orden: parseInt(i, 10)
         }
         return Obj;
@@ -1165,6 +1148,33 @@ export class CrearSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
       }
+      if(costoInversion === 'ID de Servicios') {
+        let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+        let idServicio = []
+        let estado = respuestaServicioExcel.filter(x => {
+          return x.Estado === 'No Existe';
+        });
+        if(estado.length > 0) {
+          let cantidadIds = estado.map(x => {
+            return x.IdServicio
+          })
+          idServicio.push(cantidadIds);
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
+        }
+        // else if(estado.length === 0) {
+        //   this.ctbFormulario.controls['numCicoCTB'].disable();
+        //   let idServicios = [];
+        //   let datos = await this.servicioCrm.consultarDatosBodega(params);
+        //   console.log(datos);
+        //   let ids = datos.map(x => {
+        //     return x.Orden_SAP;
+        //   });
+        //   idServicios.push(ids);
+        //   IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+        //   tieneIdServicio = true;
+        // }
+      }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión en la columna H fila " + (i + 1) })
@@ -1183,6 +1193,22 @@ export class CrearSolicitudComponent implements OnInit {
       }
 
       if (this.cantidadErrorFile === 0) {
+
+        if(costoInversion === 'ID de Servicios') {
+          this.ctbFormulario.controls['numCicoCTB'].disable();
+          let idServicios = [];
+          let datos = await this.servicioCrm.consultarDatosBodega(params);
+          console.log(datos);
+          let ids = datos.map(x => {
+            return x.Orden_SAP;
+          });
+          idServicios.push(ids);
+          IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+          tieneIdServicio = true;
+        }
+        else {
+          this.ctbFormulario.controls['numCicoCTB'].enable();
+        }
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
@@ -1200,8 +1226,10 @@ export class CrearSolicitudComponent implements OnInit {
           TipoMoneda: tipoMoneda,
           MonedaSondeo: tipoMoneda,
           costoInversion: costoInversion.toString(),
-          numeroCostoInversion: numeroCostoInversion.toString(),
+          numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaString,
+          IdOrdenServicio: IdOrdenServicio.toString(),
+          tieneIdServicio: tieneIdServicio,
           Orden: parseInt(i, 10)
         }
         return Obj;
@@ -1210,7 +1238,7 @@ export class CrearSolicitudComponent implements OnInit {
         setTimeout(() => {
           this.limpiarArrayErrorFile()
         }, 15000);
-        return "";
+        return false;
       }
     }
     else if (valorcompraOrdenEstadistica === "SI" && (codigo === "" || codigo === null)) {
@@ -1809,7 +1837,7 @@ leerArchivoServicios(inputValue: any): void {
     }
 }
 
-  procesarArchivoServicios(file) {
+  async procesarArchivoServicios(file) {
 
     if (file.length === 0) {
       this.mostrarError('El archivo se encuentra vacio');
@@ -1825,7 +1853,7 @@ leerArchivoServicios(inputValue: any): void {
             let codigo = row[0];
             let filas = i;
             this.validarCodigosBrasilCTS(codigo, i);
-            let obj = this.ValidarVaciosCTS(row, i);
+            let obj = await this.ValidarVaciosCTS(row, i);
             if (obj != "") {
               this.ObjCTS.push(obj);
             }
@@ -1874,7 +1902,7 @@ leerArchivoServicios(inputValue: any): void {
         return false;
       }
     }
-    if (file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' || file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][6] !== 'Número centro de costos/ Orden de inversión' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
+    if (file[1][0] !== 'Código de material' || file[1][1] !== 'Descripción del elemento a comprar' || file[1][2] !== 'Cantidad' || file[1][3] !== 'Valor estimado' || file[1][4] !== 'Tipo de moneda' || file[1][5] !== 'Centro de costos/ Orden de inversión/ ID de Servicios' || file[1][6] !== 'Número centro de costos/ Orden de inversión/ ID de Servicios' || file[1][7] !== 'Número de cuenta' || file[1][8] !== 'Comentarios') {
       this.mostrarError('La plantilla ha sido modificada. Por favor vuelva a descargarla');
       this.spinner.hide();
       this.cantidadErrorFileCTS = 0;
@@ -1886,7 +1914,7 @@ limpiarArrayErrorFileCTS() {
   this.modalRef.hide()
 }
 
-ValidarVaciosCTS(row: any, i: number): any {
+async ValidarVaciosCTS(row: any, i: number) {
   let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
   let tipoSolicitud = this.solpFormulario.controls['tipoSolicitud'].value;
   let codigo = row[0];
@@ -1904,6 +1932,12 @@ ValidarVaciosCTS(row: any, i: number): any {
   let testeado = true;
   let cantidadTesteadoServicios = true;
   let numeroCuentaTesteadoServicios = true;
+  let idServicio = numeroCostoInversion;
+  let IdOrdenServicio;
+  let tieneIdServicio: boolean = false;
+  let params = {
+    'idservicio': idServicio.toString().replace('.', ',')
+  }
   
   if(valorEstimado !== "" && valorEstimado !== null){
     let regularExp = /[.,]/g
@@ -1960,6 +1994,32 @@ ValidarVaciosCTS(row: any, i: number): any {
       this.cantidadErrorFileCTS++;
       this.ArrayErrorFileCTS.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
     }
+    if(costoInversion === 'ID de Servicios') {
+      let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+      let idServicio = []
+      let estado = respuestaServicioExcel.filter(x => {
+        return x.Estado === 'No Existe';
+      });
+      if(estado.length > 0) {
+        let cantidadIds = estado.map(x => {
+          return x.IdServicio
+        })
+        idServicio.push(cantidadIds);
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
+      }
+      else if(estado.length === 0) {
+        this.ctsFormulario.controls['numCicoCTS'].disable();
+        let idServicios = [];
+        let datos = await this.servicioCrm.consultarDatosBodega(params);
+        let ids = datos.map(x => {
+          return x.Orden_SAP;
+        });
+        idServicios.push(ids);
+        IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+        tieneIdServicio = true;
+      }
+    }
     if(costoInversion === "" || costoInversion === null){
       this.cantidadErrorFileCTS++;
       this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
@@ -1993,8 +2053,10 @@ ValidarVaciosCTS(row: any, i: number): any {
         MonedaSondeo: tipoMoneda,
         Comentario: comentarios,
         costoInversion: costoInversion.toString(),
-        numeroCostoInversion: numeroCostoInversion.toString(),
+        numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
         numeroCuenta: numeroCuentaStringCTS,
+        IdOrdenServicio: IdOrdenServicio.toString(),
+        tieneIdServicio: tieneIdServicio,
         Orden: i
       }
         return Obj;         
@@ -2037,6 +2099,32 @@ ValidarVaciosCTS(row: any, i: number): any {
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
       }
+      if(costoInversion === 'ID de Servicios') {
+        let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+        let idServicio = []
+        let estado = respuestaServicioExcel.filter(x => {
+          return x.Estado === 'No Existe';
+        });
+        if(estado.length > 0) {
+          let cantidadIds = estado.map(x => {
+            return x.IdServicio
+          })
+          idServicio.push(cantidadIds);
+          this.cantidadErrorFileCTS++;
+          this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
+        }
+        else if(estado.length === 0) {
+          this.ctsFormulario.controls['numCicoCTS'].disable();
+          let idServicios = [];
+          let datos = await this.servicioCrm.consultarDatosBodega(params);
+          let ids = datos.map(x => {
+            return x.Orden_SAP;
+          });
+          idServicios.push(ids);
+          IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+          tieneIdServicio = true;
+        }
+      }
       if(costoInversion === "" || costoInversion === null){
         this.cantidadErrorFileCTS++;
         this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
@@ -2070,8 +2158,10 @@ ValidarVaciosCTS(row: any, i: number): any {
           MonedaSondeo: tipoMoneda,
           Comentario: comentarios,
           costoInversion: costoInversion.toString(),
-          numeroCostoInversion: numeroCostoInversion.toString(),
+          numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
           numeroCuenta: numeroCuentaStringCTS,
+          IdOrdenServicio: IdOrdenServicio.toString(),
+          tieneIdServicio: tieneIdServicio,
           Orden: i
         }
           return Obj;         
@@ -3024,7 +3114,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     });
   }
 
-  enviarSolicitud() {
+  async enviarSolicitud() {
     this.spinner.show();
     let respuesta;
     let estado;
@@ -3159,6 +3249,8 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       this.compraOrdenEstadistica = true;
     }
 
+    let a = await this.validarSiEnviarCrm()
+
     this.servicio.obtenerResponsableProcesos(valorPais.id).subscribe(
       (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
@@ -3213,46 +3305,44 @@ validarCodigosBrasilCTS(codigoValidar, i) {
                 this.fueSondeo,
                 FechaDeCreacion);
               this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
-                (item: ItemAddResult) => {
-                  this.obtenerIdsBienesServicios().subscribe(
-                    (respuesta) => {
-                      let objCrm = {
-                        "numerosolp": this.idSolicitudGuardada,
-                        "linksolp": "Este es el link de solp",
-                        "idservicios": this.dataTotalIds     
-                      }
-                      if(respuesta[0] !== '' && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
-                        this.servicioCrm.ActualizarSolicitud(objCrm).then(
-                          (res) => {
-                            if(res.status === 200) {
-                              this.MostrarExitoso('Se envió correctamente a CRM')
-                            }
-                            else {
-                              let obj = {
-                                Title: `Solicitud ${this.idSolicitudGuardada}`,
-                                NroSolp: this.idSolicitudGuardada,
-                                EnlaceSolp: 'link de solp',
-                                IdServicios: this.dataTotalIds
-                              }
-                              let objToken = {
-                                TipoConsulta: "crm",
-                                suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
-                                token: this.token,
-                                estado: "true"
-                              }
-                              let objTokenString = JSON.stringify(objToken);
-                              localStorage.setItem("id_token",objTokenString);
-                              this.servicio.enviarFallidosListaCrm(obj).then(
-                                (respuesta) => {
-                                  this.mostrarInformacion('Se ha enviado a la lista de espera solicitudes crm');
-                                }
-                              )
-                            }
-                          }
-                        )
-                      }
+                async (item: ItemAddResult) => {
+                  if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
+                    let respuesta;
+                    let objToken = {
+                      TipoConsulta: "crm",
+                      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+                      token: this.token,
+                      estado: "true"
                     }
-                  )
+                    let objTokenString = JSON.stringify(objToken);
+                    localStorage.setItem("id_token",objTokenString);
+                    let objCrm = {
+                      "numerosolp": this.idSolicitudGuardada,
+                      "linksolp": "Este es el link de solp",
+                      "idservicios": this.dataTotalIds
+                    }
+                    let obj = {
+                      Title: `Solicitud ${this.idSolicitudGuardada}`,
+                      NroSolp: `${this.idSolicitudGuardada}`,
+                      EnlaceSolp: 'link de solp',
+                      IdServicios: this.dataTotalIds.toString()
+                    }
+                    respuesta = await this.enviarServicioSolicitud(objCrm);
+                    if (respuesta.statusCode === 200) {
+                      this.MostrarExitoso(respuesta["MensajeExito"]);
+                    }
+                    else {
+                      this.servicio.enviarFallidosListaCrm(obj).then(
+                        (item: ItemAddResult) => {
+                          this.mostrarInformacion('Se enviaron los datos para manejo más tarde')
+                        }
+                      ), error => {
+                        this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
+                      }
+                      // let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
+                      // this.mostrarError('No se pudo enviar a crm. Se guardaron los datos en la lista de gestión de errores');
+                    }
+                  }
                   // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
                   //   (item: ItemAddResult) => {
                       let notificacion = {
@@ -3291,6 +3381,35 @@ validarCodigosBrasilCTS(codigoValidar, i) {
         this.spinner.hide();
       }
     )
+  }
+
+  async enviarServicioSolicitud(obj): Promise<any>{
+    let respuesta;
+    await this.servicioCrm.ActualizarSolicitud(obj).then(
+      (res)=>{
+        respuesta = res;
+      },
+      (error)=> {
+        respuesta = error.error
+      }
+    )   
+    return respuesta;
+  }
+
+  async GuardarErrorSolicitudCrm(ObjSolicitudCrm): Promise<any>{
+    let respuesta;
+    await this.servicio.GuardarSolicitudCrm(ObjSolicitudCrm).then(
+      (res)=>{
+        respuesta = true;
+        this.mostrarInformacion('Se guardó la solicitud para que pueda ser enviada a CRM más tarde');
+      }
+    ).catch(
+      (error)=>{
+        respuesta = false;
+      }
+    );
+
+    return respuesta;
   }
 
   ValidarCompraOrdenEstadistica(): boolean {
@@ -3641,7 +3760,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     }
     else {
       tieneIdServicio = false;
-      idOrdenServicio = '';
+      idOrdenServicio = [];
     }
     //---------------------------------------------Hasta aquí---------------------------------------
 
@@ -3757,7 +3876,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     if (this.textoBotonGuardarCTB == "Actualizar") {
       // this.validarCodigosBrasil();
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -3776,6 +3895,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
             this.condicionesTB[objIndex].numeroCuenta = this.condicionTB.numeroCuenta;
             this.condicionesTB[objIndex].id = this.condicionTB.id;
             this.condicionesTB[objIndex].tieneIdServicio = this.condicionTB.tieneIdServicio;
+            // this.condicionesTB[objIndex].idOrdenServicio = idOrdenServicio;
             this.condicionesTB[objIndex].idOrdenServicio = this.condicionTB.idOrdenServicio;
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
@@ -3916,87 +4036,58 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     this.emptyCTB = false;
   }
 
-  validarSiEnviarCrm() {
-    let data;
-    let dataServicios;
-    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
-      (respuesta) => {
-        data = respuesta.filter(x => {
-          return x.tieneIdServicio === true
-        });
-        if(data === undefined) {
-          data = '';
-        }
-      }
-    )
-    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
-      (respuesta) => {
-        dataServicios = respuesta.filter(x => {
-          return x.tieneIdServicio === true
-        });
-        if (dataServicios === undefined) {
-          dataServicios = '';
-        }
-      }
-    );
-    if(data.length > 0 || dataServicios.length > 0) {
-      this.enviarCrm = true;
+  async validarSiEnviarCrmBienes() {
+    let respuestaBienes = await this.servicio.obtenerCtBienes(this.idSolicitudGuardada);
+    let numCostoInversion;
+    let numCostoInversionString;
+    console.log(respuestaBienes);
+    this.dataTieneIdServiciosBienes = respuestaBienes.filter(x => {
+      return x.tieneIdServicio === true;
+    })
+    if(this.dataTieneIdServiciosBienes.length > 0) {
+      numCostoInversion = this.dataTieneIdServiciosBienes.map(x => {
+        return x.numeroCostoInversion
+      })
+      numCostoInversionString = numCostoInversion.toString();
+      this.dataIdServiciosBienes = numCostoInversionString.split(',');
     }
-    console.log(this.enviarCrm);
+    else {
+      this.dataIdServiciosBienes = [];
+    }
+    console.log(this.dataIdServiciosBienes);
+   
   }
 
-  obtenerIdsBienesServicios(): Observable<any> {
-    let data = [];
-    let dataServicios = [];
-    let dataTotales;
-    let dataTotalesString;
-    let dataTotalesArray;
-
-    this.servicio.ObtenerCondicionesTecnicasBienes(this.idSolicitudGuardada).subscribe(
-      (respuesta) => {
-        data = respuesta.filter(x => {
-          return x.tieneIdServicio === true
-        });
-        if (data.length > 0) {
-          data.map(x => {
-            this.dataIdServiciosBienes.push(x.numeroCostoInversion);
-            // console.log(this.dataIdServiciosBienes);
-          })
-        }
-        else {
-          this.dataIdServiciosBienes = [];
-        }
-      }
-    )
-    this.servicio.ObtenerCondicionesTecnicasServicios(this.idSolicitudGuardada).subscribe(
-      (respuesta) => {
-        dataServicios = respuesta.filter(x => {
-          return x.tieneIdServicio === true
-        });
-        if (dataServicios.length > 0) {
-          dataServicios.map(x => {
-            this.dataIdeServiciosServicios.push(x.numeroCostoInversion);
-            // console.log(this.dataIdeServiciosServicios);
-          })
-        }
-        else {
-          this.dataIdeServiciosServicios = [];
-        }
-      }
-    );
-    dataTotales = this.dataIdServiciosBienes.concat(this.dataIdeServiciosServicios)
-    // console.log(dataTotales);
-    dataTotalesString = dataTotales.toString();
-    dataTotalesArray = dataTotalesString.split(',');
-    this.dataTotalIds = dataTotalesArray.sort().filter((x, y) => {
-      return dataTotalesArray.indexOf(x) === y;
+  async validarSiEnviarCrmServicios() {
+    let respuestaServicios = await this.servicio.obtenerCtServicios(this.idSolicitudGuardada);
+    let numCostoInversion;
+    let numCostoInversionString;
+    console.log(respuestaServicios);
+    this.dataTieneIdServiciosServicios = respuestaServicios.filter(x => {
+      return x.tieneIdServicio === true;
     })
-    if(this.dataTotalIds[0] === '') {
-      this.enviarCrm = true;
+    if(this.dataTieneIdServiciosServicios.length > 0) {
+      numCostoInversion = this.dataTieneIdServiciosServicios.map(x => {
+        return x.numeroCostoInversion;
+      });
+      numCostoInversionString = numCostoInversion.toString();
+      this.dataIdeServiciosServicios = numCostoInversionString.split(',');
     }
-    console.log(this.dataTotalIds);
-    console.log(this.enviarCrm);
-    return this.dataTotalIds;
+    else {
+      this.dataIdeServiciosServicios = [];
+    }
+  }
+
+  async validarSiEnviarCrm() {
+    let a = await this.validarSiEnviarCrmBienes();
+    let b = await this.validarSiEnviarCrmServicios();
+    if(this.dataIdServiciosBienes.length > 0 || this.dataIdeServiciosServicios.length > 0) {
+      this.enviarCrm = true;
+      let totalIds = this.dataIdServiciosBienes.concat(this.dataIdeServiciosServicios);
+      this.dataTotalIds = totalIds.sort().filter((x, y)=> {
+        return totalIds.indexOf(x) === y;
+      })
+    }  
   }
 
   limpiarControlesCTB(): any {
@@ -4162,7 +4253,7 @@ validarCodigosBrasilCTS(codigoValidar, i) {
     if (this.textoBotonGuardarCTS == "Actualizar") {
       
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, tieneIdServicio, idOrdenServicio);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
           (item: ItemAddResult) => {
