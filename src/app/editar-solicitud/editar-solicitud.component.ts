@@ -733,7 +733,9 @@ export class EditarSolicitudComponent implements OnInit {
     this.clientBienes.setValue('');
     this.ordenServBienes.setValue('');
     this.idServBienes.setValue('');
-    this.nombreIdServBienes.setValue('');  
+    this.nombreIdServBienes.setValue('');
+    this.dataIdOrdenSeleccionados = [];
+    this.dataSeleccionados = [];   
   }
 
   limpiarFiltrosServicios() {
@@ -741,6 +743,26 @@ export class EditarSolicitudComponent implements OnInit {
     this.ordenServServicios.setValue('');
     this.idServServicios.setValue('');
     this.nombreIdServServicios.setValue('');
+    this.dataIdOrdenSeleccionadosServicios = [];
+    this.dataSeleccionadosServicios = [];
+  }
+
+  deshabilitarCampo() {
+    if(this.solpFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
+      this.solpFormulario.controls['numCicoCTB'].disable();
+    }
+    else {
+      this.solpFormulario.controls['numCicoCTB'].enable();
+    }
+  }
+  
+  deshabilitarCampoServicios() {
+    if(this.solpFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
+      this.solpFormulario.controls['numCicoCTS'].disable();
+    }
+    else {
+      this.solpFormulario.controls['numCicoCTS'].enable();
+    }
   }
 
   private perfilacionEstado() {
@@ -4921,14 +4943,19 @@ export class EditarSolicitudComponent implements OnInit {
 
   ValidarCompraOrdenEstadistica(): boolean {
     let respuesta = true;
+    let solicitud = this.solpFormulario.controls['tipoSolicitud'].value;
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
-    if (valorOrdenEstadistica == "NO") {
+    if(solicitud === 'Sondeo' && valorOrdenEstadistica === 'NO') {
       respuesta = true;
-    } else {
-      if (this.EsCampoVacio(valorNumeroOrdenEstadistica)) {
-        respuesta = false;
+    }
+    else if(valorOrdenEstadistica === 'NO') {
+      respuesta = true;
+    }
+    else if(valorOrdenEstadistica === 'SI' && solicitud !== 'Sondeo') {
+      if(this.EsCampoVacio(valorNumeroOrdenEstadistica)) {
         this.mostrarAdvertencia("El campo Número de orden estadística es requerido");
+        respuesta = false;
       }
     }
     return respuesta;

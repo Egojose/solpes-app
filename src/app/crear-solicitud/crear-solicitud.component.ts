@@ -701,7 +701,9 @@ export class CrearSolicitudComponent implements OnInit {
     this.clientBienes.setValue('');
     this.ordenServBienes.setValue('');
     this.idServBienes.setValue('');
-    this.nombreIdServBienes.setValue('');  
+    this.nombreIdServBienes.setValue(''); 
+    this.dataIdOrdenSeleccionados = [];
+    this.dataSeleccionados = []; 
   }
 
   limpiarFiltrosServicios() {
@@ -709,6 +711,8 @@ export class CrearSolicitudComponent implements OnInit {
     this.ordenServServicios.setValue('');
     this.idServServicios.setValue('');
     this.nombreIdServServicios.setValue('');
+    this.dataIdOrdenSeleccionadosServicios = [];
+    this.dataSeleccionadosServicios = [];
   }
 
   numberOnly(event): boolean {
@@ -1463,7 +1467,7 @@ export class CrearSolicitudComponent implements OnInit {
       }
       if (this.cantidadErrorFile === 0) {
         if(costoInversion === 'ID de Servicios') {
-                this.ctbFormulario.controls['numCicoCTB'].disable();
+                // this.ctbFormulario.controls['numCicoCTB'].disable();
                 let idServicios = [];
                 let datos = await this.servicioCrm.consultarDatosBodega(params);
                 console.log(datos);
@@ -1474,9 +1478,9 @@ export class CrearSolicitudComponent implements OnInit {
                 IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
                 tieneIdServicio = true;
               }
-              else {
-                this.ctbFormulario.controls['numCicoCTB'].enable();
-              }
+              // else {
+              //   this.ctbFormulario.controls['numCicoCTB'].enable();
+              // }
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
@@ -1593,7 +1597,7 @@ export class CrearSolicitudComponent implements OnInit {
 
       if (this.cantidadErrorFile === 0) {
         if (costoInversion === 'ID de Servicios') {
-          this.ctbFormulario.controls['numCicoCTB'].disable();
+          // this.ctbFormulario.controls['numCicoCTB'].disable();
           let idServicios = [];
           let datos = await this.servicioCrm.consultarDatosBodega(params);
           console.log(datos);
@@ -1604,9 +1608,9 @@ export class CrearSolicitudComponent implements OnInit {
           IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
           tieneIdServicio = true;
         }
-        else {
-          this.ctbFormulario.controls['numCicoCTB'].enable();
-        }
+        // else {
+        //   this.ctbFormulario.controls['numCicoCTB'].enable();
+        // }
         // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
         let Obj = {
           Title: "Condición Técnicas Bienes " + new Date().toDateString(),
@@ -2459,7 +2463,7 @@ async ValidarVaciosCTS(row: any, i: number) {
       }
       if(this.cantidadErrorFileCTS === 0){
         if (costoInversion === 'ID de Servicios') {
-          this.ctsFormulario.controls['numCicoCTS'].disable();
+          // this.ctsFormulario.controls['numCicoCTS'].disable();
           let idServicios = [];
           let datos = await this.servicioCrm.consultarDatosBodega(params);
           console.log(datos);
@@ -2470,9 +2474,9 @@ async ValidarVaciosCTS(row: any, i: number) {
           IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
           tieneIdServicio = true;
         }
-        else {
-          this.ctsFormulario.controls['numCicoCTS'].enable();
-        }
+        // else {
+        //   this.ctsFormulario.controls['numCicoCTS'].enable();
+        // }
 
   
         let Obj ={
@@ -2580,7 +2584,7 @@ async ValidarVaciosCTS(row: any, i: number) {
         if(this.cantidadErrorFileCTS === 0){
 
           if (costoInversion === 'ID de Servicios') {
-            this.ctsFormulario.controls['numCicoCTS'].disable();
+            // this.ctsFormulario.controls['numCicoCTS'].disable();
             let idServicios = [];
             let datos = await this.servicioCrm.consultarDatosBodega(params);
             console.log(datos);
@@ -2591,9 +2595,9 @@ async ValidarVaciosCTS(row: any, i: number) {
             IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
             tieneIdServicio = true;
           }
-          else {
-            this.ctsFormulario.controls['numCicoCTS'].enable();
-          }
+          // else {
+          //   this.ctsFormulario.controls['numCicoCTS'].enable();
+          // }
           // valorEstimado=valorEstimado.toString().replace(/[;\\/:*?\"<>.|&']/g, "");
     
           let Obj = {
@@ -2887,6 +2891,25 @@ validarCodigosBrasilCTS(codigoValidar, i) {
       }
   }
 }
+
+deshabilitarCampo() {
+  if(this.solpFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
+    this.solpFormulario.controls['numCicoCTB'].disable();
+  }
+  else {
+    this.solpFormulario.controls['numCicoCTB'].enable();
+  }
+}
+
+deshabilitarCampoServicios() {
+  if(this.solpFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
+    this.solpFormulario.controls['numCicoCTS'].disable();
+  }
+  else {
+    this.solpFormulario.controls['numCicoCTS'].enable();
+  }
+}
+
 
   AsignarRequeridosDatosContables(): any {
     // let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
@@ -3594,14 +3617,19 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 
   ValidarCompraOrdenEstadistica(): boolean {
     let respuesta = true;
+    let solicitud = this.solpFormulario.controls['tipoSolicitud'].value;
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
-    if (valorOrdenEstadistica == "NO") {
+    if(solicitud === 'Sondeo' && valorOrdenEstadistica === 'NO') {
       respuesta = true;
-    } else {
-      if (this.EsCampoVacio(valorNumeroOrdenEstadistica)) {
-        respuesta = false;
+    }
+    else if(valorOrdenEstadistica === 'NO') {
+      respuesta = true;
+    }
+    else if(valorOrdenEstadistica === 'SI' && solicitud !== 'Sondeo') {
+      if(this.EsCampoVacio(valorNumeroOrdenEstadistica)) {
         this.mostrarAdvertencia("El campo Número de orden estadística es requerido");
+        respuesta = false;
       }
     }
     return respuesta;
