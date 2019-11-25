@@ -134,7 +134,7 @@
 
         <hr>
         <div class="form-group row">
-            <div class="col-md-6">
+            <div class="col-md-6" [hidden]="noMostrarOrdenEstadistica">
                 <label for="CompraEstadística">Compra orden de estadística</label>
                 <mat-radio-group class="orden-estadistica-group" layout="row" formControlName="compraOrdenEstadistica">
                     <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO" (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>

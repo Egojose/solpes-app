@@ -111,6 +111,8 @@ export class AprobarSondeoComponent implements OnInit {
   valorUsuarioPorDefecto: any;
   emptyManager: boolean;
   idBienServicio: any;
+  datosContablesBienesVacios: any = [];
+  datosContablesServiciosVacios: any  = [];
 
   constructor( 
     private formBuilder: FormBuilder,
@@ -174,13 +176,14 @@ export class AprobarSondeoComponent implements OnInit {
     }
   }
 
-  GuardarRevSondeo() {
+ async GuardarRevSondeo() {
     this.spinner.show();
     let fecha = new Date();
     let dia = ("0" + fecha.getDate()).slice(-2);
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
+    await this.validarDatosContables();
 
     let ObjSondeo;
     if (this.RDBsondeo === undefined) {
@@ -281,6 +284,12 @@ export class AprobarSondeoComponent implements OnInit {
             FechaRevisarSondeo: fecha
           }
         }
+      }
+
+      if((this.RDBsondeo === 2 || this.RDBsondeo === 4) && (this.datosContablesBienesVacios.length > 0 || this.datosContablesServiciosVacios.length > 0)) {
+        this.mostrarAdvertencia('Existen bienes o servicios sin datos contables. Por favor verifique');
+        this.spinner.hide();
+        return false;
       }
 
       this.servicio.guardarRegSondeo(this.IdSolicitud, ObjSondeo).then(
@@ -697,6 +706,21 @@ export class AprobarSondeoComponent implements OnInit {
     }
     this.isModalShown = true;
   }  
+
+  async validarDatosContables() {
+    let bienes = await this.servicio.obtenerCtBienes(this.IdSolicitud);
+    let servicios = await this.servicio.obtenerCtServicios(this.IdSolicitud);
+    if(bienes.length > 0) {
+     this.datosContablesBienesVacios = bienes.filter(x => {
+        return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null
+      });
+    }
+    if(servicios.length > 0) {
+     this.datosContablesServiciosVacios = servicios.filter(x => {
+        return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null
+      })
+    }
+  }
  
   hideModal(): void {
     this.autoShownModal.hide();
@@ -733,7 +757,8 @@ export class AprobarSondeoComponent implements OnInit {
     let obj = {
       costoInversion: centroCosto,
       numeroCostoInversion: NumeroCentroCosto,
-      numeroCuenta: NumeroCuenta
+      numeroCuenta: NumeroCuenta,
+      IdOrdenServicio: this.dataIdOrdenSeleccionadosServicios.toString(),
     }
 
     if (this.TipoSondeo === "Bien") {

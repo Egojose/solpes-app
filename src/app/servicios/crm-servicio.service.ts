@@ -56,6 +56,13 @@ export class CrmServicioService {
 
   public async validarIdServiciosExcel(parametros): Promise<any> {
     let token = '03f4673dd6b04790be91da8e57fddb52'
+    let objToken = {
+      TipoConsulta: "Bodega",
+      suscriptionKey: "03f4673dd6b04790be91da8e57fddb52",
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
  
     const header = {
       'Accept': 'application/json; odata=verbose',
