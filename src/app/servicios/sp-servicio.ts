@@ -690,17 +690,17 @@ export class SPServicio {
     }
 
     modificarDatosContablesServicio(obj, idServicio){
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idServicio).update(obj);
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idServicio).update(obj);
         return respuesta;
     }
 
     modificarDatosContablesBienes(obj, idBien){
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBien).update(obj);
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBien).update(obj);
         return respuesta;
     }
 
     modificarOrdenadorGastos(obj, idSolicitud){
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(obj);
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(obj);
         return respuesta;
     }
 
