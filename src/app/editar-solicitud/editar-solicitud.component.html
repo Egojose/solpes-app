@@ -545,7 +545,7 @@
                                 formControlName="numCicoCTB"
                                 [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"> -->
                             <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI"
-                                formControlName="numCicoCTB" (click)="deshabilitarCampo()
+                                formControlName="numCicoCTB" (click)="deshabilitarCampo()"
                                 [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"></textarea>
                             <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
@@ -619,10 +619,7 @@
                 </div>
                 <div class="form-group">
                     <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
-                    <input currencyMask
-                        [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }"
-                        id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control"
-                        type="text" placeholder="Escriba la cantidad"
+                    <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text" placeholder="Escriba la cantidad"
                         [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
                     <div *ngIf="ctsSubmitted && f2.cantidadCTS.errors" class="invalid-feedback">
                         <div *ngIf="f2.cantidadCTS.errors.required">Este campo es requerido</div>
@@ -783,7 +780,7 @@
                                 formControlName="numCicoCTS"
                                 [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"> -->
                             <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI"
-                                formControlName="numCicoCTS" (click)="deshabilitarCampoServicios()
+                                formControlName="numCicoCTS" (click)="deshabilitarCampoServicios()"
                                 [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"></textarea>
                             <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
