@@ -747,6 +747,24 @@ export class EditarSolicitudComponent implements OnInit {
     this.dataSeleccionadosServicios = [];
   }
 
+  deshabilitarCampo() {
+    if(this.solpFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
+      this.solpFormulario.controls['numCicoCTB'].disable();
+    }
+    else {
+      this.solpFormulario.controls['numCicoCTB'].enable();
+    }
+  }
+  
+  deshabilitarCampoServicios() {
+    if(this.solpFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
+      this.solpFormulario.controls['numCicoCTS'].disable();
+    }
+    else {
+      this.solpFormulario.controls['numCicoCTS'].enable();
+    }
+  }
+
   private perfilacionEstado() {
     console.log(this.solicitudRecuperada);
     if (this.solicitudRecuperada == null) {

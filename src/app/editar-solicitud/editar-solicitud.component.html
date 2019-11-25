@@ -545,7 +545,7 @@
                                 formControlName="numCicoCTB"
                                 [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"> -->
                             <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI"
-                                formControlName="numCicoCTB"
+                                formControlName="numCicoCTB" (click)="deshabilitarCampo()
                                 [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"></textarea>
                             <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
@@ -783,7 +783,7 @@
                                 formControlName="numCicoCTS"
                                 [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"> -->
                             <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI"
-                                formControlName="numCicoCTS"
+                                formControlName="numCicoCTS" (click)="deshabilitarCampoServicios()
                                 [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"></textarea>
                             <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
