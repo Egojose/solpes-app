@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Select2Data } from 'ng-select2-component';
 import { MatDialogRef } from '@angular/material';
 import { SPServicio } from '../servicios/sp-servicio';
 import { Usuario } from '../dominio/usuario';
 import { Solicitud } from '../dominio/solicitud';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ItemAddResult } from 'sp-pnp-js';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Compardor } from '../dominio/compardor';
+import { Subcategoria } from '../dominio/subcategoria';
+import { Pais } from '../dominio/pais';
+import { Categoria } from '../dominio/categoria';
 
 @Component({
   selector: 'app-reasignar',
@@ -17,6 +20,10 @@ import { Compardor } from '../dominio/compardor';
   styleUrls: ['./reasignar.component.css']
 })
 export class ReasignarComponent implements OnInit {
+
+  // @Input() Prueba;
+
+
   loading: boolean;
   solicitudRecuperada: Solicitud;
   consecutivoSolicitud: string;
@@ -41,9 +48,22 @@ export class ReasignarComponent implements OnInit {
   emailNuevoSolicitante: string;
   jefeSeleccionado: string;
   mostrarEnSondeo: boolean;
-  listaCompradores: Compardor [] = []
+  listaCompradores: Compardor [] = [];
+  ReasignarSondeoFormulario: FormGroup;
+  Recategorizacion: boolean;
+  ReasignarSubmitted: boolean = false;
+  subcategorias: Subcategoria[] = [];
+  subcategoriaSeleccionada: Subcategoria;
+  paises: Pais[] = [];
+  categorias: Categoria[] = [];
 
-  constructor(private servicio: SPServicio, public dialogRef: MatDialogRef<ReasignarComponent>, public toastr: ToastrManager,private router: Router, private spinner: NgxSpinnerService) {
+  constructor(
+    private servicio: SPServicio, 
+    public dialogRef: MatDialogRef<ReasignarComponent>, 
+    public toastr: ToastrManager,
+    private router: Router, 
+    private spinner: NgxSpinnerService,
+    private formBuilder: FormBuilder) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.correoManager = "";
     this.emptyManager = false;
@@ -59,21 +79,29 @@ export class ReasignarComponent implements OnInit {
     this.asignarConsecutivo();
     this.registrarControles();
     this.obtenerUsuariosSitio();
+    this.obtenerPaises();
     // this.obtenerProfile();
   }
 
   asignarConsecutivo() {
     this.consecutivoSolicitud = this.solicitudRecuperada.consecutivo.toString();
     this.mostrarCampoSondeo();
-    this.mostrarCampoJefe();
-    
+    this.mostrarCampoJefe();    
   }
 
   registrarControles() {
-    this.ReasignarControl = new FormControl('', [
-      Validators.required
-    ]);
+    this.ReasignarSondeoFormulario = this.formBuilder.group({      
+      ReasignarA: ['', Validators.required],
+      CausaReasignacion: ['', Validators.required],
+      Pais: [''],
+      Categoria: [''],
+      SubCategoria: [''],
+      ReasignarJefeA: ['']
+    });
+    // this.ReasignarControl = new FormControl('', [Validators.required]);
   }
+
+  get f2() { return this.ReasignarSondeoFormulario.controls; }
 
   obtenerUsuariosSitio() {
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
@@ -170,19 +198,17 @@ export class ReasignarComponent implements OnInit {
 
   changeSolicitante($event) {
     this.spinner.show();
-
-    
-    let id = $event.target.value
+    let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
+    // let id = $event.target.value
     this.ObtenerUsuarioPorId(id)
   }
 
-
   changeSolicitanteComprador(event: any): void {
-    let id = event.item.compradorId;
+    // let id = event.item.compradorId;
+    let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
     this.reasignarModelo = id;
     this.ObtenerUsuarioPorId(id)
   }
-
 
   changeJefe($event) {
     this.jefeSeleccionado = $event.target.value;
@@ -257,9 +283,83 @@ export class ReasignarComponent implements OnInit {
     if (this.ReasignarControl.status == "INVALID") {
       return;
     }
-
     this.actualizarResponsableyComprador();
+  }
 
+  ReasignarSondeoSubmit(){
+    this.ReasignarSubmitted = true;
+    if (this.ReasignarSondeoFormulario.invalid) {
+      this.mostrarInformacion("Por favor diligencie todos los campos");
+      return;
+    }
+    this.actualizarResponsableyComprador();
+  }
+
+  SeleccionCausa(item) {
+    let causa = item.target.value;
+    if (causa === "Recategorización") {
+      this.Recategorizacion = true;
+      this.ReasignarSondeoFormulario.controls['Categoria'].setValidators([Validators.required])
+      this.ReasignarSondeoFormulario.controls['SubCategoria'].setValidators([Validators.required])
+    }
+    else {
+      this.Recategorizacion = false;
+      this.ReasignarSondeoFormulario.controls['Categoria'].clearValidators();
+      this.ReasignarSondeoFormulario.controls['Categoria'].updateValueAndValidity();
+      this.ReasignarSondeoFormulario.controls['SubCategoria'].setValidators([]);
+      this.ReasignarSondeoFormulario.controls['SubCategoria'].updateValueAndValidity();
+    }
+  }
+
+  obtenerPaises() {
+    this.servicio.ObtenerPaises().subscribe(
+      (respuesta) => {
+        this.paises = Pais.fromJsonList(respuesta);
+        this.obtenerCategorias();
+      }, err => {
+        this.mostrarError('Error obteniendo paises');
+        this.spinner.hide();
+        console.log('Error obteniendo paises: ' + err);
+      }
+    )
+  }
+
+  obtenerCategorias() {
+    this.servicio.ObtenerCategorias().subscribe(
+      (respuesta) => {
+        this.categorias = Categoria.fromJsonList(respuesta);        
+      }, err => {
+        this.mostrarError('Error obteniendo categorías');
+        this.spinner.hide();
+        console.log('Error obteniendo categorías: ' + err);
+      }
+    )
+  }
+
+  filtrarSubcategorias() {
+    this.spinner.show();
+    let categoria = this.ReasignarSondeoFormulario.controls["Categoria"].value;
+    let pais = this.ReasignarSondeoFormulario.controls["Pais"].value;
+    
+    if (categoria != '' && pais != '') {
+      this.servicio.ObtenerSubcategorias(categoria.id, pais.id).subscribe(
+        (respuesta) => {
+          if (respuesta.length > 0) {
+            this.subcategorias = Subcategoria.fromJsonList(respuesta);
+          } else {
+            this.subcategorias = [];
+            this.ReasignarSondeoFormulario.controls["SubCategoria"].setValue("");
+          }
+          this.spinner.hide();
+        }, err => {
+          this.mostrarError('Error obteniendo subcategorias');
+          this.spinner.hide();
+          console.log('Error obteniendo subcategorias: ' + err);
+        }
+      )
+    } else {
+      this.spinner.hide();
+    }
   }
 
   actualizarResponsableyComprador(): any {
@@ -269,6 +369,10 @@ export class ReasignarComponent implements OnInit {
       this.spinner.hide();
       return false;
     }
+    this.reasignarModelo = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
+    let categoria = this.ReasignarSondeoFormulario.controls["Categoria"].value;
+    let SubCategoria = this.ReasignarSondeoFormulario.controls["SubCategoria"].value;
+    let pais = this.ReasignarSondeoFormulario.controls["Pais"].value;
     let responsableReasignarSondeo;
     let responsableResignarRevisarSondeo;
     let fechaReasignadoRevisarSondeo;
@@ -286,10 +390,14 @@ export class ReasignarComponent implements OnInit {
         CompradorId: this.reasignarModelo,
         ResponsableReasignarSondeo: responsableReasignarSondeo,
         FechaReasignadoSondeo: fechaReasignadoSondeo,
+        PaisId: pais.id,
+        Categoria: categoria.nombre,
+        Subcategoria: SubCategoria.nombre
       }
     }
 
     else if (this.solicitudRecuperada.estado === "Por aprobar sondeo") {
+
       responsableResignarRevisarSondeo = this.nombreUsuario;
       fechaReasignadoRevisarSondeo = new Date();
       objetoActualizar = {
@@ -301,7 +409,10 @@ export class ReasignarComponent implements OnInit {
         Solicitante: this.nuevoSolicitante,
         SolicitantePersonaId: this.nuevoSolicitanteId.toString(),
         OrdenadorGastosId: this.jefeSeleccionado.toString(),
-        ReasignadoRevisarSondeo: 'true'
+        ReasignadoRevisarSondeo: 'true',
+        PaisId: pais.id,
+        Categoria: categoria.nombre,
+        Subcategoria: SubCategoria.nombre
       }
     }
 
@@ -312,7 +423,10 @@ export class ReasignarComponent implements OnInit {
         ResponsableId: this.reasignarModelo,
         CompradorId: this.reasignarModelo,
         ResponsableReasignarContratos: responsableReasingarContratos,
-        FechaReasignadoContratos: fechaReasignadoContratos
+        FechaReasignadoContratos: fechaReasignadoContratos,
+        PaisId: pais.id,
+        Categoria: categoria.nombre,
+        Subcategoria: SubCategoria.nombre
       }
     }
     
@@ -340,6 +454,8 @@ export class ReasignarComponent implements OnInit {
       }
     )
   }
+
+  
 
   redireccionar(){
     this.loading = false;

@@ -95,6 +95,7 @@ export class ContratosComponent implements OnInit {
   causalexeption: any;
   valorAriba: boolean = false;
   mostrarPuntaje: boolean = false;
+  token: any;
  
   constructor(
     private servicio: SPServicio, 
@@ -119,12 +120,15 @@ export class ContratosComponent implements OnInit {
     let token;
     this.servicioCrm.obtenerToken().then(
       (res)=>{        
-        token = res["access_token"];
-        localStorage.setItem("id_token",token)
+        this.token = res["access_token"];
       }
     ).catch(
       (error)=>{
-        localStorage.setItem("id_token","false")
+        let objToken = {          
+          estado: "false"
+        }
+        let objTokenString = JSON.stringify(objToken);
+        localStorage.setItem("id_token",objTokenString); 
       }
     )
   }
@@ -557,22 +561,20 @@ export class ContratosComponent implements OnInit {
                 let objServicio;
                 let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
                 if(obj !== undefined) {
-                  obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
-                } 
-                else {
-                  objServicio = [];
-                }         
+                  obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): [];
+                  let objCrm = {
+                    "numerocontratoproveedor": ContratoOC,
+                    "numerosolp": SolpSapRfp,            
+                    "fechainiciocontrato": fechaString,           
+                    "duracioncontrato": parseInt(VigenciaContrato),            
+                    "nombreproveedor": NombreRazonSocial,            
+                    "objetocontrato": ObjetoContrato,            
+                    "idservicios": objServicio
+                  }
+                  ObjContratosCrm.push(objCrm);
+                }        
                 // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
-                let objCrm = {
-                  "numerocontratoproveedor": ContratoOC,
-                  "numerosolp": SolpSapRfp,            
-                  "fechainiciocontrato": fechaString,           
-                  "duracioncontrato": parseInt(VigenciaContrato),            
-                  "nombreproveedor": NombreRazonSocial,            
-                  "objetocontrato": ObjetoContrato,            
-                  "idservicios": objServicio
-                }
-                ObjContratosCrm.push(objCrm);
+                
               }
             )
           }
@@ -583,21 +585,18 @@ export class ContratosComponent implements OnInit {
                 let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
                 if(obj !== undefined) {
                   objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
-                }
-                else {
-                  objServicio = [];
-                }          
+                  let objCrm = {
+                    "numerocontratoproveedor": ContratoOC,
+                    "numerosolp": SolpSapRfp,            
+                    "fechainiciocontrato": fechaString,           
+                    "duracioncontrato": parseInt(VigenciaContrato),            
+                    "nombreproveedor": NombreRazonSocial,            
+                    "objetocontrato": ObjetoContrato,            
+                    "idservicios": objServicio
+                  }
+                  ObjContratosCrm.push(objCrm);
+                }        
                 // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
-                let objCrm = {
-                  "numerocontratoproveedor": ContratoOC,
-                  "numerosolp": SolpSapRfp,            
-                  "fechainiciocontrato": fechaString,           
-                  "duracioncontrato": parseInt(VigenciaContrato),            
-                  "nombreproveedor": NombreRazonSocial,            
-                  "objetocontrato": ObjetoContrato,            
-                  "idservicios": objServicio
-                }
-                ObjContratosCrm.push(objCrm);
               }
             )
           }
@@ -657,21 +656,19 @@ export class ContratosComponent implements OnInit {
             let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
             if (obj !== undefined) {
               objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
-            }
-            else {
-              objServicio = [];
-            }          
+              let objCrm = {
+                "numerocontratoproveedor": ContratoOC,
+                "numerosolp": SolpSapRfp,            
+                "fechainiciocontrato": fechaString,           
+                "duracioncontrato": parseInt(VigenciaContrato),            
+                "nombreproveedor": NombreRazonSocial,            
+                "objetocontrato": ObjetoContrato,            
+                "idservicios": objServicio
+              }
+              ObjContratosCrm.push(objCrm);
+            }         
             // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
-            let objCrm = {
-              "numerocontratoproveedor": ContratoOC,
-              "numerosolp": SolpSapRfp,            
-              "fechainiciocontrato": fechaString,           
-              "duracioncontrato": parseInt(VigenciaContrato),            
-              "nombreproveedor": NombreRazonSocial,            
-              "objetocontrato": ObjetoContrato,            
-              "idservicios": objServicio
-            }
-            ObjContratosCrm.push(objCrm);
+            
           }
         )
       }
@@ -682,21 +679,19 @@ export class ContratosComponent implements OnInit {
             let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
             if(obj !== undefined) {
               objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
-            } 
-            else {
-              objServicio = [];
-            }         
+              let objCrm = {
+                "numerocontratoproveedor": ContratoOC,
+                "numerosolp": SolpSapRfp,            
+                "fechainiciocontrato": fechaString,           
+                "duracioncontrato": parseInt(VigenciaContrato),            
+                "nombreproveedor": NombreRazonSocial,            
+                "objetocontrato": ObjetoContrato,            
+                "idservicios": objServicio
+              }
+              ObjContratosCrm.push(objCrm);
+            }        
             // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
-            let objCrm = {
-              "numerocontratoproveedor": ContratoOC,
-              "numerosolp": SolpSapRfp,            
-              "fechainiciocontrato": fechaString,           
-              "duracioncontrato": parseInt(VigenciaContrato),            
-              "nombreproveedor": NombreRazonSocial,            
-              "objetocontrato": ObjetoContrato,            
-              "idservicios": objServicio
-            }
-            ObjContratosCrm.push(objCrm);
+            
           }
         )
       }
@@ -829,6 +824,14 @@ export class ContratosComponent implements OnInit {
 
   async enviarServicioContratos(obj): Promise<any>{
     let respuesta;
+    let objToken = {
+      TipoConsulta: "crm",
+      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+      token: this.token,
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     await this.servicioCrm.ActualizarContratos(obj).then(
       (res)=>{
         respuesta = res;
