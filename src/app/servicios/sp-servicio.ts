@@ -188,7 +188,7 @@ export class SPServicio {
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
             numeroCuenta: condicionTecnicaBienes.numeroCuenta,
             tieneIdServicio: condicionTecnicaBienes.tieneIdServicio,
-            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio
+            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio.toString()
         });
     }
     
@@ -212,7 +212,7 @@ export class SPServicio {
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
             numeroCuenta: condicionTecnicaBienes.numeroCuenta,
             tieneIdServicio: condicionTecnicaBienes.tieneIdServicio,
-            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio
+            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio.toString()
         });
     }
 
