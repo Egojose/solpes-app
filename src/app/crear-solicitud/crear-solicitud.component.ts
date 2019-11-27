@@ -354,6 +354,24 @@ export class CrearSolicitudComponent implements OnInit {
     }
   }
 
+  cargarFilterBienes() {
+    if(this.solpFormulario.controls['tipoSolicitud'].value === 'ID de Servicios') {
+      this.mostrarFiltroBienes = true;
+    }
+    else {
+      this.mostrarFiltroBienes = false;
+    }
+  }
+
+  cargarFilterServicios() {
+    if(this.solpFormulario.controls['tipoSolicitud'].value === 'ID de Servicios') {
+      this.mostrarFiltroServicios = true;
+    }
+    else {
+      this.mostrarFiltroServicios = false;
+    }
+  }
+
   consultaDatos() {
     this.spinner.show();
     let parametros = {
@@ -375,6 +393,7 @@ export class CrearSolicitudComponent implements OnInit {
         this.mostrarTable = true;
         this.datos = respuesta;
         if (this.datos.length === 0) {
+          this.dataSourceDatos.data = [];
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
           this.spinner.hide();
           return false;
@@ -413,6 +432,7 @@ export class CrearSolicitudComponent implements OnInit {
         this.mostrarTableServicios = true;
         this.datosServicios = respuesta;
         if (this.datosServicios.length === 0) {
+          this.dataSourceDatosServicios.data = [];
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
           this.spinner.hide();
           return false;
@@ -704,6 +724,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.nombreIdServBienes.setValue(''); 
     this.dataIdOrdenSeleccionados = [];
     this.dataSeleccionados = []; 
+    this.selectAll = false
   }
 
   limpiarFiltrosServicios() {
@@ -713,6 +734,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.nombreIdServServicios.setValue('');
     this.dataIdOrdenSeleccionadosServicios = [];
     this.dataSeleccionadosServicios = [];
+    this.selectAllServicios = false
   }
 
   numberOnly(event): boolean {
@@ -3339,7 +3361,6 @@ deshabilitarCampoServicios() {
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let FechaDeCreacion = new Date();
     let solicitantePersona = this.usuarioActual.id;
-    
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
@@ -3620,6 +3641,10 @@ deshabilitarCampoServicios() {
     let solicitud = this.solpFormulario.controls['tipoSolicitud'].value;
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
+    if(valorOrdenEstadistica === '') {
+      this.mostrarAdvertencia('Por favor seleccione Orden estadística')
+      respuesta = false; 
+    }
     if(solicitud === 'Sondeo' && valorOrdenEstadistica === 'NO') {
       respuesta = true;
     }
@@ -4000,7 +4025,7 @@ deshabilitarCampoServicios() {
       }
       else {
         tieneIdServicio = false;
-        idOrdenServicio = [];
+        idOrdenServicio = '';
       }
     //-----------------------------------------Hasta aquí--------------------------------------------------
 
@@ -4479,7 +4504,7 @@ deshabilitarCampoServicios() {
     if (this.textoBotonGuardarCTS == "Actualizar") {
       
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, tieneIdServicio, idOrdenServicio);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas Servicios" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
           (item: ItemAddResult) => {

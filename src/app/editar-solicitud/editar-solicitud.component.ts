@@ -252,7 +252,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.ValidarOnInitTipoSolicitud(); //----------Habilitar ValidarOnInitTipoSolicitud cuando datos contables no obligatorios----------------
     // this.AsignarRequeridosDatosContables();  //---------Deshabilitar cuando datos contables no obligatorios--------------
     this.obtenerTiposSolicitud();
-    this.showFilterAlCargar();
+    // this.showFilterAlCargar();
   }
 
   obtenerQueryParams() {
@@ -275,6 +275,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   consultaDatos() {
+    this.spinner.show();
     let idServicio = this.ctbFormulario.get('IdServicioBienes').value;
     if (idServicio === undefined) {
       idServicio = ''
@@ -303,9 +304,12 @@ export class EditarSolicitudComponent implements OnInit {
         this.mostrarTable = true;
         this.datos = respuesta;
         if (this.datos.length === 0) {
+          this.dataSourceDatos.data = [];
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          this.spinner.hide();
           return false;
         }
+        this.spinner.hide();
         this.dataSourceDatos.data = this.datos;
         this.dataSourceDatos.filterPredicate = this.createFilter();
         this.leerFiltros();
@@ -316,6 +320,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   consultarDatosServicios() {
+    this.spinner.show();
     let idServicio = this.ctsFormulario.get('idServicio').value;
     if(idServicio === undefined) {
       idServicio = '';
@@ -343,9 +348,12 @@ export class EditarSolicitudComponent implements OnInit {
         this.mostrarTableServicios = true;
         this.datosServicios = respuesta;
         if (this.datosServicios.length === 0) {
+          this.dataSourceDatosServicios.data = [];
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          this.spinner.hide();
           return false;
         }
+        this.spinner.hide();
         this.dataSourceDatosServicios.data = this.datosServicios;
         this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
         this.leerFiltrosServicios();
@@ -735,7 +743,8 @@ export class EditarSolicitudComponent implements OnInit {
     this.idServBienes.setValue('');
     this.nombreIdServBienes.setValue('');
     this.dataIdOrdenSeleccionados = [];
-    this.dataSeleccionados = [];   
+    this.dataSeleccionados = [];
+    this.selectAll = false   
   }
 
   limpiarFiltrosServicios() {
@@ -745,6 +754,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.nombreIdServServicios.setValue('');
     this.dataIdOrdenSeleccionadosServicios = [];
     this.dataSeleccionadosServicios = [];
+    this.selectAllServicios = false
   }
 
   deshabilitarCampo() {
@@ -933,10 +943,10 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   showFilterAlCargar() {
-    if(this.solpFormulario.get('cecoCTB').value === "ID de Servicios") {
+    if(this.solpFormulario.get('cecoCTB') !== null && this.solpFormulario.get('cecoCTB').value === "ID de Servicios") {
       this.mostrarFiltroBienes = true;
     }
-    if(this.solpFormulario.get('cecoCTS').value === 'ID de Servicios') {
+    if(this.solpFormulario.get('cecoCTS').value !== null && this.solpFormulario.get('cecoCTS').value === 'ID de Servicios') {
       this.mostrarFiltroServicios = true;
     }
   }
@@ -3558,7 +3568,7 @@ export class EditarSolicitudComponent implements OnInit {
 
 
 
-    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
+    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM' || solicitudTipo === 'Cláusula adicional') && paisValidar === 'Brasil' && (codigo === "" || codigo === null || codigo === undefined)) {
       this.mostrarError('El código de bienes es obligatorio para Brasil')
       this.spinner.hide();
       return false;
@@ -3638,7 +3648,7 @@ export class EditarSolicitudComponent implements OnInit {
 
     if (this.textoBotonGuardarCTS == "Actualizar") {
       if (adjunto == null) {
-        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas servicios" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, tieneIdServicio, idOrdenServicio);
+        this.condicionTS = new CondicionTecnicaServicios(this.indiceCTSActualizar, "Condición Técnicas servicios" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
         this.condicionTS.id = this.idCondicionTSGuardada;
         this.servicio.actualizarCondicionesTecnicasServicios(this.condicionTS.id, this.condicionTS).then(
           (item: ItemAddResult) => {
@@ -3847,7 +3857,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
     //------------------------------------Hasta aquí-----------------------------------------------------
 
-    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM') && paisValidar === 3 && (codigo === "" || codigo === null || codigo === undefined)) {
+    if((solicitudTipo === 'Solp' || solicitudTipo === 'Orden a CM' || solicitudTipo === 'Cláusula adicional') && paisValidar === 3 && (codigo === "" || codigo === null || codigo === undefined)) {
       this.mostrarError('El código de servicios es obligatorio para Brasil')
       this.spinner.hide();
       return false;
@@ -3930,7 +3940,7 @@ export class EditarSolicitudComponent implements OnInit {
     if (this.textoBotonGuardarCTB == "Actualizar") {
 
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, tieneIdServicio, idOrdenServicio);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -4948,6 +4958,10 @@ export class EditarSolicitudComponent implements OnInit {
     let solicitud = this.solpFormulario.controls['tipoSolicitud'].value;
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
+    if(valorOrdenEstadistica === '') {
+      this.mostrarAdvertencia('Por favor seleccione Orden estadística')
+      respuesta = false; 
+    }
     if(solicitud === 'Sondeo' && valorOrdenEstadistica === 'NO') {
       respuesta = true;
     }
