@@ -4964,7 +4964,7 @@ export class EditarSolicitudComponent implements OnInit {
     let solicitud = this.solpFormulario.controls['tipoSolicitud'].value;
     let valorOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valorNumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
-    if(valorOrdenEstadistica === '') {
+    if(valorOrdenEstadistica === '' && solicitud !== 'Sondeo') {
       this.mostrarAdvertencia('Por favor seleccione Orden estadística')
       respuesta = false; 
     }
