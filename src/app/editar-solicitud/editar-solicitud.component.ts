@@ -3556,9 +3556,12 @@ export class EditarSolicitudComponent implements OnInit {
     let tieneIdServicio;
     let idOrdenServicio
     solicitudTipo !== 'Sondeo' ? numeroCuenta = this.ctsFormulario.controls["numCuentaCTS"].value : numeroCuenta = "";
-    if(costoInversion === 'ID de Servicios') {
+    if(costoInversion === 'ID de Servicios' && this.dataIdOrdenSeleccionadosServicios.length > 0) {
       tieneIdServicio = true;
       idOrdenServicio = this.dataIdOrdenSeleccionadosServicios.toString();
+    }
+    else if(costoInversion === 'ID de Servicios' && this.dataIdOrdenSeleccionadosServicios.length === 0) {
+      tieneIdServicio = true;
     }
     else {
       tieneIdServicio = false;
@@ -3847,9 +3850,12 @@ export class EditarSolicitudComponent implements OnInit {
     let adjunto = null;
     let idOrdenServicio;
     let tieneIdServicio;
-    if(costoInversion === 'ID de Servicios') {
+    if(costoInversion === 'ID de Servicios' && this.dataIdOrdenSeleccionados.length > 0) {
       tieneIdServicio = true;
       idOrdenServicio = this.dataIdOrdenSeleccionados.toString();
+    }
+    else if(costoInversion === 'ID de Servicios' && this.dataIdOrdenSeleccionados.length === 0) {
+      tieneIdServicio = true;
     }
     else {
       tieneIdServicio = false;
