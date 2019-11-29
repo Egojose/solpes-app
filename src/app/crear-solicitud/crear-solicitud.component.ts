@@ -999,9 +999,15 @@ export class CrearSolicitudComponent implements OnInit {
     let testeadoBienes = true;
     let cantidadTesteadoBienes = true;
     let numeroCuentaTesteadoBienes = true;
-    let idServicio = numeroCostoInversion;
+    let idServicio;
     let IdOrdenServicio = [];
     let tieneIdServicio: boolean = false;
+    if(numeroCostoInversion !== '' && numeroCostoInversion !== null && numeroCostoInversion !== undefined) {
+      idServicio = numeroCostoInversion;
+    }
+    else {
+      idServicio = '';
+    }
     let params = {
       'idservicio': idServicio.toString().replace('.', ',')
     }
@@ -1444,7 +1450,7 @@ export class CrearSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
       }
-    if(costoInversion === 'ID de Servicios') {
+    if((costoInversion === 'ID de Servicios') && (numeroCostoInversion !== "" && numeroCostoInversion !== null)) {
       let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
       let idServicio = []
       let estado = respuestaServicioExcel.filter(x => {
@@ -1535,7 +1541,7 @@ export class CrearSolicitudComponent implements OnInit {
         return "";
       }
     }
-    else if (valorcompraOrdenEstadistica === "NO" && tipoSolicitud !== 'Sondeo' &&  (codigo !== "" || codigo !== null)) {
+    else if (valorcompraOrdenEstadistica === "NO" && tipoSolicitud !== 'Sondeo' && (codigo !== "" || codigo !== null)) {
 
       if (descripcion === "" || descripcion === null) {
         this.cantidadErrorFile++;
@@ -1561,45 +1567,45 @@ export class CrearSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({ error: "El campo valor estimado sólo admite números en la columna F fila " + (i + 1) })
       }
-      if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
+      if ((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null)) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i +1) })
+        this.ArrayErrorFile.push({ error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna G fila " + (i + 1) })
       }
-      if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
+      if ((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar"})
+        this.ArrayErrorFile.push({ error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna G fila " + (i + 1) + " O descargue la plantilla estándar" })
       }
-      if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
+      if ((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
+        this.ArrayErrorFile.push({ error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar" })
       }
-    if(costoInversion === 'ID de Servicios') {
-      let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
-      let idServicio = []
-      let estado = respuestaServicioExcel.filter(x => {
-        return x.Estado === 'No Existe';
-      });
-      if(estado.length > 0) {
-        let cantidadIds = estado.map(x => {
-          return x.IdServicio
-        })
-        idServicio.push(cantidadIds);
-        this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1)});
+      if ((costoInversion === 'ID de Servicios') && (numeroCostoInversion !== "" && numeroCostoInversion !== null)) {
+        let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+        let idServicio = []
+        let estado = respuestaServicioExcel.filter(x => {
+          return x.Estado === 'No Existe';
+        });
+        if (estado.length > 0) {
+          let cantidadIds = estado.map(x => {
+            return x.IdServicio
+          })
+          idServicio.push(cantidadIds);
+          this.cantidadErrorFile++;
+          this.ArrayErrorFile.push({ error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna I fila ` + (i + 1) });
+        }
+        // else if(estado.length === 0) {
+        //   this.ctbFormulario.controls['numCicoCTB'].disable();
+        //   let idServicios = [];
+        //   let datos = await this.servicioCrm.consultarDatosBodega(params);
+        //   console.log(datos);
+        //   let ids = datos.map(x => {
+        //     return x.Orden_SAP;
+        //   });
+        //   idServicios.push(ids);
+        //   IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+        //   tieneIdServicio = true;
+        // }
       }
-      // else if(estado.length === 0) {
-      //   this.ctbFormulario.controls['numCicoCTB'].disable();
-      //   let idServicios = [];
-      //   let datos = await this.servicioCrm.consultarDatosBodega(params);
-      //   console.log(datos);
-      //   let ids = datos.map(x => {
-      //     return x.Orden_SAP;
-      //   });
-      //   idServicios.push(ids);
-      //   IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
-      //   tieneIdServicio = true;
-      // }
-    }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión en la columna H fila " + (i + 1) })
@@ -1608,9 +1614,9 @@ export class CrearSolicitudComponent implements OnInit {
         this.cantidadErrorFile++;
         this.ArrayErrorFile.push({ error: "El campo número de centro de costos/ Orden de inversión en la columna I fila " + (i + 1) })
       }
-      if(numeroCuentaTesteadoBienes === false) {
+      if (numeroCuentaTesteadoBienes === false) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error: "El campo Número de cuenta sólo admite números en la columna J fila " + (i + 1)} )
+        this.ArrayErrorFile.push({ error: "El campo Número de cuenta sólo admite números en la columna J fila " + (i + 1) })
       }
       if (numeroCuenta === "" || numeroCuenta === null) {
         this.cantidadErrorFile++;
@@ -2048,9 +2054,15 @@ async ValidarVaciosCTS(row: any, i: number) {
   let testeado = true;
   let cantidadTesteadoServicios = true;
   let numeroCuentaTesteadoServicios = true;
-  let idServicio = numeroCostoInversion;
+  let idServicio;
   let IdOrdenServicio;
   let tieneIdServicio: boolean = false;
+  if(numeroCostoInversion !== '' && numeroCostoInversion !== null && numeroCostoInversion !== undefined) {
+    idServicio = numeroCostoInversion;
+  }
+  else {
+    idServicio = '';
+  }
   let params = {
     'idservicio': idServicio.toString().replace('.', ',')
   }
@@ -2411,125 +2423,125 @@ async ValidarVaciosCTS(row: any, i: number) {
 
 
                       //Habilitar cuando datos contables no obligatorios
-  if(valorcompraOrdenEstadistica === "NO" && tipoSolicitud !== 'Sondeo' && (codigo === "" || codigo === null)) {
-    
-      if (descripcion === "" || descripcion === null) {
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo Descripción del elemento en la columna B fila "+ (i+1)});
-      }
-      if(cantidad === "" || cantidad === null){
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo Cantidad en la columna C fila "+ (i+1)})
-      }
-      if(cantidadTesteadoServicios === false){
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo Cantidad sólo admite números en la columna C fila "+ (i+1)})
-      }
-      if(testeado === false){
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo valor estimado sólo admite números en la columna D fila "+ (i+1)})
-      }
-      if((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null )) {
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna E fila " + (i +1) })
-      }
-      if((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')){
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna E fila " + (i + 1) + " O descargue la plantilla estándar"})
-      }
-      if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
-      }
-  if(costoInversion === 'ID de Servicios') {
-    let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
-    let idServicio = []
-    let estado = respuestaServicioExcel.filter(x => {
-      return x.Estado === 'No Existe';
-    });
-    if(estado.length > 0) {
-      let cantidadIds = estado.map(x => {
-        return x.IdServicio
-      })
-      idServicio.push(cantidadIds);
-      this.cantidadErrorFileCTS++;
-      this.ArrayErrorFileCTS.push({error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1)});
-    }
-    // else if(estado.length === 0) {
-    //   this.ctsFormulario.controls['numCicoCTS'].disable();
-    //   let idServicios = [];
-    //   let datos = await this.servicioCrm.consultarDatosBodega(params);
-    //   let ids = datos.map(x => {
-    //     return x.Orden_SAP;
-    //   });
-    //   idServicios.push(ids);
-    //   IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
-    //   tieneIdServicio = true;
-    // }
-  }
-      if(costoInversion === "" || costoInversion === null){
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo Centro de costos/ Orden de inversión en la columna F fila "+ (i+1)})
-      }
-      if(numeroCostoInversion === "" || numeroCostoInversion === null){
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo Número centro de costos/ Orden de inversión en la columna G fila "+ (i+1)})
-      }
-      if(numeroCuentaTesteadoServicios === false) {
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error: "El campo Número de cuenta sólo admite números en la columna H fila " + (i + 1)})
-      }
-      if(numeroCuenta === "" || numeroCuenta === null){
-        this.cantidadErrorFileCTS++;
-        this.ArrayErrorFileCTS.push({error:"El campo Número de cuenta en la columna H fila "+ (i+1)})
-      }
-      if(this.cantidadErrorFileCTS === 0){
-        if (costoInversion === 'ID de Servicios') {
-          // this.ctsFormulario.controls['numCicoCTS'].disable();
-          let idServicios = [];
-          let datos = await this.servicioCrm.consultarDatosBodega(params);
-          console.log(datos);
-          let ids = datos.map(x => {
-            return x.Orden_SAP;
-          });
-          idServicios.push(ids);
-          IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
-          tieneIdServicio = true;
-        }
-        // else {
-        //   this.ctsFormulario.controls['numCicoCTS'].enable();
-        // }
+  if (valorcompraOrdenEstadistica === "NO" && tipoSolicitud !== 'Sondeo' && (codigo === "" || codigo === null)) {
 
-  
-        let Obj ={
-          Title: "Condición Técnicas Servicios" + new Date().toDateString(),
-          SolicitudId: this.idSolicitudGuardada,
-          Codigo: "",
-          CodigoSondeo:"",
-          Descripcion: descripcion.toString(),
-          Cantidad: cantidad,
-          CantidadSondeo: cantidad,
-          ValorEstimado: valorEstimadoString,
-          PrecioSondeo: valorEstimadoString,
-          TipoMoneda: tipoMoneda,
-          MonedaSondeo: tipoMoneda,
-          Comentario: comentarios,
-         costoInversion: costoInversion.toString(),
-          numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
-          numeroCuenta: numeroCuentaStringCTS,
-          IdOrdenServicio: IdOrdenServicio.toString(),
-          tieneIdServicio: tieneIdServicio,
-          Orden: i
-        }
-          return Obj;         
-      } 
-      else{
-        setTimeout(() => {
-          this.limpiarArrayErrorFileCTS()
-        }, 15000);
-        return "";
-      } 
-    
+    if (descripcion === "" || descripcion === null) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo Descripción del elemento en la columna B fila " + (i + 1) });
+    }
+    if (cantidad === "" || cantidad === null) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo Cantidad en la columna C fila " + (i + 1) })
+    }
+    if (cantidadTesteadoServicios === false) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo Cantidad sólo admite números en la columna C fila " + (i + 1) })
+    }
+    if (testeado === false) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo valor estimado sólo admite números en la columna D fila " + (i + 1) })
+    }
+    if ((valorEstimado !== "" && valorEstimado !== null) && (tipoMoneda === "" || tipoMoneda === null)) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo Tipo moneda es obligatorio cuando hay valor estimado en la columna E fila " + (i + 1) })
+    }
+    if ((tipoMoneda !== null && tipoMoneda !== "") && (tipoMoneda !== 'ARS' && tipoMoneda !== 'BRL' && tipoMoneda !== 'CLP' && tipoMoneda !== 'COP' && tipoMoneda !== 'EUR' && tipoMoneda !== 'PEN' && tipoMoneda !== 'UF' && tipoMoneda !== 'USD')) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El tipo de moneda no coincide con los valores permitidos. Por favor revise el campo en la columna E fila " + (i + 1) + " O descargue la plantilla estándar" })
+    }
+    if ((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar" })
+    }
+    if ((costoInversion === 'ID de Servicios') && (numeroCostoInversion !== "" && numeroCostoInversion !== null)) {
+      let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
+      let idServicio = []
+      let estado = respuestaServicioExcel.filter(x => {
+        return x.Estado === 'No Existe';
+      });
+      if (estado.length > 0) {
+        let cantidadIds = estado.map(x => {
+          return x.IdServicio
+        })
+        idServicio.push(cantidadIds);
+        this.cantidadErrorFileCTS++;
+        this.ArrayErrorFileCTS.push({ error: `El (los) id(s) de servicio ${idServicio.toString().replace(',', ', ')} no existe(n), por favor verifique la columna G fila ` + (i + 1) });
+      }
+      // else if(estado.length === 0) {
+      //   this.ctsFormulario.controls['numCicoCTS'].disable();
+      //   let idServicios = [];
+      //   let datos = await this.servicioCrm.consultarDatosBodega(params);
+      //   let ids = datos.map(x => {
+      //     return x.Orden_SAP;
+      //   });
+      //   idServicios.push(ids);
+      //   IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+      //   tieneIdServicio = true;
+      // }
+    }
+    if (costoInversion === "" || costoInversion === null) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo Centro de costos/ Orden de inversión en la columna F fila " + (i + 1) })
+    }
+    if (numeroCostoInversion === "" || numeroCostoInversion === null) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo Número centro de costos/ Orden de inversión en la columna G fila " + (i + 1) })
+    }
+    if (numeroCuentaTesteadoServicios === false) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo Número de cuenta sólo admite números en la columna H fila " + (i + 1) })
+    }
+    if (numeroCuenta === "" || numeroCuenta === null) {
+      this.cantidadErrorFileCTS++;
+      this.ArrayErrorFileCTS.push({ error: "El campo Número de cuenta en la columna H fila " + (i + 1) })
+    }
+    if (this.cantidadErrorFileCTS === 0) {
+      if (costoInversion === 'ID de Servicios') {
+        // this.ctsFormulario.controls['numCicoCTS'].disable();
+        let idServicios = [];
+        let datos = await this.servicioCrm.consultarDatosBodega(params);
+        console.log(datos);
+        let ids = datos.map(x => {
+          return x.Orden_SAP;
+        });
+        idServicios.push(ids);
+        IdOrdenServicio !== undefined ? IdOrdenServicio = idServicios : IdOrdenServicio = [];
+        tieneIdServicio = true;
+      }
+      // else {
+      //   this.ctsFormulario.controls['numCicoCTS'].enable();
+      // }
+
+
+      let Obj = {
+        Title: "Condición Técnicas Servicios" + new Date().toDateString(),
+        SolicitudId: this.idSolicitudGuardada,
+        Codigo: "",
+        CodigoSondeo: "",
+        Descripcion: descripcion.toString(),
+        Cantidad: cantidad,
+        CantidadSondeo: cantidad,
+        ValorEstimado: valorEstimadoString,
+        PrecioSondeo: valorEstimadoString,
+        TipoMoneda: tipoMoneda,
+        MonedaSondeo: tipoMoneda,
+        Comentario: comentarios,
+        costoInversion: costoInversion.toString(),
+        numeroCostoInversion: numeroCostoInversion.toString().replace('.', ','),
+        numeroCuenta: numeroCuentaStringCTS,
+        IdOrdenServicio: IdOrdenServicio.toString(),
+        tieneIdServicio: tieneIdServicio,
+        Orden: i
+      }
+      return Obj;
+    }
+    else {
+      setTimeout(() => {
+        this.limpiarArrayErrorFileCTS()
+      }, 15000);
+      return "";
+    }
+
   }
     else if(valorcompraOrdenEstadistica === "NO" && tipoSolicitud !== 'Sondeo' && (codigo !== "" || codigo !== null)) {
       
