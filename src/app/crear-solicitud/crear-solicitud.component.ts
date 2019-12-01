@@ -1448,7 +1448,7 @@ export class CrearSolicitudComponent implements OnInit {
       }
       if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
+        this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión/ ID de Servicios no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
       }
     if((costoInversion === 'ID de Servicios') && (numeroCostoInversion !== "" && numeroCostoInversion !== null)) {
       let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
@@ -1479,11 +1479,11 @@ export class CrearSolicitudComponent implements OnInit {
     }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión en la columna H fila " + (i + 1) })
+        this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión/ ID de Servicios en la columna H fila " + (i + 1) })
       }
       if (numeroCostoInversion === "" || numeroCostoInversion === null) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El campo número de centro de costos/ Orden de inversión en la columna I fila " + (i + 1) })
+        this.ArrayErrorFile.push({ error: "El campo número de centro de costos/ Orden de inversión/ ID de Servicios en la columna I fila " + (i + 1) })
       }
       if(numeroCuentaTesteadoBienes === false) {
         this.cantidadErrorFile++;
@@ -1577,7 +1577,7 @@ export class CrearSolicitudComponent implements OnInit {
       }
       if ((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar" })
+        this.ArrayErrorFile.push({ error: "El valor del campo Centro de costos/ Orden de inversión/ ID de Servicios no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar" })
       }
       if ((costoInversion === 'ID de Servicios') && (numeroCostoInversion !== "" && numeroCostoInversion !== null)) {
         let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
@@ -1608,11 +1608,11 @@ export class CrearSolicitudComponent implements OnInit {
       }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión en la columna H fila " + (i + 1) })
+        this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión/ ID de Servicios en la columna H fila " + (i + 1) })
       }
       if (numeroCostoInversion === "" || numeroCostoInversion === null) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El campo número de centro de costos/ Orden de inversión en la columna I fila " + (i + 1) })
+        this.ArrayErrorFile.push({ error: "El campo número de centro de costos/ Orden de inversión/ ID de Servicios en la columna I fila " + (i + 1) })
       }
       if (numeroCuentaTesteadoBienes === false) {
         this.cantidadErrorFile++;
@@ -2927,17 +2927,17 @@ validarCodigosBrasilCTS(codigoValidar, i) {
 }
 
 deshabilitarCampo() {
-  if(this.solpFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
-    this.solpFormulario.controls['numCicoCTB'].disable();
+  if(this.ctbFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
+    this.ctbFormulario.controls['numCicoCTB'].disable();
   }
   else {
-    this.solpFormulario.controls['numCicoCTB'].enable();
+    this.ctbFormulario.controls['numCicoCTB'].enable();
   }
 }
 
 deshabilitarCampoServicios() {
-  if(this.solpFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
-    this.solpFormulario.controls['numCicoCTS'].disable();
+  if(this.ctsFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
+    this.ctsFormulario.controls['numCicoCTS'].disable();
   }
   else {
     this.solpFormulario.controls['numCicoCTS'].enable();

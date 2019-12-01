@@ -1519,7 +1519,7 @@ export class EditarSolicitudComponent implements OnInit {
       }
       if((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
+        this.ArrayErrorFile.push({error: "El valor del campo Centro de costos/ Orden de inversión/ ID de Servicios no coincide con los permitidos en la columna H fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar"})
       }
     if((costoInversion === 'ID de Servicios') && (numeroCostoInversion !== "" && numeroCostoInversion !== null)) {
       let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
@@ -1550,11 +1550,11 @@ export class EditarSolicitudComponent implements OnInit {
     }
       if (costoInversion === "" || costoInversion === null || costoInversion === undefined) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión en la columna H fila " + (i + 1) })
+        this.ArrayErrorFile.push({ error: "El campo Centro de costos/ Orden de inversión/ ID de servicios en la columna H fila " + (i + 1) })
       }
       if (numeroCostoInversion === "" || numeroCostoInversion === null) {
         this.cantidadErrorFile++;
-        this.ArrayErrorFile.push({ error: "El campo número de centro de costos/ Orden de inversión en la columna I fila " + (i + 1) })
+        this.ArrayErrorFile.push({ error: "El campo número de centro de costos/ Orden de inversión/ ID de Servicios en la columna I fila " + (i + 1) })
       }
       if(numeroCuentaTesteadoBienes === false) {
         this.cantidadErrorFile++;
@@ -2536,7 +2536,7 @@ export class EditarSolicitudComponent implements OnInit {
      }
      if ((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
        this.cantidadErrorFileCTS++;
-       this.ArrayErrorFileCTS.push({ error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar" })
+       this.ArrayErrorFileCTS.push({ error: "El valor del campo Centro de costos/ Orden de inversión/ ID de Servicios no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar" })
      }
      if ((costoInversion === 'ID de Servicios') && (numeroCostoInversion !== "" && numeroCostoInversion !== null)) {
        let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
@@ -2566,11 +2566,11 @@ export class EditarSolicitudComponent implements OnInit {
      }
      if (costoInversion === "" || costoInversion === null) {
        this.cantidadErrorFileCTS++;
-       this.ArrayErrorFileCTS.push({ error: "El campo Centro de costos/ Orden de inversión en la columna F fila " + (i + 1) })
+       this.ArrayErrorFileCTS.push({ error: "El campo Centro de costos/ Orden de inversión/ ID de Servicios en la columna F fila " + (i + 1) })
      }
      if (numeroCostoInversion === "" || numeroCostoInversion === null) {
        this.cantidadErrorFileCTS++;
-       this.ArrayErrorFileCTS.push({ error: "El campo Número centro de costos/ Orden de inversión en la columna G fila " + (i + 1) })
+       this.ArrayErrorFileCTS.push({ error: "El campo Número centro de costos/ Orden de inversión/ ID de Servicios en la columna G fila " + (i + 1) })
      }
      if (numeroCuentaTesteadoServicios === false) {
        this.cantidadErrorFileCTS++;
@@ -2654,7 +2654,7 @@ export class EditarSolicitudComponent implements OnInit {
      }
      if (costoInversion === "" || costoInversion === null) {
        this.cantidadErrorFileCTS++;
-       this.ArrayErrorFileCTS.push({ error: "El campo Centro de costos/ Orden de inversión en la columna F fila " + (i + 1) })
+       this.ArrayErrorFileCTS.push({ error: "El campo Centro de costos/ Orden de inversión/ ID de Servicios en la columna F fila " + (i + 1) })
      }
      if (costoInversion === 'ID de Servicios') {
        let respuestaServicioExcel = await this.servicioCrm.validarIdServiciosExcel(params);
@@ -2684,11 +2684,11 @@ export class EditarSolicitudComponent implements OnInit {
      }
      if ((costoInversion !== "" || costoInversion !== null) && (costoInversion !== 'Centro de costos' && costoInversion !== 'Orden de inversión' && costoInversion !== 'ID de Servicios')) {
        this.cantidadErrorFileCTS++;
-       this.ArrayErrorFileCTS.push({ error: "El valor del campo Centro de costos/ Orden de inversión no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar" })
+       this.ArrayErrorFileCTS.push({ error: "El valor del campo Centro de costos/ Orden de inversión/ ID de Servicios no coincide con los permitidos en la columna F fila " + (i + 1) + " Por favor revise o descargue la plantilla estándar" })
      }
      if (numeroCostoInversion === "" || numeroCostoInversion === null) {
        this.cantidadErrorFileCTS++;
-       this.ArrayErrorFileCTS.push({ error: "El campo Número centro de costos/ Orden de inversión en la columna G fila " + (i + 1) })
+       this.ArrayErrorFileCTS.push({ error: "El campo Número centro de costos/ Orden de inversión/ ID de Servicios en la columna G fila " + (i + 1) })
      }
      if (numeroCuentaTesteadoServicios === false) {
        this.cantidadErrorFileCTS++;
