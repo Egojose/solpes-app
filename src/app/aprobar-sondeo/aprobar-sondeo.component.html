@@ -28,9 +28,9 @@
             </div>
             <div class="form-check form-check-inline">
                 <label>
-                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="3">
-                        Descartar
-                    </label>
+                    <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="3">
+                    Descartar
+                </label>
             </div>
         </div>
     </div>
@@ -111,8 +111,19 @@
         </table>
     </div>
 </div>
-
 <hr>
+<ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+    <div class="col-md-4">
+        <label for="ordenadorGastos" class="col-form-label"><b>Modificar ordenador de gastos</b></label>
+        <select2 [data]="dataUsuarios" [minCountForSearch]="1"
+            [value]="valorUsuarioPorDefecto" class="form-control"
+            (update)="seleccionarOrdenadorGastos($event)">
+        </select2>
+        <!-- <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+            No tiene un jefe asignado en Office 365, debe seleccionar uno
+        </div> -->
+    </div>
+</ng-container>
 <br>
 <ng-container *ngIf="RDBsondeo === 4">
     <div class="row">
@@ -123,6 +134,7 @@
         </div>
     </div>
 </ng-container>
+
 <ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
     <div class="row">
         <div class="form-group col-md-12">
@@ -392,40 +404,45 @@
     </mat-expansion-panel>
 </mat-accordion>
 <form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()">
-    <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+    <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal"
+        class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 id="dialog-auto-name" class="modal-title pull-left">Datos contables</h4>
                     <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <!-- <form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()"> -->
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="ceco">Centro de costos / Orden de inversión</label>
-                                <select formControlName="centroCostos" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.centroCostos.errors }" (change)="showFilterServicios($event)">
-                                                <option value="">Seleccione</option>
-                                                <option value="Centro de costos">Centro de costos</option>
-                                                <option value="Orden de inversión">Orden de inversión</option>
-                                                <option value="ID de Servicios">ID de Servicios</option>
-                                            </select>
+                                <label for="ceco">Centro de costos / Orden de inversión / ID de Servicios</label>
+                                <select formControlName="centroCostos" class="form-control"
+                                    [ngClass]="{ 'is-invalid': ctsSubmitted && f2.centroCostos.errors }"
+                                    (change)="showFilterServicios($event)">
+                                    <option value="">Seleccione</option>
+                                    <option value="Centro de costos">Centro de costos</option>
+                                    <option value="Orden de inversión">Orden de inversión</option>
+                                    <option value="ID de Servicios">ID de Servicios</option>
+                                </select>
                                 <div *ngIf="ctsSubmitted && f2.centroCostos.errors" class="invalid-feedback">
                                     <div *ngIf="f2.centroCostos.errors.required">Este campo es requerido</div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span class="asterisco-obligatorio">*</span>
-                                <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" (update)="seleccionarOrdenadorGastos($event)">
+                            <!-- <div class="col-md-6">
+                                <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span
+                                    class="asterisco-obligatorio">*</span>
+                                <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1"
+                                    [value]="valorUsuarioPorDefecto" class="form-control"
+                                    (update)="seleccionarOrdenadorGastos($event)">
                                 </select2>
                                 <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
                                     No tiene un jefe asignado en Office 365, debe seleccionar uno
                                 </div>
-                            </div>
-
+                            </div> -->
                         </div>
                     </div>
                     <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
@@ -433,20 +450,25 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios">
+                                        <input type="text" class="form-control" placeholder="Cliente"
+                                            formControlName="clienteServicios">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenServicios">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio"
+                                            formControlName="ordenServicios">
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio" [disabled]="disabledIdServicioServicios">
+                                        <input type="text" class="form-control" placeholder="ID Servicio"
+                                            formControlName="idServicio" [disabled]="disabledIdServicioServicios">
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio"
+                                            formControlName="nombreIdServicio">
                                     </div>
                                     <div class="col-md-1">
                                         <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
-                                        <button class="btn btn-outline-primary" type="button" (click)="validarLengthBusquedaServicios()">IR</button>
+                                        <button class="btn btn-outline-primary" type="button"
+                                            (click)="validarLengthBusquedaServicios()">IR</button>
                                     </div>
                                 </div>
                             </div>
@@ -455,7 +477,8 @@
                             <div class="col-md-12">
                                 <br>
                                 <div class="col-md-3">
-                                    <mat-checkbox color="primary" (change)="seleccionarTodosServicios($event)">Seleccionar todos los ID de servicio
+                                    <mat-checkbox color="primary" (change)="seleccionarTodosServicios($event)">
+                                        Seleccionar todos los ID de servicio
                                     </mat-checkbox>
                                 </div>
                                 <div class="mat-elevation-z8">
@@ -463,7 +486,9 @@
                                         <ng-container matColumnDef="seleccionar">
                                             <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                                             <td mat-cell *matCellDef="let element">
-                                                <mat-checkbox color="primary" value="{{element.IdServicio}}" [checked]="selectAllServicios" (change)="seleccionadoServicios($event, element)"></mat-checkbox>
+                                                <mat-checkbox color="primary" value="{{element.IdServicio}}"
+                                                    [checked]="selectAllServicios"
+                                                    (change)="seleccionadoServicios($event, element)"></mat-checkbox>
                                             </td>
                                         </ng-container>
                                         <ng-container matColumnDef="cliente">
@@ -512,23 +537,31 @@
                                     <ng-container *ngTemplateOutlet="PaginatorCrm"></ng-container>
                                 </div>
                                 <br>
-                                <button type="button" class="btn btn-primary" (click)="terminarSeleccionServicios()">Terminar selección</button>
+                                <button type="button" class="btn btn-primary"
+                                    (click)="terminarSeleccionServicios()">Terminar selección</button>
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID de servicio</label>
+                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de
+                                inversion / ID de servicio</label>
                             <!-- <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"> -->
-                            <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }" [readonly]="ReadOnlyIdServicio"></textarea>
+                            <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI"
+                                formControlName="numCicoCTS"
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"
+                                [readonly]="ReadOnlyIdServicio"></textarea>
                             <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="Numero de cuenta">Número de cuenta</label>
-                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" (keypress)="numberOnly($event)">
+                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control"
+                                formControlName="numCuentaCTS"
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }"
+                                (keypress)="numberOnly($event)">
                             <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
                             </div>
