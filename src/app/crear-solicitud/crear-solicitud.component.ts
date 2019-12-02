@@ -3589,7 +3589,7 @@ deshabilitarCampoServicios() {
                           '<br>' +
                           '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
                           '<br>' +
-                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores enlace" target="_blank>este enlace</a>.</p>'
+                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores enlace" target="_blank>este enlace</a></p>'
                           const emailProps: EmailProperties = {
                             To: [this.soporte],
                             Subject: "Notificación de soporte",
