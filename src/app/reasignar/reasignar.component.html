@@ -19,13 +19,13 @@
                 <label for="reasignar-a">Reasignar a</label>
                 <input class="form-control" formControlName="ReasignarA" [typeahead]="listaCompradores" [ngClass]="{ 'is-invalid': submitted && f.Comprador.errors }" typeaheadOptionField="comprador.compradorNombre" (typeaheadOnSelect)="changeSolicitanteComprador($event)"
                     [typeaheadOptionsLimit]="7" triggers="" placement="bottom">
-                <mat-error *ngIf="ReasignarControl.hasError('required')">
+                <!-- <mat-error *ngIf="ReasignarControl.hasError('required')">
                     Este campo es requerido
-                </mat-error>
+                </mat-error> -->
             </div>
         </div>
         <br>
-        <div class="row">
+        <div class="row" *ngIf="!mostrarEnSondeo">
             <div class="col-6">
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Causa de la reasignación</label>
