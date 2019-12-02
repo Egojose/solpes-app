@@ -25,6 +25,8 @@ import * as $ from 'jquery';
 import readXlsxFile from 'read-excel-file';
 import { ActivatedRoute } from "@angular/router";
 import { CrmServicioService } from '../servicios/crm-servicio.service';
+import { ResponsableSoporte } from '../dominio/responsableSoporte';
+import { EmailProperties } from 'sp-pnp-js';
 @Component({
   selector: 'app-editar-solicitud',
   templateUrl: './editar-solicitud.component.html',
@@ -193,6 +195,8 @@ export class EditarSolicitudComponent implements OnInit {
   mostrarTableServicios: boolean;
   selectAllServicios: boolean;
   dataIdOrdenTotales = [];
+  responsableSoporte: ResponsableSoporte[] = [];
+  soporte: string;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -252,6 +256,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.ValidarOnInitTipoSolicitud(); //----------Habilitar ValidarOnInitTipoSolicitud cuando datos contables no obligatorios----------------
     // this.AsignarRequeridosDatosContables();  //---------Deshabilitar cuando datos contables no obligatorios--------------
     this.obtenerTiposSolicitud();
+    this.obtenerResponsableSoporte();
     // this.showFilterAlCargar();
   }
 
@@ -272,6 +277,15 @@ export class EditarSolicitudComponent implements OnInit {
     else {
       this.tieneParams = false;
     }
+  }
+
+  obtenerResponsableSoporte() {
+    this.servicio.obtenerResponsableSoporte().then(
+      (respuesta) => {
+        this.soporte = respuesta[0].ResponsableSoporte.EMail
+        console.log(this.soporte);
+      }
+    )
   }
 
   consultaDatos() {
@@ -4767,7 +4781,21 @@ export class EditarSolicitudComponent implements OnInit {
                     else {
                       this.servicio.enviarFallidosListaCrm(obj).then(
                         (item: ItemAddResult) => {
-                          this.mostrarInformacion('Se enviaron los datos para manejo más tarde')
+                          let cuerpo = '<p>Cordial Saludo</p>' +
+                          '<br>' +
+                          '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
+                          '<br>' +
+                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores enlace" target="_blank>este enlace</a>.</p>'
+                          const emailProps: EmailProperties = {
+                            To: [this.soporte],
+                            Subject: "Notificación de soporte",
+                            Body: cuerpo
+                          }
+                          this.servicio.EnviarNotificacion(emailProps).then(
+                            (res) => {
+                              this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
+                            }
+                          )
                         }
                       ), error => {
                         this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
