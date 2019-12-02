@@ -197,6 +197,7 @@ export class EditarSolicitudComponent implements OnInit {
   dataIdOrdenTotales = [];
   responsableSoporte: ResponsableSoporte[] = [];
   soporte: string;
+  token: any;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -257,7 +258,26 @@ export class EditarSolicitudComponent implements OnInit {
     // this.AsignarRequeridosDatosContables();  //---------Deshabilitar cuando datos contables no obligatorios--------------
     this.obtenerTiposSolicitud();
     this.obtenerResponsableSoporte();
+    this.ObtenerToken();
     // this.showFilterAlCargar();
+  }
+
+  ObtenerToken(){
+    let token;
+    this.servicioCrm.obtenerToken().then(
+      (res)=>{        
+        this.token = res["access_token"];
+        // localStorage.setItem("id_token",token)
+      }
+    ).catch(
+      (error)=>{
+        let objToken = {          
+          estado: "false"
+        }
+        let objTokenString = JSON.stringify(objToken);
+        localStorage.setItem("id_token",objTokenString);        
+      }
+    )
   }
 
   obtenerQueryParams() {
@@ -522,7 +542,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   async validarSiEnviarCrmBienes() {
-    let respuestaBienes = await this.servicio.obtenerCtBienes(this.idSolicitudGuardada);
+    let respuestaBienes = await this.servicio.obtenerCtBienes(this.solicitudRecuperada.id);
     let numCostoInversion;
     let numCostoInversionString;
     console.log(respuestaBienes);
@@ -544,7 +564,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   async validarSiEnviarCrmServicios() {
-    let respuestaServicios = await this.servicio.obtenerCtServicios(this.idSolicitudGuardada);
+    let respuestaServicios = await this.servicio.obtenerCtServicios(this.solicitudRecuperada.id);
     let numCostoInversion;
     let numCostoInversionString;
     console.log(respuestaServicios);
@@ -4763,15 +4783,23 @@ export class EditarSolicitudComponent implements OnInit {
                 async (item: ItemAddResult) => {
                   if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
                     let respuesta;
+                    let objToken = {
+                      TipoConsulta: "crm",
+                      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+                      token: this.token,
+                      estado: "true"
+                    }
+                    let objTokenString = JSON.stringify(objToken);
+                    localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
-                      "numerosolp": this.idSolicitudGuardada,
-                      "linksolp": "Este es el link de solp",
+                      "numerosolp": this.solicitudRecuperada.id,
+                      "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
                     }
                     let obj = {
-                      Title: `Solicitud ${this.idSolicitudGuardada}`,
-                      NroSolp: `${this.idSolicitudGuardada}`,
-                      EnlaceSolp: 'link de solp',
+                      Title: `Solicitud ${this.solicitudRecuperada.id}`,
+                      NroSolp: `${this.solicitudRecuperada.id}`,
+                      EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
                     respuesta = await this.enviarServicioSolicitud(objCrm);
