@@ -23,5 +23,6 @@ export const environment = {
   listaCausalExcepcion: 'CausalExcepcion',
   listaCompradores: 'Compradores',
   listaHistorial: 'HistorialSuspensiones',
-  listaSolicitudesCrm: 'SolicitudesCrm'
+  listaSolicitudesCrm: 'SolicitudesCrm',
+  listaResponsableSoporte: 'ResponsableSoporte'
 };
