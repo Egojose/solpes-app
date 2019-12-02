@@ -390,6 +390,7 @@ export class ReasignarComponent implements OnInit {
     let responsableReasingarContratos;
     let fechaReasignadoContratos;
     let objetoActualizar;
+    let causaReasignar = this.ReasignarSondeoFormulario.controls['CausaReasignacion'].value
     let solicitanteOriginal = this.solicitudRecuperada.solicitante;
     categoria !== undefined ? categoria = categoria : categoria = '';
     SubCategoria !== undefined ? SubCategoria = SubCategoria : SubCategoria = '';
@@ -439,7 +440,8 @@ export class ReasignarComponent implements OnInit {
         FechaReasignadoContratos: fechaReasignadoContratos,
         PaisReasignar: pais,
         CategoriaReasignar: categoria,
-        SubcategoriaReasignar: SubCategoria
+        SubcategoriaReasignar: SubCategoria,
+        MotivoReasignar: causaReasignar
       }
     }
     
