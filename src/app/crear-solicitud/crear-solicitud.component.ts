@@ -3568,7 +3568,7 @@ deshabilitarCampoServicios() {
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
                       "numerosolp": this.idSolicitudGuardada,
-                      "linksolp": "Este es el link de solp",
+                      "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
                     }
                     let obj = {
@@ -3582,8 +3582,9 @@ deshabilitarCampoServicios() {
                       this.MostrarExitoso(respuesta["MensajeExito"]);
                     }
                     else {
-                      this.servicio.enviarFallidosListaCrm(obj).then(
-                        (item: ItemAddResult) => {
+                     this.servicio.enviarFallidosListaCrm(obj).then(
+                       (item: ItemAddResult) => {
+                         console.log('Entre a fallidos');
                           let cuerpo = '<p>Cordial Saludo</p>' +
                           '<br>' +
                           '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
@@ -3594,11 +3595,13 @@ deshabilitarCampoServicios() {
                             Subject: "Notificación de soporte",
                             Body: cuerpo
                           }
-                          this.servicio.EnviarNotificacion(emailProps).then(
+                           this.servicio.EnviarNotificacion(emailProps).then(
                             (res) => {
                               this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
                             }
-                          )
+                          ), error => {
+                            console.log(error);
+                          }
                         }
                       ), error => {
                         this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
@@ -3614,7 +3617,7 @@ deshabilitarCampoServicios() {
                         ResponsableId: responsable,
                         Estado: estado
                       };
-                      this.servicio.agregarNotificacion(notificacion).then(
+                      await this.servicio.agregarNotificacion(notificacion).then(
                         (item: ItemAddResult) => {
                           this.MostrarExitoso("La solicitud se ha guardado y enviado correctamente");
                           this.spinner.hide();
@@ -3646,6 +3649,7 @@ deshabilitarCampoServicios() {
       }
     )
   }
+  
 
   async enviarServicioSolicitud(obj): Promise<any>{
     let respuesta;
