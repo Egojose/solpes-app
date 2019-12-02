@@ -36,6 +36,34 @@
     </div>
 </div>
 <br>
+<ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label for="ordenadorGastos" class="col-form-label"><b>Modificar ordenador de gastos</b></label>
+                <select2 [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control"
+                    (update)="seleccionarOrdenadorGastos($event)">
+                </select2>
+                <!-- <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+                No tiene un jefe asignado en Office 365, debe seleccionar uno
+            </div> -->
+            </div>
+            <div class="col-md-4" id="ordenEstadistica">
+                <label for="CompraEstadística">Compra orden de estadística</label>
+                <mat-radio-group class="orden-estadistica-group" layout="row"  [formControl]="OrdenEstadistica">
+                    <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO" (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>
+                    <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="SI" (change)="mostrarNumeroOrdenEstadistica($event.value)">SI</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="col-md-4" id="numeroOrdenEstadistica">
+                <div class="numero-orden-estadistica" [hidden]="!emptyNumeroOrdenEstadistica">
+                    <label for="numeroOrdenEstadistica"><b>Número de orden estadística</b></label>
+                    <input id="numeroOrdenEstadistica" name="numeroOrdenEstadistica"
+                        class="form-control" [formControl]="numeroOrden"/>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <br>
 <div *ngIf="existeCondicionesTecnicasBienes == true" class="row">
     <div class="form-group col-md-12">
         <label for="textarea" class="col-sm-4 control-label"><b><h4>Resultado sondeo bienes:</h4></b></label>
@@ -66,7 +94,7 @@
                         </a>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Bien')">Ver</button>
+                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Bien')" [disabled]="disableBtnDatoContables">Ver</button>
                     </td>
                 </tr>
             </tbody>
@@ -104,7 +132,7 @@
                         </a>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Servicio')">Ver</button>
+                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Servicio')" [disabled]="disableBtnDatoContables">Ver</button>
                     </td>
                 </tr>
             </tbody>
@@ -112,19 +140,7 @@
     </div>
 </div>
 <hr>
-<ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
-    <div class="col-md-4">
-        <label for="ordenadorGastos" class="col-form-label"><b>Modificar ordenador de gastos</b></label>
-        <select2 [data]="dataUsuarios" [minCountForSearch]="1"
-            [value]="valorUsuarioPorDefecto" class="form-control"
-            (update)="seleccionarOrdenadorGastos($event)">
-        </select2>
-        <!-- <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
-            No tiene un jefe asignado en Office 365, debe seleccionar uno
-        </div> -->
-    </div>
-</ng-container>
-<br>
+
 <ng-container *ngIf="RDBsondeo === 4">
     <div class="row">
         <div class="form-group col-md-4">

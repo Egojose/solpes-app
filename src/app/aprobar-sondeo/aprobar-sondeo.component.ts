@@ -84,6 +84,8 @@ export class AprobarSondeoComponent implements OnInit {
   @ViewChild(MatPaginator) paginatorCrm: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   datosServicios;
+  OrdenEstadistica = new FormControl('');
+  numeroOrden = new FormControl('');
   clientServicios = new FormControl('');
   ordenServServicios = new FormControl('');
   idServServicios = new FormControl('');
@@ -114,6 +116,9 @@ export class AprobarSondeoComponent implements OnInit {
   datosContablesBienesVacios: any = [];
   datosContablesServiciosVacios: any  = [];
   nuevoOrdenadorGastos: any;
+  emptyNumeroOrdenEstadistica: boolean = false;
+  valorOrdenEstadisica: any;
+  disableBtnDatoContables: boolean = true;
 
   constructor( 
     private formBuilder: FormBuilder,
@@ -133,6 +138,19 @@ export class AprobarSondeoComponent implements OnInit {
     this.dataSourceDatosServicios = new MatTableDataSource();
     this.selectAllServicios = false;
     this.emptyManager = true;
+  }
+
+  async validarOrdenEstadistica() {
+    if(this.OrdenEstadistica.value === '') {
+      this.mostrarAdvertencia('Debe seleccionar orden estadística')
+      this.spinner.hide();
+      return false;
+    }
+    if(this.OrdenEstadistica.value === 'SI' && this.numeroOrden.value === '') {
+      this.mostrarAdvertencia('Por favor digite el numero de orden estadística');
+      this.spinner.hide();
+      return false
+    }
   }
 
   private perfilacionEstado() {
@@ -190,7 +208,10 @@ export class AprobarSondeoComponent implements OnInit {
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
+    console.log(this.OrdenEstadistica);
+    console.log(this.valorOrdenEstadisica);
     await this.validarDatosContables();
+    await this.validarOrdenEstadistica();
 
     let ObjSondeo;
     if (this.RDBsondeo === undefined) {
@@ -237,7 +258,9 @@ export class AprobarSondeoComponent implements OnInit {
             ResultadoSondeo: "Convertir en SOLP",
             Justificacion: this.justificacionSondeo,
             FechaRevisarSondeo: fecha,
-            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos)
+            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos),
+            OrdenEstadistica: this.valorOrdenEstadisica,
+            NumeroOrdenEstadistica: this.numeroOrden.value
           }
         } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
@@ -249,7 +272,9 @@ export class AprobarSondeoComponent implements OnInit {
             ResultadoSondeo: "Convertir en SOLP",
             Justificacion: this.justificacionSondeo,
             FechaRevisarSondeo: fecha,
-            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos)
+            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos),
+            OrdenEstadistica: this.valorOrdenEstadisica,
+            NumeroOrdenEstadistica: this.numeroOrden.value
           }
         }
       }
@@ -278,7 +303,9 @@ export class AprobarSondeoComponent implements OnInit {
             Justificacion: this.justificacionSondeo,
             CM: this.numeroSolpCm,
             FechaRevisarSondeo: fecha,
-            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos)
+            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos),
+            OrdenEstadistica: this.valorOrdenEstadisica,
+            NumeroOrdenEstadistica: this.numeroOrden.value
           }
         } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
@@ -292,7 +319,9 @@ export class AprobarSondeoComponent implements OnInit {
             Justificacion: this.justificacionSondeo,
             CM: this.numeroSolpCm,
             FechaRevisarSondeo: fecha,
-            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos)
+            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos),
+            OrdenEstadistica: this.valorOrdenEstadisica,
+            NumeroOrdenEstadistica: this.numeroOrden.value
           }
         }
       }
@@ -702,6 +731,19 @@ export class AprobarSondeoComponent implements OnInit {
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
   }
 
+  mostrarNumeroOrdenEstadistica(valorOrdenEstadistica) {
+    if (valorOrdenEstadistica == "SI") {
+      this.emptyNumeroOrdenEstadistica = true;
+      this.valorOrdenEstadisica = true;
+      this.disableBtnDatoContables = true;
+     
+    } else {
+      this.valorOrdenEstadisica = false;
+      this.emptyNumeroOrdenEstadistica = false;
+      this.disableBtnDatoContables = false;
+    }
+  }
+
   async VerDatosContables(item, tipo) {
     console.log(item);
     let datosBienes;
@@ -750,15 +792,21 @@ export class AprobarSondeoComponent implements OnInit {
   async validarDatosContables() {
     let bienes = await this.servicio.obtenerCtBienes(this.IdSolicitud);
     let servicios = await this.servicio.obtenerCtServicios(this.IdSolicitud);
-    if(bienes.length > 0) {
+    if(bienes.length > 0 && this.valorOrdenEstadisica === false) {
      this.datosContablesBienesVacios = bienes.filter(x => {
         return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null
       });
     }
-    if(servicios.length > 0) {
+    else {
+      this.datosContablesBienesVacios = [];
+    }
+    if(servicios.length > 0 && this.valorOrdenEstadisica === false) {
      this.datosContablesServiciosVacios = servicios.filter(x => {
         return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null
       })
+    }
+    else {
+      this.datosContablesServiciosVacios = [];
     }
   }
  
