@@ -35,6 +35,8 @@ import { CondicionesTecnicasServicios } from '../entrega-servicios/condicionTecn
 import { forEach } from '@angular/router/src/utils/collection';
 import { CrmServicioService } from '../servicios/crm-servicio.service';
 import { Observable } from 'rxjs';
+import { ResponsableSoporte } from '../dominio/responsableSoporte';
+import { EmailProperties } from 'sp-pnp-js';
 
 
 @Component({
@@ -205,6 +207,8 @@ export class CrearSolicitudComponent implements OnInit {
   mostrarTableServicios: boolean;
   selectAllServicios: boolean;
   token: any;
+  responsableSoporte: ResponsableSoporte[] = [];
+  soporte: any;
   
   
   
@@ -270,6 +274,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.obtenerTiposSolicitud();
     this.obtenerQueryParams();
     this.ObtenerToken();
+    this.obtenerResponsableSoporte();
   }
 
   ObtenerToken(){
@@ -318,6 +323,15 @@ export class CrearSolicitudComponent implements OnInit {
         this.RecuperarUsuario();
       }, err => {
         console.log('Error obteniendo usuario: ' + err);
+      }
+    )
+  }
+
+  obtenerResponsableSoporte() {
+    this.servicio.obtenerResponsableSoporte().then(
+      (respuesta) => {
+        this.soporte = respuesta[0].ResponsableSoporte.EMail
+        console.log(this.soporte);
       }
     )
   }
@@ -3560,7 +3574,7 @@ deshabilitarCampoServicios() {
                     let obj = {
                       Title: `Solicitud ${this.idSolicitudGuardada}`,
                       NroSolp: `${this.idSolicitudGuardada}`,
-                      EnlaceSolp: 'link de solp',
+                      EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
                     respuesta = await this.enviarServicioSolicitud(objCrm);
@@ -3570,7 +3584,21 @@ deshabilitarCampoServicios() {
                     else {
                       this.servicio.enviarFallidosListaCrm(obj).then(
                         (item: ItemAddResult) => {
-                          this.mostrarInformacion('Se enviaron los datos para manejo más tarde')
+                          let cuerpo = '<p>Cordial Saludo</p>' +
+                          '<br>' +
+                          '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
+                          '<br>' +
+                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores enlace" target="_blank>este enlace</a>.</p>'
+                          const emailProps: EmailProperties = {
+                            To: [this.soporte],
+                            Subject: "Notificación de soporte",
+                            Body: cuerpo
+                          }
+                          this.servicio.EnviarNotificacion(emailProps).then(
+                            (res) => {
+                              this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
+                            }
+                          )
                         }
                       ), error => {
                         this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
