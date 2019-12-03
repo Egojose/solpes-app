@@ -20,3 +20,11 @@ textarea#textareaHistorial {
 .modal-dialog {
     max-width: 1140px !important;
 }
+
+#ordenEstadistica {
+    padding-top: 35px;
+}
+
+#numeroOrdenEstadistica {
+    margin-top: 5px;
+}

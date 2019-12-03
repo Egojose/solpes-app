@@ -92,7 +92,7 @@ export class ReasignarComponent implements OnInit {
   registrarControles() {
     this.ReasignarSondeoFormulario = this.formBuilder.group({      
       ReasignarA: ['', Validators.required],
-      CausaReasignacion: ['', Validators.required],
+      CausaReasignacion: [''],
       Pais: [''],
       Categoria: [''],
       SubCategoria: [''],
@@ -120,7 +120,9 @@ export class ReasignarComponent implements OnInit {
   mostrarCampoSondeo() {
     if(this.solicitudRecuperada.estado === 'Por sondear' || this.solicitudRecuperada.estado === 'Por aprobar sondeo') {
       this.mostrarEnSondeo = true;
-      console.log(this.mostrarEnSondeo);
+    }
+    else {
+      this.mostrarEnSondeo = false;
     }
   }
 
@@ -198,16 +200,16 @@ export class ReasignarComponent implements OnInit {
 
   changeSolicitante($event) {
     this.spinner.show();
-    let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
-    // let id = $event.target.value
+    // let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
+    let id = $event.target.value
     this.ObtenerUsuarioPorId(id)
   }
 
   changeSolicitanteComprador(event: any): void {
-    // let id = event.item.compradorId;
-    let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
+    let id = event.item.compradorId;
+    // let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
     this.reasignarModelo = id;
-    this.ObtenerUsuarioPorId(id)
+    // this.ObtenerUsuarioPorId(id)
   }
 
   changeJefe($event) {
@@ -315,6 +317,7 @@ export class ReasignarComponent implements OnInit {
     this.servicio.ObtenerPaises().subscribe(
       (respuesta) => {
         this.paises = Pais.fromJsonList(respuesta);
+        console.log(this.paises);
         this.obtenerCategorias();
       }, err => {
         this.mostrarError('Error obteniendo paises');
@@ -327,7 +330,8 @@ export class ReasignarComponent implements OnInit {
   obtenerCategorias() {
     this.servicio.ObtenerCategorias().subscribe(
       (respuesta) => {
-        this.categorias = Categoria.fromJsonList(respuesta);        
+        this.categorias = Categoria.fromJsonList(respuesta);  
+        console.log(this.categorias);      
       }, err => {
         this.mostrarError('Error obteniendo categorías');
         this.spinner.hide();
@@ -369,10 +373,16 @@ export class ReasignarComponent implements OnInit {
       this.spinner.hide();
       return false;
     }
-    this.reasignarModelo = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
-    let categoria = this.ReasignarSondeoFormulario.controls["Categoria"].value;
-    let SubCategoria = this.ReasignarSondeoFormulario.controls["SubCategoria"].value;
-    let pais = this.ReasignarSondeoFormulario.controls["Pais"].value;
+    if(this.ReasignarSondeoFormulario.controls['CausaReasignacion'].value === '' && this.mostrarEnSondeo === false) {
+      this.mostrarAdvertencia('Debe seleccionar la causa de resasignación');
+      this.spinner.hide();
+      return false;
+    }
+    // this.reasignarModelo = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
+    let categoria = this.ReasignarSondeoFormulario.controls["Categoria"].value.nombre;
+    let SubCategoria = this.ReasignarSondeoFormulario.controls["SubCategoria"].value.nombre;
+    let pais = this.ReasignarSondeoFormulario.controls["Pais"].value.nombre;
+    console.log(pais);
     let responsableReasignarSondeo;
     let responsableResignarRevisarSondeo;
     let fechaReasignadoRevisarSondeo;
@@ -380,7 +390,11 @@ export class ReasignarComponent implements OnInit {
     let responsableReasingarContratos;
     let fechaReasignadoContratos;
     let objetoActualizar;
+    let causaReasignar = this.ReasignarSondeoFormulario.controls['CausaReasignacion'].value
     let solicitanteOriginal = this.solicitudRecuperada.solicitante;
+    categoria !== undefined ? categoria = categoria : categoria = '';
+    SubCategoria !== undefined ? SubCategoria = SubCategoria : SubCategoria = '';
+    pais !== undefined ? pais = pais : pais = '';
 
     if (this.solicitudRecuperada.estado === "Por sondear") {
       responsableReasignarSondeo = this.nombreUsuario;
@@ -390,9 +404,9 @@ export class ReasignarComponent implements OnInit {
         CompradorId: this.reasignarModelo,
         ResponsableReasignarSondeo: responsableReasignarSondeo,
         FechaReasignadoSondeo: fechaReasignadoSondeo,
-        PaisId: pais.id,
-        Categoria: categoria.nombre,
-        Subcategoria: SubCategoria.nombre
+        // PaisId: pais.id,
+        // Categoria: categoria.nombre,
+        // Subcategoria: SubCategoria.nombre
       }
     }
 
@@ -410,9 +424,9 @@ export class ReasignarComponent implements OnInit {
         SolicitantePersonaId: this.nuevoSolicitanteId.toString(),
         OrdenadorGastosId: this.jefeSeleccionado.toString(),
         ReasignadoRevisarSondeo: 'true',
-        PaisId: pais.id,
-        Categoria: categoria.nombre,
-        Subcategoria: SubCategoria.nombre
+        // PaisId: pais.id,
+        // Categoria: categoria.nombre,
+        // Subcategoria: SubCategoria.nombre
       }
     }
 
@@ -424,9 +438,10 @@ export class ReasignarComponent implements OnInit {
         CompradorId: this.reasignarModelo,
         ResponsableReasignarContratos: responsableReasingarContratos,
         FechaReasignadoContratos: fechaReasignadoContratos,
-        PaisId: pais.id,
-        Categoria: categoria.nombre,
-        Subcategoria: SubCategoria.nombre
+        PaisReasignar: pais,
+        CategoriaReasignar: categoria,
+        SubcategoriaReasignar: SubCategoria,
+        MotivoReasignar: causaReasignar
       }
     }
     

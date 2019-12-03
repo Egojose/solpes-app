@@ -84,6 +84,8 @@ export class AprobarSondeoComponent implements OnInit {
   @ViewChild(MatPaginator) paginatorCrm: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   datosServicios;
+  OrdenEstadistica = new FormControl('');
+  numeroOrden = new FormControl('');
   clientServicios = new FormControl('');
   ordenServServicios = new FormControl('');
   idServServicios = new FormControl('');
@@ -113,6 +115,10 @@ export class AprobarSondeoComponent implements OnInit {
   idBienServicio: any;
   datosContablesBienesVacios: any = [];
   datosContablesServiciosVacios: any  = [];
+  nuevoOrdenadorGastos: any;
+  emptyNumeroOrdenEstadistica: boolean = false;
+  valorOrdenEstadisica: any;
+  disableBtnDatoContables: boolean = true;
 
   constructor( 
     private formBuilder: FormBuilder,
@@ -132,6 +138,14 @@ export class AprobarSondeoComponent implements OnInit {
     this.dataSourceDatosServicios = new MatTableDataSource();
     this.selectAllServicios = false;
     this.emptyManager = true;
+  }
+
+  async validarOrdenEstadistica() {
+    if(this.OrdenEstadistica.value === '') {
+      this.mostrarAdvertencia('Debe seleccionar orden estadística')
+      this.spinner.hide();
+      return false;
+    }
   }
 
   private perfilacionEstado() {
@@ -158,7 +172,13 @@ export class AprobarSondeoComponent implements OnInit {
     }
   }
 
-  
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
 
   verificarEstado(): boolean {
     if(this.solicitudRecuperada.estado == 'Por aprobar sondeo'){
@@ -183,12 +203,21 @@ export class AprobarSondeoComponent implements OnInit {
     let mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
     let año = fecha.getFullYear();
     let fechaFormateada = dia + "/" + mes + "/" + año;
+    console.log(this.OrdenEstadistica);
+    console.log(this.valorOrdenEstadisica);
     await this.validarDatosContables();
+    await this.validarOrdenEstadistica();
 
     let ObjSondeo;
     if (this.RDBsondeo === undefined) {
       this.mostrarAdvertencia('Debe seleccionar una acción');
       this.spinner.hide();
+    }
+
+    if(this.OrdenEstadistica.value === 'SI' && this.numeroOrden.value === '') {
+      this.mostrarAdvertencia('Por favor digite el numero de orden estadística');
+      this.spinner.hide();
+      return false;
     }
 
     if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
@@ -229,7 +258,10 @@ export class AprobarSondeoComponent implements OnInit {
             Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en SOLP",
             Justificacion: this.justificacionSondeo,
-            FechaRevisarSondeo: fecha
+            FechaRevisarSondeo: fecha,
+            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos),
+            OrdenEstadistica: this.valorOrdenEstadisica,
+            NumeroOrdenEstadistica: this.numeroOrden.value
           }
         } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
@@ -240,7 +272,10 @@ export class AprobarSondeoComponent implements OnInit {
             Estado: this.estadoSolicitud,
             ResultadoSondeo: "Convertir en SOLP",
             Justificacion: this.justificacionSondeo,
-            FechaRevisarSondeo: fecha
+            FechaRevisarSondeo: fecha,
+            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos),
+            OrdenEstadistica: this.valorOrdenEstadisica,
+            NumeroOrdenEstadistica: this.numeroOrden.value
           }
         }
       }
@@ -268,7 +303,10 @@ export class AprobarSondeoComponent implements OnInit {
             ResultadoSondeo: "Convertir en CM",
             Justificacion: this.justificacionSondeo,
             CM: this.numeroSolpCm,
-            FechaRevisarSondeo: fecha
+            FechaRevisarSondeo: fecha,
+            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos),
+            OrdenEstadistica: this.valorOrdenEstadisica,
+            NumeroOrdenEstadistica: this.numeroOrden.value
           }
         } else if (this.ObjCondicionesTecnicas.length === 0 && this.ObjCondicionesTecnicasServicios.length > 0) {
           this.ResponsableProceso = this.ObResProceso[0].porRegistrarSolp;
@@ -281,7 +319,10 @@ export class AprobarSondeoComponent implements OnInit {
             ResultadoSondeo: "Convertir en CM",
             Justificacion: this.justificacionSondeo,
             CM: this.numeroSolpCm,
-            FechaRevisarSondeo: fecha
+            FechaRevisarSondeo: fecha,
+            OrdenadorGastosId: parseInt(this.nuevoOrdenadorGastos),
+            OrdenEstadistica: this.valorOrdenEstadisica,
+            NumeroOrdenEstadistica: this.numeroOrden.value
           }
         }
       }
@@ -453,6 +494,7 @@ export class AprobarSondeoComponent implements OnInit {
         this.alcance = solicitud.Alcance;        
         this.comentarioSondeo = (solicitud.ComentarioSondeo != undefined) ? solicitud.ComentarioSondeo : '';
         this.justificacion = solicitud.Justificacion;
+        this.ObjOrdenadorGasto.Id !== undefined ? this.valorUsuarioPorDefecto = this.ObjOrdenadorGasto.Id.toString() : this.valorUsuarioPorDefecto = "";
 
         if (solicitud.CondicionesContractuales != null) {
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales.replace(/(\r\n|\n|\r|\t)/gm, "")).condiciones;
@@ -495,11 +537,11 @@ export class AprobarSondeoComponent implements OnInit {
       numCicoCTS:[''],
       numCuentaCTS:[''],
       nombreIdServicio: [''],
-      ordenadorGastos: ['']
     });
   }
 
   seleccionarOrdenadorGastos(event) {
+    this.nuevoOrdenadorGastos = event;
     if (event != "Seleccione") {
       this.emptyManager = false;
     } else {
@@ -690,35 +732,82 @@ export class AprobarSondeoComponent implements OnInit {
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
   }
 
-  VerDatosContables(item, tipo) {
-    this.ReadOnlyIdServicio = item.costoInversion === "ID de Servicios"? true: false;
-    this.ctsFormulario.controls['centroCostos'].setValue(item.costoInversion);
-    this.ctsFormulario.controls['numCicoCTS'].setValue(item.numeroCostoInversion);
-    this.ctsFormulario.controls['numCuentaCTS'].setValue(item.numeroCuenta);
-    this.valorUsuarioPorDefecto = this.ObjOrdenadorGasto.Id.toString();    
+  mostrarNumeroOrdenEstadistica(valorOrdenEstadistica) {
+    if (valorOrdenEstadistica == "SI") {
+      this.emptyNumeroOrdenEstadistica = true;
+      this.valorOrdenEstadisica = true;
+      this.disableBtnDatoContables = true;
+     
+    } else {
+      this.valorOrdenEstadisica = false;
+      this.emptyNumeroOrdenEstadistica = false;
+      this.disableBtnDatoContables = false;
+    }
+  }
 
+  async VerDatosContables(item, tipo) {
+    console.log(item);
+    let datosBienes;
+    let datosServicios;
+    let bienes = await this.servicio.obtenerCtBienes(this.IdSolicitud);
+    console.log(bienes);
+    let servicios = await this.servicio.obtenerCtServicios(this.IdSolicitud);
+    if(bienes.length > 0 && tipo === 'Bien') {
+     datosBienes = bienes.filter(x => {
+        return x.Id === item.IdBienes
+      });
+      this.ReadOnlyIdServicio = item.costoInversion === "ID de Servicios" ? true : false;
+      this.ctsFormulario.controls['centroCostos'].setValue(datosBienes[0].costoInversion);
+      this.ctsFormulario.controls['numCicoCTS'].setValue(datosBienes[0].numeroCostoInversion);
+      this.ctsFormulario.controls['numCuentaCTS'].setValue(datosBienes[0].numeroCuenta);
+    }
+    else if (servicios.length > 0 && tipo === 'Servicio') {
+      datosServicios = servicios.filter(x => {
+        return x.Id === item.id;
+      });
+      this.ReadOnlyIdServicio = item.costoInversion === "ID de Servicios" ? true : false;
+      this.ctsFormulario.controls['centroCostos'].setValue(datosServicios[0].costoInversion);
+      this.ctsFormulario.controls['numCicoCTS'].setValue(datosServicios[0].numeroCostoInversion);
+      this.ctsFormulario.controls['numCuentaCTS'].setValue(datosServicios[0].numeroCuenta);
+    }
+    // console.log(datosBienes);
+    // this.ReadOnlyIdServicio = item.costoInversion === "ID de Servicios" ? true : false;
+    // this.ctsFormulario.controls['centroCostos'].setValue(item.costoInversion);
+    // this.ctsFormulario.controls['numCicoCTS'].setValue(item.numeroCostoInversion);
+    // this.ctsFormulario.controls['numCuentaCTS'].setValue(item.numeroCuenta);
     if (tipo === "Bien") {
       this.TipoSondeo = "Bien";
       this.idBienServicio = item.IdBienes;
-    } else if(tipo === "Servicio") {
+    } else if (tipo === "Servicio") {
       this.TipoSondeo = "Servicio";
       this.idBienServicio = item.id;
     }
     this.isModalShown = true;
-  }  
+  } 
+  
+ async refrescarDatosContables() {
+    let a = await this.servicio.obtenerCtBienes(this.IdSolicitud);
+    let b = await this.servicio.obtenerCtServicios(this.IdSolicitud);
+  }
 
   async validarDatosContables() {
     let bienes = await this.servicio.obtenerCtBienes(this.IdSolicitud);
     let servicios = await this.servicio.obtenerCtServicios(this.IdSolicitud);
-    if(bienes.length > 0) {
+    if(bienes.length > 0 && this.valorOrdenEstadisica === false) {
      this.datosContablesBienesVacios = bienes.filter(x => {
         return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null
       });
     }
-    if(servicios.length > 0) {
+    else {
+      this.datosContablesBienesVacios = [];
+    }
+    if(servicios.length > 0 && this.valorOrdenEstadisica === false) {
      this.datosContablesServiciosVacios = servicios.filter(x => {
         return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null
       })
+    }
+    else {
+      this.datosContablesServiciosVacios = [];
     }
   }
  
@@ -752,7 +841,7 @@ export class AprobarSondeoComponent implements OnInit {
     let centroCosto = this.ctsFormulario.controls['centroCostos'].value;
     let NumeroCentroCosto =this.ctsFormulario.controls['numCicoCTS'].value;
     let NumeroCuenta = this.ctsFormulario.controls['numCuentaCTS'].value;
-    let OrdenadorGasto = this.ctsFormulario.controls['ordenadorGastos'].value;
+    // let OrdenadorGasto = this.ctsFormulario.controls['ordenadorGastos'].value;
     
     let obj = {
       costoInversion: centroCosto,
@@ -762,58 +851,65 @@ export class AprobarSondeoComponent implements OnInit {
     }
 
     if (this.TipoSondeo === "Bien") {
-      this.modificarDatosContBienes(obj,OrdenadorGasto);
+      this.modificarDatosContBienes(obj);
     } else {
-      this.modificarDatosContServicio(obj, OrdenadorGasto);
+      this.modificarDatosContServicio(obj);
     }
   }
 
-  modificarDatosContBienes(obj, OrdenadorGasto){
+  modificarDatosContBienes(obj){
     this.servicio.modificarDatosContablesBienes(obj, this.idBienServicio).then(
       (respuesta)=>{
-         this.modificarOG(OrdenadorGasto);
+        this.MostrarExitoso("Los datos contables se actualizaron con éxito");
+        this.spinner.hide();
+        this.hideModal();
+        //  this.modificarOG(OrdenadorGasto);
       }
     ).catch(
       (error)=>{
           console.log(error);
           this.mostrarError("Error al guardar los datos contables");
           this.spinner.hide();
+          this.hideModal();
       }
     )
   }
 
-  modificarDatosContServicio(obj, OrdenadorGasto){
+  modificarDatosContServicio(obj){
     this.servicio.modificarDatosContablesServicio(obj, this.idBienServicio).then(
       (respuesta)=>{
         this.MostrarExitoso("Los datos contables se actualizaron con éxito");
-         this.modificarOG(OrdenadorGasto);
+        this.spinner.hide();
+        this.hideModal();
+        //  this.modificarOG(OrdenadorGasto);
       }
     ).catch(
       (error)=>{
           console.log(error);
           this.mostrarError("Error al guardar los datos contables");
           this.spinner.hide();
+          this.hideModal();
       }
     )
   }
 
-  modificarOG(OrdenadorGasto: any) {
-    OrdenadorGasto = parseInt(OrdenadorGasto);
-    let obj = {
-      OrdenadorGastosId: OrdenadorGasto
-    }
-    this.servicio.modificarOrdenadorGastos(obj, this.IdSolicitud).then(
-      (respuesta)=>{
-         this.MostrarExitoso("El ordenador de gasto se guardo correctamente");
-         this.spinner.hide();
-         this.hideModal();
-      }
-    ).catch(
-      (error)=>{
-          console.log(error);
-          this.mostrarError("Error al guardar el ordenador de gastos");
-          this.spinner.hide();
-      }
-    )
-  }
+  // modificarOG(OrdenadorGasto: any) {
+  //   OrdenadorGasto = parseInt(OrdenadorGasto);
+  //   let obj = {
+  //     OrdenadorGastosId: OrdenadorGasto
+  //   }
+  //   this.servicio.modificarOrdenadorGastos(obj, this.IdSolicitud).then(
+  //     (respuesta)=>{
+  //        this.MostrarExitoso("El ordenador de gasto se guardo correctamente");
+  //        this.spinner.hide();
+  //        this.hideModal();
+  //     }
+  //   ).catch(
+  //     (error)=>{
+  //         console.log(error);
+  //         this.mostrarError("Error al guardar el ordenador de gastos");
+  //         this.spinner.hide();
+  //     }
+  //   )
+  // }
 }
