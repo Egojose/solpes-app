@@ -709,7 +709,7 @@ export class SPServicio {
     }
 
    EnviarNotificacion(objNotificacion) {
-        let respuesta = this.ObtenerConfiguracionConPost().utility.sendEmail(objNotificacion);
+        let respuesta = this.ObtenerConfiguracion().utility.sendEmail(objNotificacion);
         return respuesta;
     }
 
