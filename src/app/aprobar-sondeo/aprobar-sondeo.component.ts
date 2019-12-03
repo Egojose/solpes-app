@@ -146,11 +146,6 @@ export class AprobarSondeoComponent implements OnInit {
       this.spinner.hide();
       return false;
     }
-    if(this.OrdenEstadistica.value === 'SI' && this.numeroOrden.value === '') {
-      this.mostrarAdvertencia('Por favor digite el numero de orden estadística');
-      this.spinner.hide();
-      return false
-    }
   }
 
   private perfilacionEstado() {
@@ -217,6 +212,12 @@ export class AprobarSondeoComponent implements OnInit {
     if (this.RDBsondeo === undefined) {
       this.mostrarAdvertencia('Debe seleccionar una acción');
       this.spinner.hide();
+    }
+
+    if(this.OrdenEstadistica.value === 'SI' && this.numeroOrden.value === '') {
+      this.mostrarAdvertencia('Por favor digite el numero de orden estadística');
+      this.spinner.hide();
+      return false;
     }
 
     if (this.comentarioSondeo == null || this.comentarioSondeo == undefined) {
