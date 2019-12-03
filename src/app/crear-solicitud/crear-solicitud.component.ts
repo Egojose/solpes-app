@@ -2069,7 +2069,7 @@ async ValidarVaciosCTS(row: any, i: number) {
   let cantidadTesteadoServicios = true;
   let numeroCuentaTesteadoServicios = true;
   let idServicio;
-  let IdOrdenServicio;
+  let IdOrdenServicio = [];
   let tieneIdServicio: boolean = false;
   if(numeroCostoInversion !== '' && numeroCostoInversion !== null && numeroCostoInversion !== undefined) {
     idServicio = numeroCostoInversion;
@@ -3137,6 +3137,8 @@ deshabilitarCampoServicios() {
     this.deshabilitarJustificacion(tipoSolicitud);
     if(tipoSolicitud.nombre !== 'Sondeo') {
       this.noMostrarOrdenEstadistica = false;
+      console.log(this.solpFormulario.controls['compraOrdenEstadistica'].value)
+      // this.solpFormulario.controls['compraOrdenEstadistica'].setValue('NO');
       this.mostrarDivDatosContables();
       this.AsignarRequeridosDatosContables();
     }
@@ -3589,7 +3591,7 @@ deshabilitarCampoServicios() {
                           '<br>' +
                           '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
                           '<br>' +
-                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores enlace" target="_blank>este enlace</a></p>'
+                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores" target="_blank>este enlace</a></p>'
                           const emailProps: EmailProperties = {
                             To: [this.soporte],
                             Subject: "Notificación de soporte",
@@ -3891,8 +3893,13 @@ deshabilitarCampoServicios() {
     this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
     this.mostrarFiltroBienes = false;
     this.mostrarTable = false;
+    if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+      this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+      return false;
+    }
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
       return false;
@@ -3915,7 +3922,12 @@ deshabilitarCampoServicios() {
     this.dataIdOrdenSeleccionadosServicios = [];
     this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let paisValidar = this.solpFormulario.controls["pais"].value.nombre;
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+      this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+      return false;
+    }
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
       return false;
@@ -3938,8 +3950,13 @@ deshabilitarCampoServicios() {
   abrirModalArchivoCsvBienes(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+      this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+      return false;
+    }
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
-      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
       return false;
     }
     else {
@@ -3973,6 +3990,11 @@ deshabilitarCampoServicios() {
   abrirModalArchivoCsvServicios(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+      this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+      return false;
+    }
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
       return false;

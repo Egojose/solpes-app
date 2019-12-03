@@ -2184,7 +2184,7 @@ export class EditarSolicitudComponent implements OnInit {
     let cantidadTesteadoServicios = true;
     let numeroCuentaTesteadoServicios = true;
     let idServicio;
-    let IdOrdenServicio;
+    let IdOrdenServicio = [];
     let tieneIdServicio;
     if(numeroCostoInversion !== '' && numeroCostoInversion !== null && numeroCostoInversion !== undefined) {
       idServicio = numeroCostoInversion;
@@ -4283,6 +4283,11 @@ export class EditarSolicitudComponent implements OnInit {
   abrirModalCTB(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+      this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+      return false;
+    }
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
       this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
       return false;
@@ -4317,9 +4322,14 @@ export class EditarSolicitudComponent implements OnInit {
 
   abrirModalCTS(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value;
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+      this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+      return false;
+    }
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
-      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
       return false;
     }
     else{
@@ -4356,8 +4366,13 @@ export class EditarSolicitudComponent implements OnInit {
   abrirModalArchivoCsvBienes(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+      this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+      return false;
+    }
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
-      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
       return false;
     }
     else {
@@ -4373,9 +4388,14 @@ export class EditarSolicitudComponent implements OnInit {
                               //Habilitar cuando datos contables no obligatorios
   abrirModalArchivoCsvServicios(template: TemplateRef<any>) {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value
+    let paisValidar = this.solpFormulario.controls["pais"].value;
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+      this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+      return false;
+    }
     if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
-      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
+      this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
       return false;
     }
     else{
@@ -4813,7 +4833,7 @@ export class EditarSolicitudComponent implements OnInit {
                           '<br>' +
                           '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
                           '<br>' +
-                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores enlace" target="_blank>este enlace</a></p>'
+                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores" target="_blank>este enlace</a></p>'
                           const emailProps: EmailProperties = {
                             To: [this.soporte],
                             Subject: "Notificación de soporte",
