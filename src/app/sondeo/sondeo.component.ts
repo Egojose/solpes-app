@@ -148,7 +148,8 @@ export class SondeoComponent implements OnInit {
         this.alcance = solicitud.Alcance;
         this.justificacion = solicitud.Justificacion;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
-        this.autorId = solicitud.AuthorId;
+        // this.autorId = solicitud.AuthorId;
+        this.autorId = solicitud.SolicitantePersonaId;
         this.OrdenEstadistica = solicitud.OrdenEstadistica;
         this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         if (solicitud.CondicionesContractuales != null) {
