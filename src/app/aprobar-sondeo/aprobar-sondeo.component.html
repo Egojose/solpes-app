@@ -36,6 +36,16 @@
     </div>
 </div>
 <br>
+<ng-container *ngIf="RDBsondeo === 4">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label><b>Número Contrato Marco:</b></label>
+            <ng-template #popTemplate2>Por favor digite el número OCM</ng-template>
+            <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
+        </div>
+    </div>
+</ng-container>
+<br>
 <ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
         <div class="form-group row">
             <div class="col-md-4">
@@ -47,6 +57,20 @@
                 No tiene un jefe asignado en Office 365, debe seleccionar uno
             </div> -->
             </div>
+            <div class="form-group col-md-4" *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+                <label for="textarea" class="col-sm-3 control-label"><b>Justificación</b></label>
+                <ng-template #popTemplate1>Por favor especifique en la justificación</ng-template>
+                <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre la justificación..." [(ngModel)]="justificacionSondeo"></textarea>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
+                <ng-template #popTemplate>Por favor especifique el motivo en los comentarios</ng-template>
+                <textarea name="" id="textarea" class="form-control" rows="2" triggers="" #customTooltip="bs-tooltip" placement="top" [tooltip]="popTemplate" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioSondeo"></textarea>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+        <div class="form-group row">
             <div class="col-md-4" id="ordenEstadistica">
                 <label for="CompraEstadística">Compra orden de estadística</label>
                 <mat-radio-group class="orden-estadistica-group" layout="row"  [formControl]="OrdenEstadistica">
@@ -94,7 +118,7 @@
                         </a>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Bien')" [disabled]="disableBtnDatoContables">Ver</button>
+                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Bien')" [hidden]="disableBtnDatoContables || RDBsondeo ===1 || RDBsondeo === 3">Editar</button>
                     </td>
                 </tr>
             </tbody>
@@ -132,7 +156,7 @@
                         </a>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Servicio')" [disabled]="disableBtnDatoContables">Ver</button>
+                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Servicio')" [hidden]="disableBtnDatoContables || RDBsondeo === 1 || RDBsondeo === 3">Editar</button>
                     </td>
                 </tr>
             </tbody>
@@ -140,33 +164,14 @@
     </div>
 </div>
 <hr>
-
-<ng-container *ngIf="RDBsondeo === 4">
-    <div class="row">
-        <div class="form-group col-md-4">
-            <label><b>Número Contrato Marco:</b></label>
-            <ng-template #popTemplate2>Por favor digite el número OCM</ng-template>
-            <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
-        </div>
-    </div>
-</ng-container>
-
 <ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
     <div class="row">
-        <div class="form-group col-md-12">
-            <label for="textarea" class="col-sm-3 control-label"><b>Justificación</b></label>
-            <ng-template #popTemplate1>Por favor especifique en la justificación</ng-template>
-            <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre la justificación..." [(ngModel)]="justificacionSondeo"></textarea>
-        </div>
+        
     </div>
     <br>
 </ng-container>
 <div class="row">
-    <div class="form-group col-md-12">
-        <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
-        <ng-template #popTemplate>Por favor especifique el motivo en los comentarios</ng-template>
-        <textarea name="" id="textarea" class="form-control" rows="2" triggers="" #customTooltip="bs-tooltip" placement="top" [tooltip]="popTemplate" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioSondeo"></textarea>
-    </div>
+   
 </div>
 <div class="row">
     <div class="form-group col-md-12">

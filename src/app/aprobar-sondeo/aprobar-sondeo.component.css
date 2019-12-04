@@ -22,9 +22,9 @@ textarea#textareaHistorial {
 }
 
 #ordenEstadistica {
-    padding-top: 35px;
+    padding-top: 15px;
 }
 
-#numeroOrdenEstadistica {
-    margin-top: 5px;
-}
+/* #numeroOrdenEstadistica {
+    margin-top: 0px;
+} */

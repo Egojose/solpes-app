@@ -507,7 +507,8 @@ export class CrearSolicitudComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionados = this.datos.map(x => {
-        return x.Orden_SAP
+        return x.IdServicio
+        // return x.Orden_SAP
       })
     }
     else if (this.selectAll === true && (cliente !== '' || idServ !== '' || nombreServ !== '' || os !== '')) {
@@ -516,7 +517,8 @@ export class CrearSolicitudComponent implements OnInit {
        return x.IdServicio
       })
       this.dataIdOrdenSeleccionados = this.datosFiltradosBienes.filteredData.map(x => {
-        return x.Orden_SAP
+        return x.IdServicio
+        // return x.Orden_SAP
       })
       console.log(this.dataIdOrdenSeleccionados);
     }
@@ -533,12 +535,14 @@ export class CrearSolicitudComponent implements OnInit {
     console.log(element);
     if ($event.checked === true) {
       this.dataSeleccionados.push(idServicioSeleccionado);
-      this.dataIdOrdenSeleccionados.push(element.Orden_SAP);
+      // this.dataIdOrdenSeleccionados.push(element.Orden_SAP);
+      this.dataIdOrdenSeleccionados.push(element.IdServicio);
       console.log(this.dataIdOrdenSeleccionados);
     }
     else {
       let index = this.dataSeleccionados.findIndex(x => x === idServicioSeleccionado);
-      let el = this.dataIdOrdenSeleccionados.findIndex(x => x === element.Orden_SAP)
+      let el = this.dataIdOrdenSeleccionados.findIndex(x => x === element.IdServicio)
+      // let el = this.dataIdOrdenSeleccionados.findIndex(x => x === element.Orden_SAP)
       this.dataSeleccionados.splice(index, 1);
       this.dataIdOrdenSeleccionados.splice(el, 1);
       if(index === -1 ) {
@@ -563,7 +567,8 @@ export class CrearSolicitudComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionadosServicios = this.datosServicios.map(x => {
-        return x.Orden_SAP
+        return x.IdServicio
+        // return x.Orden_SAP
       })
     }
     else if(this.selectAllServicios === true && (cliente !== '' || orden !== '' || idServicios !== '' || nombreServicios !== '')) {
@@ -572,7 +577,8 @@ export class CrearSolicitudComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionadosServicios = this.datosFiltradosServicios.filteredData.map(x => {
-        return x.Orden_SAP
+        return x.IdServicio
+        // return x.Orden_SAP
       })
     }
     else {
@@ -587,11 +593,13 @@ export class CrearSolicitudComponent implements OnInit {
     let idServicioSeleccionado = $event.source.value
     if ($event.checked === true) {
       this.dataSeleccionadosServicios.push(idServicioSeleccionado);
-      this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
+      this.dataIdOrdenSeleccionadosServicios.push(element.IdServicio);
+      // this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
     }
     else {
       let index = this.dataSeleccionadosServicios.findIndex(x => x === idServicioSeleccionado);
-      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
+      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.IdServicio)
+      // let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
       this.dataSeleccionadosServicios.splice(index, 1);
       this.dataIdOrdenSeleccionadosServicios.splice(el, 1);
       if(index === -1) {
@@ -3569,7 +3577,7 @@ deshabilitarCampoServicios() {
                     let objTokenString = JSON.stringify(objToken);
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
-                      "numerosolp": this.idSolicitudGuardada,
+                      "numerosolp": `${this.idSolicitudGuardada}`,
                       "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
                     }
