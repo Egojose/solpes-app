@@ -56,6 +56,7 @@ export class ReasignarComponent implements OnInit {
   subcategoriaSeleccionada: Subcategoria;
   paises: Pais[] = [];
   categorias: Categoria[] = [];
+  pais: any;
 
   constructor(
     private servicio: SPServicio, 
@@ -85,12 +86,16 @@ export class ReasignarComponent implements OnInit {
 
   asignarConsecutivo() {
     this.consecutivoSolicitud = this.solicitudRecuperada.consecutivo.toString();
+    this.pais = this.solicitudRecuperada.pais.ID;
+    console.log(this.pais)
+    // this.ReasignarSondeoFormulario.controls['Pais'].setValue(this.solicitudRecuperada.pais.Title)
     this.mostrarCampoSondeo();
-    this.mostrarCampoJefe();    
+    this.mostrarCampoJefe();
+    // this.filtrarSubcategorias();
   }
 
   registrarControles() {
-    this.ReasignarSondeoFormulario = this.formBuilder.group({      
+    this.ReasignarSondeoFormulario = this.formBuilder.group({
       ReasignarA: ['', Validators.required],
       CausaReasignacion: [''],
       Pais: [''],
@@ -202,6 +207,7 @@ export class ReasignarComponent implements OnInit {
     this.spinner.show();
     // let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
     let id = $event.target.value
+    this.reasignarModelo = id;
     this.ObtenerUsuarioPorId(id)
   }
 
@@ -343,10 +349,10 @@ export class ReasignarComponent implements OnInit {
   filtrarSubcategorias() {
     this.spinner.show();
     let categoria = this.ReasignarSondeoFormulario.controls["Categoria"].value;
-    let pais = this.ReasignarSondeoFormulario.controls["Pais"].value;
+    // let pais = this.ReasignarSondeoFormulario.controls["Pais"].value;
     
-    if (categoria != '' && pais != '') {
-      this.servicio.ObtenerSubcategorias(categoria.id, pais.id).subscribe(
+    if (categoria != '' && this.pais != '') {
+      this.servicio.ObtenerSubcategorias(categoria.id, this.pais).subscribe(
         (respuesta) => {
           if (respuesta.length > 0) {
             this.subcategorias = Subcategoria.fromJsonList(respuesta);

@@ -119,6 +119,7 @@ export class AprobarSondeoComponent implements OnInit {
   emptyNumeroOrdenEstadistica: boolean = false;
   valorOrdenEstadisica: any;
   disableBtnDatoContables: boolean = true;
+  ocultarBotonDatosContables: boolean = true;
 
   constructor( 
     private formBuilder: FormBuilder,
@@ -737,8 +738,11 @@ export class AprobarSondeoComponent implements OnInit {
       this.emptyNumeroOrdenEstadistica = true;
       this.valorOrdenEstadisica = true;
       this.disableBtnDatoContables = true;
-     
+      this.ctsFormulario.controls['centroCostos'].setValue('');
+      this.ctsFormulario.controls['numCicoCTS'].setValue('');
+      this.ctsFormulario.controls['numCuentaCTS'].setValue('');
     } else {
+      this.ocultarBotonDatosContables = false;
       this.valorOrdenEstadisica = false;
       this.emptyNumeroOrdenEstadistica = false;
       this.disableBtnDatoContables = false;
@@ -839,10 +843,10 @@ export class AprobarSondeoComponent implements OnInit {
     }
     this.spinner.show();
     let centroCosto = this.ctsFormulario.controls['centroCostos'].value;
-    let NumeroCentroCosto =this.ctsFormulario.controls['numCicoCTS'].value;
+    let NumeroCentroCosto = this.ctsFormulario.controls['numCicoCTS'].value;
     let NumeroCuenta = this.ctsFormulario.controls['numCuentaCTS'].value;
     // let OrdenadorGasto = this.ctsFormulario.controls['ordenadorGastos'].value;
-    
+  
     let obj = {
       costoInversion: centroCosto,
       numeroCostoInversion: NumeroCentroCosto,

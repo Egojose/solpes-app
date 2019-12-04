@@ -564,7 +564,7 @@ export class ContratosComponent implements OnInit {
                   obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): [];
                   let objCrm = {
                     "numerocontratoproveedor": ContratoOC,
-                    "numerosolp": SolpSapRfp,            
+                    "numerosolp": `${this.IdSolicitud}`,            
                     "fechainiciocontrato": fechaString,           
                     "duracioncontrato": parseInt(VigenciaContrato),            
                     "nombreproveedor": NombreRazonSocial,            
@@ -587,7 +587,7 @@ export class ContratosComponent implements OnInit {
                   objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
                   let objCrm = {
                     "numerocontratoproveedor": ContratoOC,
-                    "numerosolp": SolpSapRfp,            
+                    "numerosolp": `${this.IdSolicitud}`,            
                     "fechainiciocontrato": fechaString,           
                     "duracioncontrato": parseInt(VigenciaContrato),            
                     "nombreproveedor": NombreRazonSocial,            
@@ -658,7 +658,7 @@ export class ContratosComponent implements OnInit {
               objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
               let objCrm = {
                 "numerocontratoproveedor": ContratoOC,
-                "numerosolp": SolpSapRfp,            
+                "numerosolp": `${this.IdSolicitud}`,            
                 "fechainiciocontrato": fechaString,           
                 "duracioncontrato": parseInt(VigenciaContrato),            
                 "nombreproveedor": NombreRazonSocial,            
@@ -681,7 +681,7 @@ export class ContratosComponent implements OnInit {
               objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
               let objCrm = {
                 "numerocontratoproveedor": ContratoOC,
-                "numerosolp": SolpSapRfp,            
+                "numerosolp": `${this.IdSolicitud}`,            
                 "fechainiciocontrato": fechaString,           
                 "duracioncontrato": parseInt(VigenciaContrato),            
                 "nombreproveedor": NombreRazonSocial,            
@@ -802,7 +802,7 @@ export class ContratosComponent implements OnInit {
         let NroSolp = element.numerosolp;
         let FechaInicio = element.fechainiciocontrato;
         let nombreproveedor = element.nombreproveedor;
-        let objetocontrato = element.ObjetoContrato;
+        let objetocontrato = element.objetocontrato;
         let idservicios = element.idservicios.toString();
         let obj = {
           NroContrato: numeroContrato,
