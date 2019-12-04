@@ -29,7 +29,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTczNTcwODQ4LCJuYmYiOjE1NzM1NzA4NDgsImV4cCI6MTU3MzU5OTk0OCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI2NTQ4ZDEyMS1jMDUxLTQ3YTEtYWYyYi1lZmRlYzVmOTllNGNAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3Iiwic3ViIjoiOGY4NjgwNDUtN2VlZS00Mzc0LWEyZjEtMzA3OTIzODcwYWM3IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.h-r64HcVX-yGPfX9wNjmmM09szuIpP31wJNb6JSORbMLDCuT0yCVArhGEVCFTlX7nc6YVm_dMTxLwOLqCZzl1JEUs4CULIR8SWN6vma3UYbh24qVn6pY5B3yam-61Mzgwd1WvOkjTQJRtQ8twbeIHUKtJNqfdldKMI0SWY6kTNszJW43UApyU_lXeYBqHQszVWOpWjF9SIITPvfp8JncSU0FcIr_JR7lt-1sZiVGkGGrkAkUR6HXgRHV9rAaRjM3tHckCS5I9p0MGMU13pf5loAod4n-86cmQ07eIqFGpqZX-iftWhCb6FWVV2WqLezVbZymmdSF7W8ZOoPKd6CPJQ'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTc1NDYzMjc1LCJuYmYiOjE1NzU0NjMyNzUsImV4cCI6MTU3NTQ5MjM3NSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI0OWRmZGM4Mi04NDYxLTQ3YjctYTA0Ny1hZWZhZTU3ZjMyMWZAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwic3ViIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.KF3zejUQJD4ZEGI8v36x6mI8l42AFRlfcUjWNyF-oGriumP8M6sxAjUJIAbbxKpafBvWpdf6XfydrEn5rAxnOk_9q4sZdZ0tLMsuf-KyiXQcbIuqGb-IT3zNKVJbh6zQYy7A3eRsg0xcbGs4PgtCRP6XAFVLe0m5rwOH10wPo5LJhpARecy9-G8Z_fLAI5wG6AT6ZMyKVpoO6GxzM5JCGIdsNLPmioiSgQoPmHPGV67fUSvQYnqTX3nStMlMxeUAGTsfCyk-HBashiLTtbLSdsRTY80sRbARuYzmGSeZhpCBXrR7cdDzLIj_zRPRIab0Bm9wzb7680tAEnWiOfUI5g'
             }
         }, environment.urlWeb);
 
@@ -188,7 +188,7 @@ export class SPServicio {
             numeroCostoInversion: condicionTecnicaBienes.numeroCostoInversion,
             numeroCuenta: condicionTecnicaBienes.numeroCuenta,
             tieneIdServicio: condicionTecnicaBienes.tieneIdServicio,
-            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio
+            IdOrdenServicio: condicionTecnicaBienes.idOrdenServicio.toString()
         });
     }
     
@@ -351,7 +351,7 @@ export class SPServicio {
     };
 
     ObtenerSolicitudBienesServicios(IdSolicitud){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","FechaRegistrarSolpsap","Solicitante","Responsable/Title","OrdenadorGastos/Title","OrdenadorGastos/Department","Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo", "FechaDeCreacion","Consecutivo").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles").get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","FechaRegistrarSolpsap","Solicitante","Responsable/Title","OrdenadorGastos/Title","OrdenadorGastos/Department","OrdenadorGastos/Id" ,"Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo", "FechaDeCreacion","Consecutivo").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles").get());
         return respuesta;
     }
 
@@ -368,7 +368,12 @@ export class SPServicio {
     ObtenerCondicionesTecnicasBienes(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get());
         return respuesta;
-    } 
+    }
+    
+    public async obtenerCtBienes(IdSolicitud): Promise<any> {
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").get()); 
+        return await respuesta.toPromise() 
+    }
     
     ObtenerCondicionesTecnicasBienesExcel(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq " + IdSolicitud).select("*","Solicitud/ID","AttachmentFiles").expand("Solicitud","AttachmentFiles").orderBy("Orden").get());
@@ -436,6 +441,11 @@ export class SPServicio {
     ObtenerCondicionesTecnicasServicios(IdSolicitud){
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());
         return respuesta;
+    }
+
+    public async obtenerCtServicios(IdSolicitud): Promise<any> {
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq " + IdSolicitud).select("*","AttachmentFiles").expand("AttachmentFiles").get());
+        return await respuesta.toPromise(); 
     }
 
     ObtenerCondicionesTecnicasServiciosExcel(IdSolicitud){
@@ -671,6 +681,35 @@ export class SPServicio {
 
     async GuardarSolicitudCrm(obj): Promise<any>{
         let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudesCrm).items.add(obj);
+        return respuesta;
+    }
+
+    enviarFallidosListaCrm(obj) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudesCrm).items.add(obj);
+        return respuesta;
+    }
+
+    modificarDatosContablesServicio(obj, idServicio){
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idServicio).update(obj);
+        return respuesta;
+    }
+
+    modificarDatosContablesBienes(obj, idBien){
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idBien).update(obj);
+        return respuesta;
+    }
+
+    modificarOrdenadorGastos(obj, idSolicitud){
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(obj);
+        return respuesta;
+    }
+    obtenerResponsableSoporte() {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaResponsableSoporte).items.select('ResponsableSoporte/Title', 'ResponsableSoporte/ID', 'ResponsableSoporte/EMail').expand('ResponsableSoporte').get();
+        return respuesta;
+    }
+
+   EnviarNotificacion(objNotificacion) {
+        let respuesta = this.ObtenerConfiguracion().utility.sendEmail(objNotificacion);
         return respuesta;
     }
 

@@ -154,7 +154,7 @@
 
         <hr>
         <div class="form-group row">
-            <div class="col-md-6">
+            <div class="col-md-6" [hidden]="noMostrarOrdenEstadistica">
                 <label for="CompraEstadística">Compra orden de estadística</label>
                 <mat-radio-group class="orden-estadistica-group" layout="row" formControlName="compraOrdenEstadistica">
                     <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO"
@@ -187,7 +187,7 @@
                         <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTB">
                             <th class="columnaBienes" mat-header-cell *matHeaderCellDef> {{column}} </th>
                             <div *ngIf="column == 'Acciones'; else contenidoCTB">
-                                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarBienes(element, templateCondicionesTecnicasBienes);" tooltip="Editar bien"
+                                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarBienes(element, templateCondicionesTecnicasBienes);" (click)="limpiarFiltrosBienes()" tooltip="Editar bien"
                                          placement="bottom"  />&nbsp;<img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/borrar.png" class="icono-tabla" alt="borrar" (click)="borrarBienes(element);" tooltip="Borrar bien"
                                         placement="bottom" /></td>
                             </div>
@@ -257,9 +257,20 @@
                         <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayCTS">
                             <th class="columnaServicios" mat-header-cell *matHeaderCellDef> {{column}} </th>
                             <div *ngIf="column == 'Acciones'; else contenidoCTS">
-                                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarServicios(element, templateCondicionesTecnicasServicios);" tooltip="Editar servicio"
+<<<<<<< HEAD
+                                <td mat-cell *matCellDef="let element"><img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/editar.png" class="icono-tabla" alt="editar" (click)="editarServicios(element, templateCondicionesTecnicasServicios);" (click)="limpiarFiltrosServicios()" tooltip="Editar servicio"
                                          placement="bottom"  />&nbsp;<img src="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/ImagenesSolpes/aplicacion/borrar.png" class="icono-tabla" alt="borrar" (click)="borrarServicios(element);" tooltip="Borrar servicio"
                                         placement="bottom" /></td>
+=======
+                                <td mat-cell *matCellDef="let element">
+                                    <img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/editar.png"
+                                        class="icono-tabla" alt="editar"
+                                        (click)="editarServicios(element, templateCondicionesTecnicasServicios);" (click)="limpiarFiltrosServicios()"
+                                        tooltip="Editar servicio"  placement="bottom"
+                                          />&nbsp;<img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/borrar.png"
+                                        class="icono-tabla" alt="borrar" (click)="borrarServicios(element);"
+                                        tooltip="Borrar servicio" placement="bottom" /></td>
+>>>>>>> master
                             </div>
                             <ng-template #contenidoCTS>
                                 <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
@@ -474,7 +485,7 @@
                                         <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                                         <td mat-cell *matCellDef="let element">
                                             <mat-checkbox color="primary" value="{{element.IdServicio}}"
-                                                [checked]="selectAll" (change)="seleccionado($event)"></mat-checkbox>
+                                                [checked]="selectAll" (change)="seleccionado($event, element)"></mat-checkbox>
                                         </td>
                                     </ng-container>
                                     <ng-container matColumnDef="cliente">
@@ -535,7 +546,7 @@
                                 formControlName="numCicoCTB"
                                 [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"> -->
                             <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI"
-                                formControlName="numCicoCTB"
+                                formControlName="numCicoCTB" (click)="deshabilitarCampo()"
                                 [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"></textarea>
                             <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
@@ -606,10 +617,7 @@
                 </div>
                 <div class="form-group">
                     <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
-                    <input currencyMask
-                        [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }"
-                        id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control"
-                        type="text" placeholder="Escriba la cantidad"
+                    <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text" placeholder="Escriba la cantidad"
                         [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
                     <div *ngIf="ctsSubmitted && f2.cantidadCTS.errors" class="invalid-feedback">
                         <div *ngIf="f2.cantidadCTS.errors.required">Este campo es requerido</div>
@@ -670,27 +678,31 @@
                     </div>
                     <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
                             <div class="card">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios" (change)="validarLengthBusqueda()">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenServicios" (change)="validarLengthBusqueda()">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio" (change)="validarLengthBusqueda()" [disabled]="disabledIdServicioServicios">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio" (change)="validarLengthBusqueda()">
-                                            </div>
-                                            <div class="col-md-1">
-                                                <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
-                                                <button class="btn btn-outline-primary" type="button" (click)="validarLengthBusquedaServicios()">IR</button>
-                                            </div>
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" placeholder="Orden de Servicio"
+                                                formControlName="ordenServicios">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio"
+                                                [disabled]="disabledIdServicioServicios">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" placeholder="Nombre ID Servicio"
+                                                formControlName="nombreIdServicio">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
+                                            <button class="btn btn-outline-primary" type="button"
+                                                (click)="validarLengthBusquedaServicios()">IR</button>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         <div class="row" *ngIf="mostrarTableServicios">
                             <div class="col-md-12">
                                 <br>
@@ -704,7 +716,7 @@
                                         <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
                                         <td mat-cell *matCellDef="let element">
                                             <mat-checkbox color="primary" value="{{element.IdServicio}}"
-                                                [checked]="selectAllServicios" (change)="seleccionadoServicios($event)">
+                                                [checked]="selectAllServicios" (change)="seleccionadoServicios($event, element)">
                                             </mat-checkbox>
                                         </td>
                                     </ng-container>
@@ -766,7 +778,7 @@
                                 formControlName="numCicoCTS"
                                 [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"> -->
                             <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI"
-                                formControlName="numCicoCTS"
+                                formControlName="numCicoCTS" (click)="deshabilitarCampoServicios()"
                                 [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"></textarea>
                             <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>

@@ -7,74 +7,109 @@
 <hr>
 
 <mat-dialog-content class="mat-typography">
-  <div class="row" *ngIf="mostrarEnSondeo">
-    <div class="col-md-12">
-      <label for="reasignar-a">Reasignar a </label>
-      <select class="form-control" (change)="changeSolicitante($event)" [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo">
-        <option *ngFor="let usuario of dataUsuarios" [value]="usuario.value" [text]="usuario.label">{{usuario.label}}</option>
-      </select>
-      <!-- <select2 [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" required (change)="changeSolicitante()">
-      </select2> -->
-      <mat-error *ngIf="ReasignarControl.hasError('required')">
-          Este campo es requerido
-      </mat-error>
+    <form [formGroup]="ReasignarSondeoFormulario" (ngSubmit)="ReasignarSondeoSubmit()">
+        <!-- <div *ngIf="mostrarEnSondeo"> -->
+        <div class="row">
+            <div class="col-md-12" *ngIf="mostrarEnSondeo">
+                <label for="reasignar-a">Reasignar a </label>
+                <select class="form-control" (change)="changeSolicitante($event)" formControlName="ReasignarA">
+                    <option *ngFor="let usuario of dataUsuarios" [value]="usuario.value" [text]="usuario.label">{{usuario.label}}</option>
+                  </select>
+            </div>
+            <div class="col-md-12" *ngIf="!mostrarEnSondeo">
+                <label for="reasignar-a">Reasignar a</label>
+                <input class="form-control" formControlName="ReasignarA" [typeahead]="listaCompradores" [ngClass]="{ 'is-invalid': submitted && f.Comprador.errors }" typeaheadOptionField="comprador.compradorNombre" (typeaheadOnSelect)="changeSolicitanteComprador($event)"
+                    [typeaheadOptionsLimit]="7" triggers="" placement="bottom">
+                <!-- <mat-error *ngIf="ReasignarControl.hasError('required')">
+                    Este campo es requerido
+                </mat-error> -->
+            </div>
+        </div>
+        <br>
+        <div class="row" *ngIf="!mostrarEnSondeo">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Causa de la reasignación</label>
+                    <select class="form-control" formControlName="CausaReasignacion" (change)="SeleccionCausa($event)">
+                      <option value="Recategorización">Recategorización</option>
+                      <option value="Delegación de la compra">Delegación de la compra</option>                   
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="Recategorizacion">
+                <!-- <div class="form-group">
+                    <label for="pais" class="col-form-label">País</label><span class="asterisco-obligatorio">*</span>
+                    <select id="pais" name="pais" formControlName="Pais" class="form-control" (change)="filtrarSubcategorias()">
+                  <option value="">Seleccione</option>
+                  <option *ngFor="let pais of paises" [ngValue]="pais" [text]="pais.nombre">
+                    {{pais.nombre}}
+                  </option>
+                </select>
+                </div> -->
+            </div>
+        </div>
+        <div class="row" *ngIf="Recategorizacion">
+            <div class="col-md-6">
+                <label for="categoria" class="col-form-label">Categoría</label><span class="asterisco-obligatorio">*</span>
+                <select id="categoria" name="categoria" formControlName="Categoria" class="form-control" (change)="filtrarSubcategorias()">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let categoria of categorias" [ngValue]="categoria" [text]="categoria.nombre">
+                        {{categoria.nombre}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="subcategoria" class="col-form-label">Subcategoría</label><span class="asterisco-obligatorio">*</span>
+                <select id="subcategoria" name="subcategoria" formControlName="SubCategoria" class="form-control">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let subcategoria of subcategorias" [ngValue]="subcategoria" [text]="subcategoria.nombre">
+                        {{subcategoria.nombre}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <!-- </div> -->
+        <div class="row" *ngIf="mostrarJefe">
+            <div class="col-md-12">
+                <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span class="asterisco-obligatorio">*</span>
+                <select class="form-control" formControlName="ReasignarJefeA" [value]="jefeSeleccionado" (change)="changeJefe($event)">
+                <option *ngFor="let usuario of dataUsuarios" [value]="usuario.value" [text]="usuario.label">{{usuario.label}}</option>
+              </select>
+                <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+                    No tiene un ordenador de gastos asignado, debe seleccionar uno
+                </div>
+            </div>
+        </div>
+        <div class="botonera">
+            <div class="row">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-success">Reasignar</button>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-default" (click)="salir()">Salir</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- <div class="row" *ngIf="!mostrarEnSondeo">
+        <div class="col-md-12">
+            <label for="reasignar-a">Reasignar a</label>
+            <input class="form-control" [formControl]="ReasignarControl" [typeahead]="listaCompradores" [ngClass]="{ 'is-invalid': submitted && f.Comprador.errors }" typeaheadOptionField="comprador.compradorNombre" (typeaheadOnSelect)="changeSolicitanteComprador($event)"
+                [typeaheadOptionsLimit]="7" triggers="" placement="bottom">
+            <mat-error *ngIf="ReasignarControl.hasError('required')">
+                Este campo es requerido
+            </mat-error>
+        </div>
+    </div> -->
+
+
+
+    <div class="row">
+        <div class="alertas">
+
+        </div>
     </div>
-  </div>
-
-  <div class="row" *ngIf="!mostrarEnSondeo">
-       <div class="col-md-12">
-        <label for="reasignar-a">Reasignar a</label>
-       
-        <!-- <select class="form-control"  [formControl]="ReasignarControl" [(ngModel)]="reasignarModelo">
-          <option *ngFor="let comprador of listaCompradores" [value]="comprador.compradorId" [text]="comprador.compradorNombre">{{comprador.compradorNombre}}</option>
-        </select> -->
-
-        <input class="form-control"  [formControl]="ReasignarControl"   
-        [typeahead]="listaCompradores" 
-        [ngClass]="{ 'is-invalid': submitted && f.Comprador.errors }" 
-        typeaheadOptionField="comprador.compradorNombre" 
-        (typeaheadOnSelect)="changeSolicitanteComprador($event)" [typeaheadOptionsLimit]="7" 
-        triggers=""  placement="bottom" >
-      
-        <mat-error *ngIf="ReasignarControl.hasError('required')">
-            Este campo es requerido
-        </mat-error>
-      </div>
-
-     
-    </div>
-
-  <div class="row" *ngIf="mostrarJefe">
-    <div class="col-md-12">
-      <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span
-        class="asterisco-obligatorio">*</span>
-        <!-- <input type="text" class="form-control">{{jefeDirectoNombre}} -->
-        <select class="form-control" [formControl]="ReasignarControl" [value]="jefeSeleccionado" (change)="changeJefe($event)">
-            <option *ngFor="let usuario of dataUsuarios" [value]="usuario.value" [text]="usuario.label">{{usuario.label}}</option>
-          </select>
-      <!-- <select2  [data]="dataUsuarios" [minCountForSearch]="1"
-        [value]="valorUsuarioPorDefecto" class="form-control" [(ngModel)]="valorUsuarioPorDefecto" (change)="changeJefe()">
-      </select2> -->
-      <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
-        No tiene un ordenador de gastos asignado, debe seleccionar uno
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="alertas">
-
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="botonera">
-        <button class="btn btn-default" (click)="salir()">Salir</button>
-        <button class="btn btn-success" (click)="reasignar()">Reasignar</button>
-      </div>
-    </div>
-  </div>
 
 
 </mat-dialog-content>

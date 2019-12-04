@@ -87,28 +87,27 @@ export class GestionErroresComponent implements OnInit {
     let resCambioExitoso;
     let access;
     let idServicios = element.IdServicios.split(",");
-    // let obj = {
-    //   "numerosolp": element.NroSolp,
-    //   "linksolp": element.EnlaceSolp,
-    //   "idservicios": idServicios      
-    // } 
-
     let obj = {
-      "numerosolp": "9",
-      "linksolp": "Este es el link de solp",
-      "idservicios": ["665","656"]      
-    }
+      "numerosolp": element.NroSolp,
+      "linksolp": element.EnlaceSolp,
+      "idservicios": idServicios      
+    } 
 
+    // let obj = {
+    //   "numerosolp": "9",
+    //   "linksolp": "Este es el link de solp",
+    //   "idservicios": ["665","656"]      
+    // }    
     for (let index = 0; index < 3; index++) { 
       respuesta = await this.enviarServicioSolicitud(obj);
-      if (respuesta.StatusCode === 200) {
+      if (respuesta.statusCode === 200) {
         this.MostrarExitoso(respuesta["MensajeExito"]);
         break;
       }
     }
-    // respuesta = {
-    //   StatusCode: 200
-    // }
+    respuesta = {
+      StatusCode: 200
+    }
 
     let RespuestaCrmSP;
 
@@ -152,7 +151,7 @@ export class GestionErroresComponent implements OnInit {
         "idservicios": idServicios      
       }
       respuesta = await this.enviarServicioSolicitud(obj);
-      if (respuesta.StatusCode === 200) {
+      if (respuesta.statusCode === 200) {
         RespuestaCrmSP = await this.ModificarGestionErroresSolicitudes(element.Id);
         if (RespuestaCrmSP === true) {
           this.ActualizarTablaSolicitudes(element.Id);
@@ -208,7 +207,7 @@ export class GestionErroresComponent implements OnInit {
 
     for (let index = 0; index < 3; index++) { 
       respuesta = await this.enviarServicioContratos(obj);
-      if (respuesta.StatusCode === 200) {
+      if (respuesta.statusCode === 200) {
         this.MostrarExitoso(respuesta["MensajeExito"]);
         break;
       }
@@ -275,7 +274,7 @@ export class GestionErroresComponent implements OnInit {
         "idservicios": idServicios      
       }
       respuesta = await this.enviarServicioContratos(obj);
-      if (respuesta.StatusCode === 200) {
+      if (respuesta.statusCode === 200) {
         RespuestaCrmSP = await this.ModificarGestionErroresSolicitudes(element.Id);
         if (RespuestaCrmSP === true) {
           this.ActualizarTablaContratos(element.Id);
@@ -308,12 +307,11 @@ export class GestionErroresComponent implements OnInit {
     await this.servicioCrm.ActualizarSolicitud(obj).then(
       (res)=>{
         respuesta = res;
+      },
+      (error)=> {
+        respuesta = error.error
       }
-    ).catch(
-      (error)=>{
-         respuesta = error.error;
-      }
-    )        
+    )   
     return respuesta;
   }
 
