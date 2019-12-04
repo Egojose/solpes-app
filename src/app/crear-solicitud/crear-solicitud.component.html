@@ -289,7 +289,19 @@
     </form>
 </div>
 
-<ng-template #templateCondicionesTecnicasBienes>
+<ng-template #templateCondicionesTecnicasServicios>
+    <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal"
+        class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<!-- <ng-template #templateCondicionesTecnicasBienes>
     <div class="modal-header">
         <h4 class="modal-title pull-left">{{tituloModalCTB}}</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -406,7 +418,6 @@
                                         <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicioBienes">
                                     </div>
                                     <div class="col-md-1">
-                                        <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
                                         <button class="btn btn-outline-primary" type="button" (click)="validarLengthBusqueda()">IR</button>
                                     </div>
                                 </div>
@@ -478,7 +489,6 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID servicio</label>
-                            <!-- <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"> -->
                             <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTB" (click)="deshabilitarCampo()" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"></textarea>
                             <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
@@ -515,7 +525,7 @@
             </form>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #templateCondicionesTecnicasServicios>
     <div class="modal-header">
@@ -612,7 +622,6 @@
                                         <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio">
                                     </div>
                                     <div class="col-md-1">
-                                        <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
                                         <button class="btn btn-outline-primary" type="button" (click)="validarLengthBusquedaServicios()">IR</button>
                                     </div>
                                 </div>
@@ -684,7 +693,6 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID de servicio</label>
-                            <!-- <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"> -->
                             <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTS" (click)="deshabilitarCampoServicios()" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"></textarea>
                             <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
