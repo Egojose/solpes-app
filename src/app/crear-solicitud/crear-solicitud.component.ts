@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TipoSolicitud } from '../dominio/tipoSolicitud';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { SPServicio } from '../servicios/sp-servicio';
@@ -17,7 +17,7 @@ import { Solicitud } from '../dominio/solicitud';
 import { ItemAddResult } from 'sp-pnp-js';
 import { CondicionTecnicaBienes } from '../dominio/condicionTecnicaBienes';
 import { CondicionTecnicaServicios } from '../dominio/condicionTecnicaServicios';
-import { BsModalRef, BsModalService, TimepickerModule } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService, TimepickerModule, ModalDirective } from 'ngx-bootstrap';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material';
 import { environment } from 'src/environments/environment';
@@ -52,6 +52,10 @@ import { EmailProperties } from 'sp-pnp-js';
   ],
 })
 export class CrearSolicitudComponent implements OnInit {
+  @ViewChild('autoShownModalCTB') autoShownModalCTB: ModalDirective;
+  isModalCTBShown = false;
+  @ViewChild('autoShownModalCTS') autoShownModalCTS: ModalDirective;
+  isModalShownCTS = false;
   colorTheme = 'theme-blue';
   bsConfig: Partial<BsDatepickerConfig>;
   minDate: Date;
@@ -3894,7 +3898,37 @@ deshabilitarCampoServicios() {
     this.router.navigate(["/mis-solicitudes"]);
   }
 
-  abrirModalCTB(template: TemplateRef<any>) {
+  // abrirModalCTB(template: TemplateRef<any>) {
+  //   this.setDatosContablesBienes = false;
+  //   this.selectAll = false;
+  //   this.dataIdOrdenSeleccionados = [];
+  //   this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+  //   let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+  //   let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+  //   let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+  //   this.mostrarFiltroBienes = false;
+  //   this.mostrarTable = false;
+  //   if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+  //     this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+  //     return false;
+  //   }
+  //   if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
+  //     this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar bienes')
+  //     return false;
+  //   }
+  //   else {
+  //   this.mostrarAdjuntoCTB = false;
+  //   this.limpiarControlesCTB();
+  //   this.tituloModalCTB = "Agregar bien";
+  //   this.textoBotonGuardarCTB = "Guardar";
+  //   this.modalRef = this.modalServicio.show(
+  //     template,
+  //     Object.assign({}, { class: 'gray modal-lg' })
+  //   );
+  //   }
+  // }
+
+  abrirModalCTB() {
     this.setDatosContablesBienes = false;
     this.selectAll = false;
     this.dataIdOrdenSeleccionados = [];
@@ -3917,14 +3951,23 @@ deshabilitarCampoServicios() {
     this.limpiarControlesCTB();
     this.tituloModalCTB = "Agregar bien";
     this.textoBotonGuardarCTB = "Guardar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalCTBShown = true;
+    // this.modalRef = this.modalServicio.show(
+    //   template,
+    //   Object.assign({}, { class: 'gray modal-lg' })
+    // );
     }
   }
 
-  abrirModalCTS(template: TemplateRef<any>) {
+  hideModalCTB(): void {
+    this.autoShownModalCTB.hide();
+  }
+ 
+  onHiddenCTB(): void {
+    this.isModalCTBShown = false;
+  }
+
+  abrirModalCTS() {
     this.setDatosContablesServicios = false;
     this.selectAllServicios = false;
     this.dataIdOrdenSeleccionadosServicios = [];
@@ -3945,12 +3988,49 @@ deshabilitarCampoServicios() {
     this.limpiarControlesCTS();
     this.tituloModalCTS = "Agregar servicio";
     this.textoBotonGuardarCTS = "Guardar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalShownCTS = true;
+    // this.modalRef = this.modalServicio.show(
+    //   template,
+    //   Object.assign({}, { class: 'gray modal-lg' })
+    // );
     }
   }
+
+  hideModalCTS(): void {
+    this.autoShownModalCTS.hide();
+  }
+ 
+  onHiddenCTS(): void {
+    this.isModalShownCTS = false;
+  }
+
+  // abrirModalCTS(template: TemplateRef<any>) {
+  //   this.setDatosContablesServicios = false;
+  //   this.selectAllServicios = false;
+  //   this.dataIdOrdenSeleccionadosServicios = [];
+  //   this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '');
+  //   let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
+  //   let paisValidar = this.solpFormulario.controls["pais"].value.nombre;
+  //   let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+  //   if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
+  //     this.mostrarAdvertencia('Debe seleccionar la orden estadística');
+  //     return false;
+  //   }
+  //   if(solicitudTipo === "" || solicitudTipo === null || solicitudTipo === undefined || paisValidar === "" || paisValidar === null || paisValidar === undefined) {
+  //     this.mostrarAdvertencia('Debe selccionar el tipo de solicitud y el país antes de agregar servicios')
+  //     return false;
+  //   }
+  //   else {
+  //   this.mostrarAdjuntoCTS = false;
+  //   this.limpiarControlesCTS();
+  //   this.tituloModalCTS = "Agregar servicio";
+  //   this.textoBotonGuardarCTS = "Guardar";
+  //   this.modalRef = this.modalServicio.show(
+  //     template,
+  //     Object.assign({}, { class: 'gray modal-lg' })
+  //   );
+  //   }
+  // }
 
   
                           //Habilitar cuando datos contables no obligatorios

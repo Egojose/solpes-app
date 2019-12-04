@@ -57,3 +57,7 @@ table tr:nth-child(even) {
 .gray {
     max-width: 1125px !important;
 }
+
+.modal-dialog {
+    max-width: 1140px;
+}
