@@ -641,15 +641,15 @@ export class AprobarSondeoComponent implements OnInit {
   createFilterServicios(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     
-      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     }
     return filterFunction;
   }
