@@ -4230,7 +4230,8 @@ deshabilitarCampoServicios() {
                 this.CargarTablaCTB();
                 this.limpiarControlesCTB();
                 this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-                this.modalRef.hide();
+                this.autoShownModalCTB.hide();
+                // this.modalRef.hide();
                 this.condicionTB = null;
                 this.spinner.hide();
                 this.ctbSubmitted = false;
@@ -4254,7 +4255,8 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTB.hide();
+            // this.modalRef.hide();
             this.condicionTB = null;
             this.spinner.hide();
             this.ctbSubmitted = false;
@@ -4296,7 +4298,8 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTB.hide();
+            // this.modalRef.hide();
             this.spinner.hide();
             this.ctbSubmitted = false;
             this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
@@ -4359,7 +4362,8 @@ deshabilitarCampoServicios() {
                   this.CargarTablaCTB();
                   this.limpiarControlesCTB();
                   this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-                  this.modalRef.hide();
+                  this.autoShownModalCTB.hide();
+                  // this.modalRef.hide();
                   this.spinner.hide();
                   this.ctbSubmitted = false;
                   this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
@@ -4403,7 +4407,8 @@ deshabilitarCampoServicios() {
                       this.CargarTablaCTB();
                       this.limpiarControlesCTB();
                       this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-                      this.modalRef.hide();
+                      this.autoShownModalCTB.hide();
+                      // this.modalRef.hide();
                       this.spinner.hide();
                       this.ctbSubmitted = false;
                       this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
