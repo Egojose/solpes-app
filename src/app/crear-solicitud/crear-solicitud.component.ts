@@ -471,15 +471,15 @@ export class CrearSolicitudComponent implements OnInit {
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     
-      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     }
     return filterFunction;
   }
@@ -487,15 +487,15 @@ export class CrearSolicitudComponent implements OnInit {
   createFilterServicios(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     
-      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     }
     return filterFunction;
   }
@@ -4225,7 +4225,8 @@ deshabilitarCampoServicios() {
                 this.CargarTablaCTB();
                 this.limpiarControlesCTB();
                 this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-                this.modalRef.hide();
+                this.autoShownModalCTB.hide();
+                // this.modalRef.hide();
                 this.condicionTB = null;
                 this.spinner.hide();
                 this.ctbSubmitted = false;
@@ -4249,7 +4250,8 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTB.hide();
+            // this.modalRef.hide();
             this.condicionTB = null;
             this.spinner.hide();
             this.ctbSubmitted = false;
@@ -4291,7 +4293,8 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTB.hide();
+            // this.modalRef.hide();
             this.spinner.hide();
             this.ctbSubmitted = false;
             this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
@@ -4354,7 +4357,8 @@ deshabilitarCampoServicios() {
                   this.CargarTablaCTB();
                   this.limpiarControlesCTB();
                   this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-                  this.modalRef.hide();
+                  this.autoShownModalCTB.hide();
+                  // this.modalRef.hide();
                   this.spinner.hide();
                   this.ctbSubmitted = false;
                   this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
@@ -4398,7 +4402,8 @@ deshabilitarCampoServicios() {
                       this.CargarTablaCTB();
                       this.limpiarControlesCTB();
                       this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-                      this.modalRef.hide();
+                      this.autoShownModalCTB.hide();
+                      // this.modalRef.hide();
                       this.spinner.hide();
                       this.ctbSubmitted = false;
                       this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
@@ -4597,7 +4602,8 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTS.hide();
+            // this.modalRef.hide();
             this.spinner.hide();
             this.ctsSubmitted = false;
             this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4633,7 +4639,8 @@ deshabilitarCampoServicios() {
                 this.CargarTablaCTS();
                 this.limpiarControlesCTS();
                 this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
-                this.modalRef.hide();
+                this.autoShownModalCTS.hide();
+                // this.modalRef.hide();
                 this.spinner.hide();
                 this.ctsSubmitted = false;
                 this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4674,7 +4681,8 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTS.hide();
+            // this.modalRef.hide();
             this.spinner.hide();
             this.ctsSubmitted = false;
             this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4728,7 +4736,8 @@ deshabilitarCampoServicios() {
                       this.CargarTablaCTS();
                       this.limpiarControlesCTS();
                       this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-                      this.modalRef.hide();
+                      this.autoShownModalCTS.hide();
+                      // this.modalRef.hide();
                       this.spinner.hide();
                       this.ctsSubmitted = false;
                       this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4772,7 +4781,8 @@ deshabilitarCampoServicios() {
                   this.CargarTablaCTS();
                   this.limpiarControlesCTS();
                   this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-                  this.modalRef.hide();
+                  this.autoShownModalCTS.hide();
+                  // this.modalRef.hide();
                   this.spinner.hide();
                   this.ctsSubmitted = false;
                   this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4809,68 +4819,125 @@ deshabilitarCampoServicios() {
     this.ctsFormulario.controls["numCuentaCTS"].setValue('');
   }
 
-  
-  editarBienes(element, template: TemplateRef<any>) {
+  editarBienes(element) {
     this.indiceCTBActualizar = element.indice;
-    this.idCondicionTBGuardada = element.id;
-    this.setDatosContablesBienes = false;
-    if(this.ctbFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
-      this.mostrarFiltroBienes = true;
-    }
-    else {
-      this.mostrarFiltroBienes = false;
-    }
-    if (element.archivoAdjunto != null) {
-      this.mostrarAdjuntoCTB = true;
-      if(element.rutaAdjunto.toString() == "[object Object]")
-      {
-        if(element.rutaAdjunto.results.length > 0)
+      this.idCondicionTBGuardada = element.id;
+      this.setDatosContablesBienes = false;
+      if(this.ctbFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
+        this.mostrarFiltroBienes = true;
+      }
+      else {
+        this.mostrarFiltroBienes = false;
+      }
+      if (element.archivoAdjunto != null) {
+        this.mostrarAdjuntoCTB = true;
+        if(element.rutaAdjunto.toString() == "[object Object]")
         {
-          this.rutaAdjuntoCTB = element.rutaAdjunto.results[0].ServerRelativeUrl; //element.rutaAdjunto
-          this.nombreAdjuntoCTB  = element.rutaAdjunto.results[0].FileName; //element.archivoAdjunto.name;
+          if(element.rutaAdjunto.results.length > 0)
+          {
+            this.rutaAdjuntoCTB = element.rutaAdjunto.results[0].ServerRelativeUrl; //element.rutaAdjunto
+            this.nombreAdjuntoCTB  = element.rutaAdjunto.results[0].FileName; //element.archivoAdjunto.name;
+          }
+          else
+          {
+            this.rutaAdjuntoCTB = ""; //element.rutaAdjunto
+            this.nombreAdjuntoCTB  = ""; //element.archivoAdjunto.name;
+          }
         }
         else
         {
-          this.rutaAdjuntoCTB = ""; //element.rutaAdjunto
-          this.nombreAdjuntoCTB  = ""; //element.archivoAdjunto.name;
+          this.rutaAdjuntoCTB = element.rutaAdjunto;
+          this.nombreAdjuntoCTB =  element.archivoAdjunto.name;
         }
+      } else {
+        this.mostrarAdjuntoCTB = false;
+        this.rutaAdjuntoCTB = '';
+        this.nombreAdjuntoCTB = '';
       }
-      else
-      {
-        this.rutaAdjuntoCTB = element.rutaAdjunto;
-        this.nombreAdjuntoCTB =  element.archivoAdjunto.name;
-      }
-    } else {
-      this.mostrarAdjuntoCTB = false;
-      this.rutaAdjuntoCTB = '';
-      this.nombreAdjuntoCTB = '';
-    }
-
-    this.ctbFormulario.controls["codigoCTB"].setValue(element.codigo);
-    this.ctbFormulario.controls["descripcionCTB"].setValue(element.descripcion);
-    this.ctbFormulario.controls["modeloCTB"].setValue(element.modelo);
-    this.ctbFormulario.controls["fabricanteCTB"].setValue(element.fabricante);
-    this.ctbFormulario.controls["cantidadCTB"].setValue(element.cantidad);
-    this.ctbFormulario.controls["valorEstimadoCTB"].setValue(element.valorEstimado);
-    this.ctbFormulario.controls["tipoMonedaCTB"].setValue(element.tipoMoneda);
-    this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
-    this.ctbFormulario.controls["comentariosCTB"].setValue(element.comentarios);
-    this.ctbFormulario.controls["cecoCTB"].setValue(element.costoInversion);
-    this.ctbFormulario.controls["numCicoCTB"].setValue(element.numeroCostoInversion);
-    this.ctbFormulario.controls["numCuentaCTB"].setValue(element.numeroCuenta);
-    this.tituloModalCTB = "Actualizar bien";
-    this.textoBotonGuardarCTB = "Actualizar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+  
+      this.ctbFormulario.controls["codigoCTB"].setValue(element.codigo);
+      this.ctbFormulario.controls["descripcionCTB"].setValue(element.descripcion);
+      this.ctbFormulario.controls["modeloCTB"].setValue(element.modelo);
+      this.ctbFormulario.controls["fabricanteCTB"].setValue(element.fabricante);
+      this.ctbFormulario.controls["cantidadCTB"].setValue(element.cantidad);
+      this.ctbFormulario.controls["valorEstimadoCTB"].setValue(element.valorEstimado);
+      this.ctbFormulario.controls["tipoMonedaCTB"].setValue(element.tipoMoneda);
+      this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
+      this.ctbFormulario.controls["comentariosCTB"].setValue(element.comentarios);
+      this.ctbFormulario.controls["cecoCTB"].setValue(element.costoInversion);
+      this.ctbFormulario.controls["numCicoCTB"].setValue(element.numeroCostoInversion);
+      this.ctbFormulario.controls["numCuentaCTB"].setValue(element.numeroCuenta);
+      this.tituloModalCTB = "Actualizar bien";
+      this.textoBotonGuardarCTB = "Actualizar";
+      this.isModalCTBShown = true;
+      // this.modalRef = this.modalServicio.show(
+      //   template,
+      //   Object.assign({}, { class: 'gray modal-lg' })
+      // );
   }
 
-  editarServicios(element, template: TemplateRef<any>) {
+  
+  // editarBienes(element, template: TemplateRef<any>) {
+  //   this.indiceCTBActualizar = element.indice;
+  //   this.idCondicionTBGuardada = element.id;
+  //   this.setDatosContablesBienes = false;
+  //   if(this.ctbFormulario.controls['cecoCTB'].value === 'ID de Servicios') {
+  //     this.mostrarFiltroBienes = true;
+  //   }
+  //   else {
+  //     this.mostrarFiltroBienes = false;
+  //   }
+  //   if (element.archivoAdjunto != null) {
+  //     this.mostrarAdjuntoCTB = true;
+  //     if(element.rutaAdjunto.toString() == "[object Object]")
+  //     {
+  //       if(element.rutaAdjunto.results.length > 0)
+  //       {
+  //         this.rutaAdjuntoCTB = element.rutaAdjunto.results[0].ServerRelativeUrl; //element.rutaAdjunto
+  //         this.nombreAdjuntoCTB  = element.rutaAdjunto.results[0].FileName; //element.archivoAdjunto.name;
+  //       }
+  //       else
+  //       {
+  //         this.rutaAdjuntoCTB = ""; //element.rutaAdjunto
+  //         this.nombreAdjuntoCTB  = ""; //element.archivoAdjunto.name;
+  //       }
+  //     }
+  //     else
+  //     {
+  //       this.rutaAdjuntoCTB = element.rutaAdjunto;
+  //       this.nombreAdjuntoCTB =  element.archivoAdjunto.name;
+  //     }
+  //   } else {
+  //     this.mostrarAdjuntoCTB = false;
+  //     this.rutaAdjuntoCTB = '';
+  //     this.nombreAdjuntoCTB = '';
+  //   }
+
+  //   this.ctbFormulario.controls["codigoCTB"].setValue(element.codigo);
+  //   this.ctbFormulario.controls["descripcionCTB"].setValue(element.descripcion);
+  //   this.ctbFormulario.controls["modeloCTB"].setValue(element.modelo);
+  //   this.ctbFormulario.controls["fabricanteCTB"].setValue(element.fabricante);
+  //   this.ctbFormulario.controls["cantidadCTB"].setValue(element.cantidad);
+  //   this.ctbFormulario.controls["valorEstimadoCTB"].setValue(element.valorEstimado);
+  //   this.ctbFormulario.controls["tipoMonedaCTB"].setValue(element.tipoMoneda);
+  //   this.ctbFormulario.controls["adjuntoCTB"].setValue(null);
+  //   this.ctbFormulario.controls["comentariosCTB"].setValue(element.comentarios);
+  //   this.ctbFormulario.controls["cecoCTB"].setValue(element.costoInversion);
+  //   this.ctbFormulario.controls["numCicoCTB"].setValue(element.numeroCostoInversion);
+  //   this.ctbFormulario.controls["numCuentaCTB"].setValue(element.numeroCuenta);
+  //   this.tituloModalCTB = "Actualizar bien";
+  //   this.textoBotonGuardarCTB = "Actualizar";
+  //   this.modalRef = this.modalServicio.show(
+  //     template,
+  //     Object.assign({}, { class: 'gray modal-lg' })
+  //   );
+  // }
+
+  editarServicios(element) {
     this.indiceCTSActualizar = element.indice;
     this.idCondicionTSGuardada = element.id;
     console.log(this.ctsFormulario.controls['cecoCTS'].value);
-    if(this.ctsFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
+    if (this.ctsFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
       this.mostrarFiltroServicios = true;
     }
     else {
@@ -4878,8 +4945,8 @@ deshabilitarCampoServicios() {
     }
     if (element.archivoAdjunto != null) {
       this.mostrarAdjuntoCTS = true;
-      if(element.rutaAdjunto.toString() == "[object Object]") {
-        if(element.rutaAdjunto.results.length > 0) {
+      if (element.rutaAdjunto.toString() == "[object Object]") {
+        if (element.rutaAdjunto.results.length > 0) {
           this.rutaAdjuntoCTS = element.rutaAdjunto.results[0].ServerRelativeUrl;
           this.nombreAdjuntoCTS = element.rutaAdjunto.results[0].FileName;
         } else {
@@ -4887,8 +4954,8 @@ deshabilitarCampoServicios() {
           this.nombreAdjuntoCTS = "";
         }
       } else {
-      this.rutaAdjuntoCTS = element.rutaAdjunto;
-      this.nombreAdjuntoCTS = element.archivoAdjunto.name;
+        this.rutaAdjuntoCTS = element.rutaAdjunto;
+        this.nombreAdjuntoCTS = element.archivoAdjunto.name;
       }
     } else {
       this.mostrarAdjuntoCTS = false;
@@ -4907,11 +4974,55 @@ deshabilitarCampoServicios() {
     this.ctsFormulario.controls["numCuentaCTS"].setValue(element.numeroCuenta);
     this.tituloModalCTS = "Actualizar servicio";
     this.textoBotonGuardarCTS = "Actualizar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalShownCTS = true;
   }
+
+  // editarServicios(element, template: TemplateRef<any>) {
+  //   this.indiceCTSActualizar = element.indice;
+  //   this.idCondicionTSGuardada = element.id;
+  //   console.log(this.ctsFormulario.controls['cecoCTS'].value);
+  //   if(this.ctsFormulario.controls['cecoCTS'].value === 'ID de Servicios') {
+  //     this.mostrarFiltroServicios = true;
+  //   }
+  //   else {
+  //     this.mostrarFiltroServicios = false;
+  //   }
+  //   if (element.archivoAdjunto != null) {
+  //     this.mostrarAdjuntoCTS = true;
+  //     if(element.rutaAdjunto.toString() == "[object Object]") {
+  //       if(element.rutaAdjunto.results.length > 0) {
+  //         this.rutaAdjuntoCTS = element.rutaAdjunto.results[0].ServerRelativeUrl;
+  //         this.nombreAdjuntoCTS = element.rutaAdjunto.results[0].FileName;
+  //       } else {
+  //         this.rutaAdjuntoCTS = "";
+  //         this.nombreAdjuntoCTS = "";
+  //       }
+  //     } else {
+  //     this.rutaAdjuntoCTS = element.rutaAdjunto;
+  //     this.nombreAdjuntoCTS = element.archivoAdjunto.name;
+  //     }
+  //   } else {
+  //     this.mostrarAdjuntoCTS = false;
+  //     this.rutaAdjuntoCTS = '';
+  //     this.nombreAdjuntoCTS = '';
+  //   }
+  //   this.ctsFormulario.controls["codigoCTS"].setValue(element.codigo);
+  //   this.ctsFormulario.controls["descripcionCTS"].setValue(element.descripcion);
+  //   this.ctsFormulario.controls["cantidadCTS"].setValue(element.cantidad);
+  //   this.ctsFormulario.controls["valorEstimadoCTS"].setValue(element.valorEstimado);
+  //   this.ctsFormulario.controls["tipoMonedaCTS"].setValue(element.tipoMoneda);
+  //   this.ctsFormulario.controls["adjuntoCTS"].setValue(null);
+  //   this.ctsFormulario.controls["comentariosCTS"].setValue(element.comentarios);
+  //   this.ctsFormulario.controls["cecoCTS"].setValue(element.costoInversion);
+  //   this.ctsFormulario.controls["numCicoCTS"].setValue(element.numeroCostoInversion);
+  //   this.ctsFormulario.controls["numCuentaCTS"].setValue(element.numeroCuenta);
+  //   this.tituloModalCTS = "Actualizar servicio";
+  //   this.textoBotonGuardarCTS = "Actualizar";
+  //   this.modalRef = this.modalServicio.show(
+  //     template,
+  //     Object.assign({}, { class: 'gray modal-lg' })
+  //   );
+  // }
 
   borrarBienes(element) {
     this.servicio.borrarCondicionTecnicaBienes(element.id).then(
