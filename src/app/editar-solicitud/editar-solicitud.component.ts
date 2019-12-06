@@ -3786,7 +3786,7 @@ export class EditarSolicitudComponent implements OnInit {
                   this.CargarTablaCTS();
                   this.limpiarControlesCTS();
                   this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-                  this.isModalShownCTS = true;
+                  this.autoShownModalCTS.hide();
                   // this.modalRef.hide();
                   this.spinner.hide();
                   this.ctsSubmitted = false;
