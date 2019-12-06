@@ -1,8 +1,8 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SPServicio } from '../servicios/sp-servicio';
-import { BsModalService, setTheme, BsDatepickerConfig, BsModalRef } from 'ngx-bootstrap';
+import { BsModalService, setTheme, BsDatepickerConfig, BsModalRef, ModalDirective } from 'ngx-bootstrap';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Usuario } from '../dominio/usuario';
 import { TipoSolicitud } from '../dominio/tipoSolicitud';
@@ -40,6 +40,8 @@ import { EmailProperties } from 'sp-pnp-js';
   ],
 })
 export class EditarSolicitudComponent implements OnInit {
+  @ViewChild('autoShownModalCTB') autoShownModalCTB: ModalDirective;
+  @ViewChild('autoShownModalCTS') autoShownModalCTS: ModalDirective;
   IdSolicitud;
   colorTheme = 'theme-blue';
   bsConfig: Partial<BsDatepickerConfig>;
@@ -159,6 +161,8 @@ export class EditarSolicitudComponent implements OnInit {
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   cargaExcel: boolean;  //Habilitar cuando datos contables no obligatorios
   noMostrarOrdenEstadistica: boolean;
+  isModalCTBShown: boolean = false;
+  isModalShownCTS: boolean = false;
 
   clientBienes = new FormControl('');
   ordenServBienes = new FormControl('');
@@ -463,15 +467,15 @@ export class EditarSolicitudComponent implements OnInit {
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      console.log(data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1);
+      console.log(data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1);
     
-      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     }
     return filterFunction;
   }
@@ -479,15 +483,15 @@ export class EditarSolicitudComponent implements OnInit {
   createFilterServicios(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      console.log(data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1);
+      console.log(data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1);
     
-      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     }
     return filterFunction;
   }
@@ -3415,7 +3419,7 @@ export class EditarSolicitudComponent implements OnInit {
     )
   }
 
-  editarBienes(element, template: TemplateRef<any>) {
+  editarBienes(element) {
     this.limpiarAdjuntosCTB();
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
@@ -3462,10 +3466,11 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["numCuentaCTB"].setValue(element.numeroCuenta);
     this.tituloModalCTB = "Actualizar bien";
     this.textoBotonGuardarCTB = "Actualizar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalCTBShown = true;
+    // this.modalRef = this.modalServicio.show(
+    //   template,
+    //   Object.assign({}, { class: 'gray modal-lg' })
+    // );
   }
 
   editarServicios(element, template: TemplateRef<any>) {
@@ -3510,10 +3515,11 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctsFormulario.controls["numCuentaCTS"].setValue(element.numeroCuenta);
     this.tituloModalCTS = "Actualizar servicio";
     this.textoBotonGuardarCTS = "Actualizar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalShownCTS = true;
+    // this.modalRef = this.modalServicio.show(
+    //   template,
+    //   Object.assign({}, { class: 'gray modal-lg' })
+    // );
   }
 
   eliminarAdjuntoCTB() {
@@ -3666,7 +3672,8 @@ export class EditarSolicitudComponent implements OnInit {
                 this.CargarTablaCTS();
                 this.limpiarControlesCTS();
                 this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
-                this.modalRef.hide();
+                this.autoShownModalCTS.hide();
+                // this.modalRef.hide();
                 this.condicionTS = null;
                 this.spinner.hide();
                 this.ctsSubmitted = false;
@@ -3689,7 +3696,8 @@ export class EditarSolicitudComponent implements OnInit {
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTS.hide();
+            // this.modalRef.hide();
             this.condicionTS = null;
             this.spinner.hide();
             this.ctsSubmitted = false;
@@ -3724,7 +3732,8 @@ export class EditarSolicitudComponent implements OnInit {
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTS.hide();
+            // this.modalRef.hide();
             this.spinner.hide();
             this.ctsSubmitted = false;
           }, err => {
@@ -3775,7 +3784,8 @@ export class EditarSolicitudComponent implements OnInit {
                   this.CargarTablaCTS();
                   this.limpiarControlesCTS();
                   this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-                  this.modalRef.hide();
+                  this.autoShownModalCTS.hide();
+                  // this.modalRef.hide();
                   this.spinner.hide();
                   this.ctsSubmitted = false;
                 }, err => {
@@ -3815,7 +3825,8 @@ export class EditarSolicitudComponent implements OnInit {
                       this.CargarTablaCTS();
                       this.limpiarControlesCTS();
                       this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-                      this.modalRef.hide();
+                      this.autoShownModalCTS.hide();
+                      // this.modalRef.hide();
                       this.spinner.hide();
                       this.ctsSubmitted = false;
                     }, err => {
@@ -3960,7 +3971,8 @@ export class EditarSolicitudComponent implements OnInit {
                 this.CargarTablaCTB();
                 this.limpiarControlesCTB();
                 this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-                this.modalRef.hide();
+                this.autoShownModalCTB.hide();
+                // this.modalRef.hide();
                 this.condicionTB = null;
                 this.spinner.hide();
                 this.ctbSubmitted = false;
@@ -3983,7 +3995,8 @@ export class EditarSolicitudComponent implements OnInit {
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTB.hide();
+            // this.modalRef.hide();
             this.condicionTB = null;
             this.spinner.hide();
             this.ctbSubmitted = false;
@@ -4021,7 +4034,8 @@ export class EditarSolicitudComponent implements OnInit {
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTB.hide();
+            // this.modalRef.hide();
             this.spinner.hide();
             this.ctbSubmitted = false;
           }, err => {
@@ -4076,7 +4090,8 @@ export class EditarSolicitudComponent implements OnInit {
                   this.CargarTablaCTB();
                   this.limpiarControlesCTB();
                   this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-                  this.modalRef.hide();
+                  this.autoShownModalCTB.hide();
+                  // this.modalRef.hide();
                   this.spinner.hide();
                   this.ctbSubmitted = false;
                 }, err => {
@@ -4118,7 +4133,8 @@ export class EditarSolicitudComponent implements OnInit {
                       this.CargarTablaCTB();
                       this.limpiarControlesCTB();
                       this.mostrarInformacion("Condición técnica de bienes actualizada correctamente");
-                      this.modalRef.hide();
+                      this.autoShownModalCTB.hide();
+                      // this.modalRef.hide();
                       this.spinner.hide();
                       this.ctbSubmitted = false;
                     }, err => {
@@ -4286,7 +4302,15 @@ export class EditarSolicitudComponent implements OnInit {
     this.condicionesContractuales = [];
   }
 
-  abrirModalCTB(template: TemplateRef<any>) {
+  hideModalCTB(): void {
+    this.autoShownModalCTB.hide();
+  }
+ 
+  onHiddenCTB(): void {
+    this.isModalCTBShown = false;
+  }
+
+  abrirModalCTB() {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value
     let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
@@ -4303,10 +4327,11 @@ export class EditarSolicitudComponent implements OnInit {
     this.limpiarControlesCTB();
     this.tituloModalCTB = "Agregar bien";
     this.textoBotonGuardarCTB = "Guardar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalCTBShown = true;
+    // this.modalRef = this.modalServicio.show(
+    //   template,
+    //   Object.assign({}, { class: 'gray modal-lg' })
+    // );
     }
   }
 
@@ -4325,8 +4350,16 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["numCuentaCTB"].setValue('');
   }
 
+  hideModalCTS(): void {
+    this.autoShownModalCTS.hide();
+  }
+ 
+  onHiddenCTS(): void {
+    this.isModalShownCTS = false;
+  }
 
-  abrirModalCTS(template: TemplateRef<any>) {
+
+  abrirModalCTS() {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value;
     let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
@@ -4343,10 +4376,11 @@ export class EditarSolicitudComponent implements OnInit {
     this.limpiarControlesCTS();
     this.tituloModalCTS = "Agregar servicio";
     this.textoBotonGuardarCTS = "Guardar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalShownCTS = true;
+    // this.modalRef = this.modalServicio.show(
+    //   template,
+    //   Object.assign({}, { class: 'gray modal-lg' })
+    // );
     }
   }
 
