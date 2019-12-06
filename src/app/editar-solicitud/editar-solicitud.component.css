@@ -39,4 +39,8 @@ table {
 button {
   margin-right: 5px;
 }
+
+.modal-dialog {
+  max-width: 1140px;
+}
   

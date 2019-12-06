@@ -4304,6 +4304,14 @@ export class EditarSolicitudComponent implements OnInit {
     this.condicionesContractuales = [];
   }
 
+  hideModalCTB(): void {
+    this.autoShownModalCTB.hide();
+  }
+ 
+  onHiddenCTB(): void {
+    this.isModalCTBShown = false;
+  }
+
   abrirModalCTB() {
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value
@@ -4342,6 +4350,14 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctbFormulario.controls["cecoCTB"].setValue('');
     this.ctbFormulario.controls["numCicoCTB"].setValue('');
     this.ctbFormulario.controls["numCuentaCTB"].setValue('');
+  }
+
+  hideModalCTS(): void {
+    this.autoShownModalCTS.hide();
+  }
+ 
+  onHiddenCTS(): void {
+    this.isModalShownCTS = false;
   }
 
 
