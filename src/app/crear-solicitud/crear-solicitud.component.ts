@@ -885,6 +885,61 @@ export class CrearSolicitudComponent implements OnInit {
     this.consultaDatos();
   }
 
+ async consultarDatosContables() {
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    let bienes = await this.servicio.obtenerCtBienes(this.idSolicitudGuardada);
+    let servicios = await this.servicio.obtenerCtServicios(this.idSolicitudGuardada);
+    let datosContablesBienes = bienes.filter(x => {
+      return  x.costoInversion !== '' || x.numeroCostoInversion !== '' || x.numeroCuenta !== ''
+    })
+    let datosContablesServicios = servicios.filter(x => {
+      return x.costoInversion !== '' || x.numeroCostoInversion !== '' || x.numeroCuenta !== ''
+    })
+    let objDatosContablesBienes: any;
+    let objDatosContablesServicios: any;
+    if(ordenEstadistica === 'SI' && datosContablesBienes.length > 0) {
+      for(let i = 0; i < datosContablesBienes.length; i++) {
+        let idBienes = datosContablesBienes[i].Id
+        objDatosContablesBienes = {
+          costoInversion: '',
+          numeroCostoInversion: '',
+          numeroCuenta: '',
+          tieneIdServicio: false,
+          IdOrdenServicio: ''
+        }
+        console.log(objDatosContablesBienes);
+       await this.servicio.actualiazarDatosContablesBienes(idBienes, objDatosContablesBienes).then(
+        (result) => {
+          this.mostrarInformacion('Se eliminaron los datos contables');
+        }
+       ), err => {
+         this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
+       };
+      }
+      // this.servicio.actualiazarDatoContablesBienes(bienes.id ,objDatosContablesBienes)
+    }
+    if(ordenEstadistica === 'SI' && datosContablesServicios.length > 0) {
+      for(let i = 0; i < datosContablesServicios.length; i++) {
+        let idServicios = datosContablesServicios[i].Id
+        objDatosContablesServicios = {
+          costoInversion: '',
+          numeroCostoInversion: '',
+          numeroCuenta: '',
+          tieneIdServicio: false,
+          IdOrdenServicio: ''
+        }
+       
+       await this.servicio.actualizarDatosContablesServicios(idServicios, objDatosContablesServicios).then(
+        (result) => {
+          this.mostrarInformacion('Se eliminaron los datos contables');
+        }
+       ), err => {
+         this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
+       };
+      }
+    }
+  }
+
   validarLengthBusquedaServicios() {
     let clienteServicios = this.ctsFormulario.get('clienteServicios').value;
     let ordenServicios = this.ctsFormulario.get('ordenServicios').value;
@@ -3401,6 +3456,8 @@ deshabilitarCampoServicios() {
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let FechaDeCreacion = new Date();
     let solicitantePersona = this.usuarioActual.id;
+
+    let datosContables = await this.consultarDatosContables()
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
