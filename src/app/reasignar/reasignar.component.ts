@@ -444,7 +444,7 @@ export class ReasignarComponent implements OnInit {
         CompradorId: this.reasignarModelo,
         ResponsableReasignarContratos: responsableReasingarContratos,
         FechaReasignadoContratos: fechaReasignadoContratos,
-        PaisReasignar: pais,
+        // PaisReasignar: pais,
         CategoriaReasignar: categoria,
         SubcategoriaReasignar: SubCategoria,
         MotivoReasignar: causaReasignar
