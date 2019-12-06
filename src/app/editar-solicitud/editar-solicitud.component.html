@@ -323,7 +323,6 @@
     </form>
 </div>
 
-
 <div *ngIf="isModalCTBShown" [config]="{ show: true }" (onHidden)="onHiddenCTB()" bsModal #autoShownModalCTB="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -807,7 +806,7 @@
     </div>
 </ng-template> -->
 
-<ng-template #templateCondicionesTecnicasServicios>
+<!-- <ng-template #templateCondicionesTecnicasServicios>
     <div class="modal-header">
         <h4 class="modal-title pull-left">{{tituloModalCTS}}</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -1033,7 +1032,213 @@
             </form>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
+
+<div *ngIf="isModalShownCTS" [config]="{ show: true }" (onHidden)="onHiddenCTS()" bsModal #autoShownModalCTS="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="dialog-auto-name" class="modal-title pull-left">{{tituloModalCTS}}</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="hideModalCTS()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()">
+                        <div class="form-group">
+                            <label for="codigo">Código de material</label>
+                            <input id="codigoCTS" name="codigoCTS" formControlName="codigoCTS" class="form-control" type="text" placeholder="Escriba el código si lo conoce" />
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción del elemento a comprar</label><span class="asterisco-obligatorio">*</span>
+                            <textarea id="descripcionCTS" name="descripcionCTS" formControlName="descripcionCTS" class="form-control" type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.descripcionCTS.errors }"></textarea>
+                            <div *ngIf="ctsSubmitted && f2.descripcionCTS.errors" class="invalid-feedback">
+                                <div *ngIf="f2.descripcionCTS.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
+                            <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTS" name="cantidadCTS" formControlName="cantidadCTS" class="form-control" type="text" placeholder="Escriba la cantidad"
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cantidadCTS.errors }" />
+                            <div *ngIf="ctsSubmitted && f2.cantidadCTS.errors" class="invalid-feedback">
+                                <div *ngIf="f2.cantidadCTS.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="valorEstimado">Valor Estimado</label>
+                                    <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false }" id="valorEstimadoCTS" name="valorEstimadoCTS" formControlName="valorEstimadoCTS" class="form-control" type="text" placeholder="Escriba el valor estimado"
+                                    />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="tipo-moneda">Tipo de moneda</label><span [hidden]="!emptyasteriscoCTS" class="asterisco-obligatorio">*</span>
+                                    <select id="tipoMonedaCTS" name="tipoMonedaCTS" formControlName="tipoMonedaCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.tipoMonedaCTS.errors }">
+                                    <option value="">Seleccione</option>
+                                    <option value="ARS">ARS</option>
+                                    <option value="BRL">BRL</option>
+                                    <option value="CLP">CLP</option>
+                                    <option value="COP">COP</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="PEN">PEN</option>
+                                    <option value="UF">UF</option>
+                                    <option value="USD">USD</option>
+                                </select>
+                                    <div *ngIf="ctsSubmitted && f2.tipoMonedaCTS.errors" class="invalid-feedback">
+                                        <div *ngIf="f2.tipoMonedaCTS.errors.required">Este campo es requerido</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="datos-contables" id="datosContables" *ngIf="!mostrarDatosContables">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="ceco">Centro de costos / Orden de inversión</label>
+                                        <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
+                                        <option value="">Seleccione</option>
+                                        <option value="Centro de costos">Centro de costos</option>
+                                        <option value="Orden de inversión">Orden de inversión</option>
+                                        <option value="ID de Servicios">ID de Servicios</option>
+                                    </select>
+                                        <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">
+                                            <div *ngIf="f2.cecoCTS.errors.required">Este campo es requerido</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center" style="padding-top: 30px;">
+                                        <mat-checkbox color="primary" [disabled]="!enableCheckDatosContablesServicios" (change)="usarDatosContablesServicios($event)">Usar datos contables del servicio anterior
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" placeholder="Cliente" formControlName="clienteServicios">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" placeholder="Orden de Servicio" formControlName="ordenServicios">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="text" class="form-control" placeholder="ID Servicio" formControlName="idServicio" [disabled]="disabledIdServicioServicios">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" placeholder="Nombre ID Servicio" formControlName="nombreIdServicio">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button class="btn btn-outline-primary" type="button" (click)="validarLengthBusquedaServicios()">IR</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="mostrarTableServicios">
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-3">
+                                            <mat-checkbox color="primary" (change)="seleccionarTodosServicios($event)">Seleccionar todos los ID de servicio
+                                            </mat-checkbox>
+                                        </div>
+                                        <table mat-table [dataSource]="dataSourceDatosServicios">
+                                            <ng-container matColumnDef="seleccionar">
+                                                <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <mat-checkbox color="primary" value="{{element.IdServicio}}" [checked]="selectAllServicios" (change)="seleccionadoServicios($event, element)"></mat-checkbox>
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="cliente">
+                                                <th class="header" mat-header-cell *matHeaderCellDef>
+                                                    Cliente
+                                                    <mat-form-field class="filter" floatLabel="never">
+                                                        <mat-label>filtrar</mat-label>
+                                                        <input matInput [formControl]="clientServicios">
+                                                    </mat-form-field>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">{{element.Cliente}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="OS">
+                                                <th class="header" mat-header-cell *matHeaderCellDef>
+                                                    Orden de servicio
+                                                    <mat-form-field class="filter" floatLabel="never">
+                                                        <mat-label>filtrar</mat-label>
+                                                        <input matInput [formControl]="ordenServServicios">
+                                                    </mat-form-field>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">{{element.OS}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="idServicio">
+                                                <th class="header" mat-header-cell *matHeaderCellDef>
+                                                    Id de servicio
+                                                    <mat-form-field class="filter" floatLabel="never">
+                                                        <mat-label>filtrar</mat-label>
+                                                        <input matInput [formControl]="idServServicios">
+                                                    </mat-form-field>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">{{element.IdServicio}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="nombreIdServicio">
+                                                <th class="header" mat-header-cell *matHeaderCellDef>
+                                                    Nombre id servicio
+                                                    <mat-form-field class="filter" floatLabel="never">
+                                                        <mat-label>filtrar</mat-label>
+                                                        <input matInput [formControl]="nombreIdServServicios">
+                                                    </mat-form-field>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">{{element.Nombre_Servicio}}</td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsServicios"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumnsServicios;"></tr>
+                                        </table>
+                                        <br>
+                                        <button type="button" class="btn btn-primary" (click)="terminarSeleccionServicios()">Terminar selección</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de inversion / ID de servicio</label>
+                                    <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTS" (click)="deshabilitarCampoServicios()" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"></textarea>
+                                    <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
+                                        <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Numero de cuenta">Número de cuenta</label>
+                                    <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }" (keypress)="numberOnly($event)">
+                                    <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
+                                        <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adjunto">Adjunto</label>
+                            <input id="adjuntoCTS" name="adjuntoCTS" formControlName="adjuntoCTS" type="file" class="form-control" (change)="subirAdjuntoCTS($event.target.files)" />
+                            <div [hidden]="!mostrarAdjuntoCTS" class="adjunto-guardado">
+                                <img src="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/ImagenesSolpes/aplicacion/file.png"  alt="adjunto">
+                                    <a href="{{rutaAdjuntoCTS}}" target="_blank">{{nombreAdjuntoCTS}}</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="comentarios">Comentarios</label>
+                            <textarea id="comentariosCTS" name="comentariosCTS" formControlName="comentariosCTS" class="form-control" type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">{{textoBotonGuardarCTS}} servicio</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <ng-template #templateConfirmacionDescartar>
     <div class="modal-body text-center">

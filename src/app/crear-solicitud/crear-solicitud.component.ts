@@ -4819,6 +4819,7 @@ deshabilitarCampoServicios() {
     this.ctsFormulario.controls["numCuentaCTS"].setValue('');
   }
 
+  
   editarBienes(element) {
     this.indiceCTBActualizar = element.indice;
       this.idCondicionTBGuardada = element.id;
