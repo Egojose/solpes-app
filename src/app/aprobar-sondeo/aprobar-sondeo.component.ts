@@ -601,7 +601,6 @@ export class AprobarSondeoComponent implements OnInit {
          this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
        };
       }
-      // this.servicio.actualiazarDatoContablesBienes(bienes.id ,objDatosContablesBienes)
     }
     if(ordenEstadistica === 'SI' && datosContablesServicios.length > 0) {
       for(let i = 0; i < datosContablesServicios.length; i++) {
@@ -613,7 +612,6 @@ export class AprobarSondeoComponent implements OnInit {
           tieneIdServicio: false,
           IdOrdenServicio: ''
         }
-       
        await this.servicio.actualizarDatosContablesServicios(idServicios, objDatosContablesServicios).then(
         (result) => {
           this.mostrarInformacion('Se eliminaron los datos contables');
