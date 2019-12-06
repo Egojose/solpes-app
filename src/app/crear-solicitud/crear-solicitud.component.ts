@@ -471,15 +471,15 @@ export class CrearSolicitudComponent implements OnInit {
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     
-      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     }
     return filterFunction;
   }
@@ -487,15 +487,15 @@ export class CrearSolicitudComponent implements OnInit {
   createFilterServicios(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+      && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+      && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+      && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     
-      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente) !== -1
-        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS) !== -1
-        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio) !== -1
-        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio) !== -1;
+      return data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
+        && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
+        && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
+        && data.Nombre_Servicio.toLowerCase().indexOf(searchTerms.Nombre_Servicio.toLowerCase()) !== -1;
     }
     return filterFunction;
   }
@@ -4607,7 +4607,8 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTS.hide();
+            // this.modalRef.hide();
             this.spinner.hide();
             this.ctsSubmitted = false;
             this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4643,7 +4644,8 @@ deshabilitarCampoServicios() {
                 this.CargarTablaCTS();
                 this.limpiarControlesCTS();
                 this.mostrarInformacion("Condición técnica de servicios agregada correctamente");
-                this.modalRef.hide();
+                this.autoShownModalCTS.hide();
+                // this.modalRef.hide();
                 this.spinner.hide();
                 this.ctsSubmitted = false;
                 this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4684,7 +4686,8 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTS();
             this.limpiarControlesCTS();
             this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-            this.modalRef.hide();
+            this.autoShownModalCTS.hide();
+            // this.modalRef.hide();
             this.spinner.hide();
             this.ctsSubmitted = false;
             this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4738,7 +4741,8 @@ deshabilitarCampoServicios() {
                       this.CargarTablaCTS();
                       this.limpiarControlesCTS();
                       this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-                      this.modalRef.hide();
+                      this.autoShownModalCTS.hide();
+                      // this.modalRef.hide();
                       this.spinner.hide();
                       this.ctsSubmitted = false;
                       this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4782,7 +4786,8 @@ deshabilitarCampoServicios() {
                   this.CargarTablaCTS();
                   this.limpiarControlesCTS();
                   this.mostrarInformacion("Condición técnica de servicios actualizada correctamente");
-                  this.modalRef.hide();
+                  this.autoShownModalCTS.hide();
+                  // this.modalRef.hide();
                   this.spinner.hide();
                   this.ctsSubmitted = false;
                   this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '')
@@ -4820,7 +4825,7 @@ deshabilitarCampoServicios() {
   }
 
   
-  editarBienes(element, template: TemplateRef<any>) {
+  editarBienes(element) {
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
     this.setDatosContablesBienes = false;
@@ -4870,13 +4875,14 @@ deshabilitarCampoServicios() {
     this.ctbFormulario.controls["numCuentaCTB"].setValue(element.numeroCuenta);
     this.tituloModalCTB = "Actualizar bien";
     this.textoBotonGuardarCTB = "Actualizar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalCTBShown = true;
+    // this.modalRef = this.modalServicio.show(
+    //   template,
+    //   Object.assign({}, { class: 'gray modal-lg' })
+    // );
   }
 
-  editarServicios(element, template: TemplateRef<any>) {
+  editarServicios(element) {
     this.indiceCTSActualizar = element.indice;
     this.idCondicionTSGuardada = element.id;
     console.log(this.ctsFormulario.controls['cecoCTS'].value);
@@ -4917,10 +4923,11 @@ deshabilitarCampoServicios() {
     this.ctsFormulario.controls["numCuentaCTS"].setValue(element.numeroCuenta);
     this.tituloModalCTS = "Actualizar servicio";
     this.textoBotonGuardarCTS = "Actualizar";
-    this.modalRef = this.modalServicio.show(
-      template,
-      Object.assign({}, { class: 'gray modal-lg' })
-    );
+    this.isModalShownCTS = true;
+    // this.modalRef = this.modalServicio.show(
+    //   template,
+    //   Object.assign({}, { class: 'gray modal-lg' })
+    // );
   }
 
   borrarBienes(element) {
