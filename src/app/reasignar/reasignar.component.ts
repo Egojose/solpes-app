@@ -66,6 +66,7 @@ export class ReasignarComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private formBuilder: FormBuilder) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    console.log(this.solicitudRecuperada.solicitantePersona.ID);
     this.correoManager = "";
     this.emptyManager = false;
     this.mostrarJefe = false;
@@ -406,7 +407,8 @@ export class ReasignarComponent implements OnInit {
       responsableReasignarSondeo = this.nombreUsuario;
       fechaReasignadoSondeo = new Date();
       objetoActualizar = {
-        ResponsableId: this.reasignarModelo,
+        ResponsableId: this.solicitudRecuperada.solicitantePersona.ID.toString(),
+        // ResponsableId: this.reasignarModelo,
         CompradorId: this.reasignarModelo,
         ResponsableReasignarSondeo: responsableReasignarSondeo,
         FechaReasignadoSondeo: fechaReasignadoSondeo,

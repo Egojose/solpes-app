@@ -683,6 +683,7 @@ export class AprobarSondeoComponent implements OnInit {
         
         if (this.datosServicios.length === 0) {
           this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+          this.spinner.hide();
           return false;
         }
         this.spinner.hide();
@@ -808,7 +809,18 @@ export class AprobarSondeoComponent implements OnInit {
     }
   }
 
+  limpiarFiltrosServicios() {
+    this.clientServicios.setValue('');
+    this.ordenServServicios.setValue('');
+    this.idServServicios.setValue('');
+    this.nombreIdServServicios.setValue('');
+    this.dataIdOrdenSeleccionadosServicios = [];
+    this.dataSeleccionadosServicios = [];
+    this.selectAllServicios = false;
+  }
+
   async VerDatosContables(item, tipo) {
+    this.limpiarFiltrosServicios();
     console.log(item);
     let datosBienes;
     let datosServicios;
