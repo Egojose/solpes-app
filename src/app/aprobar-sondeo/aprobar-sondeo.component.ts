@@ -744,11 +744,13 @@ export class AprobarSondeoComponent implements OnInit {
     let idServicioSeleccionado = $event.source.value
     if ($event.checked === true) {
       this.dataSeleccionadosServicios.push(idServicioSeleccionado);
-      this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
+      this.dataIdOrdenSeleccionadosServicios.push(element.IdServicio);
+      // this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
     }
     else {
       let index = this.dataSeleccionadosServicios.findIndex(x => x === idServicioSeleccionado);
-      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
+      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.IdServicio);
+    // let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
       this.dataSeleccionadosServicios.splice(index, 1);
       this.dataIdOrdenSeleccionadosServicios.splice(el, 1);
       if(index === -1) {
@@ -769,7 +771,8 @@ export class AprobarSondeoComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionadosServicios = this.datosServicios.map(x => {
-        return x.Orden_SAP
+        return x.IdServicio
+        // return x.Orden_SAP
       })
     }
     else if(this.selectAllServicios === true && (cliente !== '' || orden !== '' || idServicios !== '' || nombreServicios !== '')) {
@@ -778,7 +781,8 @@ export class AprobarSondeoComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionadosServicios = this.datosFiltradosServicios.filteredData.map(x => {
-        return x.Orden_SAP
+        return x.IdServicio
+        // return x.Orden_SAP
       })
     }
     else {
@@ -900,6 +904,13 @@ export class AprobarSondeoComponent implements OnInit {
     let centroCosto = this.ctsFormulario.controls['centroCostos'].value;
     let NumeroCentroCosto = this.ctsFormulario.controls['numCicoCTS'].value;
     let NumeroCuenta = this.ctsFormulario.controls['numCuentaCTS'].value;
+    let tieneIdServicio;
+    if(this.ctsFormulario.controls['centroCostos'].value === "ID de Servicios") {
+      tieneIdServicio = true;
+    }
+    else {
+      tieneIdServicio = false;
+    }
     // let OrdenadorGasto = this.ctsFormulario.controls['ordenadorGastos'].value;
   
     let obj = {
@@ -907,6 +918,7 @@ export class AprobarSondeoComponent implements OnInit {
       numeroCostoInversion: NumeroCentroCosto,
       numeroCuenta: NumeroCuenta,
       IdOrdenServicio: this.dataIdOrdenSeleccionadosServicios.toString(),
+      tieneIdServicio: tieneIdServicio
     }
 
     if (this.TipoSondeo === "Bien") {
