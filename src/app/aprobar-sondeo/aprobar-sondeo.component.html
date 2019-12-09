@@ -32,11 +32,20 @@
                     Descartar
                 </label>
             </div>
+            <ng-container *ngIf="RDBsondeo === 4">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label><b>Número Contrato Marco:</b></label>
+                        <ng-template #popTemplate2>Por favor digite el número OCM</ng-template>
+                        <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>
 <br>
-<ng-container *ngIf="RDBsondeo === 4">
+<!-- <ng-container *ngIf="RDBsondeo === 4">
     <div class="row">
         <div class="form-group col-md-4">
             <label><b>Número Contrato Marco:</b></label>
@@ -44,49 +53,64 @@
             <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
         </div>
     </div>
+</ng-container> -->
+<br>
+<ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label for="ordenadorGastos" class="col-form-label"><b>Modificar ordenador de gastos</b></label>
+        </div>
+        <div class="form-group col-md-6">
+            <select2 [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control"
+                (update)="seleccionarOrdenadorGastos($event)">
+            </select2>
+        </div>
+        <!-- <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+                No tiene un jefe asignado en Office 365, debe seleccionar uno
+            </div> -->
+    </div>
+</ng-container>
+<br>
+<ng-container>
+    <div class="form-group" *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+        <label for="textarea" class="col-sm-3 control-label"><b>Justificación</b></label>
+        <ng-template #popTemplate1>Por favor especifique en la justificación</ng-template>
+        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers=""
+            placement="top" [tooltip]="popTemplate1" placeholder="Registre la justificación..."
+            [(ngModel)]="justificacionSondeo"></textarea>
+    </div>
+</ng-container>
+<br>
+<ng-container>
+    <div class="form-group">
+        <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
+        <ng-template #popTemplate>Por favor especifique el motivo en los comentarios</ng-template>
+        <textarea name="" id="textarea" class="form-control" rows="2" triggers="" #customTooltip="bs-tooltip"
+            placement="top" [tooltip]="popTemplate" placeholder="Registre sus comentarios..."
+            [(ngModel)]="ComentarioSondeo"></textarea>
+    </div>
 </ng-container>
 <br>
 <ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
-        <div class="form-group row">
-            <div class="col-md-4">
-                <label for="ordenadorGastos" class="col-form-label"><b>Modificar ordenador de gastos</b></label>
-                <select2 [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control"
-                    (update)="seleccionarOrdenadorGastos($event)">
-                </select2>
-                <!-- <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
-                No tiene un jefe asignado en Office 365, debe seleccionar uno
-            </div> -->
-            </div>
-            <div class="form-group col-md-4" *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
-                <label for="textarea" class="col-sm-3 control-label"><b>Justificación</b></label>
-                <ng-template #popTemplate1>Por favor especifique en la justificación</ng-template>
-                <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre la justificación..." [(ngModel)]="justificacionSondeo"></textarea>
-            </div>
-            <div class="form-group col-md-4">
-                <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
-                <ng-template #popTemplate>Por favor especifique el motivo en los comentarios</ng-template>
-                <textarea name="" id="textarea" class="form-control" rows="2" triggers="" #customTooltip="bs-tooltip" placement="top" [tooltip]="popTemplate" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioSondeo"></textarea>
+    <div class="form-group row">
+        <div class="col-md-4" id="ordenEstadistica">
+            <label for="CompraEstadística">Compra orden de estadística</label>
+            <mat-radio-group class="orden-estadistica-group" layout="row" [formControl]="OrdenEstadistica">
+                <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO"
+                    (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>
+                <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="SI"
+                    (change)="mostrarNumeroOrdenEstadistica($event.value)">SI</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-md-4" id="numeroOrdenEstadistica">
+            <div class="numero-orden-estadistica" [hidden]="!emptyNumeroOrdenEstadistica">
+                <label for="numeroOrdenEstadistica"><b>Número de orden estadística</b></label>
+                <input id="numeroOrdenEstadistica" name="numeroOrdenEstadistica" class="form-control"
+                    [formControl]="numeroOrden" />
             </div>
         </div>
-    </ng-container>
-    <ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
-        <div class="form-group row">
-            <div class="col-md-4" id="ordenEstadistica">
-                <label for="CompraEstadística">Compra orden de estadística</label>
-                <mat-radio-group class="orden-estadistica-group" layout="row"  [formControl]="OrdenEstadistica">
-                    <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO" (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>
-                    <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="SI" (change)="mostrarNumeroOrdenEstadistica($event.value)">SI</mat-radio-button>
-                </mat-radio-group>
-            </div>
-            <div class="col-md-4" id="numeroOrdenEstadistica">
-                <div class="numero-orden-estadistica" [hidden]="!emptyNumeroOrdenEstadistica">
-                    <label for="numeroOrdenEstadistica"><b>Número de orden estadística</b></label>
-                    <input id="numeroOrdenEstadistica" name="numeroOrdenEstadistica"
-                        class="form-control" [formControl]="numeroOrden"/>
-                </div>
-            </div>
-        </div>
-    </ng-container>
+    </div>
+</ng-container>
     <br>
 <div *ngIf="existeCondicionesTecnicasBienes == true" class="row">
     <div class="form-group col-md-12">
