@@ -897,7 +897,7 @@ export class CrearSolicitudComponent implements OnInit {
     })
     let objDatosContablesBienes: any;
     let objDatosContablesServicios: any;
-    if(ordenEstadistica === 'SI' && datosContablesBienes.length > 0) {
+    if((ordenEstadistica === 'SI' || this.solpFormulario.controls['tipoSolicitud'].value === 'Sondeo') && datosContablesBienes.length > 0) {
       for(let i = 0; i < datosContablesBienes.length; i++) {
         let idBienes = datosContablesBienes[i].Id
         objDatosContablesBienes = {
@@ -918,7 +918,7 @@ export class CrearSolicitudComponent implements OnInit {
       }
       // this.servicio.actualiazarDatoContablesBienes(bienes.id ,objDatosContablesBienes)
     }
-    if(ordenEstadistica === 'SI' && datosContablesServicios.length > 0) {
+    if((ordenEstadistica === 'SI' || this.solpFormulario.controls['tipoSolicitud'].value === 'Sondeo') && datosContablesServicios.length > 0) {
       for(let i = 0; i < datosContablesServicios.length; i++) {
         let idServicios = datosContablesServicios[i].Id
         objDatosContablesServicios = {
