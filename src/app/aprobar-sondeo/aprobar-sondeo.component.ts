@@ -16,6 +16,7 @@ import { CrmServicioService } from '../servicios/crm-servicio.service';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Select2Data } from 'ng-select2-component';
 
+
 @Component({
   selector: 'app-aprobar-sondeo',
   templateUrl: './aprobar-sondeo.component.html',
@@ -208,6 +209,7 @@ export class AprobarSondeoComponent implements OnInit {
     console.log(this.valorOrdenEstadisica);
     await this.validarDatosContables();
     await this.validarOrdenEstadistica();
+    await this.consultarDatosContables();
 
     let ObjSondeo;
     if (this.RDBsondeo === undefined) {
@@ -568,6 +570,59 @@ export class AprobarSondeoComponent implements OnInit {
     }
   }
 
+  async consultarDatosContables() {
+    let ordenEstadistica = this.OrdenEstadistica.value;
+    let bienes = await this.servicio.obtenerCtBienes(this.IdSolicitud);
+    let servicios = await this.servicio.obtenerCtServicios(this.IdSolicitud);
+    let datosContablesBienes = bienes.filter(x => {
+      return  x.costoInversion !== '' || x.numeroCostoInversion !== '' || x.numeroCuenta !== ''
+    })
+    let datosContablesServicios = servicios.filter(x => {
+      return x.costoInversion !== '' || x.numeroCostoInversion !== '' || x.numeroCuenta !== ''
+    })
+    let objDatosContablesBienes: any;
+    let objDatosContablesServicios: any;
+    if(ordenEstadistica === 'SI' && datosContablesBienes.length > 0) {
+      for(let i = 0; i < datosContablesBienes.length; i++) {
+        let idBienes = datosContablesBienes[i].Id
+        objDatosContablesBienes = {
+          costoInversion: '',
+          numeroCostoInversion: '',
+          numeroCuenta: '',
+          tieneIdServicio: false,
+          IdOrdenServicio: ''
+        }
+        console.log(objDatosContablesBienes);
+       await this.servicio.actualiazarDatosContablesBienes(idBienes, objDatosContablesBienes).then(
+        (result) => {
+          this.mostrarInformacion('Se eliminaron los datos contables');
+        }
+       ), err => {
+         this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
+       };
+      }
+    }
+    if(ordenEstadistica === 'SI' && datosContablesServicios.length > 0) {
+      for(let i = 0; i < datosContablesServicios.length; i++) {
+        let idServicios = datosContablesServicios[i].Id
+        objDatosContablesServicios = {
+          costoInversion: '',
+          numeroCostoInversion: '',
+          numeroCuenta: '',
+          tieneIdServicio: false,
+          IdOrdenServicio: ''
+        }
+       await this.servicio.actualizarDatosContablesServicios(idServicios, objDatosContablesServicios).then(
+        (result) => {
+          this.mostrarInformacion('Se eliminaron los datos contables');
+        }
+       ), err => {
+         this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
+       };
+      }
+    }
+  }
+
   validarLengthBusquedaServicios() {
     let clienteServicios = this.ctsFormulario.get('clienteServicios').value;
     let ordenServicios = this.ctsFormulario.get('ordenServicios').value;
@@ -689,11 +744,13 @@ export class AprobarSondeoComponent implements OnInit {
     let idServicioSeleccionado = $event.source.value
     if ($event.checked === true) {
       this.dataSeleccionadosServicios.push(idServicioSeleccionado);
-      this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
+      this.dataIdOrdenSeleccionadosServicios.push(element.IdServicio);
+      // this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
     }
     else {
       let index = this.dataSeleccionadosServicios.findIndex(x => x === idServicioSeleccionado);
-      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
+      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.IdServicio);
+    // let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
       this.dataSeleccionadosServicios.splice(index, 1);
       this.dataIdOrdenSeleccionadosServicios.splice(el, 1);
       if(index === -1) {
@@ -714,7 +771,8 @@ export class AprobarSondeoComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionadosServicios = this.datosServicios.map(x => {
-        return x.Orden_SAP
+        return x.IdServicio
+        // return x.Orden_SAP
       })
     }
     else if(this.selectAllServicios === true && (cliente !== '' || orden !== '' || idServicios !== '' || nombreServicios !== '')) {
@@ -723,7 +781,8 @@ export class AprobarSondeoComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionadosServicios = this.datosFiltradosServicios.filteredData.map(x => {
-        return x.Orden_SAP
+        return x.IdServicio
+        // return x.Orden_SAP
       })
     }
     else {
@@ -845,6 +904,13 @@ export class AprobarSondeoComponent implements OnInit {
     let centroCosto = this.ctsFormulario.controls['centroCostos'].value;
     let NumeroCentroCosto = this.ctsFormulario.controls['numCicoCTS'].value;
     let NumeroCuenta = this.ctsFormulario.controls['numCuentaCTS'].value;
+    let tieneIdServicio;
+    if(this.ctsFormulario.controls['centroCostos'].value === "ID de Servicios") {
+      tieneIdServicio = true;
+    }
+    else {
+      tieneIdServicio = false;
+    }
     // let OrdenadorGasto = this.ctsFormulario.controls['ordenadorGastos'].value;
   
     let obj = {
@@ -852,6 +918,7 @@ export class AprobarSondeoComponent implements OnInit {
       numeroCostoInversion: NumeroCentroCosto,
       numeroCuenta: NumeroCuenta,
       IdOrdenServicio: this.dataIdOrdenSeleccionadosServicios.toString(),
+      tieneIdServicio: tieneIdServicio
     }
 
     if (this.TipoSondeo === "Bien") {
@@ -895,6 +962,12 @@ export class AprobarSondeoComponent implements OnInit {
           this.hideModal();
       }
     )
+  }
+
+  
+
+  mostrarInformacion(mensaje: string) {
+    this.toastr.infoToastr(mensaje, 'Información importante');
   }
 
   // modificarOG(OrdenadorGasto: any) {

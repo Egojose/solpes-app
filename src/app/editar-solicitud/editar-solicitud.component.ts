@@ -891,6 +891,60 @@ export class EditarSolicitudComponent implements OnInit {
     return true;
   }
 
+  async consultarDatosContables() {
+    let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
+    let bienes = await this.servicio.obtenerCtBienes(this.solicitudRecuperada.id);
+    let servicios = await this.servicio.obtenerCtServicios(this.solicitudRecuperada.id);
+    let datosContablesBienes = bienes.filter(x => {
+      return x.costoInversion !== '' || x.numeroCostoInversion !== '' || x.numeroCuenta !== ''
+    })
+    let datosContablesServicios = servicios.filter(x => {
+      return x.costoInversion !== '' || x.numeroCostoInversion !== '' || x.numeroCuenta !== ''
+    })
+    let objDatosContablesBienes: any;
+    let objDatosContablesServicios: any;
+    if (ordenEstadistica === 'SI' && datosContablesBienes.length > 0) {
+      for (let i = 0; i < datosContablesBienes.length; i++) {
+        let idBienes = datosContablesBienes[i].Id
+        objDatosContablesBienes = {
+          costoInversion: '',
+          numeroCostoInversion: '',
+          numeroCuenta: '',
+          tieneIdServicio: false,
+          IdOrdenServicio: ''
+        }
+        console.log(objDatosContablesBienes);
+        await this.servicio.actualiazarDatosContablesBienes(idBienes, objDatosContablesBienes).then(
+          (result) => {
+            this.mostrarInformacion('Se eliminaron los datos contables');
+          }
+        ), err => {
+          this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
+        };
+      }
+    }
+    if (ordenEstadistica === 'SI' && datosContablesServicios.length > 0) {
+      for (let i = 0; i < datosContablesServicios.length; i++) {
+        let idServicios = datosContablesServicios[i].Id
+        objDatosContablesServicios = {
+          costoInversion: '',
+          numeroCostoInversion: '',
+          numeroCuenta: '',
+          tieneIdServicio: false,
+          IdOrdenServicio: ''
+        }
+
+        await this.servicio.actualizarDatosContablesServicios(idServicios, objDatosContablesServicios).then(
+          (result) => {
+            this.mostrarInformacion('Se eliminaron los datos contables');
+          }
+        ), err => {
+          this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
+        };
+      }
+    }
+  }
+
   validarLengthBusqueda() {
     let cliente = this.ctbFormulario.get('clienteBienes').value;
     let ordenBienes = this.ctbFormulario.get('ordenBienes').value;
