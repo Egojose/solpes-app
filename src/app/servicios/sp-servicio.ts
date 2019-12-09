@@ -217,11 +217,11 @@ export class SPServicio {
     }
 
     async actualiazarDatosContablesBienes(idCondicionTecnicaBienes: number, condicionTecnicaBienes: any) {
-        return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).update(condicionTecnicaBienes);
+        return await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicionTecnicaBienes).update(condicionTecnicaBienes);
     }
     
     async actualizarDatosContablesServicios(idCondicionTecnicaServicios: number, condicionTecnicaServicios: any) {
-        return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicionTecnicaServicios).update(condicionTecnicaServicios);
+        return await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.getById(idCondicionTecnicaServicios).update(condicionTecnicaServicios);
     }
 
     actualizarCondicionesTecnicasBienesEntregaBienes(IdBienes,objActualizacionCTB){
