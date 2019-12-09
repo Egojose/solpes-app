@@ -159,6 +159,12 @@
                         <button *ngIf="element.estado =='Suspendida sondeo' && element.suspendidaSondeo === true && element.reactivadoSondeo === false" class="btn btn-warning btn-block" (click)="reactivar(templateReactivarSolicitudSondeo,element)">Reactivar</button>
                     </div>
                 </div>
+                <div class="filaBtn">
+                    <div class="col-md-12">
+                      <button
+                        *ngIf="element.estado =='Suspendida' || element.estado == 'Suspendida sondeo'" class="btn btn-danger btn-block" (click)="confirmarDescarte(templateDescarte, element)">Descartar</button>
+                    </div>
+                  </div>
             </td>
         </ng-container>
 
@@ -174,6 +180,14 @@
         <p>¿Estás seguro que desea descartar la solicitud?</p>
         <button type="button" class="btn btn-default" (click)="confirmarDescartar()">Sí</button>
         <button type="button" class="btn btn-primary" (click)="declinarDescartar()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #templateDescarte>
+    <div class="modal-body text-center">
+        <p>¿Está seguro de que desea descartar esta solicitud?</p>
+        <button type="button" class="btn btn-danger btn-lg" (click)="aceptarDescarte()">Sí</button>
+        <button type="button" class="btn btn-primary btn-lg" (click)="declinar()">No</button>
     </div>
 </ng-template>
 
