@@ -320,11 +320,19 @@ export class EditarSolicitudComponent implements OnInit {
 
   consultaDatos() {
     this.spinner.show();
+    let idServicio;
+    let cliente;
+    let nombreServicio;
+    let os;
+    this.ctbFormulario.get('IdServicioBienes').value === undefined ? idServicio = '' : idServicio = this.ctbFormulario.get('IdServicioBienes').value;
+    this.ctbFormulario.get('clienteBienes').value === undefined ? cliente = '' : cliente = this.ctbFormulario.get('clienteBienes').value;
+    this.ctbFormulario.get('nombreIdServicioBienes').value === undefined ? nombreServicio = '' : nombreServicio = this.ctbFormulario.get('nombreIdServicioBienes').value;
+    this.ctbFormulario.get('ordenBienes').value === undefined ? os = '' : os = this.ctbFormulario.get('ordenBienes').value;
     let parametros = {
-      "idservicio": this.ctbFormulario.get('IdServicioBienes').value,
-      "cliente": this.ctbFormulario.get('clienteBienes').value,
-      "nombreservicio": this.ctbFormulario.get('nombreIdServicioBienes').value,
-      "os": this.ctbFormulario.get('ordenBienes').value,
+      "idservicio": idServicio,
+      "cliente": cliente,
+      "nombreservicio": nombreServicio,
+      "os": os
     }
     let objToken = {
       TipoConsulta: "Bodega",
@@ -404,11 +412,19 @@ export class EditarSolicitudComponent implements OnInit {
 
   consultarDatosServicios() {
     this.spinner.show();
+    let idServicio; 
+    let cliente;
+    let nombreServicio;
+    let os;
+    this.ctsFormulario.get('idServicio').value === undefined ? idServicio = '' : idServicio = this.ctsFormulario.get('idServicio').value;
+    this.ctsFormulario.get('clienteServicios').value === undefined ? cliente = '' : cliente = this.ctsFormulario.get('clienteServicios').value;
+    this.ctsFormulario.get('nombreIdServicio').value === undefined ? nombreServicio = '' : nombreServicio = this.ctsFormulario.get('nombreIdServicio').value;
+    this.ctsFormulario.get('ordenServicios').value === undefined ? os = '' : os = this.ctsFormulario.get('ordenServicios').value;
     let parametros = {
-      "idservicio": this.ctsFormulario.get('idServicio').value,
-      "cliente": this.ctsFormulario.get('clienteServicios').value,
-      "nombreservicio": this.ctsFormulario.get('nombreIdServicio').value,
-      "os": this.ctsFormulario.get('ordenServicios').value,
+      "idservicio": idServicio,
+      "cliente": cliente,
+      "nombreservicio": nombreServicio,
+      "os": os
     }
     let objToken = {
       TipoConsulta: "Bodega",
