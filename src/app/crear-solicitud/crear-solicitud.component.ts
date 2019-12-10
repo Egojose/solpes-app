@@ -174,6 +174,7 @@ export class CrearSolicitudComponent implements OnInit {
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   cargaExcel: boolean;  //se debe habilitar para eliminar dato contables obligatorios en sondeo
+  cargaExcelServicios: boolean;
   noMostrarOrdenEstadistica: boolean;
 
   clientBienes = new FormControl('');
@@ -258,6 +259,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.enviarCrm = false;
     this.cargaDesdeExcel = false;    
     this.cargaExcel = false; //se debe habilitar para datos contables no obligatorios
+    this.cargaExcelServicios = false;
     this.noMostrarOrdenEstadistica = false;
     
   }
@@ -3828,7 +3830,7 @@ deshabilitarCampoServicios() {
   private validarCondicionesTSdatosContables(): boolean {
     let respuesta = true;
     let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
-    if (this.cargaExcel === false) {
+    if (this.cargaExcelServicios === false) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf('');
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
@@ -3840,7 +3842,7 @@ deshabilitarCampoServicios() {
         respuesta = false;
       }
     }
-    else if (this.cargaExcel) {
+    else if (this.cargaExcelServicios) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf(null);
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf(null);
@@ -4151,7 +4153,7 @@ deshabilitarCampoServicios() {
         template,
         Object.assign({}, {class: 'gray modal-lg'})
       )
-      this.cargaExcel = true;
+      this.cargaExcelServicios = true;
     }
   }                                          // Hasta aquí
 

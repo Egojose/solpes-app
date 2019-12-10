@@ -160,6 +160,7 @@ export class EditarSolicitudComponent implements OnInit {
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   cargaExcel: boolean;  //Habilitar cuando datos contables no obligatorios
+  cargaExcelServicios: boolean;
   noMostrarOrdenEstadistica: boolean;
   isModalCTBShown: boolean = false;
   isModalShownCTS: boolean = false;
@@ -247,6 +248,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.enviarCrm = false;
     this.cargaDesdeExcel = false; 
     this.cargaExcel = false;  //Habilitar cuando datos contables no obligatorios
+    this.cargaExcelServicios = false;
     this.noMostrarOrdenEstadistica = false;
   }
 
@@ -4499,7 +4501,7 @@ export class EditarSolicitudComponent implements OnInit {
         template,
         Object.assign({}, {class: 'gray modal-lg'})
       )
-      this.cargaExcel = true;
+      this.cargaExcelServicios = true;
     }
   }                                                    //Hasta aquí
 
@@ -4997,7 +4999,7 @@ export class EditarSolicitudComponent implements OnInit {
   private validarCondicionesTSdatosContables(): boolean {
     let respuesta = true;
     let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
-    if (this.cargaExcel === false) {
+    if (this.cargaExcelServicios === false) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf('');
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
@@ -5009,7 +5011,7 @@ export class EditarSolicitudComponent implements OnInit {
         respuesta = false;
       }
     }
-    else if (this.cargaExcel) {
+    else if (this.cargaExcelServicios) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf(null);
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf(null);
