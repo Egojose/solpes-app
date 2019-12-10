@@ -15,6 +15,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
 import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-ver-solicitud-tab',
@@ -79,6 +80,8 @@ export class VerSolicitudTabComponent implements OnInit {
   solicitudRecuperada: Solicitud;
   fueSondeo: boolean;
   contratoId: any;
+  idRuta: any;
+  tieneParams: boolean = false;
   displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
   displayedColumnsService: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda"];
   displayedColumnsBienes: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda"];
@@ -98,13 +101,14 @@ export class VerSolicitudTabComponent implements OnInit {
   CTS: boolean;
   CTB: boolean;
 
-  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService,) {
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService, private route: ActivatedRoute) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
-    if (this.solicitudRecuperada == null) {
+    this.obtenerQueryParams();
+    if(this.solicitudRecuperada == null && this.tieneParams === false) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
     }
-    this.IdSolicitud = this.solicitudRecuperada.id;
+    this.tieneParams === false ? this.IdSolicitud = this.solicitudRecuperada.id : this.IdSolicitud = parseInt(this.idRuta)
     this.existenBienes = false;
     this.existenServicios = false;
     this.ArchivoAdjunto = false;
@@ -214,6 +218,15 @@ export class VerSolicitudTabComponent implements OnInit {
         this.spinner.hide();
       }
     );
+  }
+
+  obtenerQueryParams() {
+    this.idRuta = this.route.snapshot.queryParamMap.get('idSolicitud')
+    console.log(this.idRuta);
+    if(this.idRuta !== '') {
+      this.tieneParams = true;
+      // this.IdSolicitud = this.idRuta
+    }
   }
 
   abrirBienesServicios(template: TemplateRef<any>, idContrato){
