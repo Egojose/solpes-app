@@ -3639,13 +3639,15 @@ deshabilitarCampoServicios() {
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
                       "numerosolp": `${this.idSolicitudGuardada}`,
-                      "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
+                      "linksolp": `Solicitud ${this.idSolicitudGuardada}`,
+                      // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
                     }
                     let obj = {
                       Title: `Solicitud ${this.idSolicitudGuardada}`,
                       NroSolp: `${this.idSolicitudGuardada}`,
-                      EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
+                      EnlaceSolp: `Solicitud ${this.idSolicitudGuardada}`, 
+                      // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
                     respuesta = await this.enviarServicioSolicitud(objCrm);

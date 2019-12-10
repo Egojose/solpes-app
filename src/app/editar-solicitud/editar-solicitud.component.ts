@@ -4909,13 +4909,15 @@ export class EditarSolicitudComponent implements OnInit {
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
                       "numerosolp": `${this.solicitudRecuperada.id}`,
-                      "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
+                      "linksolp": `Solicitud ${this.solicitudRecuperada.id}`,
+                      // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
                     }
                     let obj = {
                       Title: `Solicitud ${this.solicitudRecuperada.id}`,
                       NroSolp: `${this.solicitudRecuperada.id}`,
-                      EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
+                      EnlaceSolp: `Solicitud ${this.solicitudRecuperada.id}`,
+                      // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
                     respuesta = await this.enviarServicioSolicitud(objCrm);
