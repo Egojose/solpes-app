@@ -62,6 +62,7 @@ export class SondeoComponent implements OnInit {
   OrdenEstadistica: boolean;
   perfilacion: boolean;
   usuarioActual: Usuario;
+  solicitantePersona: any;
 
   constructor(private servicio: SPServicio, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -149,7 +150,7 @@ export class SondeoComponent implements OnInit {
         this.justificacion = solicitud.Justificacion;
         this.comentarioSondeo = solicitud.ComentarioSondeo;
         // this.autorId = solicitud.AuthorId;
-        this.autorId = solicitud.SolicitantePersonaId;
+        this.solicitantePersona = this.solicitudRecuperada.solicitantePersona;
         this.OrdenEstadistica = solicitud.OrdenEstadistica;
         this.numeroOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
         if (solicitud.CondicionesContractuales != null) {
@@ -415,7 +416,8 @@ export class SondeoComponent implements OnInit {
     }
 
     ObjSondeo = {
-      ResponsableId: this.autorId,
+      ResponsableId: this.solicitantePersona.ID,
+      // ResponsableId: this.autorId,
       Estado: estado,
       ComentarioSondeo: this.comentarioSondeo + '\n' + fechaFormateada + ' ' + this.usuario.nombre + ':' + ' ' + this.ComentarioSolicitante,
       FechaSondeo: fechaSondeo
@@ -426,7 +428,8 @@ export class SondeoComponent implements OnInit {
 
         let notificacion = {
           IdSolicitud: this.IdSolicitud.toString(),
-          ResponsableId: this.autorId,
+          ResponsableId: this.solicitantePersona.ID,
+          // ResponsableId: this.autorId,
           Estado: estado,
         };
 

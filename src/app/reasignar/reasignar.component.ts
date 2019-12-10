@@ -206,6 +206,7 @@ export class ReasignarComponent implements OnInit {
 
   changeSolicitante($event) {
     this.spinner.show();
+    console.log($event)
     // let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
     let id = $event.target.value
     this.reasignarModelo = id;
@@ -407,8 +408,8 @@ export class ReasignarComponent implements OnInit {
       responsableReasignarSondeo = this.nombreUsuario;
       fechaReasignadoSondeo = new Date();
       objetoActualizar = {
-        ResponsableId: this.solicitudRecuperada.solicitantePersona.ID.toString(),
-        // ResponsableId: this.reasignarModelo,
+        // ResponsableId: this.solicitudRecuperada.solicitantePersona.ID.toString(),
+        ResponsableId: this.reasignarModelo,
         CompradorId: this.reasignarModelo,
         ResponsableReasignarSondeo: responsableReasignarSondeo,
         FechaReasignadoSondeo: fechaReasignadoSondeo,
