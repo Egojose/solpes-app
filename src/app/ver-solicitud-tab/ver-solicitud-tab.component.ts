@@ -15,6 +15,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { resultadoCondicionesTS } from '../dominio/resultadoCondicionesTS';
 import { resultadoCondicionesTB } from '../dominio/resultadoCondicionesTB';
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-ver-solicitud-tab',
@@ -77,8 +78,11 @@ export class VerSolicitudTabComponent implements OnInit {
   AgregarElementoForm: FormGroup;
   submitted = false;
   solicitudRecuperada: Solicitud;
+  consultaSolicitud: Solicitud;
   fueSondeo: boolean;
   contratoId: any;
+  idRuta: any;
+  tieneParams: boolean = false;
   displayedColumnsV: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "existenciasverificar", "numreservaverificar", "cantidadreservaverificar"];
   displayedColumnsService: string[] = ["codigo", "descripcion", "cantidad", "valorEstimado", "moneda"];
   displayedColumnsBienes: string[] = ["codigo", "descripcion", "modelo", "fabricante", "cantidad", "valorEstimado", "moneda"];
@@ -98,27 +102,52 @@ export class VerSolicitudTabComponent implements OnInit {
   CTS: boolean;
   CTB: boolean;
 
-  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService,) {
-    this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
-    if (this.solicitudRecuperada == null) {
-      this.mostrarAdvertencia("No se puede realizar esta acción");
-      this.router.navigate(['/mis-solicitudes']);
-    }
-    this.IdSolicitud = this.solicitudRecuperada.id;
-    this.existenBienes = false;
-    this.existenServicios = false;
-    this.ArchivoAdjunto = false;
-    this.ArchivoAdjuntoActivos = false;
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService, private route: ActivatedRoute) {
+    this.obtenerQueryParams();
+    // if(this.tieneParams === false) {
+    //   console.log('1' + this.tieneParams);
+    //   this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'))
+    // }
+    // else {
+    //   this.solicitudRecuperada = this.consultaSolicitud;
+    //   console.log('2' + this.tieneParams);
+    // }
+    // if(this.solicitudRecuperada == null && this.tieneParams === false) {
+    //   this.mostrarAdvertencia("No se puede realizar esta acción");
+    //   this.router.navigate(['/mis-solicitudes']);
+    // }
+    // this.tieneParams === false ? this.IdSolicitud = this.solicitudRecuperada.id : this.IdSolicitud = parseInt(this.idRuta)
+    // this.existenBienes = false;
+    // this.existenServicios = false;
+    // this.ArchivoAdjunto = false;
+    // this.ArchivoAdjuntoActivos = false;
   }
 
   mostrarAdvertencia(mensaje: string) {
     this.toastr.warningToastr(mensaje, 'Validación');
   }
 
-  ngOnInit() {
+ async ngOnInit() {
     this.spinner.show();
-    console.log(this.solicitudRecuperada.estado);
-    this.ValidacionTabsPorEstado();
+    if(this.tieneParams === false) {
+      console.log('3' + this.tieneParams);
+      this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'))
+    }
+    else {
+      this.solicitudRecuperada = this.consultaSolicitud;
+      console.log('4' + this.tieneParams);
+      console.log(this.solicitudRecuperada);
+    }
+    if(this.solicitudRecuperada == null && this.tieneParams === false) {
+      this.mostrarAdvertencia("No se puede realizar esta acción");
+      this.router.navigate(['/mis-solicitudes']);
+    }
+    this.tieneParams === false ? this.IdSolicitud = this.solicitudRecuperada.id : this.IdSolicitud = parseInt(this.idRuta)
+    this.existenBienes = false;
+    this.existenServicios = false;
+    this.ArchivoAdjunto = false;
+    this.ArchivoAdjuntoActivos = false;
+    // this.ValidacionTabsPorEstado();
     this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
       solicitud => {
         this.fechaDeseada = solicitud.FechaDeseadaEntrega;
@@ -216,6 +245,26 @@ export class VerSolicitudTabComponent implements OnInit {
     );
   }
 
+  async obtenerSolicitud() {
+   this.consultaSolicitud = await this.servicio.ObtenerSolicitudTab(this.idRuta);
+   this.ValidacionTabsPorEstado();
+   console.log(this.consultaSolicitud);
+  }
+
+ async obtenerQueryParams() {
+    console.log('1');
+    this.idRuta = this.route.snapshot.queryParamMap.get('idSolicitud')
+    if(this.idRuta !== '' && this.idRuta !== undefined && this.idRuta !== null) {
+      this.tieneParams = true;
+     let a = await this.obtenerSolicitud();
+      // this.IdSolicitud = this.idRuta
+    }
+    else {
+      this.ValidacionTabsPorEstado();
+      console.log('2');
+    }
+  }
+
   abrirBienesServicios(template: TemplateRef<any>, idContrato){
 
     this.spinner.show();
@@ -248,6 +297,58 @@ export class VerSolicitudTabComponent implements OnInit {
       }
     );
       
+  }
+
+  validacionTabsPorEstadoParams(): any {
+    this.DeshabilitarTodosLosTabs();
+    switch (this.solicitudRecuperada.estado) {
+      case 'Borrador': {
+        this.HabilitarTabInformacionSolicitud();
+        break;
+      }
+      case 'Por sondear': {
+        this.HabilitarTabSondeo();
+        break;
+      }
+      case 'Por aprobar sondeo': {
+        this.HabilitarTabAprobarSondeo();
+        break;
+      }
+      case 'Por verificar material': {
+        this.HabilitarTabVerificarMaterial();
+        break;
+      }
+      case 'Por registrar activos': {
+        this.HabilitarTabRegistroActivos();
+        break;
+      }
+      case 'Por registrar solp sap': {
+        this.HabilitarTabRegistrarSolpSAP();
+        break;
+      }
+      case 'Rechazado': {
+        this.HabilitarTabRegistrarSolpSAP();
+        break;
+      }
+      case 'Por registrar contratos': {
+        this.HabilitarTabContratos();
+        break;
+      }
+      case 'Suspendida': {
+        this.HabilitarTabContratos();
+        break;
+      }
+      case 'Formalizar firmas contrato': {
+        this.HabilitarTabEntregas();
+        break;
+      }
+      case 'Por recepcionar': {
+        this.HabilitarTabEntregas();
+      }
+      case 'Recibido': {
+        this.HabilitarTodosLosTabs();
+        this.ValidacionSondeo();      }
+    }
   }
 
   ValidacionTabsPorEstado(): any {

@@ -320,28 +320,19 @@ export class EditarSolicitudComponent implements OnInit {
 
   consultaDatos() {
     this.spinner.show();
-    let idServicio = this.ctbFormulario.get('IdServicioBienes').value;
-    if (idServicio === undefined) {
-      idServicio = ''
-    }
-    let cliente = this.ctbFormulario.get('clienteBienes').value;
-    if (cliente === undefined) {
-      cliente = ''
-    }
-    let nombreServicio = this.ctbFormulario.get('nombreIdServicioBienes').value;
-    if (nombreServicio === undefined) {
-      nombreServicio = ''
-    }
-    let os = this.ctbFormulario.get('ordenBienes').value;
-    if (os === undefined) {
-      os = '';
-    }
     let parametros = {
-      "idservicio": idServicio,
-      "cliente": cliente,
-      "nombreservicio": nombreServicio,
-      "os": os,
+      "idservicio": this.ctbFormulario.get('IdServicioBienes').value,
+      "cliente": this.ctbFormulario.get('clienteBienes').value,
+      "nombreservicio": this.ctbFormulario.get('nombreIdServicioBienes').value,
+      "os": this.ctbFormulario.get('ordenBienes').value,
     }
+    let objToken = {
+      TipoConsulta: "Bodega",
+      suscriptionKey: "03f4673dd6b04790be91da8e57fddb52",
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         console.log(respuesta);
@@ -357,38 +348,78 @@ export class EditarSolicitudComponent implements OnInit {
         this.dataSourceDatos.data = this.datos;
         this.dataSourceDatos.filterPredicate = this.createFilter();
         this.leerFiltros();
-      }, err => {
+      }
+    ).catch(
+      (err) => {
+        this.spinner.hide();
         console.log(err);
       }
     )
   }
 
+  // consultaDatos() {
+  //   this.spinner.show();
+  //   let idServicio = this.ctbFormulario.get('IdServicioBienes').value;
+  //   if (idServicio === undefined) {
+  //     idServicio = ''
+  //   }
+  //   let cliente = this.ctbFormulario.get('clienteBienes').value;
+  //   if (cliente === undefined) {
+  //     cliente = ''
+  //   }
+  //   let nombreServicio = this.ctbFormulario.get('nombreIdServicioBienes').value;
+  //   if (nombreServicio === undefined) {
+  //     nombreServicio = ''
+  //   }
+  //   let os = this.ctbFormulario.get('ordenBienes').value;
+  //   if (os === undefined) {
+  //     os = '';
+  //   }
+  //   let parametros = {
+  //     "idservicio": idServicio,
+  //     "cliente": cliente,
+  //     "nombreservicio": nombreServicio,
+  //     "os": os,
+  //   }
+  //   this.servicioCrm.consultarDatosBodega(parametros).then(
+  //     (respuesta) => {
+  //       console.log(respuesta);
+  //       this.mostrarTable = true;
+  //       this.datos = respuesta;
+  //       if (this.datos.length === 0) {
+  //         this.dataSourceDatos.data = [];
+  //         this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+  //         this.spinner.hide();
+  //         return false;
+  //       }
+  //       this.spinner.hide();
+  //       this.dataSourceDatos.data = this.datos;
+  //       this.dataSourceDatos.filterPredicate = this.createFilter();
+  //       this.leerFiltros();
+  //     }, err => {
+  //       console.log(err);
+  //     }
+  //   )
+  // }
+
   consultarDatosServicios() {
     this.spinner.show();
-    let idServicio = this.ctsFormulario.get('idServicio').value;
-    if(idServicio === undefined) {
-      idServicio = '';
-    }
-    let cliente = this.ctsFormulario.get('clienteServicios').value;
-    if(cliente === undefined) {
-      cliente = '';
-    }
-    let nombreServicio = this.ctsFormulario.get('nombreIdServicio').value;
-    if(nombreServicio === undefined) {
-      nombreServicio = '';
-    }
-    let os = this.ctsFormulario.get('ordenServicios').value;
-    if(os === undefined) {
-      os = '';
-    }
     let parametros = {
-      "idservicio": idServicio,
-      "cliente": cliente,
-      "nombreservicio": nombreServicio,
-      "os": os,
+      "idservicio": this.ctsFormulario.get('idServicio').value,
+      "cliente": this.ctsFormulario.get('clienteServicios').value,
+      "nombreservicio": this.ctsFormulario.get('nombreIdServicio').value,
+      "os": this.ctsFormulario.get('ordenServicios').value,
     }
+    let objToken = {
+      TipoConsulta: "Bodega",
+      suscriptionKey: "03f4673dd6b04790be91da8e57fddb52",
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
+        console.log(respuesta);
         this.mostrarTableServicios = true;
         this.datosServicios = respuesta;
         if (this.datosServicios.length === 0) {
@@ -402,8 +433,55 @@ export class EditarSolicitudComponent implements OnInit {
         this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
         this.leerFiltrosServicios();
       }
+    ).catch(
+      (err) => {
+        this.spinner.hide();
+        console.log(err);
+      }
     )
   }
+
+  // consultarDatosServicios() {
+  //   this.spinner.show();
+  //   let idServicio = this.ctsFormulario.get('idServicio').value;
+  //   if(idServicio === undefined) {
+  //     idServicio = '';
+  //   }
+  //   let cliente = this.ctsFormulario.get('clienteServicios').value;
+  //   if(cliente === undefined) {
+  //     cliente = '';
+  //   }
+  //   let nombreServicio = this.ctsFormulario.get('nombreIdServicio').value;
+  //   if(nombreServicio === undefined) {
+  //     nombreServicio = '';
+  //   }
+  //   let os = this.ctsFormulario.get('ordenServicios').value;
+  //   if(os === undefined) {
+  //     os = '';
+  //   }
+  //   let parametros = {
+  //     "idservicio": idServicio,
+  //     "cliente": cliente,
+  //     "nombreservicio": nombreServicio,
+  //     "os": os,
+  //   }
+  //   this.servicioCrm.consultarDatosBodega(parametros).then(
+  //     (respuesta) => {
+  //       this.mostrarTableServicios = true;
+  //       this.datosServicios = respuesta;
+  //       if (this.datosServicios.length === 0) {
+  //         this.dataSourceDatosServicios.data = [];
+  //         this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+  //         this.spinner.hide();
+  //         return false;
+  //       }
+  //       this.spinner.hide();
+  //       this.dataSourceDatosServicios.data = this.datosServicios;
+  //       this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
+  //       this.leerFiltrosServicios();
+  //     }
+  //   )
+  // }
 
   leerFiltros() {
     this.clientBienes.valueChanges
@@ -4928,14 +5006,14 @@ export class EditarSolicitudComponent implements OnInit {
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
                       "numerosolp": `${this.solicitudRecuperada.id}`,
-                      "linksolp": `Solicitud ${this.solicitudRecuperada.id}`,
+                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.solicitudRecuperada.id}`,
                       // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
                     }
                     let obj = {
                       Title: `Solicitud ${this.solicitudRecuperada.id}`,
                       NroSolp: `${this.solicitudRecuperada.id}`,
-                      EnlaceSolp: `Solicitud ${this.solicitudRecuperada.id}`,
+                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.solicitudRecuperada.id}`,
                       // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
