@@ -424,13 +424,14 @@ export class ReasignarComponent implements OnInit {
       responsableResignarRevisarSondeo = this.nombreUsuario;
       fechaReasignadoRevisarSondeo = new Date();
       objetoActualizar = {
-        ResponsableId: this.reasignarModelo,
+        ResponsableId: this.nuevoSolicitanteId,
+        // ResponsableId: this.reasignarModelo,
         // CompradorId: this.reasignarModelo,
         ResponsableReasignarRevisarSonde: responsableResignarRevisarSondeo,
         FechaReasignadoRevisarSondeo: fechaReasignadoRevisarSondeo,
         SolicitanteOriginal: solicitanteOriginal,
         Solicitante: this.nuevoSolicitante,
-        SolicitantePersonaId: this.nuevoSolicitanteId.toString(),
+        SolicitantePersonaId: this.nuevoSolicitanteId,
         OrdenadorGastosId: this.jefeSeleccionado.toString(),
         ReasignadoRevisarSondeo: 'true',
         // PaisId: pais.id,

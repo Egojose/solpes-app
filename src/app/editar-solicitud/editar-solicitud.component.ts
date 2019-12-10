@@ -164,6 +164,8 @@ export class EditarSolicitudComponent implements OnInit {
   noMostrarOrdenEstadistica: boolean;
   isModalCTBShown: boolean = false;
   isModalShownCTS: boolean = false;
+  datosNull: any = [];
+  datosNullServicios: any = [];
 
   clientBienes = new FormControl('');
   ordenServBienes = new FormControl('');
@@ -247,6 +249,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.setDatosContablesServicios = false;
     this.enviarCrm = false;
     this.cargaDesdeExcel = false; 
+    this.cargaDesdeExcelServicios = false;
     this.cargaExcel = false;  //Habilitar cuando datos contables no obligatorios
     this.cargaExcelServicios = false;
     this.noMostrarOrdenEstadistica = false;
@@ -265,6 +268,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.obtenerTiposSolicitud();
     this.obtenerResponsableSoporte();
     this.ObtenerToken();
+   
     // this.showFilterAlCargar();
   }
 
@@ -656,6 +660,19 @@ export class EditarSolicitudComponent implements OnInit {
       this.dataIdOrdenSeleccionadosServicios.splice(el, 1);
     }
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
+  }
+
+  async consultarDatosContablesInicio() {
+    let bienes = await this.servicio.obtenerCtBienes(this.solicitudRecuperada.id);
+    this.datosNull = bienes.filter(x => {
+      return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null
+    });
+    console.log(this.datosNull)
+    let servicios = await this.servicio.obtenerCtServicios(this.solicitudRecuperada.id);
+    this.datosNullServicios = servicios.filter(x => {
+      return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null; 
+    })
+    console.log(this.datosNullServicios);
   }
 
 
@@ -4476,7 +4493,8 @@ export class EditarSolicitudComponent implements OnInit {
         template,
         Object.assign({}, {class: 'gray modal-lg'})
       )
-      this.cargaExcel = true;
+      this.cargaDesdeExcel = true;
+      console.log(this.cargaDesdeExcel);
     }
   }                                          // Hasta aquí
 
@@ -4499,7 +4517,7 @@ export class EditarSolicitudComponent implements OnInit {
         template,
         Object.assign({}, {class: 'gray modal-lg'})
       )
-      this.cargaExcelServicios = true;
+      this.cargaDesdeExcelServicios = true;
     }
   }                                                    //Hasta aquí
 
@@ -4721,7 +4739,8 @@ export class EditarSolicitudComponent implements OnInit {
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let FechaDeCreacion = new Date();
-    let solicitantePersona = this.usuarioActual.id
+    let solicitantePersona = this.usuarioActual.id;
+    let consulta = await this.consultarDatosContablesInicio();
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
@@ -4997,7 +5016,7 @@ export class EditarSolicitudComponent implements OnInit {
   private validarCondicionesTSdatosContables(): boolean {
     let respuesta = true;
     let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
-    if (this.cargaExcelServicios === false) {
+    if (this.datosNullServicios.length === 0) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf('');
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
@@ -5009,7 +5028,7 @@ export class EditarSolicitudComponent implements OnInit {
         respuesta = false;
       }
     }
-    else if (this.cargaExcelServicios) {
+    else if (this.datosNullServicios.length > 0) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf(null);
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf(null);
@@ -5072,7 +5091,7 @@ export class EditarSolicitudComponent implements OnInit {
    
     let respuesta = true;
     let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
-     if (this.cargaExcel === false) {
+     if (this.datosNull.length === 0) {
        let indexCostoInversion = this.condicionesTB.map(e => { return e.costoInversion; }).indexOf('');
        let indexNumeroCostoInversion = this.condicionesTB.map(e => { return e.numeroCostoInversion; }).indexOf('');
        let indexNumeroCuenta = this.condicionesTB.map(e => { return e.numeroCuenta; }).indexOf('');
@@ -5087,7 +5106,7 @@ export class EditarSolicitudComponent implements OnInit {
          respuesta = false;
        }
      }
-     else if (this.cargaExcel) {
+     else if (this.datosNull.length > 0) {
       let indexCostoInversion = this.condicionesTB.map(e => { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTB.map(e => { return e.numeroCostoInversion; }).indexOf(null);
       let indexNumeroCuenta = this.condicionesTB.map(e => { return e.numeroCuenta; }).indexOf(null);
