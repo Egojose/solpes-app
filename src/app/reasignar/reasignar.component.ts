@@ -66,6 +66,7 @@ export class ReasignarComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private formBuilder: FormBuilder) {
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
+    console.log(this.solicitudRecuperada.solicitantePersona.ID);
     this.correoManager = "";
     this.emptyManager = false;
     this.mostrarJefe = false;
@@ -205,6 +206,7 @@ export class ReasignarComponent implements OnInit {
 
   changeSolicitante($event) {
     this.spinner.show();
+    console.log($event)
     // let id = this.ReasignarSondeoFormulario.controls['ReasignarA'].value;
     let id = $event.target.value
     this.reasignarModelo = id;
@@ -406,6 +408,7 @@ export class ReasignarComponent implements OnInit {
       responsableReasignarSondeo = this.nombreUsuario;
       fechaReasignadoSondeo = new Date();
       objetoActualizar = {
+        // ResponsableId: this.solicitudRecuperada.solicitantePersona.ID.toString(),
         ResponsableId: this.reasignarModelo,
         CompradorId: this.reasignarModelo,
         ResponsableReasignarSondeo: responsableReasignarSondeo,
@@ -421,13 +424,14 @@ export class ReasignarComponent implements OnInit {
       responsableResignarRevisarSondeo = this.nombreUsuario;
       fechaReasignadoRevisarSondeo = new Date();
       objetoActualizar = {
-        ResponsableId: this.reasignarModelo,
+        ResponsableId: this.nuevoSolicitanteId,
+        // ResponsableId: this.reasignarModelo,
         // CompradorId: this.reasignarModelo,
         ResponsableReasignarRevisarSonde: responsableResignarRevisarSondeo,
         FechaReasignadoRevisarSondeo: fechaReasignadoRevisarSondeo,
         SolicitanteOriginal: solicitanteOriginal,
         Solicitante: this.nuevoSolicitante,
-        SolicitantePersonaId: this.nuevoSolicitanteId.toString(),
+        SolicitantePersonaId: this.nuevoSolicitanteId,
         OrdenadorGastosId: this.jefeSeleccionado.toString(),
         ReasignadoRevisarSondeo: 'true',
         // PaisId: pais.id,

@@ -61,7 +61,7 @@ export class Solicitud {
             (element.Responsable != null) ? element.Responsable.Title : null,
             element.OrdenEstadistica,
             element.NumeroOrdenEstadistica,
-            element.SolicitantePersona,
+            element.SolicitantePersonaId,
             element.ID,
             element.FaltaRecepcionBienes,
             element.FaltaRecepcionServicios,

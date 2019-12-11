@@ -18,8 +18,9 @@ export class CacheInterceptor implements HttpInterceptor {
     if (objToken.estado !== "false") {
       if (objToken.TipoConsulta === "crm") {
         req = req.clone({
-          setHeaders:{
-            Authorization : `Bearer ${objToken.token}`,
+          setHeaders: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${objToken.token}`,
             'Ocp-Apim-Subscription-Key': objToken.suscriptionKey
           }
         }); 

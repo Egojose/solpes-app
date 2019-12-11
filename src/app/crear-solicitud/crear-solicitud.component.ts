@@ -174,6 +174,7 @@ export class CrearSolicitudComponent implements OnInit {
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   cargaExcel: boolean;  //se debe habilitar para eliminar dato contables obligatorios en sondeo
+  cargaExcelServicios: boolean;
   noMostrarOrdenEstadistica: boolean;
 
   clientBienes = new FormControl('');
@@ -258,6 +259,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.enviarCrm = false;
     this.cargaDesdeExcel = false;    
     this.cargaExcel = false; //se debe habilitar para datos contables no obligatorios
+    this.cargaExcelServicios = false;
     this.noMostrarOrdenEstadistica = false;
     
   }
@@ -897,7 +899,7 @@ export class CrearSolicitudComponent implements OnInit {
     })
     let objDatosContablesBienes: any;
     let objDatosContablesServicios: any;
-    if(ordenEstadistica === 'SI' && datosContablesBienes.length > 0) {
+    if((ordenEstadistica === 'SI' || this.solpFormulario.controls['tipoSolicitud'].value === 'Sondeo') && datosContablesBienes.length > 0) {
       for(let i = 0; i < datosContablesBienes.length; i++) {
         let idBienes = datosContablesBienes[i].Id
         objDatosContablesBienes = {
@@ -918,7 +920,7 @@ export class CrearSolicitudComponent implements OnInit {
       }
       // this.servicio.actualiazarDatoContablesBienes(bienes.id ,objDatosContablesBienes)
     }
-    if(ordenEstadistica === 'SI' && datosContablesServicios.length > 0) {
+    if((ordenEstadistica === 'SI' || this.solpFormulario.controls['tipoSolicitud'].value === 'Sondeo') && datosContablesServicios.length > 0) {
       for(let i = 0; i < datosContablesServicios.length; i++) {
         let idServicios = datosContablesServicios[i].Id
         objDatosContablesServicios = {
@@ -3639,13 +3641,15 @@ deshabilitarCampoServicios() {
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
                       "numerosolp": `${this.idSolicitudGuardada}`,
-                      "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
+                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
+                      // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
                     }
                     let obj = {
                       Title: `Solicitud ${this.idSolicitudGuardada}`,
                       NroSolp: `${this.idSolicitudGuardada}`,
-                      EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
+                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
+                      // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
                     respuesta = await this.enviarServicioSolicitud(objCrm);
@@ -3821,7 +3825,7 @@ deshabilitarCampoServicios() {
   private validarCondicionesTSdatosContables(): boolean {
     let respuesta = true;
     let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
-    if (this.cargaExcel === false) {
+    if (this.cargaExcelServicios === false) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf('');
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
@@ -3833,7 +3837,7 @@ deshabilitarCampoServicios() {
         respuesta = false;
       }
     }
-    else if (this.cargaExcel) {
+    else if (this.cargaExcelServicios) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf(null);
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf(null);
@@ -4144,7 +4148,7 @@ deshabilitarCampoServicios() {
         template,
         Object.assign({}, {class: 'gray modal-lg'})
       )
-      this.cargaExcel = true;
+      this.cargaExcelServicios = true;
     }
   }                                          // Hasta aquí
 

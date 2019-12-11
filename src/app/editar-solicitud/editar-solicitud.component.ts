@@ -160,9 +160,12 @@ export class EditarSolicitudComponent implements OnInit {
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   cargaExcel: boolean;  //Habilitar cuando datos contables no obligatorios
+  cargaExcelServicios: boolean;
   noMostrarOrdenEstadistica: boolean;
-  isModalShownCTS = false;
-  isModalCTBShown = false;
+  isModalCTBShown: boolean = false;
+  isModalShownCTS: boolean = false;
+  datosNull: any = [];
+  datosNullServicios: any = [];
 
   clientBienes = new FormControl('');
   ordenServBienes = new FormControl('');
@@ -246,7 +249,9 @@ export class EditarSolicitudComponent implements OnInit {
     this.setDatosContablesServicios = false;
     this.enviarCrm = false;
     this.cargaDesdeExcel = false; 
+    this.cargaDesdeExcelServicios = false;
     this.cargaExcel = false;  //Habilitar cuando datos contables no obligatorios
+    this.cargaExcelServicios = false;
     this.noMostrarOrdenEstadistica = false;
   }
 
@@ -263,6 +268,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.obtenerTiposSolicitud();
     this.obtenerResponsableSoporte();
     this.ObtenerToken();
+   
     // this.showFilterAlCargar();
   }
 
@@ -314,28 +320,27 @@ export class EditarSolicitudComponent implements OnInit {
 
   consultaDatos() {
     this.spinner.show();
-    let idServicio = this.ctbFormulario.get('IdServicioBienes').value;
-    if (idServicio === undefined) {
-      idServicio = ''
-    }
-    let cliente = this.ctbFormulario.get('clienteBienes').value;
-    if (cliente === undefined) {
-      cliente = ''
-    }
-    let nombreServicio = this.ctbFormulario.get('nombreIdServicioBienes').value;
-    if (nombreServicio === undefined) {
-      nombreServicio = ''
-    }
-    let os = this.ctbFormulario.get('ordenBienes').value;
-    if (os === undefined) {
-      os = '';
-    }
+    let idServicio;
+    let cliente;
+    let nombreServicio;
+    let os;
+    this.ctbFormulario.get('IdServicioBienes').value === undefined ? idServicio = '' : idServicio = this.ctbFormulario.get('IdServicioBienes').value;
+    this.ctbFormulario.get('clienteBienes').value === undefined ? cliente = '' : cliente = this.ctbFormulario.get('clienteBienes').value;
+    this.ctbFormulario.get('nombreIdServicioBienes').value === undefined ? nombreServicio = '' : nombreServicio = this.ctbFormulario.get('nombreIdServicioBienes').value;
+    this.ctbFormulario.get('ordenBienes').value === undefined ? os = '' : os = this.ctbFormulario.get('ordenBienes').value;
     let parametros = {
       "idservicio": idServicio,
       "cliente": cliente,
       "nombreservicio": nombreServicio,
-      "os": os,
+      "os": os
     }
+    let objToken = {
+      TipoConsulta: "Bodega",
+      suscriptionKey: "03f4673dd6b04790be91da8e57fddb52",
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
         console.log(respuesta);
@@ -351,38 +356,86 @@ export class EditarSolicitudComponent implements OnInit {
         this.dataSourceDatos.data = this.datos;
         this.dataSourceDatos.filterPredicate = this.createFilter();
         this.leerFiltros();
-      }, err => {
+      }
+    ).catch(
+      (err) => {
+        this.spinner.hide();
         console.log(err);
       }
     )
   }
 
+  // consultaDatos() {
+  //   this.spinner.show();
+  //   let idServicio = this.ctbFormulario.get('IdServicioBienes').value;
+  //   if (idServicio === undefined) {
+  //     idServicio = ''
+  //   }
+  //   let cliente = this.ctbFormulario.get('clienteBienes').value;
+  //   if (cliente === undefined) {
+  //     cliente = ''
+  //   }
+  //   let nombreServicio = this.ctbFormulario.get('nombreIdServicioBienes').value;
+  //   if (nombreServicio === undefined) {
+  //     nombreServicio = ''
+  //   }
+  //   let os = this.ctbFormulario.get('ordenBienes').value;
+  //   if (os === undefined) {
+  //     os = '';
+  //   }
+  //   let parametros = {
+  //     "idservicio": idServicio,
+  //     "cliente": cliente,
+  //     "nombreservicio": nombreServicio,
+  //     "os": os,
+  //   }
+  //   this.servicioCrm.consultarDatosBodega(parametros).then(
+  //     (respuesta) => {
+  //       console.log(respuesta);
+  //       this.mostrarTable = true;
+  //       this.datos = respuesta;
+  //       if (this.datos.length === 0) {
+  //         this.dataSourceDatos.data = [];
+  //         this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+  //         this.spinner.hide();
+  //         return false;
+  //       }
+  //       this.spinner.hide();
+  //       this.dataSourceDatos.data = this.datos;
+  //       this.dataSourceDatos.filterPredicate = this.createFilter();
+  //       this.leerFiltros();
+  //     }, err => {
+  //       console.log(err);
+  //     }
+  //   )
+  // }
+
   consultarDatosServicios() {
     this.spinner.show();
-    let idServicio = this.ctsFormulario.get('idServicio').value;
-    if(idServicio === undefined) {
-      idServicio = '';
-    }
-    let cliente = this.ctsFormulario.get('clienteServicios').value;
-    if(cliente === undefined) {
-      cliente = '';
-    }
-    let nombreServicio = this.ctsFormulario.get('nombreIdServicio').value;
-    if(nombreServicio === undefined) {
-      nombreServicio = '';
-    }
-    let os = this.ctsFormulario.get('ordenServicios').value;
-    if(os === undefined) {
-      os = '';
-    }
+    let idServicio; 
+    let cliente;
+    let nombreServicio;
+    let os;
+    this.ctsFormulario.get('idServicio').value === undefined ? idServicio = '' : idServicio = this.ctsFormulario.get('idServicio').value;
+    this.ctsFormulario.get('clienteServicios').value === undefined ? cliente = '' : cliente = this.ctsFormulario.get('clienteServicios').value;
+    this.ctsFormulario.get('nombreIdServicio').value === undefined ? nombreServicio = '' : nombreServicio = this.ctsFormulario.get('nombreIdServicio').value;
+    this.ctsFormulario.get('ordenServicios').value === undefined ? os = '' : os = this.ctsFormulario.get('ordenServicios').value;
     let parametros = {
       "idservicio": idServicio,
       "cliente": cliente,
       "nombreservicio": nombreServicio,
-      "os": os,
+      "os": os
     }
+    let objToken = {
+      TipoConsulta: "Bodega",
+      suscriptionKey: "03f4673dd6b04790be91da8e57fddb52",
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     this.servicioCrm.consultarDatosBodega(parametros).then(
       (respuesta) => {
+        console.log(respuesta);
         this.mostrarTableServicios = true;
         this.datosServicios = respuesta;
         if (this.datosServicios.length === 0) {
@@ -396,8 +449,55 @@ export class EditarSolicitudComponent implements OnInit {
         this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
         this.leerFiltrosServicios();
       }
+    ).catch(
+      (err) => {
+        this.spinner.hide();
+        console.log(err);
+      }
     )
   }
+
+  // consultarDatosServicios() {
+  //   this.spinner.show();
+  //   let idServicio = this.ctsFormulario.get('idServicio').value;
+  //   if(idServicio === undefined) {
+  //     idServicio = '';
+  //   }
+  //   let cliente = this.ctsFormulario.get('clienteServicios').value;
+  //   if(cliente === undefined) {
+  //     cliente = '';
+  //   }
+  //   let nombreServicio = this.ctsFormulario.get('nombreIdServicio').value;
+  //   if(nombreServicio === undefined) {
+  //     nombreServicio = '';
+  //   }
+  //   let os = this.ctsFormulario.get('ordenServicios').value;
+  //   if(os === undefined) {
+  //     os = '';
+  //   }
+  //   let parametros = {
+  //     "idservicio": idServicio,
+  //     "cliente": cliente,
+  //     "nombreservicio": nombreServicio,
+  //     "os": os,
+  //   }
+  //   this.servicioCrm.consultarDatosBodega(parametros).then(
+  //     (respuesta) => {
+  //       this.mostrarTableServicios = true;
+  //       this.datosServicios = respuesta;
+  //       if (this.datosServicios.length === 0) {
+  //         this.dataSourceDatosServicios.data = [];
+  //         this.mostrarAdvertencia('Los criterios de búsqueda no coinciden con los datos almacenados en la bodega');
+  //         this.spinner.hide();
+  //         return false;
+  //       }
+  //       this.spinner.hide();
+  //       this.dataSourceDatosServicios.data = this.datosServicios;
+  //       this.dataSourceDatosServicios.filterPredicate = this.createFilterServicios();
+  //       this.leerFiltrosServicios();
+  //     }
+  //   )
+  // }
 
   leerFiltros() {
     this.clientBienes.valueChanges
@@ -656,6 +756,19 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctsFormulario.controls['numCicoCTS'].setValue(this.dataSeleccionadosServicios.toString());
   }
 
+  async consultarDatosContablesInicio() {
+    let bienes = await this.servicio.obtenerCtBienes(this.solicitudRecuperada.id);
+    this.datosNull = bienes.filter(x => {
+      return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null
+    });
+    console.log(this.datosNull)
+    let servicios = await this.servicio.obtenerCtServicios(this.solicitudRecuperada.id);
+    this.datosNullServicios = servicios.filter(x => {
+      return x.costoInversion === null || x.numeroCostoInversion === null || x.numeroCuenta === null; 
+    })
+    console.log(this.datosNullServicios);
+  }
+
 
   terminarSeleccionServicios() {
     this.mostrarTableServicios = false;
@@ -790,7 +903,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.nombreIdServBienes.setValue('');
     this.dataIdOrdenSeleccionados = [];
     this.dataSeleccionados = [];
-    this.selectAll = false   
+    this.selectAll = false;
   }
 
   limpiarFiltrosServicios() {
@@ -903,7 +1016,7 @@ export class EditarSolicitudComponent implements OnInit {
     })
     let objDatosContablesBienes: any;
     let objDatosContablesServicios: any;
-    if (ordenEstadistica === 'SI' && datosContablesBienes.length > 0) {
+    if ((ordenEstadistica === 'SI' || this.solpFormulario.controls['tipoSolicitud'].value === 'Sondeo') && datosContablesBienes.length > 0) {
       for (let i = 0; i < datosContablesBienes.length; i++) {
         let idBienes = datosContablesBienes[i].Id
         objDatosContablesBienes = {
@@ -923,7 +1036,7 @@ export class EditarSolicitudComponent implements OnInit {
         };
       }
     }
-    if (ordenEstadistica === 'SI' && datosContablesServicios.length > 0) {
+    if ((ordenEstadistica === 'SI' || this.solpFormulario.controls['tipoSolicitud'].value === 'Sondeo') && datosContablesServicios.length > 0) {
       for (let i = 0; i < datosContablesServicios.length; i++) {
         let idServicios = datosContablesServicios[i].Id
         objDatosContablesServicios = {
@@ -4535,7 +4648,8 @@ export class EditarSolicitudComponent implements OnInit {
         template,
         Object.assign({}, {class: 'gray modal-lg'})
       )
-      this.cargaExcel = true;
+      this.cargaDesdeExcel = true;
+      console.log(this.cargaDesdeExcel);
     }
   }                                          // Hasta aquí
 
@@ -4558,7 +4672,7 @@ export class EditarSolicitudComponent implements OnInit {
         template,
         Object.assign({}, {class: 'gray modal-lg'})
       )
-      this.cargaExcel = true;
+      this.cargaDesdeExcelServicios = true;
     }
   }                                                    //Hasta aquí
 
@@ -4780,7 +4894,8 @@ export class EditarSolicitudComponent implements OnInit {
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let FechaDeCreacion = new Date();
-    let solicitantePersona = this.usuarioActual.id
+    let solicitantePersona = this.usuarioActual.id;
+    let consulta = await this.consultarDatosContablesInicio();
 
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
@@ -4968,13 +5083,15 @@ export class EditarSolicitudComponent implements OnInit {
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
                       "numerosolp": `${this.solicitudRecuperada.id}`,
-                      "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
+                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.solicitudRecuperada.id}`,
+                      // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
                     }
                     let obj = {
                       Title: `Solicitud ${this.solicitudRecuperada.id}`,
                       NroSolp: `${this.solicitudRecuperada.id}`,
-                      EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
+                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.solicitudRecuperada.id}`,
+                      // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
                     respuesta = await this.enviarServicioSolicitud(objCrm);
@@ -5054,7 +5171,7 @@ export class EditarSolicitudComponent implements OnInit {
   private validarCondicionesTSdatosContables(): boolean {
     let respuesta = true;
     let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
-    if (this.cargaExcel === false) {
+    if (this.datosNullServicios.length === 0) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf('');
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf('');
@@ -5066,7 +5183,7 @@ export class EditarSolicitudComponent implements OnInit {
         respuesta = false;
       }
     }
-    else if (this.cargaExcel) {
+    else if (this.datosNullServicios.length > 0) {
       let indexCostoInversion = this.condicionesTS.map(e => { return e.costoInversion }).indexOf(null);
       // let indexCostoInversion =this.condicionesTS.map(function(e) { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTS.map(e => { return e.numeroCostoInversion; }).indexOf(null);
@@ -5129,7 +5246,7 @@ export class EditarSolicitudComponent implements OnInit {
    
     let respuesta = true;
     let tipoSolicitud = this.solpFormulario.get('tipoSolicitud').value;
-     if (this.cargaExcel === false) {
+     if (this.datosNull.length === 0) {
        let indexCostoInversion = this.condicionesTB.map(e => { return e.costoInversion; }).indexOf('');
        let indexNumeroCostoInversion = this.condicionesTB.map(e => { return e.numeroCostoInversion; }).indexOf('');
        let indexNumeroCuenta = this.condicionesTB.map(e => { return e.numeroCuenta; }).indexOf('');
@@ -5144,7 +5261,7 @@ export class EditarSolicitudComponent implements OnInit {
          respuesta = false;
        }
      }
-     else if (this.cargaExcel) {
+     else if (this.datosNull.length > 0) {
       let indexCostoInversion = this.condicionesTB.map(e => { return e.costoInversion; }).indexOf(null);
       let indexNumeroCostoInversion = this.condicionesTB.map(e => { return e.numeroCostoInversion; }).indexOf(null);
       let indexNumeroCuenta = this.condicionesTB.map(e => { return e.numeroCuenta; }).indexOf(null);
