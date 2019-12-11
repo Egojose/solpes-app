@@ -903,7 +903,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.nombreIdServBienes.setValue('');
     this.dataIdOrdenSeleccionados = [];
     this.dataSeleccionados = [];
-    this.selectAll = false   
+    this.selectAll = false;
   }
 
   limpiarFiltrosServicios() {

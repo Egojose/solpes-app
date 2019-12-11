@@ -79,6 +79,7 @@ export class VerSolicitudTabComponent implements OnInit {
   submitted = false;
   solicitudRecuperada: Solicitud;
   consultaSolicitud: Solicitud;
+  solicitudRecuperadaInicio: Solicitud;
   fueSondeo: boolean;
   contratoId: any;
   idRuta: any;
@@ -102,26 +103,7 @@ export class VerSolicitudTabComponent implements OnInit {
   CTS: boolean;
   CTB: boolean;
 
-  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService, private route: ActivatedRoute) {
-    this.obtenerQueryParams();
-    // if(this.tieneParams === false) {
-    //   console.log('1' + this.tieneParams);
-    //   this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'))
-    // }
-    // else {
-    //   this.solicitudRecuperada = this.consultaSolicitud;
-    //   console.log('2' + this.tieneParams);
-    // }
-    // if(this.solicitudRecuperada == null && this.tieneParams === false) {
-    //   this.mostrarAdvertencia("No se puede realizar esta acción");
-    //   this.router.navigate(['/mis-solicitudes']);
-    // }
-    // this.tieneParams === false ? this.IdSolicitud = this.solicitudRecuperada.id : this.IdSolicitud = parseInt(this.idRuta)
-    // this.existenBienes = false;
-    // this.existenServicios = false;
-    // this.ArchivoAdjunto = false;
-    // this.ArchivoAdjuntoActivos = false;
-  }
+  constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService, private route: ActivatedRoute) {}
 
   mostrarAdvertencia(mensaje: string) {
     this.toastr.warningToastr(mensaje, 'Validación');
@@ -129,28 +111,48 @@ export class VerSolicitudTabComponent implements OnInit {
 
  async ngOnInit() {
     this.spinner.show();
-    if(this.tieneParams === false) {
+    let respuesaSolicitud;
+    // this.obtenerQueryParams();
+    this.idRuta = this.route.snapshot.queryParamMap.get('idSolicitud')
+    if(this.idRuta === undefined || this.idRuta === null) {
       console.log('3' + this.tieneParams);
-      this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'))
+      this.solicitudRecuperadaInicio = JSON.parse(sessionStorage.getItem('solicitud'))
+      respuesaSolicitud = await this.obtenerSolicitud(this.solicitudRecuperadaInicio.id);
+      if(respuesaSolicitud === false) {
+        return false;
+      }
+     let respuestaSolicitud = Solicitud.fromJson(respuesaSolicitud)
+      this.solicitudRecuperada = respuestaSolicitud;
+      console.log('4' + this.tieneParams);
+      console.log(this.solicitudRecuperada);
+      console.log(this.solicitudRecuperada);
     }
     else {
-      this.solicitudRecuperada = this.consultaSolicitud;
+      respuesaSolicitud = await this.obtenerSolicitud(this.idRuta);
+      if(respuesaSolicitud === false) {
+        return false;
+      }
+     let respuestaSolicitud = Solicitud.fromJson(respuesaSolicitud)
+      this.solicitudRecuperada = respuestaSolicitud;
       console.log('4' + this.tieneParams);
       console.log(this.solicitudRecuperada);
     }
-    if(this.solicitudRecuperada == null && this.tieneParams === false) {
+    if(this.solicitudRecuperada == null) {
       this.mostrarAdvertencia("No se puede realizar esta acción");
       this.router.navigate(['/mis-solicitudes']);
     }
-    this.tieneParams === false ? this.IdSolicitud = this.solicitudRecuperada.id : this.IdSolicitud = parseInt(this.idRuta)
+    this.IdSolicitud = this.solicitudRecuperada.id
+    // this.tieneParams === false ? this.IdSolicitud = this.solicitudRecuperada.id : this.IdSolicitud = parseInt(this.idRuta)
     this.existenBienes = false;
     this.existenServicios = false;
     this.ArchivoAdjunto = false;
     this.ArchivoAdjuntoActivos = false;
-    // this.ValidacionTabsPorEstado();
-    this.servicio.ObtenerSolicitudBienesServicios(this.IdSolicitud).subscribe(
-      solicitud => {
-        this.fechaDeseada = solicitud.FechaDeseadaEntrega;
+    this.ValidacionTabsPorEstado();
+    this.cargarInfoCards(respuesaSolicitud);
+    this.consutarBienesYservicios(); 
+  }
+  cargarInfoCards(solicitud) {
+    this.fechaDeseada = solicitud.FechaDeseadaEntrega;
         this.fechaEnvio = solicitud.FechaDeCreacion;
         this.fechaRegistroSolpSap = solicitud.FechaRegistrarSolpsap
         this.direccion = solicitud.OrdenadorGastos.Department;
@@ -199,70 +201,68 @@ export class VerSolicitudTabComponent implements OnInit {
           
           this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales.replace(/(\r\n|\n|\r|\t)/gm, "")).condiciones;
         }
-        this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
-          RespuestaCondiciones => {
-            if (RespuestaCondiciones.length > 0) {
-              this.existenBienes = true;
-              this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
-              this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
-              this.dataSource.paginator = this.paginator;
-            }
-            this.spinner.hide();
-          }
-        );
-        this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
-          RespuestaContratos => {
-            if(RespuestaContratos.length > 0 ){
-            this.ObjContratos = Contratos.fromJsonList(RespuestaContratos);
-            this.tieneContrato = true;
-          }
-            this.spinner.hide();
-          }
-        );
-        this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
-          RespuestaCondicionesServicios => {
-            if (RespuestaCondicionesServicios.length > 0) {
-              this.existenServicios = true;
-              this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
-            }
-            this.spinner.hide();
-          }
-        );
-        this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
-          (respuesta) => {
-            this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
-            this.spinner.hide();
-          }
-        );
-        this.servicio.ObtenerRecepcionesServicioEntregaServicio(this.IdSolicitud).subscribe(
-          (respuesta) => {
-            this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
-            this.spinner.hide();
-          }
-        );
+  }
+  consutarBienesYservicios() {
+    this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
+      RespuestaCondiciones => {
+        if (RespuestaCondiciones.length > 0) {
+          this.existenBienes = true;
+          this.ObjCondicionesTecnicas = CondicionesTecnicasBienes.fromJsonList(RespuestaCondiciones);
+          this.dataSource = new MatTableDataSource(this.ObjCondicionesTecnicas);
+          this.dataSource.paginator = this.paginator;
+        }
+        this.spinner.hide();
+      }
+    );
+    this.servicio.ObtenerContratos(this.IdSolicitud).subscribe(
+      RespuestaContratos => {
+        if(RespuestaContratos.length > 0 ){
+        this.ObjContratos = Contratos.fromJsonList(RespuestaContratos);
+        this.tieneContrato = true;
+      }
+        this.spinner.hide();
+      }
+    );
+    this.servicio.ObtenerCondicionesTecnicasServicios(this.IdSolicitud).subscribe(
+      RespuestaCondicionesServicios => {
+        if (RespuestaCondicionesServicios.length > 0) {
+          this.existenServicios = true;
+          this.ObjCondicionesTecnicasServicios = CondicionTecnicaServicios.fromJsonList(RespuestaCondicionesServicios);
+        }
+        this.spinner.hide();
+      }
+    );
+    this.servicio.ObtenerRecepcionesBienesEntregaBienes(this.IdSolicitud).subscribe(
+      (respuesta) => {
+        this.ObjRecepcionBienes = RecepcionBienes.fromJsonList(respuesta);
+        this.spinner.hide();
+      }
+    );
+    this.servicio.ObtenerRecepcionesServicioEntregaServicio(this.IdSolicitud).subscribe(
+      (respuesta) => {
+        this.ObjRecepcionServicios = RecepcionServicios.fromJsonList(respuesta);
         this.spinner.hide();
       }
     );
   }
 
-  async obtenerSolicitud() {
-   this.consultaSolicitud = await this.servicio.ObtenerSolicitudTab(this.idRuta);
-   this.ValidacionTabsPorEstado();
-   console.log(this.consultaSolicitud);
-  }
-
- async obtenerQueryParams() {
-    console.log('1');
-    this.idRuta = this.route.snapshot.queryParamMap.get('idSolicitud')
-    if(this.idRuta !== '' && this.idRuta !== undefined && this.idRuta !== null) {
-      this.tieneParams = true;
-     let a = await this.obtenerSolicitud();
-      // this.IdSolicitud = this.idRuta
-    }
-    else {
-      this.ValidacionTabsPorEstado();
-      console.log('2');
-    }
+  async obtenerSolicitud(idSolicitud): Promise<any> {
+    let consultaSolicitud;
+    await this.servicio.ObtenerSolicitudTab(idSolicitud).then(
+      (respuesta) => {
+        consultaSolicitud = respuesta;
+        console.log(consultaSolicitud)
+      }
+    ).catch(
+      (error) => {
+        console.log(error)
+        this.mostrarAdvertencia('Error al consultar la solicitud');
+        consultaSolicitud = false;
+      }
+    )
+  //  this.ValidacionTabsPorEstado();
+   console.log(consultaSolicitud);
+   return consultaSolicitud;
   }
 
   abrirBienesServicios(template: TemplateRef<any>, idContrato){
@@ -297,58 +297,6 @@ export class VerSolicitudTabComponent implements OnInit {
       }
     );
       
-  }
-
-  validacionTabsPorEstadoParams(): any {
-    this.DeshabilitarTodosLosTabs();
-    switch (this.solicitudRecuperada.estado) {
-      case 'Borrador': {
-        this.HabilitarTabInformacionSolicitud();
-        break;
-      }
-      case 'Por sondear': {
-        this.HabilitarTabSondeo();
-        break;
-      }
-      case 'Por aprobar sondeo': {
-        this.HabilitarTabAprobarSondeo();
-        break;
-      }
-      case 'Por verificar material': {
-        this.HabilitarTabVerificarMaterial();
-        break;
-      }
-      case 'Por registrar activos': {
-        this.HabilitarTabRegistroActivos();
-        break;
-      }
-      case 'Por registrar solp sap': {
-        this.HabilitarTabRegistrarSolpSAP();
-        break;
-      }
-      case 'Rechazado': {
-        this.HabilitarTabRegistrarSolpSAP();
-        break;
-      }
-      case 'Por registrar contratos': {
-        this.HabilitarTabContratos();
-        break;
-      }
-      case 'Suspendida': {
-        this.HabilitarTabContratos();
-        break;
-      }
-      case 'Formalizar firmas contrato': {
-        this.HabilitarTabEntregas();
-        break;
-      }
-      case 'Por recepcionar': {
-        this.HabilitarTabEntregas();
-      }
-      case 'Recibido': {
-        this.HabilitarTodosLosTabs();
-        this.ValidacionSondeo();      }
-    }
   }
 
   ValidacionTabsPorEstado(): any {
