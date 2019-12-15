@@ -4838,6 +4838,8 @@ export class EditarSolicitudComponent implements OnInit {
     let solicitantePersona = this.usuarioActual.id;
     let consulta = await this.consultarDatosContablesInicio();
 
+    let datosContables = await this.consultarDatosContables();
+
     if (this.EsCampoVacio(tipoSolicitud)) {
       this.mostrarAdvertencia("El campo Tipo de solicitud es requerido");
       this.spinner.hide();
