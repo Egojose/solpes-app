@@ -4477,7 +4477,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.dataIdOrdenSeleccionados = [];
     this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre
+    let paisValidar = this.solpFormulario.controls["pais"].value
     let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
     this.mostrarFiltroBienes = false;
     this.mostrarTable = false;
@@ -4516,7 +4516,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.dataIdOrdenSeleccionadosServicios = [];
     this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
-    let paisValidar = this.solpFormulario.controls["pais"].value.nombre;
+    let paisValidar = this.solpFormulario.controls["pais"].value;
     let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
     if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
       this.mostrarAdvertencia('Debe seleccionar la orden estadística');
