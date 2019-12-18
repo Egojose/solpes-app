@@ -3653,7 +3653,7 @@ deshabilitarCampoServicios() {
                       IdServicios: this.dataTotalIds.toString()
                     }
                     respuesta = await this.enviarServicioSolicitud(objCrm);
-                    if (respuesta.statusCode === 200) {
+                    if (respuesta.StatusCode === 200) {
                       this.MostrarExitoso(respuesta["MensajeExito"]);
                     }
                     else {
