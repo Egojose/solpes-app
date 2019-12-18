@@ -3642,8 +3642,9 @@ deshabilitarCampoServicios() {
                     let objCrm = {
                       "numerosolp": `${this.idSolicitudGuardada}`,
                       "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
-                      // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                       "idservicios": this.dataTotalIds
+                      // "idservicios" : ["0029NQT600001"]
+                      // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
                     }
                     let obj = {
                       Title: `Solicitud ${this.idSolicitudGuardada}`,
@@ -3653,7 +3654,7 @@ deshabilitarCampoServicios() {
                       IdServicios: this.dataTotalIds.toString()
                     }
                     respuesta = await this.enviarServicioSolicitud(objCrm);
-                    if (respuesta.statusCode === 200) {
+                    if (respuesta.StatusCode === 200) {
                       this.MostrarExitoso(respuesta["MensajeExito"]);
                     }
                     else {
