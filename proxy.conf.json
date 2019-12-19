@@ -1,0 +1,8 @@
+{
+    "/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/*": {
+        "target": "https://login.microsoftonline.com",
+        "secure": false,
+        "changeOrigin": true
+    }
+}
+
