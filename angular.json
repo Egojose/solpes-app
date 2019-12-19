@@ -58,8 +58,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "solpes-app:build",
-            "proxyConfig": "src/proxy.conf.json"
+            "browserTarget": "solpes-app:build"
           },
           "configurations": {
             "production": {
