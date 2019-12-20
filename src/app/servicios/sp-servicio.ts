@@ -1,14 +1,16 @@
 import { environment } from "src/environments/environment";
-import { default as pnp } from 'sp-pnp-js';
+import { setup, Web, NodeFetchClient } from "sp-pnp-js";
+import { default as pnp, sp,  } from 'sp-pnp-js';
+// import { NodeFetchClient } from "sp-pnp-js";
 import { Injectable } from "@angular/core";
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { Solicitud } from "../dominio/solicitud";
 import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
 import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 import { RecepcionBienes } from "../entrega-bienes/recepcionBienes";
 import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
-import { HttpClient } from "@angular/common/http";
-import { promised } from "q";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+
 
 @Injectable()
 export class SPServicio {
@@ -29,12 +31,53 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6InBpVmxsb1FEU01LeGgxbTJ5Z3FHU1ZkZ0ZwQSIsImtpZCI6InBpVmxsb1FEU01LeGgxbTJ5Z3FHU1ZkZ0ZwQSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTc2NjkwMjQ5LCJuYmYiOjE1NzY2OTAyNDksImV4cCI6MTU3NjcxOTM0OSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI0OWRmZGM4Mi04NDYxLTQ3YjctYTA0Ny1hZWZhZTU3ZjMyMWZAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwic3ViIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.GG1KgpTTit4Z-Gi6DtLg3AufW-CUxtuBbFpgAfFshxKWHJo1j7T0FsFzCoh-psu40Z1C2xd43s918P5h6wynUx1umRO6oe8xnsWQcA5Lao-HTFnDXyS3FtvfMqZ5d8gUH1thX_Ng2GXtSbjiNCxmUf7T-X3HcLVje84gWDQD8nA94YlwKq-RzZNpyZT3JsG45rvLFhzEUfn4xFfo03a4DPaxlRgRyujo3q4xyIF4x5LMSmx2TCz_MASHZAb-9fOOgwtvZhqcU3UcuGe9p9F2_VLwiVlFMMfv79awEmQk1CLgRf6aG5o_uchlXyDRzIHNt9-YLfrzr704qnx875lGYw'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6InBpVmxsb1FEU01LeGgxbTJ5Z3FHU1ZkZ0ZwQSIsImtpZCI6InBpVmxsb1FEU01LeGgxbTJ5Z3FHU1ZkZ0ZwQSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTc2ODY3ODg0LCJuYmYiOjE1NzY4Njc4ODQsImV4cCI6MTU3Njg5Njk4NCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI0OWRmZGM4Mi04NDYxLTQ3YjctYTA0Ny1hZWZhZTU3ZjMyMWZAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwic3ViIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.m81qr7AaPvKvjnPnPs_-Gxev0odrJrEOTqp98sI-SFasLJKEvLGGBP2QBS6lkHvPZR2dklnCHOvd5zH2ewj_aal66JWHjG5uKVgexiQMMLoW_QXuTl2Oiowh7jSgbgdL96I2nlIQoxkuUpwIKbPDJIvcb9V3jVRsXCCzQIhtxUQH_LzWpXBkIS04NcyRZZUUTt2TsKjdoWWU26BCBsm9OqGDIIAVD4GjR6NEloKC4bC9nHyDwfLcEzPh179gFH8pwIhClH4yOPHqs2c88go0QgVggzs4L19qZdfgBCKqyUoUHuqBG0rMLvY_S9OY2iHLjZEzuAc5ucOW7SzczvvCUw'
             }
         }, environment.urlWeb);
 
         return configuracionSharepoint;
     }
+
+    public obtenerConfiguracionFetch() {
+        setup({
+            sp: {
+                fetchClientFactory: () => {
+                    return new NodeFetchClient("https://enovelsoluciones.sharepoint.com/sites/jam/solpes", "49dfdc82-8461-47b7-a047-aefae57f321f", "1KAq0p877hJYUA2nCQ4vo6YWfMJzWmSB/Gw2zzY9WGs=", "client_credentials");
+                },
+            },
+        });
+        let w = new Web("https://enovelsoluciones.sharepoint.com/sites/jam/solpes"); w.select("Title").get().then(w => { console.log(w); });
+    }
+
+    obtenerCustomToken() {
+
+    }
+
+   
+
+    public obtenerTokenCrm(): Observable<any> {
+        const url = 'https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token';
+        // const headers = new HttpHeaders({ 'Content-Type': 'application/json;odata=verbose', "Access-Control-Allow-Credentials": "true", "Access-Control-Allow-Origin": "*" }); 
+        // const options = { headers: headers };
+        const formData = new FormData();
+        formData.append('grant_type', 'client_credentials');
+        formData.append('client_id', '7d9d4669-0053-4859-98bd-3b76db1e78e9');
+        formData.append('client_secret', 'dtR7rwbU2yVEIOmZedecXlU52IJw2gxh9PoDaH5baYo=');
+        formData.append('resource', 'https://isaempresas.onmicrosoft.com/76c615d8-b58c-4bf0-8470-f90d6df94b9a')
+        // formData.append('grant_type', 'client_credentials');
+        // formData.append('client_id', '49dfdc82-8461-47b7-a047-aefae57f321f@920040b3-c220-48a2-a73f-1177fa2c098e');
+        // formData.append('client_secret', '1KAq0p877hJYUA2nCQ4vo6YWfMJzWmSB/Gw2zzY9WGs=');
+        // formData.append('resource', '00000003-0000-0ff1-ce00-000000000000/enovelsoluciones.sharepoint.com@920040b3-c220-48a2-a73f-1177fa2c098e');
+        
+        return this.httpClient.post<any>(url, formData);
+    }
+
+
+
+    // getToken() {
+    //     let respuesta = this.obtenerTokenCrm().web.get();
+    //     return respuesta
+    // }
     
     ObtenerUsuarioActual() {
         let respuesta = from(this.ObtenerConfiguracion().web.currentUser.get());
