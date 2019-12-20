@@ -3,6 +3,7 @@ export const environment = {
   urlRaiz: 'https://enovelsoluciones.sharepoint.com',
   urlWeb:'https://enovelsoluciones.sharepoint.com/sites/jam/solpes', 
   urlReltativa: '/sites/jam/solpes',
+  urlToken: 'https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token',
   listaEmpresas: 'Empresas',
   listaPaises: 'Paises',
   listaCategorias: 'Categorias',
