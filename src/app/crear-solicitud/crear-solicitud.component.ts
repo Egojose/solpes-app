@@ -280,17 +280,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.obtenerTiposSolicitud();
     this.obtenerQueryParams();
     this.ObtenerToken();
-    // this.tokenCrm();
-    this.prueba();
     this.obtenerResponsableSoporte();
-  }
-
-  prueba() {
-   this.servicio.obtenerTokenCrm().subscribe(
-     (respuesta) => {
-       console.log(respuesta);
-     }
-   );
   }
 
   ObtenerToken(){
@@ -310,16 +300,6 @@ export class CrearSolicitudComponent implements OnInit {
       }
     )
   }
-
-
-
-  // tokenCrm() {
-  //   this.servicio.getToken().then(
-  //     (respuesta) => {
-  //       console.log(respuesta);
-  //     }
-  //   )
-  // }
 
   obtenerQueryParams() {
     // this.tieneParams = (this.route.snapshot.queryParamMap.has('idCliente') || this.route.snapshot.queryParamMap.has('idOrdenServicio') || this.route.snapshot.queryParamMap.has('idServicio'));
