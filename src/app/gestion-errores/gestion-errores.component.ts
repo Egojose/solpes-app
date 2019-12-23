@@ -33,13 +33,14 @@ export class GestionErroresComponent implements OnInit {
     private spinner: NgxSpinnerService, 
     public toastr: ToastrManager,
     public servicioCrm: CrmServicioService) { 
-      this.ObtenerToken();
+      
     }
 
   displayedColumns: string[] = ['numerosolp', 'idservicios', 'NombreProceso', 'Acciones'];
   displayedColumnsContratos: string[] = ['numerosolp', 'numeroContrato', 'nombreProveedor', 'Acciones'];
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.ObtenerToken();
     this.ConsultarSolicitudesCrm();
   }
 
@@ -286,14 +287,12 @@ export class GestionErroresComponent implements OnInit {
       }      
     }
   }
-  
 
-  ObtenerToken(){
+  async ObtenerToken(){
     let token;
-    this.servicioCrm.obtenerToken().then(
+    await this.servicioCrm.obtenerToken().then(
       (res)=>{        
         this.token = res;
-        localStorage.setItem("id_token",token)
       }
     ).catch(
       (error)=>{
@@ -301,6 +300,21 @@ export class GestionErroresComponent implements OnInit {
       }
     )
   }
+  
+
+  // async ObtenerToken(){
+  //   let token;
+  //   await this.servicioCrm.obtenerToken().then(
+  //     (res)=>{        
+  //       this.token = res;
+  //       localStorage.setItem("id_token",token)
+  //     }
+  //   ).catch(
+  //     (error)=>{
+  //       localStorage.setItem("id_token","false")
+  //     }
+  //   )
+  // }
 
   async enviarServicioSolicitud(obj): Promise<any>{
     let respuesta;
