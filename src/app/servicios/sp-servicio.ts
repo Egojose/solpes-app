@@ -1,14 +1,16 @@
-import { environment } from "src/environments/environment.prod";
-import { default as pnp } from 'sp-pnp-js';
+import { environment } from "src/environments/environment";
+import { setup, Web, NodeFetchClient } from "sp-pnp-js";
+import { default as pnp, sp,  } from 'sp-pnp-js';
+// import { NodeFetchClient } from "sp-pnp-js";
 import { Injectable } from "@angular/core";
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { Solicitud } from "../dominio/solicitud";
 import { CondicionTecnicaBienes } from "../dominio/condicionTecnicaBienes";
 import { CondicionTecnicaServicios } from "../dominio/condicionTecnicaServicios";
 import { RecepcionBienes } from "../entrega-bienes/recepcionBienes";
 import { RecepcionServicios } from "../entrega-servicios/recepcionServicios";
-import { HttpClient } from "@angular/common/http";
-import { promised } from "q";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+
 
 @Injectable()
 export class SPServicio {
@@ -29,13 +31,13 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6InBpVmxsb1FEU01LeGgxbTJ5Z3FHU1ZkZ0ZwQSIsImtpZCI6InBpVmxsb1FEU01LeGgxbTJ5Z3FHU1ZkZ0ZwQSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTc2NjkwMjQ5LCJuYmYiOjE1NzY2OTAyNDksImV4cCI6MTU3NjcxOTM0OSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI0OWRmZGM4Mi04NDYxLTQ3YjctYTA0Ny1hZWZhZTU3ZjMyMWZAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwic3ViIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.GG1KgpTTit4Z-Gi6DtLg3AufW-CUxtuBbFpgAfFshxKWHJo1j7T0FsFzCoh-psu40Z1C2xd43s918P5h6wynUx1umRO6oe8xnsWQcA5Lao-HTFnDXyS3FtvfMqZ5d8gUH1thX_Ng2GXtSbjiNCxmUf7T-X3HcLVje84gWDQD8nA94YlwKq-RzZNpyZT3JsG45rvLFhzEUfn4xFfo03a4DPaxlRgRyujo3q4xyIF4x5LMSmx2TCz_MASHZAb-9fOOgwtvZhqcU3UcuGe9p9F2_VLwiVlFMMfv79awEmQk1CLgRf6aG5o_uchlXyDRzIHNt9-YLfrzr704qnx875lGYw'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6InBpVmxsb1FEU01LeGgxbTJ5Z3FHU1ZkZ0ZwQSIsImtpZCI6InBpVmxsb1FEU01LeGgxbTJ5Z3FHU1ZkZ0ZwQSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTc3MTA1NzE4LCJuYmYiOjE1NzcxMDU3MTgsImV4cCI6MTU3NzEzNDgxOCwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI0OWRmZGM4Mi04NDYxLTQ3YjctYTA0Ny1hZWZhZTU3ZjMyMWZAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwic3ViIjoiN2IyNWY5NDItZmNhMS00YTVmLWI5OTctYjM4MzZkMTMyYTNmIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.fUUWRV6nVf08KP-EBYLwl93aduU2piQUdrE45VzEBS-FT4D1gSOicCpT2dtxpZr9-gS8wiZQ6PqJiwm324IdGoHDY3BXhWqiTo8tTHECPTpuUYifPaTneeM2wimHbBrIgCRZZ3zy4ZM8BRmXfHcycsZ_Qfk0VlhEoCuXav_LgTqr2Fu1OLPYlo87kNjM11qTT6RKGXy5aPtoim8F1XCJ2zk5Jai0DuN-IicYjU8TiAYp2ZtabcXgfp3_dmalpsWtDKZRIXozzuJ8lPp6tE7YZTTqqFk8R12UW3dS7fL37IfvuAKlonW_txXsavDOGQqpCaQ5_q-lVjwrZQ1YjMDqRw'
             }
         }, environment.urlWeb);
 
         return configuracionSharepoint;
     }
-    
+   
     ObtenerUsuarioActual() {
         let respuesta = from(this.ObtenerConfiguracion().web.currentUser.get());
         return respuesta;

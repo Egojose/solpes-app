@@ -25,6 +25,7 @@ export class GestionErroresComponent implements OnInit {
   @ViewChild(MatSort) sortSolicitudes: MatSort;
   ObjContratos: any[];
   ObjSolicitudes: any[];
+  token;
 
   constructor(
     private servicio: SPServicio, 
@@ -32,13 +33,14 @@ export class GestionErroresComponent implements OnInit {
     private spinner: NgxSpinnerService, 
     public toastr: ToastrManager,
     public servicioCrm: CrmServicioService) { 
-      this.ObtenerToken();
+      
     }
 
   displayedColumns: string[] = ['numerosolp', 'idservicios', 'NombreProceso', 'Acciones'];
   displayedColumnsContratos: string[] = ['numerosolp', 'numeroContrato', 'nombreProveedor', 'Acciones'];
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.ObtenerToken();
     this.ConsultarSolicitudesCrm();
   }
 
@@ -105,9 +107,9 @@ export class GestionErroresComponent implements OnInit {
         break;
       }
     }
-    respuesta = {
-      StatusCode: 200
-    }
+    // respuesta = {
+    //   StatusCode: 200
+    // }
 
     let RespuestaCrmSP;
 
@@ -194,15 +196,14 @@ export class GestionErroresComponent implements OnInit {
   async CargarCrmContratos(element){    
     let respuesta; 
     let idServicios = element.IdServicios !== null? element.IdServicios.split(","): [];
-    
-   let obj = {
-      "numerocontratoproveedor": element.NroContrato,      
-      "numerosolp": element.NroSolp,      
-      "fechainiciocontrato": element.FechaInicio,      
-      "duracioncontrato": element.Duracion,      
-      "nombreproveedor": element.NombreProveedor,      
-      "objetocontrato": element.ObjetoContrato,      
-      "idservicios": idServicios      
+    let obj = {
+      "numerocontratoproveedor": element.NroContrato,
+      "numerosolp": element.NroSolp,
+      "fechainiciocontrato": element.FechaInicio,
+      "duracioncontrato": element.Duracion,
+      "nombreproveedor": element.NombreProveedor,
+      "objetocontrato": element.ObjetoContrato,
+      "idservicios": idServicios
     }
 
     for (let index = 0; index < 3; index++) { 
@@ -286,14 +287,12 @@ export class GestionErroresComponent implements OnInit {
       }      
     }
   }
-  
 
-  ObtenerToken(){
+  async ObtenerToken(){
     let token;
-    this.servicioCrm.obtenerToken().then(
+    await this.servicioCrm.obtenerToken().then(
       (res)=>{        
-        token = res["access_token"];
-        localStorage.setItem("id_token",token)
+        this.token = res;
       }
     ).catch(
       (error)=>{
@@ -301,9 +300,32 @@ export class GestionErroresComponent implements OnInit {
       }
     )
   }
+  
+
+  // async ObtenerToken(){
+  //   let token;
+  //   await this.servicioCrm.obtenerToken().then(
+  //     (res)=>{        
+  //       this.token = res;
+  //       localStorage.setItem("id_token",token)
+  //     }
+  //   ).catch(
+  //     (error)=>{
+  //       localStorage.setItem("id_token","false")
+  //     }
+  //   )
+  // }
 
   async enviarServicioSolicitud(obj): Promise<any>{
     let respuesta;
+    let objToken = {
+      TipoConsulta: "crm",
+      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+      token: this.token,
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     await this.servicioCrm.ActualizarSolicitud(obj).then(
       (res)=>{
         respuesta = res;
@@ -317,6 +339,14 @@ export class GestionErroresComponent implements OnInit {
 
   async enviarServicioContratos(obj): Promise<any>{
     let respuesta;
+    let objToken = {
+      TipoConsulta: "crm",
+      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+      token: this.token,
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
     await this.servicioCrm.ActualizarContratos(obj).then(
       (res)=>{
         respuesta = res;

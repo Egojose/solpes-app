@@ -15,6 +15,7 @@ export class CacheInterceptor implements HttpInterceptor {
     // const jwt = localStorage.getItem('id_token');
     let objTokenString = localStorage.getItem('id_token');
     let objToken = JSON.parse(objTokenString);
+    if (objToken !== false) {
     if (objToken.estado !== "false") {
       if (objToken.TipoConsulta === "crm") {
         req = req.clone({
@@ -42,7 +43,8 @@ export class CacheInterceptor implements HttpInterceptor {
             'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT'
           })
         });
-    }    
+    }
+  }    
     
     return next.handle(req);
   }

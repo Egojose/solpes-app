@@ -273,10 +273,10 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   ObtenerToken(){
-    let token;
+    // let token;
     this.servicioCrm.obtenerToken().then(
       (res)=>{        
-        this.token = res["access_token"];
+        this.token = res;
         // localStorage.setItem("id_token",token)
       }
     ).catch(
@@ -567,6 +567,18 @@ export class EditarSolicitudComponent implements OnInit {
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
+      if(data.OS === null || data.OS === undefined) {
+        data.OS = '';
+      }
+      if (data.Cliente === undefined) {
+        data.Cliente = '';
+      }
+      if(data.IdServicio === null || data.IdServicio === undefined) {
+        data.IdServicio = '';
+      }
+      if(data.Nombre_Servicio === null || data.Nombre_Servicio === undefined) {
+        data.Nombre_Servicio = '';
+      }
       console.log(data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
       && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
       && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
@@ -583,6 +595,18 @@ export class EditarSolicitudComponent implements OnInit {
   createFilterServicios(): (data: any, filter: string) => boolean {
     let filterFunction = function (data, filter): boolean {
       let searchTerms = JSON.parse(filter);
+      if(data.OS === null || data.OS === undefined) {
+        data.OS = '';
+      }
+      if (data.Cliente === undefined) {
+        data.Cliente = '';
+      }
+      if(data.IdServicio === null || data.IdServicio === undefined) {
+        data.IdServicio = '';
+      }
+      if(data.Nombre_Servicio === null || data.Nombre_Servicio === undefined) {
+        data.Nombre_Servicio = '';
+      }
       console.log(data.Cliente.toLowerCase().indexOf(searchTerms.Cliente.toLowerCase()) !== -1
       && data.OS.toString().toLowerCase().indexOf(searchTerms.OS.toLowerCase()) !== -1
       && data.IdServicio.toLowerCase().indexOf(searchTerms.IdServicio.toLowerCase()) !== -1
