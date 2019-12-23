@@ -37,48 +37,7 @@ export class SPServicio {
 
         return configuracionSharepoint;
     }
-
-    public obtenerConfiguracionFetch() {
-        setup({
-            sp: {
-                fetchClientFactory: () => {
-                    return new NodeFetchClient("https://enovelsoluciones.sharepoint.com/sites/jam/solpes", "49dfdc82-8461-47b7-a047-aefae57f321f", "1KAq0p877hJYUA2nCQ4vo6YWfMJzWmSB/Gw2zzY9WGs=", "client_credentials");
-                },
-            },
-        });
-        let w = new Web("https://enovelsoluciones.sharepoint.com/sites/jam/solpes"); w.select("Title").get().then(w => { console.log(w); });
-    }
-
-    obtenerCustomToken() {
-
-    }
-
    
-
-    public obtenerTokenCrm(): Observable<any> {
-        const url = 'https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token';
-        // const headers = new HttpHeaders({ 'Content-Type': 'application/json;odata=verbose', "Access-Control-Allow-Credentials": "true", "Access-Control-Allow-Origin": "*" }); 
-        // const options = { headers: headers };
-        const formData = new FormData();
-        formData.append('grant_type', 'client_credentials');
-        formData.append('client_id', '7d9d4669-0053-4859-98bd-3b76db1e78e9');
-        formData.append('client_secret', 'dtR7rwbU2yVEIOmZedecXlU52IJw2gxh9PoDaH5baYo=');
-        formData.append('resource', 'https://isaempresas.onmicrosoft.com/76c615d8-b58c-4bf0-8470-f90d6df94b9a')
-        // formData.append('grant_type', 'client_credentials');
-        // formData.append('client_id', '49dfdc82-8461-47b7-a047-aefae57f321f@920040b3-c220-48a2-a73f-1177fa2c098e');
-        // formData.append('client_secret', '1KAq0p877hJYUA2nCQ4vo6YWfMJzWmSB/Gw2zzY9WGs=');
-        // formData.append('resource', '00000003-0000-0ff1-ce00-000000000000/enovelsoluciones.sharepoint.com@920040b3-c220-48a2-a73f-1177fa2c098e');
-        
-        return this.httpClient.post<any>(url, formData);
-    }
-
-
-
-    // getToken() {
-    //     let respuesta = this.obtenerTokenCrm().web.get();
-    //     return respuesta
-    // }
-    
     ObtenerUsuarioActual() {
         let respuesta = from(this.ObtenerConfiguracion().web.currentUser.get());
         return respuesta;

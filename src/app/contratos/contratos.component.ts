@@ -117,10 +117,10 @@ export class ContratosComponent implements OnInit {
   }
 
   private ObtenerToken(){
-    let token;
+    // let token;
     this.servicioCrm.obtenerToken().then(
       (res)=>{        
-        this.token = res["access_token"];
+        this.token = res;
       }
     ).catch(
       (error)=>{
