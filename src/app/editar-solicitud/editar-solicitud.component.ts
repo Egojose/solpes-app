@@ -273,10 +273,10 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   ObtenerToken(){
-    let token;
+    // let token;
     this.servicioCrm.obtenerToken().then(
       (res)=>{        
-        this.token = res["access_token"];
+        this.token = res;
         // localStorage.setItem("id_token",token)
       }
     ).catch(
