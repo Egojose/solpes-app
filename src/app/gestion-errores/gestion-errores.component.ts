@@ -106,9 +106,9 @@ export class GestionErroresComponent implements OnInit {
         break;
       }
     }
-    respuesta = {
-      StatusCode: 200
-    }
+    // respuesta = {
+    //   StatusCode: 200
+    // }
 
     let RespuestaCrmSP;
 
