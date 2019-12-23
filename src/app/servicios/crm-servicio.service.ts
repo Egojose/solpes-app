@@ -19,12 +19,14 @@ export class CrmServicioService {
    }
 
   obtenerToken(){
-    const formData = new FormData();
-    formData.append('grant_type', 'client_credentials');
-    formData.append('client_id', '7d9d4669-0053-4859-98bd-3b76db1e78e9');
-    formData.append('client_secret', 'dtR7rwbU2yVEIOmZedecXlU52IJw2gxh9PoDaH5baYo=');
-    formData.append('resource', 'https://isaempresas.onmicrosoft.com/76c615d8-b58c-4bf0-8470-f90d6df94b9a')
-    return this.http.post(this.urlLogin, formData).toPromise();
+    const newUrlToken = 'https://solpbodegainternexa.azurewebsites.net/api/Token'
+    // const formData = new FormData();
+    // formData.append('grant_type', 'client_credentials');
+    // formData.append('client_id', '7d9d4669-0053-4859-98bd-3b76db1e78e9');
+    // formData.append('client_secret', 'dtR7rwbU2yVEIOmZedecXlU52IJw2gxh9PoDaH5baYo=');
+    // formData.append('resource', 'https://isaempresas.onmicrosoft.com/76c615d8-b58c-4bf0-8470-f90d6df94b9a')
+    // return this.http.post(this.urlLogin, formData).toPromise();
+    return this.http.get(newUrlToken).toPromise();
   }
 
   ActualizarSolicitud(ObjSolicitudes): Promise<any>{  
