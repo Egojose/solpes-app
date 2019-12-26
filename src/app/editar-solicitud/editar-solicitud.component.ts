@@ -1112,19 +1112,20 @@ export class EditarSolicitudComponent implements OnInit {
     let ordenServicios = this.ctsFormulario.get('ordenServicios').value;
     let idServicio = this.ctsFormulario.get('idServicio').value;
     let nombreIdServicio = this.ctsFormulario.get('nombreIdServicio').value;
-    if(clienteServicios === '' && ordenServicios === '' && idServicio === '' && nombreIdServicio === '') {
+
+    if((clienteServicios === '' || clienteServicios === undefined) && (ordenServicios === '' || ordenServicios === undefined) && (idServicio === '' || idServicio === undefined) && (nombreIdServicio === '' || nombreIdServicio === undefined)) {
       this.mostrarAdvertencia('Los campos están vacíos. No hay nada que consultar');
       return false;
     }
-    if(clienteServicios !== '' && clienteServicios.length < 4) {
+    if((clienteServicios !== '' && clienteServicios !== undefined) && clienteServicios.length < 4) {
       this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Cliente"');
       return false;
     }
-    if(idServicio !== '' && idServicio.length < 3) {
+    if((idServicio !== '' && idServicio !== undefined) && idServicio.length < 3) {
       this.mostrarAdvertencia('Se requieren al menos 3 caracteres si va a utilizar el campo "Id de servicios"')
       return false;
     }
-    if(nombreIdServicio !== '' && nombreIdServicio.length < 4) {
+    if((nombreIdServicio !== '' && nombreIdServicio !== undefined) && nombreIdServicio.length < 4) {
       this.mostrarAdvertencia('Se requieren al menos 4 caracteres si va a utilizar el campo "Nombre Id de servicio"')
       return false;
     }
