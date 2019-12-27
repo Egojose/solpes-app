@@ -801,13 +801,15 @@ export class ContratosComponent implements OnInit {
         let numeroContrato = element.numerocontratoproveedor;
         let NroSolp = element.numerosolp;
         let FechaInicio = element.fechainiciocontrato;
+        let fechaInicioModificada = FechaInicio.split('/')
+        let fechaFormato = `${fechaInicioModificada[1]}/${fechaInicioModificada[0]}/${fechaInicioModificada[2]}`
         let nombreproveedor = element.nombreproveedor;
         let objetocontrato = element.objetocontrato;
         let idservicios = element.idservicios.toString();
         let obj = {
           NroContrato: numeroContrato,
           NroSolp: NroSolp,          
-          FechaInicio: FechaInicio,
+          FechaInicio: fechaFormato,
           Duracion: duracion,
           NombreProveedor: nombreproveedor,
           ObjetoContrato: objetocontrato,
@@ -1082,7 +1084,7 @@ export class ContratosComponent implements OnInit {
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
 
-    return [day, month, year].join('/');
+    return [month, day, year].join('/');
 }
 
 }
