@@ -1053,10 +1053,10 @@ export class EditarSolicitudComponent implements OnInit {
         console.log(objDatosContablesBienes);
         await this.servicio.actualiazarDatosContablesBienes(idBienes, objDatosContablesBienes).then(
           (result) => {
-            this.mostrarInformacion('Se eliminaron los datos contables');
+            // this.mostrarInformacion('Se eliminaron los datos contables');
           }
         ), err => {
-          this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
+          // this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
         };
       }
     }
@@ -1073,10 +1073,10 @@ export class EditarSolicitudComponent implements OnInit {
 
         await this.servicio.actualizarDatosContablesServicios(idServicios, objDatosContablesServicios).then(
           (result) => {
-            this.mostrarInformacion('Se eliminaron los datos contables');
+            // this.mostrarInformacion('Se eliminaron los datos contables');
           }
         ), err => {
-          this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
+          // this.mostrarAdvertencia('No se eliminaron los datos contables' + err)
         };
       }
     }
@@ -5079,7 +5079,7 @@ export class EditarSolicitudComponent implements OnInit {
                           }
                           this.servicio.EnviarNotificacion(emailProps).then(
                             (res) => {
-                              this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
+                              // this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
                             }
                           )
                         }
