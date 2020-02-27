@@ -377,13 +377,14 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="ceco">Centro de costos / Orden de inversión</label>
+                                        <label for="ceco">Centro de costos / Orden de inversión / ID de Servicios</label>
                                         <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
                                                 <option value="">Seleccione</option>
                                                 <option value="Centro de costos">Centro de costos</option>
                                                 <option value="Orden de inversión">Orden de inversión</option>
                                                 <option value="ID de Servicios">ID de Servicios</option>
                                             </select>
+                                            <span *ngIf="mostrarFiltroBienes">Seleccione ID de Servicios para cargar la compra a un servicio de cliente</span>
                                         <div *ngIf="ctbSubmitted && f.cecoCTB.errors" class="invalid-feedback">
                                             <div *ngIf="f.cecoCTB.errors.required">Este campo es requerido</div>
                                         </div>
@@ -819,6 +820,7 @@
                                         <option value="Orden de inversión">Orden de inversión</option>
                                         <option value="ID de Servicios">ID de Servicios</option>
                                     </select>
+                                    <span *ngIf="mostrarFiltroServicios">Seleccione ID de Servicios para cargar la compra a un servicio de cliente</span>
                                         <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">
                                             <div *ngIf="f2.cecoCTS.errors.required">Este campo es requerido</div>
                                         </div>
