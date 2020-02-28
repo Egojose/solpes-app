@@ -401,7 +401,7 @@ export class MisPendientesComponent implements OnInit {
   confirmarReactivar() {
     let objReac;
     let objHistorial;
-    let estado = "Por registrar contratos";
+    let estado = "Negociar contrato";
     let fechaReactivacion = new Date();
     
     objReac = {
