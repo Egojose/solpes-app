@@ -96,6 +96,9 @@ export class ContratosComponent implements OnInit {
   valorAriba: boolean = false;
   mostrarPuntaje: boolean = false;
   token: any;
+  tipoEjecucion: any[] = [];
+  causaIncumplimiento: any[] = [];
+  mostrarCausalIncumplimiento: boolean = false;
  
   constructor(
     private servicio: SPServicio, 
@@ -157,15 +160,17 @@ export class ContratosComponent implements OnInit {
     }
   }
   
-    obtenerCausas() { this.servicio.obtenerCausalExcepcion().subscribe(
+  obtenerCausas() {
+    this.servicio.obtenerCausalExcepcion().subscribe(
       (respuesta) => {
         this.causalExcepcion = CausalExcepcion.fromJsonList(respuesta);
       }
     );
-      }     
+    this.obtenerTipoEjecucion();
+  }     
 
   verificarEstado(): boolean {
-    if (this.solicitudRecuperada.estado == 'Por registrar contratos') {
+    if (this.solicitudRecuperada.estado == 'Negociar contrato') {
       return true;
     } else {
       return false;
@@ -180,6 +185,15 @@ export class ContratosComponent implements OnInit {
     }
   }
 
+
+  obtenerTipoEjecucion() {
+    this.servicio.ObtenerTipoEjecucion().then(
+      (respuesta) => {
+        this.tipoEjecucion = respuesta;
+        console.log(respuesta);
+      }
+    )
+  }
 
   calcularAhorro() {
     let lineaBase = parseFloat(this.ContratosForm.get('LineaBaseContrato').value)
@@ -222,7 +236,7 @@ export class ContratosComponent implements OnInit {
     this.ContratosForm = this.formBuilder.group({
       TipoContrato: ['', Validators.required],
       SolpSapRfp: [''],
-      ContratoOC: ['', Validators.required],
+      ContratoOC: [''],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
       ContratoObraConexo: [false],
@@ -247,7 +261,11 @@ export class ContratosComponent implements OnInit {
       evaluacion: ['', Validators.required],
       puntaje: ['', Validators.required],
       valorPuntaje: [''],
-      tipoEjecucion: ['']
+      tipoEjecucion: [''],
+      estrategiaAplicada: [''],
+      cantidadProveedores: [''],
+      cumpleAtencion: [''],
+      causalIncumplimiento: ['']
     });
 
     this.servicio.ObtenerTodosLosUsuarios().subscribe(
@@ -345,6 +363,23 @@ export class ContratosComponent implements OnInit {
       this.mostrarAdvertencia('El porcentaje del IVA debe ser máximo de 100');
       return false;
     }
+  }
+
+  causalIncumplimiento($event) {
+    console.log($event);
+    if($event.target.value === 'No') {
+      this.mostrarCausalIncumplimiento = true;
+    }
+    else {
+      this.mostrarCausalIncumplimiento = false;
+      this.ContratosForm.controls['causalIncumplimiento'].setValue('');
+    }
+    this.servicio.ObtenerCausalIncumplimiento().then(
+      (respuesta) => {
+        this.causaIncumplimiento = respuesta;
+        console.log(this.causaIncumplimiento);
+      }
+    )
   }
 
   validarNumeroContrato() {
@@ -535,12 +570,12 @@ export class ContratosComponent implements OnInit {
           let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
           let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
           if (cantidadBienes === 0 && cantidadServicios === 0) {
-            let respuestaCambioSolicitud = await this.CambioSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais);
+            let respuestaCambioSolicitud = await this.CambioSolicitud(this.IdSolicitud, "Verificar y firmar contrato", bpoPais);
             let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
             notificacion = {
               IdSolicitud: this.IdSolicitud.toString(),
               ResponsableId: bpoPais,
-              Estado: 'Formalizar firmas contrato'
+              Estado: 'Verificar y firmar contrato'
             }
           }
           else {
@@ -548,7 +583,7 @@ export class ContratosComponent implements OnInit {
             notificacion = {
               IdSolicitud: this.IdSolicitud.toString(),
               ResponsableId: bpoPais,
-              Estado: 'Formalizar firmas contrato'
+              Estado: 'Verificar y firmar contrato'
             }
           }
           let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
@@ -629,12 +664,12 @@ export class ContratosComponent implements OnInit {
       let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
 
       if (cantidadBienes === 0 && cantidadServicios === 0) {
-        let respuestaCambioSolicitud = await this.CambioSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais);
+        let respuestaCambioSolicitud = await this.CambioSolicitud(this.IdSolicitud, "Verificar y firmar contrato", bpoPais);
         let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
         let notificacion = {
           IdSolicitud: this.IdSolicitud.toString(),
           ResponsableId: bpoPais,
-          Estado: 'Formalizar firmas contrato'
+          Estado: 'Verificar y firmar contrato'
         }
       }
       else {
@@ -642,7 +677,7 @@ export class ContratosComponent implements OnInit {
         let notificacion = {
           IdSolicitud: this.IdSolicitud.toString(),
           ResponsableId: bpoPais,
-          Estado: 'Formalizar firmas contrato'
+          Estado: 'Verificar y firmar contrato'
         }
       }
 
@@ -727,7 +762,7 @@ export class ContratosComponent implements OnInit {
 
   async CambioSolicitud(IdSolicitud, Estado, bpoPais): Promise<any>{
     let respuesta;
-    await this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais).then(
+    await this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Verificar y firmar contrato", bpoPais).then(
     (resultado) => {
       respuesta = true;
     }).catch(

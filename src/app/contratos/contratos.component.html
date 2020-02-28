@@ -176,20 +176,19 @@
         <div class="form-group col-md-4">
             <label for="tipoEjecucion">Tipo de ejecución</label>
             <select class="form-control" formControlName="tipoEjecucion">
-                <option value="Transaccional" [disabled]="Guardado === true">Transaccional</option>
-                <option value="Recurrente" [disabled]="Guardado === true">Recurrente</option> 
+                <option *ngFor="let ejecucion of tipoEjecucion" [value]="ejecucion.Title" [text]="ejecucion.Title">{{ejecucion.Title}}
+                </option>
             </select>
         </div>
-
     </div>
     <div class="row">
-        <div class="form-group col-md-4">
+        <!-- <div class="form-group col-md-4">
             <label for="inputEmail4">N° Contrato/Orden de Compra <span class="camposRequeridos">*</span></label>
             <input type="text" formControlName="ContratoOC" numbersOnly class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ContratoOC.errors }" [readonly]="Guardado === true" (keyup)="validarNumeroContrato()">
             <div *ngIf="submitted && f.ContratoOC.errors" class="invalid-feedback">
                 <div *ngIf="f.ContratoOC.errors.required">Es requerido</div>
             </div>
-        </div>
+        </div> -->
         <div class="form-group col-md-4">
             <label for="inputEmail4">Requiere N° de Orden Inicio <span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="OrdenInicio" [ngClass]="{ 'is-invalid': submitted && f.OrdenInicio.errors }">
@@ -211,6 +210,48 @@
             </select>
             <div *ngIf="submitted && f.OrdenInicio.errors" class="invalid-feedback">
                 <div *ngIf="f.evaluacion.errors.required">Es requerido</div>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputEmail4">Estrategia aplicada <span class="camposRequeridos">*</span></label>
+            <select name="" id="" class="form-control" formControlName="estrategiaAplicada" [ngClass]="{ 'is-invalid': submitted && f.evaluacion.errors }">
+                <option value="" [disabled]="Guardado === true"></option>
+                <option value="Default" [disabled]="Guardado === true">Default</option>
+                <option value="Otra" [disabled]="Guardado === true">Otra</option>
+            </select>
+            <div *ngIf="submitted && f.estrategiaAplicada.errors" class="invalid-feedback">
+                <div *ngIf="f.estrategiaAplicada.errors.required">Es requerido</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label for="inputEmail4">Cantidad de proveedores<span class="camposRequeridos">*</span></label>
+            <input type="number" formControlName="cantidadProveedores" class="form-control" [value]="cantidadProveedores">
+            <div *ngIf="submitted && f.cantidadProveedores.errors" class="invalid-feedback">
+                <div *ngIf="f.cantidadProveedores.errors.required">Es requerido</div>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label>¿Cumplió el indicador de tiempo de atención?<span class="camposRequeridos">*</span></label>
+            <select name="" id="" class="form-control" formControlName="cumpleAtencion" (change)="causalIncumplimiento($event)" [ngClass]="{ 'is-invalid': submitted && f.cumpleAtencion.errors }">
+                <option value="" [disabled]="Guardado === true"></option>
+                <option value="Si" [disabled]="Guardado === true">SÍ</option>
+                <option value="No" [disabled]="Guardado === true">NO</option>
+            </select>
+            <div *ngIf="submitted && f.cumpleAtencion.errors" class="invalid-feedback">
+                <div *ngIf="f.cumpleAtencion.errors.required">Es requerido</div>
+            </div>
+        </div>
+        <div class="form-group col-md-4" *ngIf="mostrarCausalIncumplimiento">
+            <label>Causal de incumplimiento</label>
+            <select name="" id="" class="form-control" formControlName="causalIncumplimiento" [ngClass]="{ 'is-invalid': submitted && f.causalIncumplimiento.errors }">
+                <option [value]=""></option>
+                <option *ngFor="let causa of causaIncumplimiento" [value]="causa.Title" [text]="causa.Title">{{causa.Title}}
+                </option>
+            </select>
+            <div *ngIf="submitted && f.causalIncumplimiento.errors" class="invalid-feedback">
+                <div *ngIf="f.causalIncumplimiento.errors.required">Es requerido</div>
             </div>
         </div>
     </div>
