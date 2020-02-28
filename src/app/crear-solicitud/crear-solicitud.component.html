@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
-                    <label for="tipo-solicitud">Tipo de solicitud</label><span class="asterisco-obligatorio">*</span>
+                    <label for="tipo-solicitud">Tipo de solicitud !esto es una prueba!</label><span class="asterisco-obligatorio">*</span>
                     <div class="row">
                         <mat-radio-group class="tipo-solicitud-group" layout="row" formControlName="tipoSolicitud">
                             <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" *ngFor="let tipoSolicitud of tiposSolicitud" [value]="tipoSolicitud.nombre" (change)="ValidacionesTipoSolicitud(tipoSolicitud)">
