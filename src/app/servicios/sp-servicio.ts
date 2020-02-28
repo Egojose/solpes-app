@@ -723,8 +723,18 @@ export class SPServicio {
         return respuesta;
     }
 
-   EnviarNotificacion(objNotificacion) {
+    EnviarNotificacion(objNotificacion) {
         let respuesta = this.ObtenerConfiguracionConPost().utility.sendEmail(objNotificacion);
+        return respuesta;
+    }
+
+    ObtenerTipoEjecucion() {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaTipoEjecucion).items.getAll();
+        return respuesta;
+    }
+
+    ObtenerCausalIncumplimiento() {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCausalIncumplimento).items.getAll();
         return respuesta;
     }
 
