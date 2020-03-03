@@ -66,6 +66,7 @@ export class ContratosComponent implements OnInit {
   ordenadorGasto: any;
   empresa: any;
   codAriba: any;
+  cuadrante: string;
   categoria: any;
   subCategoria: any;
   comprador: any;
@@ -282,6 +283,7 @@ export class ContratosComponent implements OnInit {
             this.ordenadorGasto = this.ObjSolicitud.OrdenadorGastos.Title;
             this.empresa = this.ObjSolicitud.Empresa.Title;
             this.codAriba = this.ObjSolicitud.CodigoAriba;
+            this.cuadrante = this.ObjSolicitud.Cuadrante;
             this.Pais = this.ObjSolicitud.Pais.Title;
             this.paisId = this.ObjSolicitud.Pais.Id;
             this.categoria = this.ObjSolicitud.Categoria;
@@ -458,6 +460,11 @@ export class ContratosComponent implements OnInit {
     let ejecucion = this.ContratosForm.controls['tipoEjecucion'].value;
     let puntaje;
     let valorPuntaje = this.ContratosForm.controls['valorPuntaje'].value;
+    let estrategia = this.ContratosForm.controls['estrategiaAplicada'].value;
+    let cantidadProveedores = this.ContratosForm.controls['cantidadProveedores'].value;
+    let cumpleAtencion = this.ContratosForm.controls['cumpleAtencion'].value;
+    let causalIncumplimiento = this.ContratosForm.controls['causalIncumplimiento'].value;
+
     ariba === 'N/A'? causa = causa : causa = "";
     if(ariba === "" || ariba === null) {
       this.mostrarAdvertencia('El campo AribaSourcing es requerido');
@@ -521,8 +528,11 @@ export class ContratosComponent implements OnInit {
         CausalExcepcion: causa,
         RequiereEvaluacion: evaluacion,
         PuntajeActualEvaluacionProveedor: puntaje,
-        TipoEjecucion: ejecucion
-
+        TipoEjecucion: ejecucion,
+        estrategiaAplicada: estrategia,
+        CantidadProveedores: `${cantidadProveedores}`,
+        CumpleIndicadorAtencion: cumpleAtencion,
+        CausalIncumplimiento: causalIncumplimiento
       }
     } else {
       ObjContrato = {
@@ -553,7 +563,11 @@ export class ContratosComponent implements OnInit {
         CausalExcepcion: causa,
         RequiereEvaluacion: evaluacion,
         PuntajeActualEvaluacionProveedor: puntaje,
-        TipoEjecucion: ejecucion
+        TipoEjecucion: ejecucion,
+        estrategiaAplicada: estrategia,
+        CantidadProveedores: `${cantidadProveedores}`,
+        CumpleIndicadorAtencion: cumpleAtencion,
+        CausalIncumplimiento: causalIncumplimiento
       }
     }
     let notificacion;
