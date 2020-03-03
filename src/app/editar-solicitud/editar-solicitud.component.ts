@@ -3229,6 +3229,7 @@ export class EditarSolicitudComponent implements OnInit {
       subcategoria: [''],
       comprador: [''],
       codigoAriba: [''],
+      cuadrante: [''],
       fechaEntregaDeseada: [''],
       alcance: [''],
       justificacion: [''],
@@ -4783,6 +4784,7 @@ export class EditarSolicitudComponent implements OnInit {
       comprador = null;
     }
     let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
+    let cuadrante = this.solpFormulario.controls['cuadrante'].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
@@ -4812,6 +4814,7 @@ export class EditarSolicitudComponent implements OnInit {
       (valorSubcategoria != null) ? valorSubcategoria : null,
       (comprador != null) ? comprador : null,
       (codigoAriba != '') ? codigoAriba : '',
+      (cuadrante !== '') ? cuadrante : '',
       (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
       (alcance != '') ? alcance : '',
       (justificacion != '') ? justificacion : '',
@@ -4854,6 +4857,7 @@ export class EditarSolicitudComponent implements OnInit {
     let subcategoria = this.solpFormulario.controls["subcategoria"].value;
     let comprador = this.solpFormulario.controls["comprador"].value;
     let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
+    let cuadrante = this.solpFormulario.controls['cuadrante'].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
@@ -5017,6 +5021,7 @@ export class EditarSolicitudComponent implements OnInit {
                 valorSubcategoria,
                 valorComprador,
                 codigoAriba,
+                cuadrante,
                 fechaEntregaDeseada,
                 alcance,
                 justificacion,
