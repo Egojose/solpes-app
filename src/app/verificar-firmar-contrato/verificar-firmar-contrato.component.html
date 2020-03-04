@@ -1,3 +1,43 @@
-<p>
-  verificar-firmar-contrato works!
-</p>
+<h2>Verificar y firmar contrato</h2>
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar contrato">
+</mat-form-field>
+
+
+<div class="mat-elevation-z8" [hidden]="empty">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="Consecutivo">
+      <th mat-header-cell *matHeaderCellDef> Consecutivo </th>
+      <td mat-cell *matCellDef="let element"> {{element.SolicitudId}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="NroSolpSap">
+      <th mat-header-cell *matHeaderCellDef> Nro Solp-Sap </th>
+      <td mat-cell *matCellDef="let element"> {{element.NumSolpSAP}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="ObjetoContrato">
+      <th mat-header-cell *matHeaderCellDef> Objeto del contrato </th>
+      <td mat-cell *matCellDef="let element"> {{element.ObjContrato}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="TipoContrato">
+      <th mat-header-cell *matHeaderCellDef> Tipo de contrato </th>
+      <td mat-cell *matCellDef="let element"> {{element.TipoContrato}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Acciones">
+      <th mat-header-cell *matHeaderCellDef> Ver contrato </th>
+      <td mat-cell *matCellDef="let element">
+        <button class="btn btn-success" (click)="VerContrato(element)">Ver contrato</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

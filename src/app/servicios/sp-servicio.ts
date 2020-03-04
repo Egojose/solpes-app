@@ -564,6 +564,11 @@ export class SPServicio {
         return respuesta;
     }
 
+    ObtenerContratosNoVerificados() {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("Verificado eq 0").getAll();
+        return respuesta;
+    } 
+
     guardarSondeoBienes(idCondicion, objSondeo){   
         let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion).update(objSondeo);        
         return respuesta;
@@ -739,7 +744,7 @@ export class SPServicio {
     }
 
     ObtenerCausalIncumplimiento() {
-        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaCausalIncumplimento).items.getAll();
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCausalIncumplimento).items.getAll();
         return respuesta;
     }
 
