@@ -41,6 +41,7 @@ import { GestionErroresComponent } from './gestion-errores/gestion-errores.compo
 import { CrmServicioService } from './servicios/crm-servicio.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { VerificarFirmarContratoComponent } from './verificar-firmar-contrato/verificar-firmar-contrato.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { environment } from '../environments/environment';
     ConsultaGeneralComponent,
     ReportarContratosComponent,
     ReportarSolicitudComponent,
-    GestionErroresComponent
+    GestionErroresComponent,
+    VerificarFirmarContratoComponent
   ],
   entryComponents: [ReasignarComponent],
   imports: [
