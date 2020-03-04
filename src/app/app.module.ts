@@ -125,7 +125,8 @@ import { VerificarFirmarContratoComponent } from './verificar-firmar-contrato/ve
       {path:'consulta-general', component:ConsultaGeneralComponent},
       {path:'reportar-contratos', component:ReportarContratosComponent},
       {path:'reportar-solicitud', component:ReportarSolicitudComponent},
-      {path:'gestion-errores', component:GestionErroresComponent}
+      {path:'gestion-errores', component:GestionErroresComponent},
+      {path: 'Verificar-firmar-contrato', component: VerificarFirmarContratoComponent}
     ]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
