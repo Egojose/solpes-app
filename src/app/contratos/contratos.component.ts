@@ -526,7 +526,7 @@ export class ContratosComponent implements OnInit {
       return false;
     }
 
-    if(this.ContratosForm.controls['cumpleAtencion'].value === 'Si' && (this.ContratosForm.controls['causalIncumplimiento'].value === '' || this.ContratosForm.controls['causalIncumplimiento'].value === null)) {
+    if(this.ContratosForm.controls['cumpleAtencion'].value === 'No' && (this.ContratosForm.controls['causalIncumplimiento'].value === '' || this.ContratosForm.controls['causalIncumplimiento'].value === null)) {
       this.mostrarAdvertencia('El campo causal de incumplimiento debe contener un valor válido');
       this.spinner.hide();
       return false;
