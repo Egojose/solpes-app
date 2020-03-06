@@ -330,7 +330,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.HabilitarTabRegistrarSolpSAP();
         break;
       }
-      case 'Por registrar contratos': {
+      case 'Negociar contrato': {
         this.HabilitarTabContratos();
         break;
       }

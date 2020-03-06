@@ -1,0 +1,164 @@
+<br>
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-title">Gestionar contrato</h2>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4">
+        <span><b>Tipo de contrato:</b> {{tipoContrato}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Nro solp-sap:</b> {{NroSolpSap}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Tipo de ejecución:</b> {{tipoEjecucion}}</span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>Requiere N° de Orden Inicio:</b> {{reqNroOrdenInicio}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Requiere evaluación:</b> {{reqEvaluacion}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Estrategia aplicada:</b> {{estrategia}}</span>
+      </div> 
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>Cantidad de proveedores:</b> {{cantidadProveedores}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>¿Cumplió el indicador de tiempo de atención?:</b> {{cumpleIndicador}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Causal de incumplimiento:</b> {{causalIncumplimiento}}</span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>Objeto del contrato:</b> {{ObjetoContrato}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Contrato de Obra o Conexo:</b> {{contratoObra}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Moneda del contrato:</b> {{moneda}}</span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>Porcentaje IVA del contrato:</b> {{porcentajeIva}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Valor contractual sin impuestos: </b> {{valorContractual}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Línea base del contrato sin impuestos:</b> {{lineaBase}}</span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>Ahorro generado en contrato sin impuestos:</b> {{ahorroGenerado}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Descripción cálculo del ahorro generado en el contrato:</b> {{descripCalculoAhorro}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Vigencia del contrato:</b> {{vigencia}}</span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>Requiere SST:</b> {{requiereSst}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Requiere póliza:</b> {{reqPoliza}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Nombre/Razón Social del proveedor:</b> {{razonSocial}}</span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>E-mail del proveedor:</b> {{emailProveedor}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Solicitante:</b> {{solicitante}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Comprador:</b> {{comprador}}</span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>Observaciones adicionales:</b> {{observaciones}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Ariba Sourcing:</b> {{aribaSourcing}}</span>
+      </div>
+      <div class="col-4">
+        <span><b>Causal Excepción:</b> {{causalExcepAriba}}</span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-4">
+        <span><b>Puntaje actual de la evaluación del proveedor:</b> {{puntajeActual}}</span>
+      </div>
+    </div>
+    <hr>
+    <form [formGroup]="gestionContrato">
+      <div class="row">
+        <div class="col-4 form-group">
+          <label for="">Número de contrato/Orden de compra</label>
+          <input type="text" class="form-control" formControlName="numeroContrato" (keyup)="validarNumeroContrato()">
+        </div>
+        <div class="col-4 form-group">
+          <label for="">Enviado a firmas</label>
+          <select name="" id="" class="form-control" formControlName="enviadoFirmas" (change)="mostrarCampoFechaEnvio($event)">
+            <option value="NO">NO</option>
+            <option value="SÍ">SÍ</option>
+          </select>
+        </div>
+        <div class="col-4 form-group" *ngIf="mostrarCampo">
+          <label for="">Fecha de envío a firmas</label>
+          <input type="text" class="form-control" bsDatepicker  formControlName="fechaEnvioFirmas">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 form-group" *ngIf="mostrarCampoPoliza">
+          <label for="">Póliza recibida</label>
+          <select class="form-control" formControlName="poliza" (change)="mostrarCampoFechaPoliza($event)">
+            <option value="NO">NO</option>
+            <option value="SÍ">SÍ</option>
+          </select>
+        </div>
+        <div class="col-6 form-group" *ngIf="mostrarFechaPoliza">
+          <label for="">Fecha de recepción de la póliza</label>
+          <input type="text" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" formControlName="fechaPoliza">
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-6 offset-3">
+          <button type="button" class="btn btn-primary" (click)="guardadoParcial()">Guardado parcial</button>
+          <button type="button" class="btn btn-success" (click)="verificarYfirmar()">Verificar y firmar</button>
+          <button type="button" class="btn btn-danger" (click)="cancelar()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<br>
+<br>

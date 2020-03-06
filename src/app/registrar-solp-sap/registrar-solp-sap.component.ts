@@ -225,7 +225,7 @@ export class RegistrarSolpSapComponent implements OnInit {
       }
       else if (this.RDBOrdenadorGastos === 1) {
         this.ResponsableProceso = this.comprador;
-        this.estadoSolicitud = 'Por registrar contratos';
+        this.estadoSolicitud = 'Negociar contrato';
         ObjSolpSap = {
           ResponsableId: this.ResponsableProceso,
           Estado: this.estadoSolicitud,
