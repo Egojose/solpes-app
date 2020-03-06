@@ -100,6 +100,9 @@ export class ContratosComponent implements OnInit {
   tipoEjecucion: any[] = [];
   causaIncumplimiento: any[] = [];
   mostrarCausalIncumplimiento: boolean = false;
+  pais: any;
+  textoAyudaDefault: boolean;
+  textoAyudaOtra: boolean;
  
   constructor(
     private servicio: SPServicio, 
@@ -113,6 +116,7 @@ export class ContratosComponent implements OnInit {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.perfilacionEstado();
+    this.pais = this.solicitudRecuperada.pais.Title;
     this.idSolicitudParameter = this.solicitudRecuperada.id;
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
@@ -187,6 +191,29 @@ export class ContratosComponent implements OnInit {
   }
 
 
+  mostrarTextoAyuda($event) {
+    if($event.target.value === 'Default') {
+      this.textoAyudaDefault = true;
+      this.textoAyudaOtra = false;
+    }
+    else if($event.target.value === 'Otra') {
+      this.textoAyudaOtra = true;
+      this.textoAyudaDefault = false;
+    }
+    else {
+      this.textoAyudaDefault = false;
+      this.textoAyudaOtra = false;
+    }
+  };
+
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
   obtenerTipoEjecucion() {
     this.servicio.ObtenerTipoEjecucion().then(
       (respuesta) => {
@@ -237,7 +264,7 @@ export class ContratosComponent implements OnInit {
     this.ContratosForm = this.formBuilder.group({
       TipoContrato: ['', Validators.required],
       SolpSapRfp: [''],
-      ContratoOC: [''],
+      // ContratoOC: [''],
       OrdenInicio: ['', Validators.required],
       ObjetoContrato: ['', Validators.required],
       ContratoObraConexo: [false],
@@ -384,17 +411,17 @@ export class ContratosComponent implements OnInit {
     )
   }
 
-  validarNumeroContrato() {
-    let max = this.ContratosForm.get('ContratoOC').value;
-    let restrict;
-    console.log(max);
-    if(max.length > 10) {
-     restrict =  max.slice(0, 10)
-      this.ContratosForm.controls['ContratoOC'].setValue(restrict);
-      this.mostrarAdvertencia('El numero de contrato sólo admite hasta 10 dígitos');
-      return false;
-    }
-  }
+  // validarNumeroContrato() {
+  //   let max = this.ContratosForm.get('ContratoOC').value;
+  //   let restrict;
+  //   console.log(max);
+  //   if(max.length > 10) {
+  //    restrict =  max.slice(0, 10)
+  //     this.ContratosForm.controls['ContratoOC'].setValue(restrict);
+  //     this.mostrarAdvertencia('El numero de contrato sólo admite hasta 10 dígitos');
+  //     return false;
+  //   }
+  // }
 
   adjuntarArchivo(event) {
     let archivoAdjunto = event.target.files[0];
@@ -432,7 +459,7 @@ export class ContratosComponent implements OnInit {
     let TipoContrato = this.ContratosForm.controls["TipoContrato"].value;
     let SolpSapRfp = this.NumSolSAP;
     // let SolpSapRfp = this.ContratosForm.controls["SolpSapRfp"].value;
-    let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
+    // let ContratoOC = this.ContratosForm.controls["ContratoOC"].value;
     let OrdenInicio = this.ContratosForm.controls["OrdenInicio"].value;
     let ObjetoContrato = this.ContratosForm.controls["ObjetoContrato"].value;
     let ContratoObraConexo = this.ContratosForm.controls["ContratoObraConexo"].value;
@@ -462,7 +489,8 @@ export class ContratosComponent implements OnInit {
     let valorPuntaje = this.ContratosForm.controls['valorPuntaje'].value;
     let estrategia = this.ContratosForm.controls['estrategiaAplicada'].value;
     let cantidadProveedores = this.ContratosForm.controls['cantidadProveedores'].value;
-    let cumpleAtencion = this.ContratosForm.controls['cumpleAtencion'].value;
+    let cumpleAtencion;
+    this.ContratosForm.controls['cumpleAtencion'].value === 'Si' ? cumpleAtencion = true : cumpleAtencion = false;
     let causalIncumplimiento = this.ContratosForm.controls['causalIncumplimiento'].value;
 
     ariba === 'N/A'? causa = causa : causa = "";
@@ -498,11 +526,17 @@ export class ContratosComponent implements OnInit {
       return false;
     }
 
+    if(this.ContratosForm.controls['cumpleAtencion'].value === 'Si' && (this.ContratosForm.controls['causalIncumplimiento'].value === '' || this.ContratosForm.controls['causalIncumplimiento'].value === null)) {
+      this.mostrarAdvertencia('El campo causal de incumplimiento debe contener un valor válido');
+      this.spinner.hide();
+      return false;
+    }
+
     if (this.Pais === "Colombia") {
       ObjContrato = {
         TipoContrato: TipoContrato,
         NumSolpSAP: SolpSapRfp,
-        CM: ContratoOC,
+        // CM: ContratoOC,
         RequiereNumOrdenInicio: OrdenInicio,
         ObjContrato: ObjetoContrato,
         ContratoObra: ContratoObraConexo,
@@ -529,16 +563,17 @@ export class ContratosComponent implements OnInit {
         RequiereEvaluacion: evaluacion,
         PuntajeActualEvaluacionProveedor: puntaje,
         TipoEjecucion: ejecucion,
-        estrategiaAplicada: estrategia,
+        EstrategiaAplicada: estrategia,
         CantidadProveedores: `${cantidadProveedores}`,
         CumpleIndicadorAtencion: cumpleAtencion,
-        CausalIncumplimiento: causalIncumplimiento
+        CausalIncumplimiento: causalIncumplimiento,
+        Pais: this.pais
       }
     } else {
       ObjContrato = {
         TipoContrato: TipoContrato,
         NumSolpSAP: SolpSapRfp,
-        CM: ContratoOC,
+        // CM: ContratoOC,
         RequiereNumOrdenInicio: OrdenInicio,
         ObjContrato: ObjetoContrato,
         ContratoObra: ContratoObraConexo,
@@ -564,10 +599,11 @@ export class ContratosComponent implements OnInit {
         RequiereEvaluacion: evaluacion,
         PuntajeActualEvaluacionProveedor: puntaje,
         TipoEjecucion: ejecucion,
-        estrategiaAplicada: estrategia,
+        EstrategiaAplicada: estrategia,
         CantidadProveedores: `${cantidadProveedores}`,
         CumpleIndicadorAtencion: cumpleAtencion,
-        CausalIncumplimiento: causalIncumplimiento
+        CausalIncumplimiento: causalIncumplimiento,
+        Pais: this.pais
       }
     }
     let notificacion;
@@ -585,7 +621,7 @@ export class ContratosComponent implements OnInit {
           let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
           if (cantidadBienes === 0 && cantidadServicios === 0) {
             let respuestaCambioSolicitud = await this.CambioSolicitud(this.IdSolicitud, "Verificar y firmar contrato", bpoPais);
-            let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
+            let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud);
             notificacion = {
               IdSolicitud: this.IdSolicitud.toString(),
               ResponsableId: bpoPais,
@@ -593,7 +629,7 @@ export class ContratosComponent implements OnInit {
             }
           }
           else {
-            let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
+            let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud);
             notificacion = {
               IdSolicitud: this.IdSolicitud.toString(),
               ResponsableId: bpoPais,
@@ -612,7 +648,7 @@ export class ContratosComponent implements OnInit {
                 if(obj !== undefined) {
                   obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): [];
                   let objCrm = {
-                    "numerocontratoproveedor": ContratoOC,
+                    // "numerocontratoproveedor": ContratoOC,
                     "numerosolp": `${this.IdSolicitud}`,            
                     "fechainiciocontrato": fechaString,           
                     "duracioncontrato": parseInt(VigenciaContrato),            
@@ -635,7 +671,7 @@ export class ContratosComponent implements OnInit {
                 if(obj !== undefined) {
                   objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
                   let objCrm = {
-                    "numerocontratoproveedor": ContratoOC,
+                    // "numerocontratoproveedor": ContratoOC,
                     "numerosolp": `${this.IdSolicitud}`,            
                     "fechainiciocontrato": fechaString,           
                     "duracioncontrato": parseInt(VigenciaContrato),            
@@ -650,7 +686,7 @@ export class ContratosComponent implements OnInit {
             )
           }
           
-          let respuestaServicioCrm = await this.GuardarContratoCrm(ObjContratosCrm);
+          // let respuestaServicioCrm = await this.GuardarContratoCrm(ObjContratosCrm);
           let RespuestaNotificacion = await this.agregarNotificacion(notificacion);
           this.MostrarExitoso("El contrato se ha guardado correctamente");
           setTimeout(() => {
@@ -679,7 +715,7 @@ export class ContratosComponent implements OnInit {
 
       if (cantidadBienes === 0 && cantidadServicios === 0) {
         let respuestaCambioSolicitud = await this.CambioSolicitud(this.IdSolicitud, "Verificar y firmar contrato", bpoPais);
-        let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
+        let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud);
         let notificacion = {
           IdSolicitud: this.IdSolicitud.toString(),
           ResponsableId: bpoPais,
@@ -687,7 +723,7 @@ export class ContratosComponent implements OnInit {
         }
       }
       else {
-        let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
+        let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud);
         let notificacion = {
           IdSolicitud: this.IdSolicitud.toString(),
           ResponsableId: bpoPais,
@@ -706,7 +742,7 @@ export class ContratosComponent implements OnInit {
             if (obj !== undefined) {
               objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
               let objCrm = {
-                "numerocontratoproveedor": ContratoOC,
+                // "numerocontratoproveedor": ContratoOC,
                 "numerosolp": `${this.IdSolicitud}`,            
                 "fechainiciocontrato": fechaString,           
                 "duracioncontrato": parseInt(VigenciaContrato),            
@@ -729,7 +765,7 @@ export class ContratosComponent implements OnInit {
             if(obj !== undefined) {
               objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
               let objCrm = {
-                "numerocontratoproveedor": ContratoOC,
+                // "numerocontratoproveedor": ContratoOC,
                 "numerosolp": `${this.IdSolicitud}`,            
                 "fechainiciocontrato": fechaString,           
                 "duracioncontrato": parseInt(VigenciaContrato),            
@@ -790,9 +826,9 @@ export class ContratosComponent implements OnInit {
     return respuesta
   }
 
-  async actualizarFechaContratos(IdSolicitud, ContratoOC): Promise<any>{
+  async actualizarFechaContratos(IdSolicitud): Promise<any>{
     let respuesta;
-    await this.servicio.actualizarFechaContratos(IdSolicitud, ContratoOC).then(
+    await this.servicio.actualizarFechaContratos(IdSolicitud).then(
     () => {
       respuesta = true;
     }).catch(
@@ -844,71 +880,71 @@ export class ContratosComponent implements OnInit {
       let respuesta;
       let RespuestaCrmSP;
       const element = ObjContratosCrm[index];      
-      respuesta = await this.enviarServicioContratos(element);
-      if (respuesta.StatusCode !== 200) {
-        let duracion = element.duracioncontrato !== null && element.duracioncontrato !== undefined && element.duracioncontrato !== ""? element.duracioncontrato.toString(): ""
-        let numeroContrato = element.numerocontratoproveedor;
-        let NroSolp = element.numerosolp;
-        let FechaInicio = element.fechainiciocontrato;
-        let fechaInicioModificada = FechaInicio.split('/')
-        let fechaFormato = `${fechaInicioModificada[1]}/${fechaInicioModificada[0]}/${fechaInicioModificada[2]}`
-        let nombreproveedor = element.nombreproveedor;
-        let objetocontrato = element.objetocontrato;
-        let idservicios = element.idservicios.toString();
-        let obj = {
-          NroContrato: numeroContrato,
-          NroSolp: NroSolp,          
-          FechaInicio: fechaFormato,
-          Duracion: duracion,
-          NombreProveedor: nombreproveedor,
-          ObjetoContrato: objetocontrato,
-          IdServicios: idservicios,
-          EsContrato: true,
-          Exitoso: false
-        }
-        let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
-      }      
+      // respuesta = await this.enviarServicioContratos(element);
+      // if (respuesta.StatusCode !== 200) {
+      //   let duracion = element.duracioncontrato !== null && element.duracioncontrato !== undefined && element.duracioncontrato !== ""? element.duracioncontrato.toString(): ""
+      //   let numeroContrato = element.numerocontratoproveedor;
+      //   let NroSolp = element.numerosolp;
+      //   let FechaInicio = element.fechainiciocontrato;
+      //   let fechaInicioModificada = FechaInicio.split('/')
+      //   let fechaFormato = `${fechaInicioModificada[1]}/${fechaInicioModificada[0]}/${fechaInicioModificada[2]}`
+      //   let nombreproveedor = element.nombreproveedor;
+      //   let objetocontrato = element.objetocontrato;
+      //   let idservicios = element.idservicios.toString();
+      //   let obj = {
+      //     NroContrato: numeroContrato,
+      //     NroSolp: NroSolp,          
+      //     FechaInicio: fechaFormato,
+      //     Duracion: duracion,
+      //     NombreProveedor: nombreproveedor,
+      //     ObjetoContrato: objetocontrato,
+      //     IdServicios: idservicios,
+      //     EsContrato: true,
+      //     Exitoso: false
+      //   }
+      //   // let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
+      // }      
     }
 
     return "ok";
   }
 
-  async enviarServicioContratos(obj): Promise<any>{
-    let respuesta;
-    let objToken = {
-      TipoConsulta: "crm",
-      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
-      token: this.token,
-      estado: "true"
-    }
-    let objTokenString = JSON.stringify(objToken);
-    localStorage.setItem("id_token",objTokenString);
-    await this.servicioCrm.ActualizarContratos(obj).then(
-      (res)=>{
-        respuesta = res;
-      }
-    ).catch(
-      (error)=>{
-         respuesta = error.error;
-      }
-    )        
-    return respuesta;
-  }
+  // async enviarServicioContratos(obj): Promise<any>{
+  //   let respuesta;
+  //   let objToken = {
+  //     TipoConsulta: "crm",
+  //     suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+  //     token: this.token,
+  //     estado: "true"
+  //   }
+  //   let objTokenString = JSON.stringify(objToken);
+  //   localStorage.setItem("id_token",objTokenString);
+  //   await this.servicioCrm.ActualizarContratos(obj).then(
+  //     (res)=>{
+  //       respuesta = res;
+  //     }
+  //   ).catch(
+  //     (error)=>{
+  //        respuesta = error.error;
+  //     }
+  //   )        
+  //   return respuesta;
+  // }
 
-  async GuardarErrorSolicitudCrm(ObjSolicitudCrm): Promise<any>{
-    let respuesta;
-    await this.servicio.GuardarSolicitudCrm(ObjSolicitudCrm).then(
-      (res)=>{
-        respuesta = true;
-      }
-    ).catch(
-      (error)=>{
-        respuesta = false;
-      }
-    );
+  // async GuardarErrorSolicitudCrm(ObjSolicitudCrm): Promise<any>{
+  //   let respuesta;
+  //   await this.servicio.GuardarSolicitudCrm(ObjSolicitudCrm).then(
+  //     (res)=>{
+  //       respuesta = true;
+  //     }
+  //   ).catch(
+  //     (error)=>{
+  //       respuesta = false;
+  //     }
+  //   );
 
-    return respuesta;
-  }
+  //   return respuesta;
+  // }
 
   async ActualizarBienes(idContrato): Promise<any>{
     for (let index = 0; index < this.BienesSeleccionados.length; index++) {
