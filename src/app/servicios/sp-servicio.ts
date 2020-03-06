@@ -31,7 +31,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkhsQzBSMTJza3hOWjFXUXdtak9GXzZ0X3RERSIsImtpZCI6IkhsQzBSMTJza3hOWjFXUXdtak9GXzZ0X3RERSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTgzMTc0ODk2LCJuYmYiOjE1ODMxNzQ4OTYsImV4cCI6MTU4MzIwMzk5NiwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI4M2E0Zjk1Yi1lMTJkLTQyZDctYTFhNC1hZDExMTMwOWYzZDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwic3ViIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.o_0b5YOr__FzBzPCTHsteXzJgPqdMn8WW713hIxpEWPB7jMMfzeFx9X7v3M9zrITYOs3_i6QYMps9J1C_kQ-zto88yn4wCg9yuTKz4iPruTp31Omax5z1Df7HfN10m-CAcYRUeX-sEUFdc-bYXoWZEiTRcx69a7jdKtPb00kcqIFdN7ytz8z8n-RQ_ADDUymHamtqh1iTFzGWb0cUDO3DU7OYDvk-YG1gj76vL8KOzk_yyP8-67gIXEWx_bYm0eUi6Uipr5m2CbI3ymSuuJ3D9BRtb75Bimr2kPt1uCyhRSdA-km4MPlV4aZqbjcPsT6i-dr1nSR9T2CcqUpL8mxAA'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkhsQzBSMTJza3hOWjFXUXdtak9GXzZ0X3RERSIsImtpZCI6IkhsQzBSMTJza3hOWjFXUXdtak9GXzZ0X3RERSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTgzNDk4MzkzLCJuYmYiOjE1ODM0OTgzOTMsImV4cCI6MTU4MzUyNzQ5MywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI4M2E0Zjk1Yi1lMTJkLTQyZDctYTFhNC1hZDExMTMwOWYzZDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwic3ViIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.kIewymDlh3hJnvyhdzRgny7S7Z05gf1b3EIukoq-DP8JhNfMsULqnWAHcRch6qEbqjcG6NpfvsOu1ge-UN5NkYhFtB1pdillMmkS7nuxd8fn5Jmoh4sOGoOyIET5ZSJ2-fcXl-ckj87p-PuaZJw45r22dMg2O3nhinjKFTU0CxnsGVvi12DviIf7lNNogOIcDu3XEXO6vdbdGHg3z7PE27JUoS8EK0gsvPP7t7CHvcFPxzXUDCKqHQ9UQFxM-J5PW-BdSp1YvcJZhuuE8zrtsT5GIY4pVOs3XpJy6LXXS7Krm7RC6sYz5KnnzMwTaojwvaWAqlnLF9lz0AtkqLLn5g'
             }
         }, environment.urlWeb);
 
@@ -449,11 +449,11 @@ export class SPServicio {
         );
     } 
 
-    async actualizarFechaContratos(IdSolicitud, ContratoOC): Promise<any>{
+    async actualizarFechaContratos(IdSolicitud): Promise<any>{
         return await this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
               {
                 FechaRegistrarContrato: new Date(),
-                NumeroDeContrato: ContratoOC
+                // NumeroDeContrato: ContratoOC
             }
         );
     } 
@@ -745,6 +745,35 @@ export class SPServicio {
 
     ObtenerCausalIncumplimiento() {
         let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCausalIncumplimento).items.getAll();
+        return respuesta;
+    }
+
+    ConsultarBienesXcontrato(idContrato) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("IdContrato eq '"+idContrato+"' and tieneIdServicio eq 1").getAll();
+        return respuesta;
+    }
+    ConsultarServiciosXcontrato(idContrato) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("IdContrato eq '"+idContrato+"' and tieneIdServicio eq 1").getAll();
+        return respuesta;
+    };
+
+    ConsultarSolicitante(idSolicitud) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.filter("ID eq '"+idSolicitud+"'").select("SolicitantePersona/Title", "SolicitantePersona/ID", "SolicitantePersona/EMail").expand("SolicitantePersona").get();
+        return respuesta;
+    };
+
+    ActualizarContrato(idContrato, obj) {
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaContratos).items.getById(idContrato).update(obj);
+        return respuesta;
+    };
+
+    ConsultarContratosNoVerificados(idSolicitud) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq '"+idSolicitud+"' and Verificado eq 0").getAll();
+        return respuesta;
+    };
+
+    ActualizarEstadoSolicitud(idSolicitud, obj) {
+        let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(obj);
         return respuesta;
     }
 
