@@ -42,6 +42,7 @@ import { CrmServicioService } from './servicios/crm-servicio.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { VerificarFirmarContratoComponent } from './verificar-firmar-contrato/verificar-firmar-contrato.component';
+import { GestionContratoComponent } from './gestion-contrato/gestion-contrato.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { VerificarFirmarContratoComponent } from './verificar-firmar-contrato/ve
     ReportarContratosComponent,
     ReportarSolicitudComponent,
     GestionErroresComponent,
-    VerificarFirmarContratoComponent
+    VerificarFirmarContratoComponent,
+    GestionContratoComponent
   ],
   entryComponents: [ReasignarComponent],
   imports: [
@@ -126,7 +128,8 @@ import { VerificarFirmarContratoComponent } from './verificar-firmar-contrato/ve
       {path:'reportar-contratos', component:ReportarContratosComponent},
       {path:'reportar-solicitud', component:ReportarSolicitudComponent},
       {path:'gestion-errores', component:GestionErroresComponent},
-      {path: 'Verificar-firmar-contrato', component: VerificarFirmarContratoComponent}
+      {path: 'Verificar-firmar-contrato', component: VerificarFirmarContratoComponent},
+      {path: 'Gestion-contrato', component: GestionContratoComponent}
     ]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
