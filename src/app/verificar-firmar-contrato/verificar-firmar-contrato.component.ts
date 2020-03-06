@@ -19,7 +19,7 @@ export class VerificarFirmarContratoComponent implements OnInit {
   constructor(private servicio: SPServicio, private router: Router,public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService, private formBuilder: FormBuilder) { }
 
   usuarioActual: Usuario;
-  displayedColumns: string[] = ['Consecutivo', 'NroSolpSap', 'ObjetoContrato', 'TipoContrato', 'Acciones'];
+  displayedColumns: string[] = ['Consecutivo', 'Pais', 'ObjetoContrato', 'NumeroContrato', 'Acciones'];
   dataSource;
 
 
@@ -51,7 +51,7 @@ export class VerificarFirmarContratoComponent implements OnInit {
   VerContrato(contrato) {
     sessionStorage.setItem('contrato', JSON.stringify(contrato));
     console.log(contrato);
-    // this.router.navigate(['/ver-solicitud-tab']);
+    this.router.navigate(['/Gestion-contrato']);
   }
 
   applyFilter(filterValue: string) {
