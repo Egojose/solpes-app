@@ -396,7 +396,7 @@ export class GestionContratoComponent implements OnInit {
         FechaEnviadoFirmas: fechaEnvioFirmas,
         RecepcionPoliza: poliza,
         FechaRecepcionPoliza: fechaPoliza,
-        // Verificado: true
+        Verificado: true
       }
       console.log(obj);
       this.servicio.ActualizarContrato(this.idContrato, obj).then(
