@@ -91,7 +91,7 @@ export class GestionContratoComponent implements OnInit {
     this.reqEvaluacion = this.contrato.RequiereEvaluacion;
     this.estrategia = this.contrato.EstrategiaAplicada;
     this.cantidadProveedores = this.contrato.CantidadProveedores;
-    this.cumpleIndicador = this.contrato.CumpleIndicadorAtencion;
+    this.contrato.CumpleIndicadorAtencion === true ? this.cumpleIndicador = 'Sí' : this.cumpleIndicador = 'NO'
     this.causalIncumplimiento = this.contrato.CausalIncumplimiento;
     this.ObjetoContrato = this.contrato.ObjContrato;
     this.contrato.ContratoObra === true ? this.contratoObra = 'Sí' : this.contratoObra = 'No';
@@ -343,7 +343,7 @@ export class GestionContratoComponent implements OnInit {
       this.Novalidar = true;
       return false;
     }
-    else if(this.contrato.RequierePoliza === true && (this.gestionContrato.get('poliza').value === '' || this.gestionContrato.get('poliza').value === null)) {
+    else if(this.contrato.RequierePoliza === true && (this.gestionContrato.get('poliza').value === '' || this.gestionContrato.get('poliza').value === null || this.gestionContrato.get('poliza').value === 'NO')) {
       this.mostrarAdvertencia('El campo Póliza recibida es requerido si el contrato requiere póliza')
       this.Novalidar = true;
       return false;
@@ -396,7 +396,7 @@ export class GestionContratoComponent implements OnInit {
         FechaEnviadoFirmas: fechaEnvioFirmas,
         RecepcionPoliza: poliza,
         FechaRecepcionPoliza: fechaPoliza,
-        Verificado: true
+        // Verificado: true
       }
       console.log(obj);
       this.servicio.ActualizarContrato(this.idContrato, obj).then(

@@ -3477,6 +3477,7 @@ export class EditarSolicitudComponent implements OnInit {
           if (this.solicitudRecuperada.subcategoria != null) {
             this.subcategoria = this.subcategorias.filter(x => x.nombre == this.solicitudRecuperada.subcategoria)[0];
             this.solpFormulario.controls["subcategoria"].setValue(this.subcategoria.id);
+            this.solpFormulario.controls['cuadrante'].setValue(this.subcategoria.cuadrante);
             if (this.solicitudRecuperada.condicionesContractuales != '' && this.solicitudRecuperada.condicionesContractuales != '{ "condiciones":]}') {
               let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales.replace(/(\r\n|\n|\r)/gm," "));
               if (jsonCondicionesContractuales != null) {
