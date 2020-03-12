@@ -5118,7 +5118,7 @@ deshabilitarCampoServicios() {
       (subcategoria != '') ? subcategoria.nombre : '',
       (subcategoria != '') ? subcategoria.comprador.ID : null,
       (codigoAriba != '') ? codigoAriba : '',
-      (cuadrante !== '') ? cuadrante : '',
+      (cuadrante !== '' && cuadrante !== null) ? cuadrante : '',
       (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
       (alcance != '') ? alcance : '',
       (justificacion != '') ? justificacion : '',
