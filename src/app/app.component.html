@@ -25,7 +25,7 @@
             <li *ngIf="PermisosEdicionContratos">
                 <a routerLink="/vista-contratos" routerLinkActive="active">Edición Vista Contratos</a>
             </li>
-            <li>
+            <li *ngIf="PermisosVerificarFirmarContratos">
                 <a routerLink="/Verificar-firmar-contrato" routerLinkActive="active">Verificar y firmar contrato</a>
             </li>
 

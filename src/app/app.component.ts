@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   PermisosConsultaGeneral: boolean;
   PermisosReporteSolicitud: boolean;
   PermisosReporteContratos: boolean;
+  PermisosVerificarFirmarContratos: boolean;
   PermisosSoporte: boolean;
   linkEdicionContratos: string;
   nombreGrupoConsultaGeneral: string;
@@ -98,6 +99,7 @@ export class AppComponent implements OnInit {
     const grupoReporteSolicitudes = "Solpes-Reporte-Solicitudes"
     const grupoReporteContratos = "Solpes-Reporte-Contratos"
     const grupoSoporte = "Solpes-Soporte"
+    const grupoVerificarFirmarContratos = 'Solpes-Verificar-Firmar-Contratos'
     let grupoConsultaGeneral = this.nombreGrupoConsultaGeneral;
 
     let existeGrupoEdicionContratos = this.grupos.find(x => x.title == grupoEdicionContratos);
@@ -135,6 +137,10 @@ export class AppComponent implements OnInit {
       this.PermisosSoporte = true;
     }
 
+    let existeGrupoVerificarFirmarContrato = this.grupos.find(x => x.title == grupoVerificarFirmarContratos);
+    if(existeGrupoVerificarFirmarContrato !== null) {
+      this.PermisosVerificarFirmarContratos = true;
+    }
   }
 
   
