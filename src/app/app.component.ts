@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
     this.PermisosReporteSolicitud = false;
     this.PermisosReporteContratos = false;
     this.PermisosSoporte = false;
+    this.PermisosVerificarFirmarContratos = false;
     this.linkEdicionContratos = environment.urlWeb + environment.linkVistaEdicionContratos;
   }
 
@@ -69,6 +70,7 @@ export class AppComponent implements OnInit {
         this.servicio.ObtenerGruposUsuario(this.usuario.id).subscribe(
           (respuesta) => {
             this.grupos = Grupo.fromJsonList(respuesta);
+            console.log(this.grupos);
             this.obtenerParametrosConfiguracion();
           }, err => {
             console.log('Error obteniendo grupos de usuario: ' + err);
@@ -138,7 +140,7 @@ export class AppComponent implements OnInit {
     }
 
     let existeGrupoVerificarFirmarContrato = this.grupos.find(x => x.title == grupoVerificarFirmarContratos);
-    if(existeGrupoVerificarFirmarContrato !== null) {
+    if(existeGrupoVerificarFirmarContrato !== null && existeGrupoVerificarFirmarContrato !== undefined) {
       this.PermisosVerificarFirmarContratos = true;
     }
   }
