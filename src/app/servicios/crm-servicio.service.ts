@@ -53,7 +53,7 @@ export class CrmServicioService {
       'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key':  token
     }
-   return await this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/Bodega?', {headers: header, params: parametros }).toPromise();
+    return await this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/BodegaXml?', {headers: header, params: parametros }).toPromise();
   }
 
   public async validarIdServiciosExcel(parametros): Promise<any> {
