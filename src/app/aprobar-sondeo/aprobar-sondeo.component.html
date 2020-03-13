@@ -2,75 +2,6 @@
 <h1>APROBAR SONDEO</h1>
 <hr>
 <br>
-<div *ngIf="existeCondicionesTecnicasBienes == true" class="row">
-    <div class="form-group col-md-12">
-        <label for="textarea" class="col-sm-4 control-label"><b><h4>Resultado sondeo bienes:</h4></b></label>
-        <table class="table table-striped table-bordered table-hover text-center">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Precio</th>
-                    <th>Moneda</th>
-                    <th>Comentarios</th>
-                    <th>Adjuntos</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of ObjCondicionesTecnicas">
-                    <td>{{item.CodigoSondeo}}</td>
-                    <td>{{item.descripcion}}</td>
-                    <td>{{item.CantidadSondeo | number}}</td>
-                    <td>{{item.PrecioSondeo | number}}</td>
-                    <td>{{item.monedaSondeo}}</td>
-                    <td>{{item.ComentarioSondeo}}</td>
-                    <td>
-                        <a *ngIf="item.adjunto != null" href="{{item.adjunto.url}}" target="_blank">
-                            <button type="button" class="btn btn-primary">Ver Archivo</button>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div *ngIf="existeCondicionesTecnicasServicios == true" class="row">
-    <div class="form-group col-md-12">
-        <label for="textarea" class="col-sm-5 control-label"><b><h4>Resultado sondeo servicios:</h4></b></label>
-        <table class="table table-striped table-bordered table-hover text-center">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Precio</th>
-                    <th>Moneda</th>
-                    <th>Comentarios</th>
-                    <th>Adjuntos</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
-                    <td>{{item.codigoSondeo}}</td>
-                    <td>{{item.descripcion}}</td>
-                    <td>{{item.cantidadSondeo | number}}</td>
-                    <td>{{item.precioSondeo | number}}</td>
-                    <td>{{item.monedaSondeo}}</td>
-                    <td>{{item.comentarioSondeo}}</td>
-                    <td>
-                        <a *ngIf="item.RutaArchivo !== ''" href="{{item.RutaArchivo}}" target="_blank">
-                            <button type="button" class="btn btn-primary">Ver Archivo</button>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<hr>
 <div clas="row">
     <div class="card">
         <div class="card-header">
@@ -97,15 +28,24 @@
             </div>
             <div class="form-check form-check-inline">
                 <label>
-                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="3">
-                        Descartar
-                    </label>
+                    <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="3">
+                    Descartar
+                </label>
             </div>
+            <ng-container *ngIf="RDBsondeo === 4">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label><b>Número Contrato Marco:</b></label>
+                        <ng-template #popTemplate2>Por favor digite el número OCM</ng-template>
+                        <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>
 <br>
-<ng-container *ngIf="RDBsondeo === 4">
+<!-- <ng-container *ngIf="RDBsondeo === 4">
     <div class="row">
         <div class="form-group col-md-4">
             <label><b>Número Contrato Marco:</b></label>
@@ -113,23 +53,149 @@
             <input type="text" class="form-control" placeholder="Ingrese el número de OCM" triggers="" #customTooltip2="bs-tooltip" placement="top" [tooltip]="popTemplate2" [(ngModel)]="numeroSolpCm">
         </div>
     </div>
+</ng-container> -->
+<br>
+<ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label for="ordenadorGastos" class="col-form-label"><b>Modificar ordenador de gastos</b></label>
+        </div>
+        <div class="form-group col-md-6">
+            <select2 [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control"
+                (update)="seleccionarOrdenadorGastos($event)">
+            </select2>
+        </div>
+        <!-- <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+                No tiene un jefe asignado en Office 365, debe seleccionar uno
+            </div> -->
+    </div>
 </ng-container>
+<br>
+<ng-container>
+    <div class="form-group" *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+        <label for="textarea" class="col-sm-3 control-label"><b>Justificación</b></label>
+        <ng-template #popTemplate1>Por favor especifique en la justificación</ng-template>
+        <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers=""
+            placement="top" [tooltip]="popTemplate1" placeholder="Registre la justificación..."
+            [(ngModel)]="justificacionSondeo"></textarea>
+    </div>
+</ng-container>
+<br>
+<ng-container>
+    <div class="form-group">
+        <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
+        <ng-template #popTemplate>Por favor especifique el motivo en los comentarios</ng-template>
+        <textarea name="" id="textarea" class="form-control" rows="2" triggers="" #customTooltip="bs-tooltip"
+            placement="top" [tooltip]="popTemplate" placeholder="Registre sus comentarios..."
+            [(ngModel)]="ComentarioSondeo"></textarea>
+    </div>
+</ng-container>
+<br>
+<ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
+    <div class="form-group row">
+        <div class="col-md-4" id="ordenEstadistica">
+            <label for="CompraEstadística">Compra orden de estadística</label>
+            <mat-radio-group class="orden-estadistica-group" layout="row" [formControl]="OrdenEstadistica">
+                <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO"
+                    (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>
+                <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="SI"
+                    (change)="mostrarNumeroOrdenEstadistica($event.value)">SI</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-md-4" id="numeroOrdenEstadistica">
+            <div class="numero-orden-estadistica" [hidden]="!emptyNumeroOrdenEstadistica">
+                <label for="numeroOrdenEstadistica"><b>Número de orden estadística</b></label>
+                <input id="numeroOrdenEstadistica" name="numeroOrdenEstadistica" class="form-control"
+                    [formControl]="numeroOrden" />
+            </div>
+        </div>
+    </div>
+</ng-container>
+    <br>
+<div *ngIf="existeCondicionesTecnicasBienes == true" class="row">
+    <div class="form-group col-md-12">
+        <label for="textarea" class="col-sm-4 control-label"><b><h4>Resultado sondeo bienes:</h4></b></label>
+        <table class="table table-striped table-bordered table-hover text-center">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Moneda</th>
+                    <th>Comentarios</th>
+                    <th>Adjuntos</th>
+                    <th>Datos contables</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of ObjCondicionesTecnicas">
+                    <td>{{item.CodigoSondeo}}</td>
+                    <td>{{item.descripcion}}</td>
+                    <td>{{item.CantidadSondeo | number}}</td>
+                    <td>{{item.PrecioSondeo | number}}</td>
+                    <td>{{item.monedaSondeo}}</td>
+                    <td>{{item.ComentarioSondeo}}</td>
+                    <td>
+                        <a *ngIf="item.adjunto != null" href="{{item.adjunto.url}}" target="_blank">
+                            <button type="button" class="btn btn-primary">Ver Archivo</button>
+                        </a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Bien')" [hidden]="disableBtnDatoContables || RDBsondeo ===1 || RDBsondeo === 3">Editar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="existeCondicionesTecnicasServicios == true" class="row">
+    <div class="form-group col-md-12">
+        <label for="textarea" class="col-sm-5 control-label"><b><h4>Resultado sondeo servicios:</h4></b></label>
+        <table class="table table-striped table-bordered table-hover text-center">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Moneda</th>
+                    <th>Comentarios</th>
+                    <th>Adjuntos</th>
+                    <th>Datos contables</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of ObjCondicionesTecnicasServicios">
+                    <td>{{item.codigoSondeo}}</td>
+                    <td>{{item.descripcion}}</td>
+                    <td>{{item.cantidadSondeo | number}}</td>
+                    <td>{{item.precioSondeo | number}}</td>
+                    <td>{{item.monedaSondeo}}</td>
+                    <td>{{item.comentarioSondeo}}</td>
+                    <td>
+                        <a *ngIf="item.RutaArchivo !== ''" href="{{item.RutaArchivo}}" target="_blank">
+                            <button type="button" class="btn btn-primary">Ver Archivo</button>
+                        </a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="VerDatosContables(item, 'Servicio')" [hidden]="disableBtnDatoContables || RDBsondeo === 1 || RDBsondeo === 3">Editar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr>
 <ng-container *ngIf="RDBsondeo === 2 || RDBsondeo === 4">
     <div class="row">
-        <div class="form-group col-md-12">
-            <label for="textarea" class="col-sm-3 control-label"><b>Justificación</b></label>
-            <ng-template #popTemplate1>Por favor especifique en la justificación</ng-template>
-            <textarea name="" id="textarea" class="form-control" rows="2" #customTooltip1="bs-tooltip" triggers="" placement="top" [tooltip]="popTemplate1" placeholder="Registre la justificación..." [(ngModel)]="justificacionSondeo"></textarea>
-        </div>
+        
     </div>
     <br>
 </ng-container>
 <div class="row">
-    <div class="form-group col-md-12">
-        <label for="textarea" class="col-sm-3 control-label"><b>Comentarios:</b></label>
-        <ng-template #popTemplate>Por favor especifique el motivo en los comentarios</ng-template>
-        <textarea name="" id="textarea" class="form-control" rows="2" triggers="" #customTooltip="bs-tooltip" placement="top" [tooltip]="popTemplate" placeholder="Registre sus comentarios..." [(ngModel)]="ComentarioSondeo"></textarea>
-    </div>
+   
 </div>
 <div class="row">
     <div class="form-group col-md-12">
@@ -254,7 +320,7 @@
                                 <tbody>
                                     <tr *ngFor="let item of condicionesContractuales">
                                         <td>{{item.campo}}</td>
-                                        <td><textarea class="form-control" id="exampleFormControlTextarea1"  readonly>{{item.descripcion}}</textarea></td>
+                                        <td><textarea class="form-control" id="exampleFormControlTextarea1" readonly>{{item.descripcion}}</textarea></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -382,6 +448,181 @@
         </div>
     </mat-expansion-panel>
 </mat-accordion>
+<form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()">
+    <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal"
+        class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="dialog-auto-name" class="modal-title pull-left">Datos contables</h4>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <form [formGroup]="ctsFormulario" (ngSubmit)="ctsOnSubmit()"> -->
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="ceco">Centro de costos / Orden de inversión / ID de Servicios</label>
+                                <select formControlName="centroCostos" class="form-control"
+                                    [ngClass]="{ 'is-invalid': ctsSubmitted && f2.centroCostos.errors }"
+                                    (change)="showFilterServicios($event)">
+                                    <option value="">Seleccione</option>
+                                    <option value="Centro de costos">Centro de costos</option>
+                                    <option value="Orden de inversión">Orden de inversión</option>
+                                    <option value="ID de Servicios">ID de Servicios</option>
+                                </select>
+                                <div *ngIf="ctsSubmitted && f2.centroCostos.errors" class="invalid-feedback">
+                                    <div *ngIf="f2.centroCostos.errors.required">Este campo es requerido</div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6">
+                                <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span
+                                    class="asterisco-obligatorio">*</span>
+                                <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1"
+                                    [value]="valorUsuarioPorDefecto" class="form-control"
+                                    (update)="seleccionarOrdenadorGastos($event)">
+                                </select2>
+                                <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
+                                    No tiene un jefe asignado en Office 365, debe seleccionar uno
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="filtroBusqueda" *ngIf="mostrarFiltroServicios">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Cliente"
+                                            formControlName="clienteServicios">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Orden de Servicio"
+                                            formControlName="ordenServicios">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" placeholder="ID Servicio"
+                                            formControlName="idServicio" [disabled]="disabledIdServicioServicios">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Nombre ID Servicio"
+                                            formControlName="nombreIdServicio">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <!-- <button class="btn btn-outline-primary" type="button"><img src="../../assets//images/iconoBuscar.png"></button> -->
+                                        <button class="btn btn-outline-primary" type="button"
+                                            (click)="validarLengthBusquedaServicios()">IR</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="mostrarTableServicios">
+                            <div class="col-md-12">
+                                <br>
+                                <div class="col-md-3">
+                                    <mat-checkbox color="primary" (change)="seleccionarTodosServicios($event)">
+                                        Seleccionar todos los ID de servicio
+                                    </mat-checkbox>
+                                </div>
+                                <div class="mat-elevation-z8">
+                                    <table mat-table [dataSource]="dataSourceDatosServicios">
+                                        <ng-container matColumnDef="seleccionar">
+                                            <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
+                                            <td mat-cell *matCellDef="let element">
+                                                <mat-checkbox color="primary" value="{{element.IdServicio}}"
+                                                    [checked]="selectAllServicios"
+                                                    (change)="seleccionadoServicios($event, element)"></mat-checkbox>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="cliente">
+                                            <th class="header" mat-header-cell *matHeaderCellDef>
+                                                Cliente
+                                                <mat-form-field class="filter" floatLabel="never">
+                                                    <mat-label>filtrar</mat-label>
+                                                    <input matInput [formControl]="clientServicios">
+                                                </mat-form-field>
+                                            </th>
+                                            <td mat-cell *matCellDef="let element">{{element.Cliente}}</td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="OS">
+                                            <th class="header" mat-header-cell *matHeaderCellDef>
+                                                Orden de servicio
+                                                <mat-form-field class="filter" floatLabel="never">
+                                                    <mat-label>filtrar</mat-label>
+                                                    <input matInput [formControl]="ordenServServicios">
+                                                </mat-form-field>
+                                            </th>
+                                            <td mat-cell *matCellDef="let element">{{element.OS}}</td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="idServicio">
+                                            <th class="header" mat-header-cell *matHeaderCellDef>
+                                                Id de servicio
+                                                <mat-form-field class="filter" floatLabel="never">
+                                                    <mat-label>filtrar</mat-label>
+                                                    <input matInput [formControl]="idServServicios">
+                                                </mat-form-field>
+                                            </th>
+                                            <td mat-cell *matCellDef="let element">{{element.IdServicio}}</td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="nombreIdServicio">
+                                            <th class="header" mat-header-cell *matHeaderCellDef>
+                                                Nombre id servicio
+                                                <mat-form-field class="filter" floatLabel="never">
+                                                    <mat-label>filtrar</mat-label>
+                                                    <input matInput [formControl]="nombreIdServServicios">
+                                                </mat-form-field>
+                                            </th>
+                                            <td mat-cell *matCellDef="let element">{{element.Nombre_Servicio}}</td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumnsServicios"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumnsServicios;"></tr>
+                                    </table>
+                                    <ng-container *ngTemplateOutlet="PaginatorCrm"></ng-container>
+                                </div>
+                                <br>
+                                <button type="button" class="btn btn-primary"
+                                    (click)="terminarSeleccionServicios()">Terminar selección</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Numero centro de costos/orden de inversion">Numero centro de costos / orden de
+                                inversion / ID de servicio</label>
+                            <!-- <input type="text" placeholder="ingrese el número de CECO/OI" class="form-control" formControlName="numCicoCTS" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"> -->
+                            <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI"
+                                formControlName="numCicoCTS"
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCicoCTS.errors }"
+                                [readonly]="ReadOnlyIdServicio"></textarea>
+                            <div *ngIf="ctsSubmitted && f2.numCicoCTS.errors" class="invalid-feedback">
+                                <div *ngIf="f2.numCicoCTS.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Numero de cuenta">Número de cuenta</label>
+                            <input type="text" placeholder="ingrese el número de cuenta" class="form-control"
+                                formControlName="numCuentaCTS"
+                                [ngClass]="{ 'is-invalid': ctsSubmitted && f2.numCuentaCTS.errors }"
+                                (keypress)="numberOnly($event)">
+                            <div *ngIf="ctsSubmitted && f2.numCuentaCTS.errors" class="invalid-feedback">
+                                <div *ngIf="f2.numCuentaCTS.errors.required">Este campo es requerido</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary">Modificar</button>
+                    <button type="button" class="btn btn-danger" (click)="hideModal()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 <ngx-spinner>
     <p style="font-size: 20px; color: white">PROCESANDO...</p>
 </ngx-spinner>

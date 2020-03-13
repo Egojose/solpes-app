@@ -50,3 +50,14 @@ button {
     color: white;
 }
 
+table tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, .03);
+}
+
+.gray {
+    max-width: 1125px !important;
+}
+
+.modal-dialog {
+    max-width: 1140px;
+}

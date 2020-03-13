@@ -43,6 +43,8 @@ export class MisPendientesComponent implements OnInit {
   comprador: any;
   solicitante: any;
   comentarioSuspension: string;
+  idSolicitudDescartar: any;
+  responsableId: any;
 
   constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService, private formBuilder: FormBuilder) {
     this.dataSource = new MatTableDataSource();
@@ -266,7 +268,7 @@ export class MisPendientesComponent implements OnInit {
     sessionStorage.setItem('solicitud', JSON.stringify(solicitud));
     window.scroll(0, 0);
     this.dialog.open(ReasignarComponent, {
-      height: '420px',
+      height: '490px',
       width: '600px',
     });
   }
@@ -431,8 +433,6 @@ export class MisPendientesComponent implements OnInit {
               this.mostrarInformacion('Se guardó un registro de la reactivación');
             }
           )
-
-       
       }
     )
 
@@ -504,5 +504,57 @@ export class MisPendientesComponent implements OnInit {
         this.spinner.hide();
       }
     )
+  }
+
+  confirmarDescarte(template: TemplateRef<any>, element) {
+    this.idSolicitudDescartar = element.id;
+    this.responsableId = element.responsable.ID;
+    this.modalRef = this.modalServicio.show(template, { class: 'modal-sm' });
+  }
+
+  declinar() {
+    this.modalRef.hide();
+  }
+
+  aceptarDescarte() {
+    console.log(this.idSolicitud);
+    let ObjCont;
+    let estado = 'Solicitud descartada'
+    ObjCont = {
+      ResponsableId: null,
+      Estado: estado,
+    }
+
+    this.servicio.descartarSolicitud(this.idSolicitudDescartar, ObjCont).then(
+      (respuesta) => {
+
+        let notificacion = {
+          IdSolicitud: this.idSolicitudDescartar.toString(),
+          ResponsableId: this.responsableId,
+          Estado: estado,
+        };
+
+        this.servicio.agregarNotificacion(notificacion).then(
+          (item: ItemAddResult) => {
+            this.MostrarExitoso("La solicitud se ha descartado con éxito");
+            this.modalRef.hide();
+            this.salir();
+            sessionStorage.removeItem("IdSolicitud");
+          }, err => {
+            this.mostrarError('Error agregando la notificación');
+            this.spinner.hide();
+          }
+        )
+      }
+    ).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+      }
+    )
+  }
+
+  salir() {
+    this.router.navigate(["/mis-solicitudes"]);
   }
 }

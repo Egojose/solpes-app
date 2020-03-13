@@ -3,6 +3,7 @@ export const environment = {
   urlRaiz: 'https://isaempresas.sharepoint.com',
   urlWeb:'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes', 
   urlReltativa: '/sites/jam/solpes',
+  urlToken: 'https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token',
   listaEmpresas: 'Empresas',
   listaPaises: 'Paises',
   listaCategorias: 'Categorias',
@@ -22,5 +23,7 @@ export const environment = {
   listaMotivoSuspension: 'motivoSuspension',
   listaCausalExcepcion: 'CausalExcepcion',
   listaCompradores: 'Compradores',
-  listaHistorial: 'HistorialSuspensiones'
+  listaHistorial: 'HistorialSuspensiones',
+  listaSolicitudesCrm: 'SolicitudesCrm',
+  listaResponsableSoporte: 'ResponsableSoporte'
 };

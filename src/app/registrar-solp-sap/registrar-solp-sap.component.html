@@ -282,7 +282,7 @@
                             <tbody>
                                 <tr *ngFor="let item of condicionesContractuales">
                                     <td>{{item.campo}}</td>
-                                    <td><textarea class="form-control" id="exampleFormControlTextarea1"  readonly>{{item.descripcion}}</textarea></td>
+                                    <td><textarea class="form-control" id="exampleFormControlTextarea1" readonly>{{item.descripcion}}</textarea></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -307,7 +307,7 @@
                     <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>
                             <h4>Bienes solicitados</h4>
                         </strong></label>
-                    <div class="table-wrapper-scroll-y">
+                    <div class="table-wrapper-scroll-y" style="overflow-x:auto;">
                         <table class="table table-striped table-bordered table-hover text-center">
                             <thead>
                                 <tr>
@@ -318,8 +318,8 @@
                                     <th>Cantidad</th>
                                     <th>Valor Estimado</th>
                                     <th>Moneda</th>
-                                    <th>C. costo/O. inversión</th>
-                                    <th>No. C. costo/O. inversión</th>
+                                    <th>Ceco/O. Inv/ O. Srv</th>
+                                    <th>Nro.Ceco/O.Inv/Ord.CS</th>
                                     <th>Número de cuenta</th>
                                     <th>Adjunto</th>
                                     <th>Comentario</th>
@@ -335,15 +335,15 @@
                                     <td>{{item.valorEstimado | number}}</td>
                                     <td>{{item.moneda}}</td>
                                     <ng-container *ngIf="OrdenEstadistica === true; else este">
-                                            <td>No aplica</td>
-                                            <td>No aplica</td>
-                                            <td>No aplica</td>
-                                        </ng-container>
-                                        <ng-template #este>
-                                            <td>{{item.costoInversion}}</td>
-                                            <td>{{item.numeroCostoInversion}}</td>
-                                            <td>{{item.numeroCuenta}}</td>
-                                        </ng-template>
+                                        <td>No aplica</td>
+                                        <td>No aplica</td>
+                                        <td>No aplica</td>
+                                    </ng-container>
+                                    <ng-template #este>
+                                        <td>{{item.costoInversion}}</td>
+                                        <td>{{item.numeroCostoInversion}}</td>
+                                        <td>{{item.numeroCuenta}}</td>
+                                    </ng-template>
                                     <td>
                                         <ng-container *ngIf="item.adjuntoCreacion != null; else NoHayAdjBienes">
                                             <a href="{{item.adjuntoCreacion.url}}" target="_blank">
@@ -368,7 +368,7 @@
                     <label for="colFormLabel" class="col-sm-5 col-form-label"><strong>
                             <h4>Servicios solicitados</h4>
                         </strong></label>
-                    <div class="table-wrapper-scroll-y">
+                    <div class="table-wrapper-scroll-y" style="overflow-x:auto;">
                         <table class="table table-striped table-bordered table-hover text-center">
                             <thead>
                                 <tr>
@@ -377,8 +377,8 @@
                                     <th>Cantidad</th>
                                     <th>Valor Estimado</th>
                                     <th>Moneda</th>
-                                    <th>C. costo/O. inversión</th>
-                                    <th>No. C. costo/O. inversión</th>
+                                    <th>Ceco/O. Inv/ O. Srv</th>
+                                    <th>Nro.Ceco/O.Inv/Ord.CS</th>
                                     <th>Número de cuenta</th>
                                     <th>Adjunto</th>
                                     <th>Comentario</th>
@@ -392,15 +392,15 @@
                                     <td>{{item.valorEstimado | number}}</td>
                                     <td>{{item.tipoMoneda}}</td>
                                     <ng-container *ngIf="OrdenEstadistica === true; else TemplateCostoInv">
-                                            <td>No aplica</td>
-                                            <td>No aplica</td>
-                                            <td>No aplica</td>
-                                        </ng-container>
-                                        <ng-template #TemplateCostoInv>
-                                            <td>{{item.costoInversion}}</td>
-                                            <td>{{item.numeroCostoInversion}}</td>
-                                            <td>{{item.numeroCuenta}}</td>
-                                        </ng-template>
+                                        <td>No aplica</td>
+                                        <td>No aplica</td>
+                                        <td>No aplica</td>
+                                    </ng-container>
+                                    <ng-template #TemplateCostoInv>
+                                        <td>{{item.costoInversion}}</td>
+                                        <td>{{item.numeroCostoInversion}}</td>
+                                        <td>{{item.numeroCuenta}}</td>
+                                    </ng-template>
                                     <td>
                                         <ng-container *ngIf="item.archivo !== ''; else nohayServicios">
                                             <a href="{{item.archivo}}" target="_blank">

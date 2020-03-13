@@ -17,6 +17,7 @@ import { Solicitud } from '../dominio/solicitud';
 import { Usuario } from '../dominio/usuario';
 import { CausalExcepcion } from '../dominio/causalExcepcion';
 import { Compardor } from '../dominio/compardor';
+import { CrmServicioService } from '../servicios/crm-servicio.service';
 
 @Component({
   selector: 'app-contratos',
@@ -94,8 +95,17 @@ export class ContratosComponent implements OnInit {
   causalexeption: any;
   valorAriba: boolean = false;
   mostrarPuntaje: boolean = false;
+  token: any;
  
-  constructor(private servicio: SPServicio, private modalServicio: BsModalService, private router: Router, public toastr: ToastrManager, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) {
+  constructor(
+    private servicio: SPServicio, 
+    private modalServicio: BsModalService, 
+    private router: Router, 
+    public toastr: ToastrManager, 
+    private formBuilder: FormBuilder, 
+    private spinner: NgxSpinnerService,
+    public servicioCrm: CrmServicioService
+  ) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
     this.solicitudRecuperada = JSON.parse(sessionStorage.getItem('solicitud'));
     this.perfilacionEstado();
@@ -103,7 +113,24 @@ export class ContratosComponent implements OnInit {
     this.existeCondicionesTecnicasBienes = false;
     this.existeCondicionesTecnicasServicios = false;
     this.Guardado = false;
+    this.ObtenerToken();
+  }
 
+  private ObtenerToken(){
+    // let token;
+    this.servicioCrm.obtenerToken().then(
+      (res)=>{        
+        this.token = res;
+      }
+    ).catch(
+      (error)=>{
+        let objToken = {          
+          estado: "false"
+        }
+        let objTokenString = JSON.stringify(objToken);
+        localStorage.setItem("id_token",objTokenString); 
+      }
+    )
   }
 
   private perfilacionEstado() {
@@ -343,8 +370,10 @@ export class ContratosComponent implements OnInit {
 
   get f() { return this.ContratosForm.controls; }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
+    let ObjContratosCrm = [];
+    
     if (this.ContratosForm.invalid) {
       let cantidad = this.BienesSeleccionados.length + this.ServiciosSeleccionados.length;
       if (cantidad === 0) {
@@ -492,101 +521,96 @@ export class ContratosComponent implements OnInit {
         TipoEjecucion: ejecucion
       }
     }
+    let notificacion;
     if (this.adjunto) {
       if (this.adjunto.size > 0) {
-        this.servicio.GuardarContrato(ObjContrato).then(
-          (item: ItemAddResult) => {
-            this.Guardado = true;
-            let idContrato = item.data.Id;
-            if (this.BienesSeleccionados.length > 0) {
-              this.ActualizarBienes(idContrato.toString());
-            }  
-            if (this.ServiciosSeleccionados.length > 0) {
-              this.ActualizarServicios(idContrato.toString());
-            }
-            let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
-            let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
-            if (cantidadBienes === 0 && cantidadServicios === 0) {
-                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais).then(
-                  (resultado) => {
-                    this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
-                      () => {
-                        let idContrato = item.data.Id;
-                        let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
-                        this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
-                          let notificacion = {
-                            IdSolicitud: this.IdSolicitud.toString(),
-                            ResponsableId: bpoPais,
-                            Estado: 'Formalizar firmas contrato'
-                          }
-                          this.servicio.agregarNotificacion(notificacion).then(
-                            (item: ItemAddResult) => {
-                              this.MostrarExitoso(`Se adjuntó el archivo ${this.adjunto.name}`)
-                              setTimeout(() => {
-                                this.MostrarExitoso("El contrato se ha guardado correctamente");
-                              this.spinner.hide();
-                              }, 2000);
-                              setTimeout(() => {
-                                this.router.navigate(["/mis-pendientes"]);
-                              }, 2000);
-                            }, err => {
-                              this.mostrarError('Error agregando la notificación');
-                              this.spinner.hide();
-                            }
-                          )
-                        })
-                      },
-                      (error) => {
-                        console.error(error);
-                      }
-                    )
-                  }
-                ).catch(
-                  (error) => {
-                    console.log(error);
-                    this.spinner.hide();
-                  }
-                );
-            }else{
-              this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
-                () => {
-                  let idContrato = item.data.Id;
-                  let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
-                  this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto).then(respuesta => {
-                    let notificacion = {
-                      IdSolicitud: this.IdSolicitud.toString(),
-                      ResponsableId: bpoPais,
-                      Estado: 'Formalizar firmas contrato'
-                    }
-                    this.servicio.agregarNotificacion(notificacion).then(
-                      (item: ItemAddResult) => {
-                        this.MostrarExitoso(`Se adjuntó el archivo ${this.adjunto.name}`)
-                        setTimeout(() => {
-                          this.MostrarExitoso("El contrato se ha guardado correctamente");
-                        this.spinner.hide();
-                        }, 2000);
-                        setTimeout(() => {
-                          this.router.navigate(["/mis-pendientes"]);
-                        }, 2000);
-                      }, err => {
-                        this.mostrarError('Error agregando la notificación');
-                        this.spinner.hide();
-                      }
-                    )
-                  })
-                },
-                (error) => {
-                  console.error(error);
-                }
-              )
-            }         
-            
+        let idContrato = await this.GuardarContrato(ObjContrato);
+        if (idContrato !== "false") {
+          if (this.BienesSeleccionados.length > 0) {
+            let respuesta = await this.ActualizarBienes(idContrato.toString());
+          }  
+          if (this.ServiciosSeleccionados.length > 0) {
+            let respuesta = await this.ActualizarServicios(idContrato.toString());
           }
-        ).catch(
-          (error) => {
-            console.log(error);
-            this.spinner.hide();
-          });
+          let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
+          let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
+          if (cantidadBienes === 0 && cantidadServicios === 0) {
+            let respuestaCambioSolicitud = await this.CambioSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais);
+            let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
+            notificacion = {
+              IdSolicitud: this.IdSolicitud.toString(),
+              ResponsableId: bpoPais,
+              Estado: 'Formalizar firmas contrato'
+            }
+          }
+          else {
+            let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
+            notificacion = {
+              IdSolicitud: this.IdSolicitud.toString(),
+              ResponsableId: bpoPais,
+              Estado: 'Formalizar firmas contrato'
+            }
+          }
+          let nombreArchivo = "AdjuntoContrato-" + this.generarllaveSoporte() + "_" + this.adjunto.name;
+          let RespuestaAdjunto = await this.agregarAdjuntoContratos(idContrato, nombreArchivo, this.adjunto);
+          
+          let fechaString = this.formatDate(fechaContrato);
+          if (this.BienesSeleccionados.length > 0) {
+            this.BienesSeleccionados.map(
+              (x)=>{
+                let objServicio;
+                let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
+                if(obj !== undefined) {
+                  obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): [];
+                  let objCrm = {
+                    "numerocontratoproveedor": ContratoOC,
+                    "numerosolp": `${this.IdSolicitud}`,            
+                    "fechainiciocontrato": fechaString,           
+                    "duracioncontrato": parseInt(VigenciaContrato),            
+                    "nombreproveedor": NombreRazonSocial,            
+                    "objetocontrato": ObjetoContrato,            
+                    "idservicios": objServicio
+                  }
+                  ObjContratosCrm.push(objCrm);
+                }        
+                // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+                
+              }
+            )
+          }
+          if (this.ServiciosSeleccionados.length > 0) {
+            this.ServiciosSeleccionados.map(
+              (x)=>{
+                let objServicio;
+                let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
+                if(obj !== undefined) {
+                  objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+                  let objCrm = {
+                    "numerocontratoproveedor": ContratoOC,
+                    "numerosolp": `${this.IdSolicitud}`,            
+                    "fechainiciocontrato": fechaString,           
+                    "duracioncontrato": parseInt(VigenciaContrato),            
+                    "nombreproveedor": NombreRazonSocial,            
+                    "objetocontrato": ObjetoContrato,            
+                    "idservicios": objServicio
+                  }
+                  ObjContratosCrm.push(objCrm);
+                }        
+                // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null? obj.numeroCostoInversion.split(","): []
+              }
+            )
+          }
+          
+          let respuestaServicioCrm = await this.GuardarContratoCrm(ObjContratosCrm);
+          let RespuestaNotificacion = await this.agregarNotificacion(notificacion);
+          this.MostrarExitoso("El contrato se ha guardado correctamente");
+          setTimeout(() => {
+            this.router.navigate(["/mis-pendientes"]);
+          }, 2000);
+        }
+        else {          
+          return false;
+        }
       }
       else {
         this.mostrarError('Oops! Ha habido un problema con el archivo adjunto. Por favor vuelva a adjuntarlo');
@@ -594,117 +618,328 @@ export class ContratosComponent implements OnInit {
       }
     }
     else {
-      this.servicio.GuardarContrato(ObjContrato).then(
-        (item: ItemAddResult) => {
-          this.Guardado = true;
-          let idContrato = item.data.Id;
-            if (this.BienesSeleccionados.length > 0) {
-              this.ActualizarBienes(idContrato.toString());
-            }  
-            if (this.ServiciosSeleccionados.length > 0) {
-              this.ActualizarServicios(idContrato.toString());
-            }
-            let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
-            let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
-            if (cantidadBienes === 0 && cantidadServicios === 0) {
-                this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais).then(
-                    (resultado) => {
-                      this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
-                        () => {
-                          let notificacion = {
-                            IdSolicitud: this.IdSolicitud.toString(),
-                            ResponsableId: bpoPais,
-                            Estado: 'Formalizar firmas contrato'
-                          }
-                          this.servicio.agregarNotificacion(notificacion).then(
-                            (item: ItemAddResult) => {
-                              this.MostrarExitoso("El contrato se ha guardado correctamente sin archivos adjuntos");
-                              this.spinner.hide();
-                              setTimeout(() => {
-                                this.router.navigate(["/mis-pendientes"]);
-                              }, 1000);
-                            }, err => {
-                              this.mostrarError('Error agregando la notificación');
-                              this.spinner.hide();
-                            }
-                          )
-                        },
-                        (error) => {
-                          console.error(error);
-                        }
-                      )
-                    }
-                  ).catch(
-                    (error) => {
-                      console.log(error);
-                      this.spinner.hide();
-                    }
-                  );
-            }
-            else{
-              this.servicio.actualizarFechaContratos(this.IdSolicitud, ContratoOC).then(
-                () => {
-                  let notificacion = {
-                    IdSolicitud: this.IdSolicitud.toString(),
-                    ResponsableId: bpoPais,
-                    Estado: 'Formalizar firmas contrato'
-                  }
-                  this.servicio.agregarNotificacion(notificacion).then(
-                    (item: ItemAddResult) => {
-                      this.MostrarExitoso("El contrato se ha guardado correctamente sin archivos adjuntos");
-                      this.spinner.hide();
-                      setTimeout(() => {
-                        this.router.navigate(["/mis-pendientes"]);
-                      }, 1000);
-                    }, err => {
-                      this.mostrarError('Error agregando la notificación');
-                      this.spinner.hide();
-                    }
-                  )
-                },
-                (error) => {
-                  console.error(error);
-                }
-              )
-            }
-          
+      let idContrato = await this.GuardarContrato(ObjContrato);
+      if (this.BienesSeleccionados.length > 0) {
+        let respuesta = await this.ActualizarBienes(idContrato.toString());
+      }  
+      if (this.ServiciosSeleccionados.length > 0) {
+        let respuesta = await this.ActualizarServicios(idContrato.toString());
+      }
+      let cantidadBienes = this.ObjCondicionesTecnicas.filter(x=> x.idContrato === "" || x.idContrato === null).length;
+      let cantidadServicios = this.ObjCondicionesTecnicasServicios.filter(x=> x.idContrato === "" || x.idContrato === null).length;
+
+      if (cantidadBienes === 0 && cantidadServicios === 0) {
+        let respuestaCambioSolicitud = await this.CambioSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais);
+        let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
+        let notificacion = {
+          IdSolicitud: this.IdSolicitud.toString(),
+          ResponsableId: bpoPais,
+          Estado: 'Formalizar firmas contrato'
         }
-      ).catch(
-        (error) => {
-          console.log(error);
-          this.spinner.hide();
-        });
-    }
-  }
-  ActualizarBienes(idContrato){
-    this.BienesSeleccionados.forEach(
-      (elemento,index)=>{
-        let indexBienes=this.ObjCondicionesTecnicas.findIndex(x=> x.IdBienes === parseInt(elemento));
-        this.ObjCondicionesTecnicas[indexBienes].idContrato= idContrato;
-        this.servicio.guardarIdContratoBienes(elemento,idContrato).then(
-          (resultado)=>{ }
-        ).catch(
-          (error)=>{
-            this.mostrarError("ha ocurrido un error al guardar");
+      }
+      else {
+        let respuestaActualizarFechaContratos = await this.actualizarFechaContratos(this.IdSolicitud, ContratoOC);
+        let notificacion = {
+          IdSolicitud: this.IdSolicitud.toString(),
+          ResponsableId: bpoPais,
+          Estado: 'Formalizar firmas contrato'
+        }
+      }
+
+      let fechaString = this.formatDate(fechaContrato);
+      if (this.BienesSeleccionados.length > 0) {
+        console.log(this.BienesSeleccionados);
+        this.BienesSeleccionados.map(
+          (x)=>{
+            let objServicio;
+            console.log(x);
+            let obj = this.ObjCondicionesTecnicas.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
+            if (obj !== undefined) {
+              objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
+              let objCrm = {
+                "numerocontratoproveedor": ContratoOC,
+                "numerosolp": `${this.IdSolicitud}`,            
+                "fechainiciocontrato": fechaString,           
+                "duracioncontrato": parseInt(VigenciaContrato),            
+                "nombreproveedor": NombreRazonSocial,            
+                "objetocontrato": ObjetoContrato,            
+                "idservicios": objServicio
+              }
+              ObjContratosCrm.push(objCrm);
+            }         
+            // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
+            
           }
-        );        
+        )
+      }
+      if (this.ServiciosSeleccionados.length > 0) {
+        this.ServiciosSeleccionados.map(
+          (x)=>{
+            let objServicio;
+            let obj = this.ObjCondicionesTecnicasServicios.find(y=> y.IdBienes === x && y.tieneIdServicio === true);
+            if(obj !== undefined) {
+              objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
+              let objCrm = {
+                "numerocontratoproveedor": ContratoOC,
+                "numerosolp": `${this.IdSolicitud}`,            
+                "fechainiciocontrato": fechaString,           
+                "duracioncontrato": parseInt(VigenciaContrato),            
+                "nombreproveedor": NombreRazonSocial,            
+                "objetocontrato": ObjetoContrato,            
+                "idservicios": objServicio
+              }
+              ObjContratosCrm.push(objCrm);
+            }        
+            // let objServicio = obj.numeroCostoInversion !== "" && obj.numeroCostoInversion !== null && obj.numeroCostoInversion !== undefined? obj.numeroCostoInversion.split(","): []
+            
+          }
+        )
+      }
+      
+      let respuestaServicioCrm = await this.GuardarContratoCrm(ObjContratosCrm);
+
+      let RespuestaNotificacion = await this.agregarNotificacion(notificacion);
+      this.MostrarExitoso("El contrato se ha guardado correctamente");
+      setTimeout(() => {
+        this.router.navigate(["/mis-pendientes"]);
+      }, 2000);
+    }
+  }  
+
+  async GuardarContrato(ObjContrato): Promise<any>{
+    let respuesta;
+    await this.servicio.GuardarContrato(ObjContrato).then(
+      async (item: ItemAddResult) => {
+        this.Guardado = true;
+        let idContrato = item.data.Id;
+        respuesta = idContrato;
+      }
+    ).catch(
+      (error)=>{
+        console.log(error);
+        this.mostrarError("Ha ocurrido un error al guardar el contrato");
+        this.spinner.hide();
+        respuesta = "false";
       }
     )
+    return respuesta;
   }
-  ActualizarServicios(idContrato){
-     this.ServiciosSeleccionados.forEach(
-       (elemento,index)=>{
-         let indexBienes=this.ObjCondicionesTecnicasServicios.findIndex(x=> x.IdBienes === parseInt(elemento));
-         this.ObjCondicionesTecnicasServicios[indexBienes].idContrato= idContrato;
-         this.servicio.guardarIdContratoServicios(elemento,idContrato).then(
-           (result)=>{ }
-         ).catch(
-             (error)=>{
-               this.mostrarError("ha ocurrido un error al guardar");
-             }
-           );               
-       }
-     )
+
+  async CambioSolicitud(IdSolicitud, Estado, bpoPais): Promise<any>{
+    let respuesta;
+    await this.servicio.cambioEstadoSolicitud(this.IdSolicitud, "Formalizar firmas contrato", bpoPais).then(
+    (resultado) => {
+      respuesta = true;
+    }).catch(
+      (error) => {
+        console.log(error);
+        this.spinner.hide();
+        respuesta = false;
+      }
+    )
+
+    return respuesta
+  }
+
+  async actualizarFechaContratos(IdSolicitud, ContratoOC): Promise<any>{
+    let respuesta;
+    await this.servicio.actualizarFechaContratos(IdSolicitud, ContratoOC).then(
+    () => {
+      respuesta = true;
+    }).catch(
+      (error)=>{
+        console.log(error);
+        this.mostrarError("Error al actualizar las fechas de contratos");
+        respuesta = false;
+      }
+    );
+
+    return respuesta;
+  }
+
+  async agregarAdjuntoContratos(idContrato, nombreArchivo, adjunto): Promise<any>{
+    let respuesta;
+    await this.servicio.agregarAdjuntoContratos(idContrato, nombreArchivo, adjunto).then(
+      (res)=>{
+        respuesta = true;
+      }
+    ).catch(
+      (error)=>{
+        respuesta = false;
+      }
+    )
+
+    return respuesta;
+  }
+
+  async agregarNotificacion(notificacion): Promise<any>{
+    let respuesta;
+    await this.servicio.agregarNotificacion(notificacion).then(
+      (res)=>{
+        respuesta = true;
+      }
+    ).catch(
+      (error)=>{
+        respuesta = false;
+        console.log(error);
+        this.mostrarError('Error agregando la notificación');
+        this.spinner.hide();
+      }
+    )
+
+    return respuesta;
+  }
+
+  async GuardarContratoCrm(ObjContratosCrm): Promise<any> {
+    for (let index = 0; index < ObjContratosCrm.length; index++) {
+      let respuesta;
+      let RespuestaCrmSP;
+      const element = ObjContratosCrm[index];      
+      respuesta = await this.enviarServicioContratos(element);
+      if (respuesta.StatusCode !== 200) {
+        let duracion = element.duracioncontrato !== null && element.duracioncontrato !== undefined && element.duracioncontrato !== ""? element.duracioncontrato.toString(): ""
+        let numeroContrato = element.numerocontratoproveedor;
+        let NroSolp = element.numerosolp;
+        let FechaInicio = element.fechainiciocontrato;
+        let fechaInicioModificada = FechaInicio.split('/')
+        let fechaFormato = `${fechaInicioModificada[1]}/${fechaInicioModificada[0]}/${fechaInicioModificada[2]}`
+        let nombreproveedor = element.nombreproveedor;
+        let objetocontrato = element.objetocontrato;
+        let idservicios = element.idservicios.toString();
+        let obj = {
+          NroContrato: numeroContrato,
+          NroSolp: NroSolp,          
+          FechaInicio: fechaFormato,
+          Duracion: duracion,
+          NombreProveedor: nombreproveedor,
+          ObjetoContrato: objetocontrato,
+          IdServicios: idservicios,
+          EsContrato: true,
+          Exitoso: false
+        }
+        let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
+      }      
+    }
+
+    return "ok";
+  }
+
+  async enviarServicioContratos(obj): Promise<any>{
+    let respuesta;
+    let objToken = {
+      TipoConsulta: "crm",
+      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+      token: this.token,
+      estado: "true"
+    }
+    let objTokenString = JSON.stringify(objToken);
+    localStorage.setItem("id_token",objTokenString);
+    await this.servicioCrm.ActualizarContratos(obj).then(
+      (res)=>{
+        respuesta = res;
+      }
+    ).catch(
+      (error)=>{
+         respuesta = error.error;
+      }
+    )        
+    return respuesta;
+  }
+
+  async GuardarErrorSolicitudCrm(ObjSolicitudCrm): Promise<any>{
+    let respuesta;
+    await this.servicio.GuardarSolicitudCrm(ObjSolicitudCrm).then(
+      (res)=>{
+        respuesta = true;
+      }
+    ).catch(
+      (error)=>{
+        respuesta = false;
+      }
+    );
+
+    return respuesta;
+  }
+
+  async ActualizarBienes(idContrato): Promise<any>{
+    for (let index = 0; index < this.BienesSeleccionados.length; index++) {
+      const elemento = this.BienesSeleccionados[index];
+      let indexBienes=this.ObjCondicionesTecnicas.findIndex(x=> x.IdBienes === parseInt(elemento));
+      this.ObjCondicionesTecnicas[indexBienes].idContrato= idContrato;
+      let respuesta = await this.guardarIdContratoBienes(elemento, idContrato)  
+    }
+
+    return "ok";
+    // this.BienesSeleccionados.forEach(
+    //   (elemento,index)=>{
+    //     let indexBienes=this.ObjCondicionesTecnicas.findIndex(x=> x.IdBienes === parseInt(elemento));
+    //     this.ObjCondicionesTecnicas[indexBienes].idContrato= idContrato;
+    //     this.servicio.guardarIdContratoBienes(elemento,idContrato).then(
+    //       (resultado)=>{ }
+    //     ).catch(
+    //       (error)=>{
+    //         this.mostrarError("ha ocurrido un error al guardar");
+    //       }
+    //     );        
+    //   }
+    // )
+  }
+
+  async guardarIdContratoBienes(elemento,idContrato): Promise<any>{
+    let respuesta;
+    await this.servicio.guardarIdContratoBienes(elemento,idContrato).then(
+      (resultado)=>{ 
+        respuesta = true;
+      }
+    ).catch(
+      (error)=>{
+        respuesta = false;
+        console.log(error);
+        this.mostrarError("ha ocurrido un error al guardar el id de contrato Nro: "+elemento);
+      }
+    );
+
+    return respuesta;
+  }
+  async ActualizarServicios(idContrato): Promise<any>{
+    for (let index = 0; index < this.ServiciosSeleccionados.length; index++) {
+      const elemento = this.ServiciosSeleccionados[index];
+      let indexBienes=this.ObjCondicionesTecnicasServicios.findIndex(x=> x.IdBienes === parseInt(elemento));
+      this.ObjCondicionesTecnicasServicios[indexBienes].idContrato= idContrato;
+      let resultado = await this.guardarIdContratoServicios(elemento,idContrato);
+    }
+
+    return "ok";
+    //  this.ServiciosSeleccionados.forEach(
+    //    (elemento,index)=>{
+    //      let indexBienes=this.ObjCondicionesTecnicasServicios.findIndex(x=> x.IdBienes === parseInt(elemento));
+    //      this.ObjCondicionesTecnicasServicios[indexBienes].idContrato= idContrato;
+    //      this.servicio.guardarIdContratoServicios(elemento,idContrato).then(
+    //        (result)=>{ }
+    //      ).catch(
+    //          (error)=>{
+    //            this.mostrarError("ha ocurrido un error al guardar");
+    //          }
+    //        );               
+    //    }
+    //  )
+  }
+
+  async guardarIdContratoServicios(elemento,idContrato): Promise<any>{
+    let respuesta;
+    await this.servicio.guardarIdContratoServicios(elemento,idContrato).then(
+      (result)=>{
+          respuesta = true;
+      }
+    ).catch(
+      (error)=>{
+        respuesta = true;
+        console.log(error);
+        this.mostrarError("ha ocurrido un error al guardar el id de contrato Nro: "+elemento);
+      }
+    ); 
+
+      return respuesta;
   }
 
   ValidarIva() {
@@ -839,5 +1074,17 @@ export class ContratosComponent implements OnInit {
         this.ServiciosSeleccionados =[];
     }    
   }
+
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [month, day, year].join('/');
+}
 
 }

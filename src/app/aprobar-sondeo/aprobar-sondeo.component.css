@@ -1,18 +1,30 @@
 :host>>>.tooltip-inner {
     background-color: #ff2626;
     color: #fff;
-    }
-     
-    :host>>>.tooltip.top .tooltip-arrow:before,
-    :host>>>.tooltip.top .tooltip-arrow {
+}
+
+ :host>>>.tooltip.top .tooltip-arrow:before,
+ :host>>>.tooltip.top .tooltip-arrow {
     border-top-color: #ff2626;
-    }
+}
 
-    textarea#textareaHistorial {
-        background-color: white !important;
-        border: none !important
-    }
+textarea#textareaHistorial {
+    background-color: white !important;
+    border: none !important
+}
 
-    .btn {
-        margin-right: 10px;
-    }
+.btn {
+    margin-right: 10px;
+}
+
+.modal-dialog {
+    max-width: 1140px !important;
+}
+
+#ordenEstadistica {
+    padding-top: 15px;
+}
+
+/* #numeroOrdenEstadistica {
+    margin-top: 0px;
+} */

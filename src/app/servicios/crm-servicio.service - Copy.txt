@@ -1,0 +1,65 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class CrmServicioService {
+  private readonly urlApi = 'http://itxcrmwebapidllo.azurewebsites.net/api/crm/solp/registrarsolp';
+  private readonly urlLogin = "https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token";
+  
+  constructor(private http: HttpClient) {
+    
+   }
+
+  obtenerToken(){
+    const formData = new FormData();
+    formData.append('grant_type', 'client_credentials');
+    formData.append('client_id', '43eb0956-9ff2-447d-9914-67c6be0e156d');
+    formData.append('client_secret', 'kGQKKdeJjfgx7YFgnMQC8iGokUnDJCUYwkjqdULMVTQ=');
+    formData.append('resource', 'https://isaempresas.onmicrosoft.com/1ccf92d1-cae8-4da6-9a89-cd9090736466')
+    return this.http.post(this.urlLogin, formData).toPromise();
+  }
+
+  ActualizarEmpleado(ObjEmpleado, access){
+    // let headers: HttpHeaders = new HttpHeaders();
+    // headers.append('Authorization', 'Bearer ' + access);
+    // headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyIsImtpZCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyJ9.eyJhdWQiOiJodHRwczovL2lzYWVtcHJlc2FzLm9ubWljcm9zb2Z0LmNvbS8xY2NmOTJkMS1jYWU4LTRkYTYtOWE4OS1jZDkwOTA3MzY0NjYiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9jOTgwZTQxMC0wYjVjLTQ4YmMtYmQxYS04YjkxY2FiYzg0YmMvIiwiaWF0IjoxNTcyNTQ5MzQyLCJuYmYiOjE1NzI1NDkzNDIsImV4cCI6MTU3MjU1MzI0MiwiYWlvIjoiNDJWZ1lPaVN2WGEvcHlQa1RvL1RyV29MeHg0YkFBPT0iLCJhcHBpZCI6IjQzZWIwOTU2LTlmZjItNDQ3ZC05OTE0LTY3YzZiZTBlMTU2ZCIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2M5ODBlNDEwLTBiNWMtNDhiYy1iZDFhLThiOTFjYWJjODRiYy8iLCJvaWQiOiIwNTBlMmE3Mi00MzVjLTQ0ODQtYjcwMC0xYmI2MmM5ODVmZGMiLCJzdWIiOiIwNTBlMmE3Mi00MzVjLTQ0ODQtYjcwMC0xYmI2MmM5ODVmZGMiLCJ0aWQiOiJjOTgwZTQxMC0wYjVjLTQ4YmMtYmQxYS04YjkxY2FiYzg0YmMiLCJ1dGkiOiJYS1ZmZVNjNXAwbVhFbFBfdktNekFBIiwidmVyIjoiMS4wIn0.MV-CCZ_mjjzPxle83fNfQTVt7JPP55fPIwcUWugoBd6g8ErQpf-YvkfGaFdfXtl7BijonIIYfjx8zLfYo4H17-BK15xMPVd8KVjXqu4zqqnvvL-IL0UH_Ag7rnLlc1BOdvzFl6ReHlaObsAVc16xfIAGP25-n2OBkG_n6sW_ysYFuHT6x6j1NO0_c0S6_Y2kUWWiNnr0RQuxoe62aH7qWBDjglgn1yrdD2e0L59ICaI0uWEX1P3eNjG734RGMnX4vX4kC5iItxty66akmAZdHrFHA-84rxPadie-XTdy_FAc45-BEhycBPSaPS2L6YzpZrkB1n-wbDJaeqj0MLNupQ',
+        'User-Agent': 'PostmanRuntime/7.19.0',
+        'Accept': '*/*',
+        'Cache-Control': 'no-cache',
+        'Postman-Token': '42a2a9fc-b61c-4e08-bdc7-386766a7405c,148a1bb4-133a-4823-a99f-02c86ab43c6e',
+        'Host': 'itxcrmwebapidllo.azurewebsites.net',
+        'Accept-Encoding': 'gzip, deflate',
+        'Content-Length': '102',
+        'Cookie': 'ARRAffinity=7dd879d6a0e779a246cb4913ae7bfd6d50ae404c5a44c125a179f8a636ef1e19',
+        'Connection': 'keep-alive',
+        'cache-control': 'no-cache',
+      })
+    };
+    let headers = {      
+      'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyIsImtpZCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyJ9.eyJhdWQiOiJodHRwczovL2lzYWVtcHJlc2FzLm9ubWljcm9zb2Z0LmNvbS8xY2NmOTJkMS1jYWU4LTRkYTYtOWE4OS1jZDkwOTA3MzY0NjYiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9jOTgwZTQxMC0wYjVjLTQ4YmMtYmQxYS04YjkxY2FiYzg0YmMvIiwiaWF0IjoxNTcyNTQ5MzQyLCJuYmYiOjE1NzI1NDkzNDIsImV4cCI6MTU3MjU1MzI0MiwiYWlvIjoiNDJWZ1lPaVN2WGEvcHlQa1RvL1RyV29MeHg0YkFBPT0iLCJhcHBpZCI6IjQzZWIwOTU2LTlmZjItNDQ3ZC05OTE0LTY3YzZiZTBlMTU2ZCIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2M5ODBlNDEwLTBiNWMtNDhiYy1iZDFhLThiOTFjYWJjODRiYy8iLCJvaWQiOiIwNTBlMmE3Mi00MzVjLTQ0ODQtYjcwMC0xYmI2MmM5ODVmZGMiLCJzdWIiOiIwNTBlMmE3Mi00MzVjLTQ0ODQtYjcwMC0xYmI2MmM5ODVmZGMiLCJ0aWQiOiJjOTgwZTQxMC0wYjVjLTQ4YmMtYmQxYS04YjkxY2FiYzg0YmMiLCJ1dGkiOiJYS1ZmZVNjNXAwbVhFbFBfdktNekFBIiwidmVyIjoiMS4wIn0.MV-CCZ_mjjzPxle83fNfQTVt7JPP55fPIwcUWugoBd6g8ErQpf-YvkfGaFdfXtl7BijonIIYfjx8zLfYo4H17-BK15xMPVd8KVjXqu4zqqnvvL-IL0UH_Ag7rnLlc1BOdvzFl6ReHlaObsAVc16xfIAGP25-n2OBkG_n6sW_ysYFuHT6x6j1NO0_c0S6_Y2kUWWiNnr0RQuxoe62aH7qWBDjglgn1yrdD2e0L59ICaI0uWEX1P3eNjG734RGMnX4vX4kC5iItxty66akmAZdHrFHA-84rxPadie-XTdy_FAc45-BEhycBPSaPS2L6YzpZrkB1n-wbDJaeqj0MLNupQ',
+        'User-Agent': 'PostmanRuntime/7.19.0',
+        'Accept': '*/*',
+        'Cache-Control': 'no-cache',
+        'Postman-Token': '42a2a9fc-b61c-4e08-bdc7-386766a7405c,148a1bb4-133a-4823-a99f-02c86ab43c6e',
+        'Host': 'itxcrmwebapidllo.azurewebsites.net',
+        'Accept-Encoding': 'gzip, deflate',
+        'Content-Length': '102',
+        'Cookie': 'ARRAffinity=7dd879d6a0e779a246cb4913ae7bfd6d50ae404c5a44c125a179f8a636ef1e19',
+        'Connection': 'keep-alive',
+        'cache-control': 'no-cache',
+    }
+    // headers = headers.set('Authorization', 'Bearer ' + access);
+    
+    return this.http.put<any>(this.urlApi,ObjEmpleado, {headers: headers}).toPromise();
+  }
+}
