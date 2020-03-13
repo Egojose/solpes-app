@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
     const grupoEdicionContratos = "Solpes-Edicion-Contratos";
     const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
     const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
-    const grupoReporteSolicitudes = "Solpes-Reporte-Solicitudes"
+    const grupoReporteSolicitudes = "Integrantes de la JAM";
     const grupoReporteContratos = "Solpes-Reporte-Contratos"
     const grupoSoporte = "Solpes-Soporte"
     const grupoVerificarFirmarContratos = 'Solpes-Verificar-Firmar-Contratos'
