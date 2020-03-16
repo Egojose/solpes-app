@@ -3685,7 +3685,7 @@ deshabilitarCampoServicios() {
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
                       "numerosolp": `${this.idSolicitudGuardada}`,
-                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
+                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
                       "idservicios": this.dataTotalIds
                       // "idservicios" : ["0029NQT600001"]
                       // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
@@ -3693,7 +3693,7 @@ deshabilitarCampoServicios() {
                     let obj = {
                       Title: `Solicitud ${this.idSolicitudGuardada}`,
                       NroSolp: `${this.idSolicitudGuardada}`,
-                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
+                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
                       // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
