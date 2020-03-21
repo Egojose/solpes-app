@@ -1,4 +1,4 @@
-<h1>CONTRATOS</h1>
+<h1>NEGOCIAR CONTRATO</h1>
 <hr>
 <div class="row espacio">
     <div class="col-md-12">
@@ -229,7 +229,7 @@
     <div class="row">
         <div class="form-group col-md-4">
             <label for="inputEmail4">Cantidad de proveedores<span class="camposRequeridos">*</span></label>
-            <input type="text" formControlName="cantidadProveedores" (keypress)="numberOnly($event)" class="form-control">
+            <input type="text" formControlName="cantidadProveedores" (keypress)="numberOnly($event)" (change)="regexSoloNumeros()" class="form-control">
             <div *ngIf="submitted && f.cantidadProveedores.errors" class="invalid-feedback">
                 <div *ngIf="f.cantidadProveedores.errors.required">Es requerido</div>
             </div>

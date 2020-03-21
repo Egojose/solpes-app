@@ -214,6 +214,20 @@ export class ContratosComponent implements OnInit {
     return true;
   }
 
+  regexSoloNumeros() {
+    let regex = /^\d+$/;
+    let valorCampo = this.ContratosForm.controls['cantidadProveedores'].value
+    let respuesta =  regex.test(valorCampo)
+    if(respuesta === false) {
+      this.mostrarAdvertencia('El campo Cantidad de proveedores sólo admite enteros positivos');
+      this.ContratosForm.controls['cantidadProveedores'].setValue('');
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
   obtenerTipoEjecucion() {
     this.servicio.ObtenerTipoEjecucion().then(
       (respuesta) => {
@@ -291,7 +305,7 @@ export class ContratosComponent implements OnInit {
       valorPuntaje: [''],
       tipoEjecucion: [''],
       estrategiaAplicada: [''],
-      cantidadProveedores: [''],
+      cantidadProveedores: ['', Validators.required],
       cumpleAtencion: [''],
       causalIncumplimiento: ['']
     });
@@ -529,6 +543,11 @@ export class ContratosComponent implements OnInit {
     if(this.ContratosForm.controls['cumpleAtencion'].value === 'No' && (this.ContratosForm.controls['causalIncumplimiento'].value === '' || this.ContratosForm.controls['causalIncumplimiento'].value === null)) {
       this.mostrarAdvertencia('El campo causal de incumplimiento debe contener un valor válido');
       this.spinner.hide();
+      return false;
+    }
+
+    if(this.regexSoloNumeros() === false) {
+      this.mostrarAdvertencia('El campo Cantidad proveedores invitados debe contener un entero positivo');
       return false;
     }
 

@@ -312,9 +312,9 @@ export class MisPendientesComponent implements OnInit {
     else {
       let cuerpo =  '<p>Cordial saludo</p>' +
       '<br>' +
-      '<p>El usuario <strong>' + this.usuarioActual.nombre + '</strong> ha acordado una nueva fecha para gestionar la solicitud <strong>' + this.idSolicitud + '</strong>.' +
+      '<p>El usuario <strong>' + this.usuarioActual.nombre + '</strong> ha acordado una nueva fecha para gestionar la solicitud de pedido <strong>' + this.idSolicitud + '</strong>.' +
       '<p>La fecha ha quedo para el <strong>' + fechaString + '</strong> (dd/MM/AAAA).' +
-      '<p>En caso de requerir más información  por favor ponerse en contacto con el usuario.'
+      '<p>En caso de requerir más información  por favor ponerse en contacto con <strong>' + this.usuarioActual.nombre + '</strong>.'
        
      
       const emailProps: EmailProperties = {
