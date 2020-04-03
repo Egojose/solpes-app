@@ -62,6 +62,8 @@ export class GestionContratoComponent implements OnInit {
   token: Object;
   cambiarEstado: boolean;
   solicitantePersona: any;
+  tieneContratoBienes = false;
+  tieneContratoServicios = false;
   
   constructor(public servicio: SPServicio, public router: Router, public spinner: NgxSpinnerService, public toastr: ToastrManager, private fb: FormBuilder, private servicioCrm: CrmServicioService) { }
 
@@ -155,7 +157,8 @@ export class GestionContratoComponent implements OnInit {
   consultarSolicitud() {
     this.servicio.ConsultarSolicitante(this.idSolicitud).then(
       (respuesta) => {
-        this.solicitantePersona = respuesta;
+        this.solicitantePersona = respuesta[0].SolicitantePersona.ID;
+        console.log(this.solicitantePersona);
       }
     );
   };
@@ -254,20 +257,20 @@ export class GestionContratoComponent implements OnInit {
     };
   };
 
-  consultarContratosSinVerificar() {
-    this.servicio.ConsultarContratosNoVerificados(this.idSolicitud).then(
+  async consultarContratosSinVerificar() {
+    await this.servicio.ConsultarContratosNoVerificados(this.idSolicitud).then(
       (respuesta) => {
         console.log(respuesta);
         if(respuesta.length === 0) {
           this.cambiarEstado = true;
           let notificacion = {
             IdSolicitud: this.idSolicitud.toString(),
-            ResponsableId: this.solicitantePersona.Id,
+            ResponsableId: this.solicitantePersona,
             Estado: 'Por recepcionar'
           }
           let obj = {
             Estado: 'Por recepcionar',
-            ResponsableId: this.solicitantePersona.Id
+            ResponsableId: this.solicitantePersona
           }
           this.servicio.ActualizarEstadoSolicitud(this.idSolicitud, obj);
           this.MostrarExitoso('Se cambió el estado de la solicitud a Por recepcionar');
@@ -276,6 +279,42 @@ export class GestionContratoComponent implements OnInit {
       }
     );
   };
+
+  async ConsultarBienesSinContrato() {
+    await this.servicio.ConsultarBienesSinContrato(this.idSolicitud).then(
+       (respuesta) => {
+        let sinContrato = respuesta.filter((x) => {
+          return x.IdContrato === null
+        })
+        console.log(sinContrato)
+        if(sinContrato.length === 0) {
+          this.tieneContratoBienes = true;
+        }
+      }
+    ).catch(
+      (err) => {
+        console.log('NO se obtuvieron los elementos bienes ' + err);
+      }
+    )
+  };
+
+  async ConsultarServiciosSinContrato() {
+    await this.servicio.ConsultarServiciosSinContrato(this.idSolicitud).then(
+      (respuesta) => {
+        let sinContrato = respuesta.filter((x) => {
+          return x.IdContrato === null;
+        })
+        console.log(sinContrato)
+        if(sinContrato.length === 0) {
+          this.tieneContratoServicios = true;
+        }
+      }
+    ).catch(
+      (err) => {
+        console.log('NO se obtuvieron los elementos servicios ' + err);
+      }
+    )
+  }
 
   validarDatosGuardadoParcial() {
     if(this.gestionContrato.get('numeroContrato').value === '' || this.gestionContrato.get('numeroContrato').value === null || this.gestionContrato.get('numeroContrato').value === undefined) {
@@ -400,8 +439,12 @@ export class GestionContratoComponent implements OnInit {
       }
       console.log(obj);
       this.servicio.ActualizarContrato(this.idContrato, obj).then(
-        (respuesta: ItemAddResult) => {
-          this.consultarContratosSinVerificar();
+        async (respuesta: ItemAddResult) => {
+          await this.ConsultarBienesSinContrato();
+          await this.ConsultarServiciosSinContrato();
+          if(this.tieneContratoBienes === true && this.tieneContratoServicios === true) {
+            await this.consultarContratosSinVerificar();
+          }
           if (this.enviarCrm === true) {
             let objCrm = {
               "numerocontratoproveedor": numeroContrato,
