@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     this.PermisosReporteSolicitud = false;
     this.PermisosReporteContratos = false;
     this.PermisosSoporte = false;
-    this.PermisosVerificarFirmarContratos = true;
+    this.PermisosVerificarFirmarContratos = false;
     this.linkEdicionContratos = environment.urlWeb + environment.linkVistaEdicionContratos;
   }
 
