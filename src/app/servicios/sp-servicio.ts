@@ -31,7 +31,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IllNRUxIVDBndmIwbXhvU0RvWWZvbWpxZmpZVSIsImtpZCI6IllNRUxIVDBndmIwbXhvU0RvWWZvbWpxZmpZVSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTgzOTc3NzQ1LCJuYmYiOjE1ODM5Nzc3NDUsImV4cCI6MTU4NDAwNjg0NSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI4M2E0Zjk1Yi1lMTJkLTQyZDctYTFhNC1hZDExMTMwOWYzZDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwic3ViIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.OlcNoqTRgEHc78EA-9zr1UB6u9_isbgzTeymwDD1jJWRPjZxp7tLjIGM27cEXDWJoR05G0Sa5b0zQupiJbLkMswEusbvN0xJKcHeqOAy99QvHguxPnv4bJ1XdUKTxci_ARNrqGYirQhdujWjdGZVyhl7zMkljgKCXnwZSQoT9cjw6hPIMrx0LnoxU7ANOGp1M6CPj8p7pfYOi5X83qdyPs9lbnCgJF_brTcDdF5D51gwpUkrBCNcsnPBZqjPKyQSsWgGvzixwqg6rwjL0p5OAdJ8Oh4_Hf7183kz9mcXVCwwEy88sReDgC4-g9hTxTp2b0Oq2LXNEv2R7_AIHqqGBw'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IllNRUxIVDBndmIwbXhvU0RvWWZvbWpxZmpZVSIsImtpZCI6IllNRUxIVDBndmIwbXhvU0RvWWZvbWpxZmpZVSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTg1ODU5NjA1LCJuYmYiOjE1ODU4NTk2MDUsImV4cCI6MTU4NTg4ODcwNSwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI4M2E0Zjk1Yi1lMTJkLTQyZDctYTFhNC1hZDExMTMwOWYzZDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwic3ViIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.QdIpwxWyauks6CLOjSbk_0T6lU03b3Xz3imEfI0VLWWZee4rfXqdQRuscG5faXbzAwC6dDWd2EIoErHMpwRoPHq1F-yyJsgPfYAYPa5o4Y1EGoB8Tf4ECRq977-B5MtCMWMjKYBtHexVZYippHXv09coAfyn59jVeP7nzNi5br5MKK6qrZ0p63LAWk5eROZoB-dNllUQ341zApI5WZ3Nue8x0M4HEk-QX61Am1buC7jJszfshXNrGBdIKBbtJ3KxotEzBSxW6tPWIm0dAhcczpmuKEXCCpb-Kbpd52NjhyuixpmeEU8WWBBv5oPb1T0QVy8uEotOcgCyVSVhDS0ebA'
             }
         }, environment.urlWeb);
 
@@ -767,10 +767,20 @@ export class SPServicio {
         return respuesta;
     };
 
-    ConsultarContratosNoVerificados(idSolicitud) {
-        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq '"+idSolicitud+"' and Verificado eq 0").getAll();
+    async ConsultarContratosNoVerificados(idSolicitud) {
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq '"+idSolicitud+"' and Verificado eq 0").getAll();
         return respuesta;
     };
+
+    async ConsultarBienesSinContrato(idSolicitud) {
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq '"+idSolicitud+"'").getAll();
+        return respuesta;
+    }
+
+    async ConsultarServiciosSinContrato(idSolicitud) {
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq '"+idSolicitud+"'").getAll();
+        return respuesta;
+    }
 
     ActualizarEstadoSolicitud(idSolicitud, obj) {
         let respuesta = this.ObtenerConfiguracionConPost().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(obj);
