@@ -49,6 +49,7 @@ export class MisPendientesComponent implements OnInit {
   responsableId: any;
   fechaAcordada: any;
   emailSolicitante: any;
+  estadoSolicitud: any;
 
   constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService, private formBuilder: FormBuilder) {
     this.dataSource = new MatTableDataSource();
@@ -287,6 +288,7 @@ export class MisPendientesComponent implements OnInit {
   acordarFecha(template: TemplateRef<any>, element) {
     console.log(element);
     this.idSolicitud = element.id;
+    this.estadoSolicitud = element.estado
     this.emailSolicitante = element.solicitantePersona.EMail;
     console.log(this.emailSolicitante);
     this.solicitante = element.solicitantePersona;
@@ -310,11 +312,22 @@ export class MisPendientesComponent implements OnInit {
       return false;
     }
     else {
-      let cuerpo =  '<p>Cordial saludo</p>' +
+      let cuerpo = '<p>Cordial saludo</p>' +
       '<br>' +
       '<p>El usuario <strong>' + this.usuarioActual.nombre + '</strong> ha acordado una nueva fecha para gestionar la solicitud de pedido <strong>' + this.idSolicitud + '</strong>.' +
-      '<p>La fecha ha quedo para el <strong>' + fechaString + '</strong> (dd/MM/AAAA).' +
-      '<p>En caso de requerir más información  por favor ponerse en contacto con <strong>' + this.usuarioActual.nombre + '</strong>.'
+      '<p>La fecha ha quedado para el <strong>' + fechaString + '</strong>.' +
+      '<br>' +
+      '<p>Estado de la solicitud: ' + this.estadoSolicitud + '</p>'+
+      '<br>' +
+      '<p>Presione <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/mis-pendientes">aquí</a> para revisar la solicitud</p>' +
+      '<br>' +
+      '<p>Gracias</p>'
+
+      // let cuerpo =  '<p>Cordial saludo</p>' +
+      // '<br>' +
+      // '<p>El usuario <strong>' + this.usuarioActual.nombre + '</strong> ha acordado una nueva fecha para gestionar la solicitud de pedido <strong>' + this.idSolicitud + '</strong>.' +
+      // '<p>La fecha ha quedo para el <strong>' + fechaString + '</strong> (dd/MM/AAAA).' +
+      // '<p>En caso de requerir más información  por favor ponerse en contacto con <strong>' + this.usuarioActual.nombre + '</strong>.'
        
      
       const emailProps: EmailProperties = {
