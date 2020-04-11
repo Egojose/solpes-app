@@ -14,6 +14,8 @@ import { MotivoSuspension } from '../dominio/motivoSuspension';
 import { ItemAddResult } from 'sp-pnp-js';
 import { element } from '@angular/core/src/render3';
 import { FormGroup, FormBuilder, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { EmailProperties } from 'sp-pnp-js';
+
 
 @Component({
   selector: 'app-mis-pendientes',
@@ -45,6 +47,9 @@ export class MisPendientesComponent implements OnInit {
   comentarioSuspension: string;
   idSolicitudDescartar: any;
   responsableId: any;
+  fechaAcordada: any;
+  emailSolicitante: any;
+  estadoSolicitud: any;
 
   constructor(private servicio: SPServicio, private router: Router, private modalServicio: BsModalService, public toastr: ToastrManager, public dialog: MatDialog, private spinner: NgxSpinnerService, private formBuilder: FormBuilder) {
     this.dataSource = new MatTableDataSource();
@@ -54,6 +59,7 @@ export class MisPendientesComponent implements OnInit {
 
   ngOnInit() {
     this.spinner.show();
+    console.log(this.misSolicitudes);
     this.destruirSessionesSolicitudes();
     this.ObtenerUsuarioActual();
   }
@@ -279,6 +285,80 @@ export class MisPendientesComponent implements OnInit {
     this.modalRef = this.modalServicio.show(template, { class: 'modal-md' });
   }
 
+  acordarFecha(template: TemplateRef<any>, element) {
+    console.log(element);
+    this.idSolicitud = element.id;
+    this.estadoSolicitud = element.estado
+    this.emailSolicitante = element.solicitantePersona.EMail;
+    console.log(this.emailSolicitante);
+    this.solicitante = element.solicitantePersona;
+    this.modalRef = this.modalServicio.show(template, { class: 'modal-md' });
+  }
+
+  confirmarAcordarFecha() {
+    let fecha = new Date(this.fechaAcordada);
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth();
+    if(mes < 10) {
+      mes = parseInt(`0${mes}`);
+    }
+    let anio = fecha.getFullYear();
+    let fechaString = `${dia}/${mes}/${anio}`
+    console.log(fechaString);
+    this.spinner.show()
+    if(this.fechaAcordada === null || this.fechaAcordada === '' || this.fechaAcordada === undefined) {
+      this.mostrarAdvertencia('Debe seleccionar una fecha');
+      this.spinner.hide();
+      return false;
+    }
+    else {
+      let cuerpo = '<p>Cordial saludo</p>' +
+      '<br>' +
+      '<p>El usuario <strong>' + this.usuarioActual.nombre + '</strong> ha acordado una nueva fecha para gestionar la solicitud de pedido <strong>' + this.idSolicitud + '</strong>.' +
+      '<p>La fecha ha quedado para el <strong>' + fechaString + '</strong>.' +
+      '<br>' +
+      '<p>Estado de la solicitud: ' + this.estadoSolicitud + '</p>'+
+      '<br>' +
+      '<p>Presione <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/mis-pendientes">aquí</a> para revisar la solicitud</p>' +
+      '<br>' +
+      '<p>Gracias</p>'
+
+      // let cuerpo =  '<p>Cordial saludo</p>' +
+      // '<br>' +
+      // '<p>El usuario <strong>' + this.usuarioActual.nombre + '</strong> ha acordado una nueva fecha para gestionar la solicitud de pedido <strong>' + this.idSolicitud + '</strong>.' +
+      // '<p>La fecha ha quedo para el <strong>' + fechaString + '</strong> (dd/MM/AAAA).' +
+      // '<p>En caso de requerir más información  por favor ponerse en contacto con <strong>' + this.usuarioActual.nombre + '</strong>.'
+       
+     
+      const emailProps: EmailProperties = {
+        To: [this.emailSolicitante],
+        Subject: "Se ha acordado una nueva fecha para gestionar su solicitud",
+        Body: cuerpo,
+      };
+      let obj = {
+        FechaAcordada: this.fechaAcordada,
+        OcultarBtnFechaAcordada: true
+      }
+      console.log(obj);
+      this.servicio.agregarFechaAcordada(this.idSolicitud, obj).then(
+        (res) => {
+          this.servicio.EnviarNotificacion(emailProps);
+          this.MostrarExitoso('La fecha se agregó correctamente');
+          this.modalRef.hide();
+          this.spinner.hide();
+          this.router.navigate(["/mis-solicitudes"]);
+        }
+      ).catch(
+        (err)=> {
+          this.mostrarError('No se pudo agregar la fecha a la solicitud. Por favor intente de nuevo más tarde');
+          this.modalRef.hide();
+          this.spinner.hide();
+          console.error(err);
+        }
+      )
+    }
+  }
+
   confirmarSuspension() {
     if(this.nombreSuspension === 'Seleccione' || this.nombreSuspension === "" || this.nombreSuspension === null || this.nombreSuspension === undefined) {
       this.mostrarAdvertencia('Debe seleccionar un motivo de suspensión')
@@ -401,7 +481,7 @@ export class MisPendientesComponent implements OnInit {
   confirmarReactivar() {
     let objReac;
     let objHistorial;
-    let estado = "Por registrar contratos";
+    let estado = "Negociar contrato";
     let fechaReactivacion = new Date();
     
     objReac = {

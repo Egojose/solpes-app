@@ -92,20 +92,20 @@
                 </div>
                 <div class="filaBtn">
                     <div class="col-md-12">
-                        <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-primary btn-block" (click)="RegistrarContratos(element)">Ir
-              a registrar contratos</button>
+                        <button *ngIf="element.estado =='Negociar contrato'" class="btn btn-primary btn-block" (click)="RegistrarContratos(element)">Ir a negociar contrato</button>
                     </div>
                 </div>
                 <div class="filaBtn">
                     <div class="col-md-12">
-                        <button *ngIf="element.estado =='Por registrar contratos'" class="btn btn-success btn-block" (click)="reasignar(element)">Reasignar</button>
+                        <button *ngIf="element.estado =='Negociar contrato'" class="btn btn-success btn-block" (click)="reasignar(element)">Reasignar</button>
                     </div>
                 </div>
-                <!-- <div class="filaBtn">
-          <div class="col-md-12">
-            <button *ngIf="element.estado =='Suspendida sondeo'" class="btn btn-success btn-block" (click)="reasignar(element)">Reasignar</button>
-          </div>
-        </div> -->
+                <div class="filaBtn">
+                    <div class="col-md-12">
+                        <button *ngIf="element.estado =='Negociar contrato'  && element.ocultarBtnFechaAcordada == false" class="btn btn-primary btn-block"
+                            (click)="acordarFecha(templateAcordarFecha, element)">Acordar fecha con solicitante</button>
+                    </div>
+                </div>
                 <div class="filaBtn">
                     <div class="col-md-12">
                         <button *ngIf="element.estado =='Sin presupuesto'" class="btn btn-primary btn-block" (click)="ConPresupuesto(element,templateConfirmacionPresupuesto)">Enviar
@@ -141,7 +141,7 @@
                 </div>
                 <div class="filaBtn">
                     <div class="col-md-12">
-                        <button class="btn btn-warning btn-block" *ngIf="element.estado == 'Por registrar contratos'" (click)="suspender(templateSuspenderSolicitud,element)">Suspender solicitud</button>
+                        <button class="btn btn-warning btn-block" *ngIf="element.estado == 'Negociar contrato'" (click)="suspender(templateSuspenderSolicitud,element)">Suspender solicitud</button>
                     </div>
                 </div>
                 <div class="filaBtn">
@@ -252,6 +252,21 @@
         <p>Una vez reactivada se enviará nuevamente al comprador</p>
         <button type="button" class="btn btn-danger" (click)="confirmarReactivarSondeo(element)">Aceptar</button>
         <button type="button" class="btn btn-primary" (click)="declinarDescartar()">Cancelar</button>
+    </div>
+</ng-template>
+
+<ng-template #templateAcordarFecha>
+    <div class="modal-body text-center">
+        <h4>Seleccione la fecha a acordar con el solicitante</h4>
+        <div class="input-group input-group-lg">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-lg"><img src="assets/images/calendar.png"></span>
+            </div>
+            <input type="text" class="form-control" aria-label="Large" [(ngModel)]="fechaAcordada" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker>
+        </div>
+          <br>
+        <button type="button" class="btn btn-success" (click)="confirmarAcordarFecha()">Enviar fecha</button>
+        <button type="button" class="btn btn-danger" (click)="declinarDescartar()">Cancelar</button>
     </div>
 </ng-template>
 

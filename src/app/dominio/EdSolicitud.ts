@@ -13,6 +13,7 @@ export class EdSolicitud {
         public subcategoria: string,
         public comprador: any,
         public codigoAriba: string,
+        public cuadrante: string,
         public fechaEntregaDeseada: Date,
         public alcance: string,
         public justificacion: string,
@@ -39,7 +40,8 @@ export class EdSolicitud {
         public reasignadoAprobar?: boolean,
         public suspendidaSondeo?: boolean,
         public reactivadoSondeo?: boolean,
-        public solicitantePersona?: any) { }
+        public solicitantePersona?: any,
+        public ocultarBtnFechaAcordada?: boolean,) { }
 
     public static fromJson(element: any) {
         return new EdSolicitud(
@@ -55,6 +57,7 @@ export class EdSolicitud {
             element.Subcategoria,
             (element.Comprador != null) ? element.Comprador : null,
             element.CodigoAriba,
+            element.Cuadrante,
             element.FechaDeseadaEntrega, 
             element.Alcance, 
             element.Justificacion, 
@@ -81,7 +84,8 @@ export class EdSolicitud {
             element.ReasignadoRevisarSondeo,
             element.SuspendidaSondeo,
             element.ReactivadaSondeo,
-            element.SolicitantePersona);
+            element.SolicitantePersona,
+            element.OcultarBtnFechaAcordada);
     }
 
     public static fromJsonList(elements: any) {

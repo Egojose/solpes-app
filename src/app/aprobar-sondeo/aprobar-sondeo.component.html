@@ -16,13 +16,13 @@
             </div>
             <div class="form-check form-check-inline">
                 <label>
-                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="2">
+                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" (click)="mostrarNumeroOrdenEstadisticaRadio()" [value]="2">
                         Convertir en SOLP
                     </label>
             </div>
             <div class="form-check form-check-inline">
                 <label>
-                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" [value]="4">
+                        <input class="form-check-input" type="radio" name="SolpSap" [(ngModel)]="RDBsondeo" (click)="mostrarNumeroOrdenEstadisticaRadio()" [value]="4">
                         Convertir en orden a CM
                     </label>
             </div>

@@ -5,6 +5,7 @@ export class Subcategoria {
         public idPaises: any,
         public comprador: any,
         public codigoAriba: string,
+        public cuadrante: string,
         public condicionesContractuales: any,
         public id: number) { }
 
@@ -14,6 +15,7 @@ export class Subcategoria {
             element.Pais,
             element.Comprador,
             element.CodigoAriba,
+            element.Cuadrante,
             element.CondicionesTecnicas.results,
             element.ID);
     }
