@@ -231,7 +231,8 @@ export class RegistrarSolpSapComponent implements OnInit {
           EstadoRegistrarSAP: "Aprobado",
           NumSolSAP: this.numeroSolpSap,
           ComentarioRegistrarSAP: this.ComentarioRegistrarSap,
-          FechaRegistrarSolpsap: fechaSolpSap
+          FechaRegistrarSolpsap: fechaSolpSap,
+          OcultarBtnFechaAcordada: false
         }
       }
       else if (this.RDBOrdenadorGastos === 2 && this.ComentarioRegistrarSap === undefined) {

@@ -319,7 +319,7 @@ export class MisPendientesComponent implements OnInit {
       '<br>' +
       '<p>Estado de la solicitud: ' + this.estadoSolicitud + '</p>'+
       '<br>' +
-      '<p>Presione <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/mis-pendientes">aquí</a> para revisar la solicitud</p>' +
+      '<p>Presione <a href="https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/mis-solicitudes">aquí</a> para ir a la aplicación de Solicitudes de Pedido</p>' +
       '<br>' +
       '<p>Gracias</p>'
 
