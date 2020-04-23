@@ -30,6 +30,8 @@ export class ReporteSolicitud {
         public ReasignaEnContratos: string,
         public fechaReasignadoContratos: string,
         public departamento?: string,
+        public fechaAcordada?: string,
+        public cuadrante?:string
         ) {}
 
         
@@ -65,6 +67,8 @@ export class ReporteSolicitud {
                 element.ResponsableReasignarContratos,
                 element.FechaReasignadoContratos !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaReasignadoContratos)) : "",
                 element.Author.Department,
+                element.FechaAcordada !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaAcordada)) : '',
+                element.Cuadrante
                 
             )}
 

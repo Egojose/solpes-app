@@ -120,31 +120,31 @@
     <hr>
     <form [formGroup]="gestionContrato">
       <div class="row">
-        <div class="col-4 form-group">
+        <div class="col-4 form-group acciones">
           <label for="">Número de contrato/Orden de compra</label>
           <input type="text" class="form-control" formControlName="numeroContrato" (keyup)="validarNumeroContrato()">
         </div>
-        <div class="col-4 form-group">
+        <div class="col-4 form-group acciones">
           <label for="">Enviado a firmas</label>
           <select name="" id="" class="form-control" formControlName="enviadoFirmas" (change)="mostrarCampoFechaEnvio($event)">
             <option value="NO">NO</option>
             <option value="SÍ">SÍ</option>
           </select>
         </div>
-        <div class="col-4 form-group" *ngIf="mostrarCampo">
+        <div class="col-4 form-group acciones" *ngIf="mostrarCampo">
           <label for="">Fecha de envío a firmas</label>
           <input type="text" class="form-control" bsDatepicker  formControlName="fechaEnvioFirmas">
         </div>
       </div>
       <div class="row">
-        <div class="col-6 form-group" *ngIf="mostrarCampoPoliza">
+        <div class="col-6 form-group acciones" *ngIf="mostrarCampoPoliza">
           <label for="">Póliza recibida</label>
           <select class="form-control" formControlName="poliza" (change)="mostrarCampoFechaPoliza($event)">
             <option value="NO">NO</option>
             <option value="SÍ">SÍ</option>
           </select>
         </div>
-        <div class="col-6 form-group" *ngIf="mostrarFechaPoliza">
+        <div class="col-6 form-group acciones" *ngIf="mostrarFechaPoliza">
           <label for="">Fecha de recepción de la póliza</label>
           <input type="text" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" formControlName="fechaPoliza">
         </div>

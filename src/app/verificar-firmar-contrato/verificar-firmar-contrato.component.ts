@@ -43,7 +43,7 @@ export class VerificarFirmarContratoComponent implements OnInit {
     this.servicio.ObtenerContratosNoVerificados().then(
       (respuesta) => {
         console.log(respuesta);
-        this.dataSource = new MatTableDataSource(respuesta);
+        this.dataSource = new MatTableDataSource(respuesta.sort((a, b) => b.SolicitudId > a.SolicitudId ? 1 : -1));
       }
     )
   }
