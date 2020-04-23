@@ -1,3 +1,5 @@
+import { ReporteSolicitud } from "./reporteSolicitud";
+
 export class ReporteContratos {
     constructor(
         public tipoContrato: string,
@@ -38,7 +40,10 @@ export class ReporteContratos {
         public aribaSourcing: string,
         public causalExcepcion: string,
         public requiereEvaluacion: boolean,
-        public puntajeActualEvaluacionProveedor: string) {}
+        public puntajeActualEvaluacionProveedor: string,
+        public tipoEjecucion: string,
+        public causalIncumplimiento: string,
+        public fechaEnviadoFirmas: string) {}
 
         public static fromJson(element: any) {
             return new ReporteContratos(
@@ -80,7 +85,10 @@ export class ReporteContratos {
                 element.AribaSourcing,
                 element.CausalExcepcion,
                 element.RequiereEvaluacion,
-                element.PuntajeActualEvaluacionProveedor)
+                element.PuntajeActualEvaluacionProveedor,
+                element.TipoEjecucion,
+                element.CausalIncumplimiento,
+                element.FechaEnviadoFirmas !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaEnviadoFirmas)): '')
             }
 
         public static fromJsonList(elements: any) {
