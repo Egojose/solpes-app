@@ -127,6 +127,7 @@ export class CrearSolicitudComponent implements OnInit {
   consecutivoActual: number;
   compradorId: number;
   codigoAriba: string;
+  cuadrante: string;
   responsableProcesoEstado: responsableProceso[] = [];
   emptyNumeroOrdenEstadistica: boolean;
   fueSondeo: boolean;
@@ -3211,6 +3212,7 @@ deshabilitarCampoServicios() {
       subcategoria: [''],
       comprador: [''],
       codigoAriba: [''],
+      cuadrante: [''],
       fechaEntregaDeseada: [''],
       alcance: [''],
       justificacion: [''],
@@ -3394,7 +3396,7 @@ deshabilitarCampoServicios() {
   }
 
   agregarSolicitudInicial(): any {
-    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null, null, '', '', null, '', null, '', '', '', 'Inicial', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
+    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null, null, '', '', null, '','', null, '', '', '', 'Inicial', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
     this.servicio.agregarSolicitud(this.solicitudGuardar).then(
       (item: ItemAddResult) => {
         this.idSolicitudGuardada = item.data.Id;
@@ -3427,6 +3429,7 @@ deshabilitarCampoServicios() {
         (respuesta) => {
           if (respuesta.length > 0) {
             this.subcategorias = Subcategoria.fromJsonList(respuesta);
+            console.log(this.subcategorias);
           } else {
             this.subcategorias = [];
             this.solpFormulario.controls["subcategoria"].setValue("");
@@ -3458,6 +3461,7 @@ deshabilitarCampoServicios() {
     } else {
       this.solpFormulario.controls["comprador"].setValue('');
       this.solpFormulario.controls['codigoAriba'].setValue('');
+      this.solpFormulario.controls['cuadrante'].setValue('');
       this.spinner.hide();
     }
   }
@@ -3466,8 +3470,10 @@ deshabilitarCampoServicios() {
     let nombreComprador = (subcategoriaSeleccionada.comprador != null) ? subcategoriaSeleccionada.comprador.Title : '';
     this.compradorId = (subcategoriaSeleccionada.comprador != null) ? subcategoriaSeleccionada.comprador.Id : null;
     this.codigoAriba = (subcategoriaSeleccionada.codigoAriba != null) ? subcategoriaSeleccionada.codigoAriba : '';
+    this.cuadrante = (subcategoriaSeleccionada.cuadrante !== null) ? subcategoriaSeleccionada.cuadrante : '';
     this.solpFormulario.controls["comprador"].setValue(nombreComprador);
     this.solpFormulario.controls['codigoAriba'].setValue(this.codigoAriba);
+    this.solpFormulario.controls['cuadrante'].setValue(this.cuadrante);
   }
 
   limpiarCondicionesContractuales(): any {
@@ -3495,6 +3501,7 @@ deshabilitarCampoServicios() {
     let subcategoria = this.solpFormulario.controls["subcategoria"].value;
     let comprador = this.solpFormulario.controls["comprador"].value;
     let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
+    let cuadrante = this.solpFormulario.controls['cuadrante'].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
@@ -3652,6 +3659,7 @@ deshabilitarCampoServicios() {
                 subcategoria.nombre,
                 subcategoria.comprador.ID,
                 codigoAriba,
+                cuadrante,
                 fechaEntregaDeseada,
                 alcance,
                 justificacion,
@@ -3677,7 +3685,7 @@ deshabilitarCampoServicios() {
                     let respuesta;
                     let objToken = {
                       TipoConsulta: "crm",
-                      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+                      suscriptionKey: "2496e7491e1849d4a407d31b2a792a44",
                       token: this.token,
                       estado: "true"
                     }
@@ -3685,7 +3693,7 @@ deshabilitarCampoServicios() {
                     localStorage.setItem("id_token",objTokenString);
                     let objCrm = {
                       "numerosolp": `${this.idSolicitudGuardada}`,
-                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
+                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
                       "idservicios": this.dataTotalIds
                       // "idservicios" : ["0029NQT600001"]
                       // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
@@ -3693,7 +3701,7 @@ deshabilitarCampoServicios() {
                     let obj = {
                       Title: `Solicitud ${this.idSolicitudGuardada}`,
                       NroSolp: `${this.idSolicitudGuardada}`,
-                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
+                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
                       // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
                       IdServicios: this.dataTotalIds.toString()
                     }
@@ -3840,13 +3848,8 @@ deshabilitarCampoServicios() {
       this.condicionesContractuales.forEach(condicionContractual => {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
         if (textoCajon != null) {
-          var json = textoCajon.replace(/["]/g, "\"");
-           json = json.replace(/[{]/g, "[");
-           json = json.replace(/[}]/g, "]");
-           json = json.replace(/[\t]/g, "\t");
-           json = json.replace(/[\n]/g, "\n");
-           this.jsonCondicionesContractuales = json 
-          // this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r|\t)/gm," ");
+          var json = textoCajon.replace(/[|&;$%@"<>\()+•,]/g, "");
+          this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r|\t)/gm," ");
           this.cadenaJsonCondicionesContractuales += ('{"campo": "' + condicionContractual.nombre + '", "descripcion": "' + this.jsonCondicionesContractuales + '"},');
         }
       });
@@ -5080,6 +5083,7 @@ deshabilitarCampoServicios() {
     let subcategoria = this.solpFormulario.controls["subcategoria"].value;
     let comprador = this.solpFormulario.controls["comprador"].value;
     let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
+    let cuadrante = this.solpFormulario.controls['cuadrante'].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
@@ -5109,6 +5113,7 @@ deshabilitarCampoServicios() {
       (subcategoria != '') ? subcategoria.nombre : '',
       (subcategoria != '') ? subcategoria.comprador.ID : null,
       (codigoAriba != '') ? codigoAriba : '',
+      (cuadrante !== '' && cuadrante !== null) ? cuadrante : '',
       (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
       (alcance != '') ? alcance : '',
       (justificacion != '') ? justificacion : '',

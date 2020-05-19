@@ -31,7 +31,7 @@ export class SPServicio {
             headers: {
                 "Accept": "application/json; odata=verbose",
                 'Content-Type': 'application/json;odata=verbose',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkhsQzBSMTJza3hOWjFXUXdtak9GXzZ0X3RERSIsImtpZCI6IkhsQzBSMTJza3hOWjFXUXdtak9GXzZ0X3RERSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTgyOTAzMzMzLCJuYmYiOjE1ODI5MDMzMzMsImV4cCI6MTU4MjkzMjQzMywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI4M2E0Zjk1Yi1lMTJkLTQyZDctYTFhNC1hZDExMTMwOWYzZDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwic3ViIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.PZH8GWpyQBDjR72d_WM6dYttgTY6SvtdukbiJYEEn2LO105wF819X9MiQQLRDcYdpRf7r_Vwh5Ws4nPqPhOe6-lzOmopl8MLRasp6KFrmwb1BmnB7DHUtxyEdofpnxpd6vmc2n5SVgo_fCVznLJinmWzqngVDqfNUANMXNSaYieypXI-BcFsfiYALU--TMgoiv-5ScuYBXuqzNNPco0V7TAAZWYO7aIR3QXsxhXQJaiGnFgXHcEIQWodKvCxcE80e0KbaoGD0xDIpEaMV2bx6eGjZ2smVXHIg8Sk00Q03efEpGU523gMHtgJWENJdRjEoVQPXOT_YZ2aWnau67d9rQ'
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkN0VHVoTUptRDVNN0RMZHpEMnYyeDNRS1NSWSIsImtpZCI6IkN0VHVoTUptRDVNN0RMZHpEMnYyeDNRS1NSWSJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvZW5vdmVsc29sdWNpb25lcy5zaGFyZXBvaW50LmNvbUA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwiaWF0IjoxNTg5ODYxMDk2LCJuYmYiOjE1ODk4NjEwOTYsImV4cCI6MTU4OTk0Nzc5NiwiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEA5MjAwNDBiMy1jMjIwLTQ4YTItYTczZi0xMTc3ZmEyYzA5OGUiLCJuYW1laWQiOiI4M2E0Zjk1Yi1lMTJkLTQyZDctYTFhNC1hZDExMTMwOWYzZDBAOTIwMDQwYjMtYzIyMC00OGEyLWE3M2YtMTE3N2ZhMmMwOThlIiwib2lkIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwic3ViIjoiZTAxZThhNzEtMGY0YS00YjJiLTlkOWItZGU3NjcwOGVjYjlhIiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.aM6PuAfp4UpBL_qutGRiQ2gK9XR7hFjmd7IaG_eKgGXuLDFCWh0QPNDVTkpYdjWacdSMp2GyzxLVLfKltX7hMMlB-BC5rEFCsCrKRWhuqLIFK17qgPSjSWveesiboCT51jTWzoPEeREpcvZIqlqcFIGlk857ubTI-6VAuFS9CkQwfnQKCbCQ_jdwtC3OgeZ5WvRfO0BoxV1hr33eEciPwYv9BRuEThRK-9R77moFrTuT7z0-kICOWvxo46odbtiXoV29dgu5kC_28c4Kw_TK2W5-_BgEjTvip9_7a0cULFwPmtBL1xLE13Wn1k7h7je0acUHv9AAHXWUGvw8VVlR4A'
             }
         }, environment.urlWeb);
 
@@ -80,7 +80,7 @@ export class SPServicio {
     }
 
     ObtenerSubcategorias(idCategoria: number, idPais: number) {
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "Pais/Title", "Pais/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID", "CodigoAriba").expand("Categoria", "Comprador", "CondicionesTecnicas", "Pais").filter("CategoriaId eq " + idCategoria + "and PaisId eq " + idPais).get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "Pais/Title", "Pais/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID", "CodigoAriba", "Cuadrante").expand("Categoria", "Comprador", "CondicionesTecnicas", "Pais").filter("CategoriaId eq " + idCategoria + "and PaisId eq " + idPais).get());
         return respuesta;
     }
 
@@ -90,7 +90,7 @@ export class SPServicio {
     }
 
     obtenerSolicitudes() {
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Responsable/Title", "Created", "CodigoAriba", "Consecutivo", "FueSondeo").expand("Empresa", "Pais", "OrdenadorGastos", "Responsable", "Comprador", "Author").orderBy('Consecutivo', true).getAll());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Responsable/Title", "Created", "CodigoAriba", "Consecutivo", "FueSondeo").expand("Empresa", "Pais", "OrdenadorGastos", "Responsable", "Comprador", "Author").orderBy('Consecutivo', true).top(4999).getAll());
         return respuesta;
     }
 
@@ -159,11 +159,16 @@ export class SPServicio {
             Consecutivo: solicitud.consecutivo,
             Estado: solicitud.estado,
             CodigoAriba: solicitud.codigoAriba,
+            Cuadrante: solicitud.cuadrante,
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
             SolicitantePersonaId: solicitud.solicitantePersona,
             FechaDeCreacion: solicitud.fechaCreacion
         });
+    }
+
+    agregarFechaAcordada(idSolicitud, obj) {
+        return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(obj);
     }
 
     agregarCondicionesTecnicasBienesExcel(condicionTecnicaBienes) {
@@ -361,7 +366,7 @@ export class SPServicio {
     };
 
     ObtenerSolicitudBienesServicios(IdSolicitud){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","FechaRegistrarSolpsap","Solicitante","Responsable/Title","OrdenadorGastos/Title","OrdenadorGastos/Department","OrdenadorGastos/Id" ,"Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo", "FechaDeCreacion","Consecutivo", "SolicitantePersona/Title", "SolicitantePersona/Id", "Estado").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles", "SolicitantePersona").get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","FechaRegistrarSolpsap","Solicitante","Responsable/Title","OrdenadorGastos/Title","OrdenadorGastos/Department","OrdenadorGastos/Id" ,"Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","Cuadrante","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo", "FechaDeCreacion","Consecutivo", "SolicitantePersona/Title", "SolicitantePersona/Id", "Estado").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles", "SolicitantePersona").get());
         return respuesta;
     }
 
@@ -371,7 +376,7 @@ export class SPServicio {
     }
 
     ObtenerReporteSolicitud(fechaInico, fechaFin){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","TipoSolicitud","Estado","NumSolSAP","CM","OrdenadorGastos/Title","NumeroDeContrato","Solicitante","Author/Department","OrdenadorGastos/ID","Comprador/Title","Comprador/ID","Categoria","Subcategoria","Alcance","Pais/Title","Pais/ID","FueSondeo","FechaDeCreacion","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaSuspension", "FechaReactivacion", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor","MotivoDeSuspension","Responsable/ID", "Responsable/Title", "ResponsableReasignarSondeo", "FechaReasignadoSondeo", "ResponsableReasignarContratos", "FechaReasignadoContratos").expand("OrdenadorGastos","Responsable","Comprador","Pais", "Author").filter("FechaDeCreacion ge datetime'"+fechaInico+"T00:00:00.00Z' and FechaDeCreacion le datetime'"+fechaFin+"T23:59:59.00Z'").top(4999).get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("Consecutivo","TipoSolicitud","Estado","NumSolSAP","CM","OrdenadorGastos/Title","NumeroDeContrato","Solicitante","Author/Department","OrdenadorGastos/ID","Comprador/Title","Comprador/ID","Categoria","Subcategoria","Alcance","Pais/Title","Pais/ID","FueSondeo","FechaDeCreacion","FechaSondeo","FechaRevisarSondeo","FechaVerificarMaterial", "FechaRegistrarActivo", "FechaSuspension", "FechaReactivacion", "FechaRegistrarSolpsap","FechaRegistrarContrato","FechaEnvioProveedor","MotivoDeSuspension","Responsable/ID", "Responsable/Title", "ResponsableReasignarSondeo", "FechaReasignadoSondeo", "ResponsableReasignarContratos", "FechaReasignadoContratos", "FechaAcordada", "Cuadrante").expand("OrdenadorGastos","Responsable","Comprador","Pais", "Author").filter("FechaDeCreacion ge datetime'"+fechaInico+"T00:00:00.00Z' and FechaDeCreacion le datetime'"+fechaFin+"T23:59:59.00Z'").top(4999).get());
         return respuesta;
     }
 
@@ -444,11 +449,11 @@ export class SPServicio {
         );
     } 
 
-    async actualizarFechaContratos(IdSolicitud, ContratoOC): Promise<any>{
+    async actualizarFechaContratos(IdSolicitud): Promise<any>{
         return await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).update(
               {
                 FechaRegistrarContrato: new Date(),
-                NumeroDeContrato: ContratoOC
+                // NumeroDeContrato: ContratoOC
             }
         );
     } 
@@ -535,7 +540,7 @@ export class SPServicio {
     }
     
     ObtenerMisPendientes(usuarioId){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "OrdenadorGastos/ID", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created","Responsable/Title", "Responsable/ID", "CompraBienes", "CompraServicios", "CodigoAriba", "Consecutivo", "OrdenEstadistica", "NumeroOrdenEstadistica","FaltaRecepcionServicios","FaltaRecepcionBienes", "FueSondeo", "Suspendida", "Reactivada", "SuspendidaSondeo", "ReactivadaSondeo", "ResponsableSondeo/Title", "ResponsableSondeo/ID", "ResponsableSondeo/EMail", "ReasignadoRevisarSondeo", "SolicitantePersona/Title", "SolicitantePersona/EMail", "SolicitantePersona/ID").expand("Empresa", "Pais", "OrdenadorGastos", "Comprador", "Responsable", "Author", "ResponsableSondeo", "SolicitantePersona").filter("Responsable eq '"+usuarioId+"' and Estado ne 'Finalizado' and Estado ne 'Rechazado' and Estado ne 'Descartado' and Estado ne 'Inicial' and Estado ne 'Recibido'").orderBy('Consecutivo', true).top(4999).get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "OrdenadorGastos/ID", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created","Responsable/Title", "Responsable/ID", "CompraBienes", "CompraServicios", "CodigoAriba", "Consecutivo", "OrdenEstadistica", "NumeroOrdenEstadistica","FaltaRecepcionServicios","FaltaRecepcionBienes", "FueSondeo", "Suspendida", "Reactivada", "SuspendidaSondeo", "ReactivadaSondeo", "ResponsableSondeo/Title", "ResponsableSondeo/ID", "ResponsableSondeo/EMail", "ReasignadoRevisarSondeo", "SolicitantePersona/Title", "SolicitantePersona/EMail", "SolicitantePersona/ID", "OcultarBtnFechaAcordada").expand("Empresa", "Pais", "OrdenadorGastos", "Comprador", "Responsable", "Author", "ResponsableSondeo", "SolicitantePersona").filter("Responsable eq '"+usuarioId+"' and Estado ne 'Finalizado' and Estado ne 'Rechazado' and Estado ne 'Descartado' and Estado ne 'Inicial' and Estado ne 'Recibido'").orderBy('Consecutivo', true).top(4999).get());
         return respuesta;
     }
 
@@ -558,6 +563,11 @@ export class SPServicio {
         let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq " + IdSolicitud).getAll());
         return respuesta;
     }
+
+    ObtenerContratosNoVerificados() {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("Verificado eq 0").getAll();
+        return respuesta;
+    } 
 
     guardarSondeoBienes(idCondicion, objSondeo){   
         let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.getById(idCondicion).update(objSondeo);        
@@ -725,6 +735,55 @@ export class SPServicio {
 
    EnviarNotificacion(objNotificacion) {
         let respuesta = this.ObtenerConfiguracion().utility.sendEmail(objNotificacion);
+        return respuesta;
+    }
+
+    ObtenerTipoEjecucion() {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaTipoEjecucion).items.getAll();
+        return respuesta;
+    }
+
+    ObtenerCausalIncumplimiento() {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCausalIncumplimento).items.getAll();
+        return respuesta;
+    }
+
+    ConsultarBienesXcontrato(idContrato) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("IdContrato eq '"+idContrato+"' and tieneIdServicio eq 1").getAll();
+        return respuesta;
+    }
+    ConsultarServiciosXcontrato(idContrato) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("IdContrato eq '"+idContrato+"' and tieneIdServicio eq 1").getAll();
+        return respuesta;
+    };
+
+    ConsultarSolicitante(idSolicitud) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.filter("ID eq '"+idSolicitud+"'").select("SolicitantePersona/Title", "SolicitantePersona/ID", "SolicitantePersona/EMail").expand("SolicitantePersona").get();
+        return respuesta;
+    };
+
+    ActualizarContrato(idContrato, obj) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.getById(idContrato).update(obj);
+        return respuesta;
+    };
+
+    async ConsultarContratosNoVerificados(idSolicitud) {
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaContratos).items.filter("SolicitudId eq '"+idSolicitud+"' and Verificado eq 0").getAll();
+        return respuesta;
+    };
+
+    async ConsultarBienesSinContrato(idSolicitud) {
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasBienes).items.filter("SolicitudId eq '"+idSolicitud+"'").getAll();
+        return respuesta;
+    }
+
+    async ConsultarServiciosSinContrato(idSolicitud) {
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCondicionesTecnicasServicios).items.filter("SolicitudId eq '"+idSolicitud+"'").getAll();
+        return respuesta;
+    }
+
+    ActualizarEstadoSolicitud(idSolicitud, obj) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(obj);
         return respuesta;
     }
 

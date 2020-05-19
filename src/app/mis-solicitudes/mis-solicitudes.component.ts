@@ -112,6 +112,7 @@ export class MisSolicitudesComponent implements OnInit {
       solicitudDuplicar.subcategoria,
       solicitudDuplicar.comprador.ID,
       solicitudDuplicar.codigoAriba,
+      solicitudDuplicar.cuadrante,
       solicitudDuplicar.fechaEntregaDeseada,
       solicitudDuplicar.alcance,
       solicitudDuplicar.justificacion,

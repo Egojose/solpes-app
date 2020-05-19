@@ -3227,6 +3227,7 @@ export class EditarSolicitudComponent implements OnInit {
       subcategoria: [''],
       comprador: [''],
       codigoAriba: [''],
+      cuadrante: [''],
       fechaEntregaDeseada: [''],
       alcance: [''],
       justificacion: [''],
@@ -3474,6 +3475,7 @@ export class EditarSolicitudComponent implements OnInit {
           if (this.solicitudRecuperada.subcategoria != null) {
             this.subcategoria = this.subcategorias.filter(x => x.nombre == this.solicitudRecuperada.subcategoria)[0];
             this.solpFormulario.controls["subcategoria"].setValue(this.subcategoria.id);
+            this.solpFormulario.controls['cuadrante'].setValue(this.subcategoria.cuadrante);
             if (this.solicitudRecuperada.condicionesContractuales != '' && this.solicitudRecuperada.condicionesContractuales != '{ "condiciones":]}') {
               let jsonCondicionesContractuales = JSON.parse(this.solicitudRecuperada.condicionesContractuales.replace(/(\r\n|\n|\r)/gm," "));
               if (jsonCondicionesContractuales != null) {
@@ -4042,11 +4044,11 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   subirAdjuntoCTS(event) {
-    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', event.target.files[0], '', '');
+    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', event.item(0), '', '');
   }
 
   subirAdjuntoCTB(event) {
-    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.target.files[0], '', '');
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.item(0), '', '');
   }
 
   ctbOnSubmit() {
@@ -4781,6 +4783,7 @@ export class EditarSolicitudComponent implements OnInit {
       comprador = null;
     }
     let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
+    let cuadrante = this.solpFormulario.controls['cuadrante'].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
@@ -4810,6 +4813,7 @@ export class EditarSolicitudComponent implements OnInit {
       (valorSubcategoria != null) ? valorSubcategoria : null,
       (comprador != null) ? comprador : null,
       (codigoAriba != '') ? codigoAriba : '',
+      (cuadrante !== '') ? cuadrante : '',
       (fechaEntregaDeseada != '') ? fechaEntregaDeseada : null,
       (alcance != '') ? alcance : '',
       (justificacion != '') ? justificacion : '',
@@ -4852,6 +4856,7 @@ export class EditarSolicitudComponent implements OnInit {
     let subcategoria = this.solpFormulario.controls["subcategoria"].value;
     let comprador = this.solpFormulario.controls["comprador"].value;
     let codigoAriba = this.solpFormulario.controls["codigoAriba"].value;
+    let cuadrante = this.solpFormulario.controls['cuadrante'].value;
     let fechaEntregaDeseada = this.solpFormulario.controls["fechaEntregaDeseada"].value;
     let alcance = this.solpFormulario.controls["alcance"].value;
     let justificacion = this.solpFormulario.controls["justificacion"].value;
@@ -5015,6 +5020,7 @@ export class EditarSolicitudComponent implements OnInit {
                 valorSubcategoria,
                 valorComprador,
                 codigoAriba,
+                cuadrante,
                 fechaEntregaDeseada,
                 alcance,
                 justificacion,
@@ -5041,7 +5047,7 @@ export class EditarSolicitudComponent implements OnInit {
                     let respuesta;
                     let objToken = {
                       TipoConsulta: "crm",
-                      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+                      suscriptionKey: "2496e7491e1849d4a407d31b2a792a44",
                       token: this.token,
                       estado: "true"
                     }

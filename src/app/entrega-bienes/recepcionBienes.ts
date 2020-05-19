@@ -19,7 +19,7 @@ export class RecepcionBienes {
                }
            });
         }
-        return new RecepcionBienes(element.IdCTBienesId,element.Descripcion, element.Cantidad, element.Valor, element.UltimaEntrega, element.Comentario, element.Id, false,element.Estado, element.FechaRecepcion,RutaArchivo);
+        return new RecepcionBienes(element.IdCTBienesId, element.Descripcion, element.Cantidad, element.Valor, element.UltimaEntrega, element.Comentario, element.Id, false,element.Estado, element.FechaRecepcion,RutaArchivo);
     }
 
     public static fromJsonList(elements: any) {

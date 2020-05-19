@@ -10,8 +10,8 @@ import { headersToString } from 'selenium-webdriver/http';
 })
 
 export class CrmServicioService {
-  private readonly urlApiSolicitudes = 'https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarsolp';//c3d10e5bd16e48d3bd936bb9460bddef 
-  private readonly urlApiContratos = 'https://itxapimanagement.azure-api.net/CrmPrbintegracion/api/crm/solp/registrarcontratoproveedor';//c3d10e5bd16e48d3bd936bb9460bddef 
+  private readonly urlApiSolicitudes = 'https://itxapimanagement.azure-api.net/crmprdintegracion/api/crm/solp/registrarsolp';//2496e7491e1849d4a407d31b2a792a44 
+  private readonly urlApiContratos = 'https://itxapimanagement.azure-api.net/crmprdintegracion/api/crm/solp/registrarcontratoproveedor';//2496e7491e1849d4a407d31b2a792a44 
   private readonly urlLogin = "https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token";
   
   constructor(private http: HttpClient) {
@@ -19,7 +19,7 @@ export class CrmServicioService {
    }
 
   obtenerToken(){
-    const newUrlToken = 'https://solpbodegainternexa.azurewebsites.net/api/Token'
+    const newUrlToken = 'https://solpbodegainternexa.azurewebsites.net/api/TokenProd'
     // const formData = new FormData();
     // formData.append('grant_type', 'client_credentials');
     // formData.append('client_id', '7d9d4669-0053-4859-98bd-3b76db1e78e9');
@@ -30,7 +30,7 @@ export class CrmServicioService {
   }
 
   ActualizarSolicitud(ObjSolicitudes): Promise<any>{  
-    let token = 'cf312e4c52b24af1bcd4842fe6aca279'
+    let token = '2496e7491e1849d4a407d31b2a792a44'
  
     // const header = {
     //   'Accept': 'application/json; odata=verbose',
@@ -53,7 +53,7 @@ export class CrmServicioService {
       'Content-Type': 'application/json',
       'Ocp-Apim-Subscription-Key':  token
     }
-   return await this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/Bodega?', {headers: header, params: parametros }).toPromise();
+    return await this.http.get('https://itxapimanagement.azure-api.net/SolpBodegaInternexa/api/BodegaXml?', {headers: header, params: parametros }).toPromise();
   }
 
   public async validarIdServiciosExcel(parametros): Promise<any> {

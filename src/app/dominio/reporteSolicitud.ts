@@ -2,7 +2,7 @@ export class ReporteSolicitud {
     constructor(
         public consecutivo: string,
         public estado: string,
-         public Responsable: string,
+        public Responsable: string,
         public tipoSolicitud: string,
         public numeroSolpSap: string,
         public solicitante: string,
@@ -30,6 +30,8 @@ export class ReporteSolicitud {
         public ReasignaEnContratos: string,
         public fechaReasignadoContratos: string,
         public departamento?: string,
+        public fechaAcordada?: string,
+        public cuadrante?:string
         ) {}
 
         
@@ -49,7 +51,7 @@ export class ReporteSolicitud {
                 element.Pais.Title,
                 element.Alcance,
                 element.FueSondeo,
-                element.FechaDeCreacion !== null? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaDeCreacion)) : "",
+                element.FechaDeCreacion !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaDeCreacion)) : "",
                 element.FechaSondeo !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaSondeo)) : "",
                 element.FechaRevisarSondeo !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaRevisarSondeo)) : "",
                 element.FechaVerificarMaterial !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaVerificarMaterial)) : "",
@@ -65,6 +67,8 @@ export class ReporteSolicitud {
                 element.ResponsableReasignarContratos,
                 element.FechaReasignadoContratos !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaReasignadoContratos)) : "",
                 element.Author.Department,
+                element.FechaAcordada !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaAcordada)) : '',
+                element.Cuadrante
                 
             )}
 
@@ -77,13 +81,13 @@ export class ReporteSolicitud {
         }
 
         public static ObtenerFormatoFecha(date) {
-            var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-            
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-            return [year, month, day].join('-');
-            } 
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            return [day, month, year].join('-');
+        } 
 }

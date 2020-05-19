@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  urlRaiz: 'https://enovelsoluciones.sharepoint.com',
-  urlWeb:'https://enovelsoluciones.sharepoint.com/sites/jam/solpes', 
+  urlRaiz: 'https://isaempresas.sharepoint.com',
+  urlWeb:'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes', 
   urlReltativa: '/sites/jam/solpes',
   urlToken: 'https://login.microsoftonline.com/c980e410-0b5c-48bc-bd1a-8b91cabc84bc/oauth2/token',
   listaEmpresas: 'Empresas',
@@ -25,5 +25,7 @@ export const environment = {
   listaCompradores: 'Compradores',
   listaHistorial: 'HistorialSuspensiones',
   listaSolicitudesCrm: 'SolicitudesCrm',
-  listaResponsableSoporte: 'ResponsableSoporte'
+  listaResponsableSoporte: 'ResponsableSoporte',
+  listaTipoEjecucion: 'TipoEjecucion',
+  listaCausalIncumplimento: 'CausalIncumplimiento'
 };

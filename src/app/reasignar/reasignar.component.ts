@@ -440,7 +440,7 @@ export class ReasignarComponent implements OnInit {
       }
     }
 
-    else if (this.solicitudRecuperada.estado === "Por registrar contratos" || this.solicitudRecuperada.estado === "Suspendida") {
+    else if (this.solicitudRecuperada.estado === "Negociar contrato" || this.solicitudRecuperada.estado === "Suspendida") {
       responsableReasingarContratos = this.nombreUsuario;
       fechaReasignadoContratos = new Date();
       objetoActualizar = {

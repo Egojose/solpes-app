@@ -85,7 +85,7 @@ export class AprobarSondeoComponent implements OnInit {
   @ViewChild(MatPaginator) paginatorCrm: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   datosServicios;
-  OrdenEstadistica = new FormControl('');
+  OrdenEstadistica = new FormControl('NO');
   numeroOrden = new FormControl('');
   clientServicios = new FormControl('');
   ordenServServicios = new FormControl('');
@@ -810,6 +810,24 @@ export class AprobarSondeoComponent implements OnInit {
       this.emptyNumeroOrdenEstadistica = true;
       this.valorOrdenEstadisica = true;
       this.disableBtnDatoContables = true;
+      this.ocultarBotonDatosContables = true;
+      this.ctsFormulario.controls['centroCostos'].setValue('');
+      this.ctsFormulario.controls['numCicoCTS'].setValue('');
+      this.ctsFormulario.controls['numCuentaCTS'].setValue('');
+    } else {
+      this.ocultarBotonDatosContables = false;
+      this.valorOrdenEstadisica = false;
+      this.emptyNumeroOrdenEstadistica = false;
+      this.disableBtnDatoContables = false;
+    }
+  }
+
+  mostrarNumeroOrdenEstadisticaRadio() {
+    if (this.OrdenEstadistica.value == "SI") {
+      this.emptyNumeroOrdenEstadistica = true;
+      this.valorOrdenEstadisica = true;
+      this.disableBtnDatoContables = true;
+      this.ocultarBotonDatosContables = true;
       this.ctsFormulario.controls['centroCostos'].setValue('');
       this.ctsFormulario.controls['numCicoCTS'].setValue('');
       this.ctsFormulario.controls['numCuentaCTS'].setValue('');

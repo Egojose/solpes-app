@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   PermisosConsultaGeneral: boolean;
   PermisosReporteSolicitud: boolean;
   PermisosReporteContratos: boolean;
+  PermisosVerificarFirmarContratos: boolean;
   PermisosSoporte: boolean;
   linkEdicionContratos: string;
   nombreGrupoConsultaGeneral: string;
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit {
     this.PermisosReporteSolicitud = false;
     this.PermisosReporteContratos = false;
     this.PermisosSoporte = false;
+    this.PermisosVerificarFirmarContratos = false;
     this.linkEdicionContratos = environment.urlWeb + environment.linkVistaEdicionContratos;
   }
 
@@ -68,6 +70,7 @@ export class AppComponent implements OnInit {
         this.servicio.ObtenerGruposUsuario(this.usuario.id).subscribe(
           (respuesta) => {
             this.grupos = Grupo.fromJsonList(respuesta);
+            console.log(this.grupos);
             this.obtenerParametrosConfiguracion();
           }, err => {
             console.log('Error obteniendo grupos de usuario: ' + err);
@@ -95,9 +98,10 @@ export class AppComponent implements OnInit {
     const grupoEdicionContratos = "Solpes-Edicion-Contratos";
     const grupoRegistroEntradasBienes = "Solpes-Registro-Entradas-Bienes";
     const grupoRegistroEntradasServicios = "Solpes-Registro-Entradas-Servicios";
-    const grupoReporteSolicitudes = "Solpes-Reporte-Solicitudes"
+    const grupoReporteSolicitudes = "Integrantes de la JAM";
     const grupoReporteContratos = "Solpes-Reporte-Contratos"
     const grupoSoporte = "Solpes-Soporte"
+    const grupoVerificarFirmarContratos = 'Solpes-Verificar-Firmar-Contratos'
     let grupoConsultaGeneral = this.nombreGrupoConsultaGeneral;
 
     let existeGrupoEdicionContratos = this.grupos.find(x => x.title == grupoEdicionContratos);
@@ -135,6 +139,10 @@ export class AppComponent implements OnInit {
       this.PermisosSoporte = true;
     }
 
+    let existeGrupoVerificarFirmarContrato = this.grupos.find(x => x.title == grupoVerificarFirmarContratos);
+    if(existeGrupoVerificarFirmarContrato !== null && existeGrupoVerificarFirmarContrato !== undefined) {
+      this.PermisosVerificarFirmarContratos = true;
+    }
   }
 
   

@@ -166,9 +166,8 @@ export class RegistrarSolpSapComponent implements OnInit {
         }
 
         if (solicitud.CondicionesContractuales != null) {
-         console.log(solicitud.CondicionesContractuales);
-          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
-          console.log(this.condicionesContractuales);
+          // this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales).condiciones;
+          this.condicionesContractuales = JSON.parse(solicitud.CondicionesContractuales.replace(/(\r\n|\n|\r|\t)/gm, "")).condiciones;
         }
 
         this.servicio.ObtenerCondicionesTecnicasBienes(this.IdSolicitud).subscribe(
@@ -225,14 +224,15 @@ export class RegistrarSolpSapComponent implements OnInit {
       }
       else if (this.RDBOrdenadorGastos === 1) {
         this.ResponsableProceso = this.comprador;
-        this.estadoSolicitud = 'Por registrar contratos';
+        this.estadoSolicitud = 'Negociar contrato';
         ObjSolpSap = {
           ResponsableId: this.ResponsableProceso,
           Estado: this.estadoSolicitud,
           EstadoRegistrarSAP: "Aprobado",
           NumSolSAP: this.numeroSolpSap,
           ComentarioRegistrarSAP: this.ComentarioRegistrarSap,
-          FechaRegistrarSolpsap: fechaSolpSap
+          FechaRegistrarSolpsap: fechaSolpSap,
+          OcultarBtnFechaAcordada: false
         }
       }
       else if (this.RDBOrdenadorGastos === 2 && this.ComentarioRegistrarSap === undefined) {

@@ -22,15 +22,18 @@
                 <a routerLink="/registrar-entradas-sap-servicios" routerLinkActive="active">Registrar entrada SAP
                     servicios</a>
             </li>
-            <li *ngIf="PermisosEdicionContratos">
+            <!-- <li *ngIf="PermisosEdicionContratos">
                 <a routerLink="/vista-contratos" routerLinkActive="active">Edición Vista Contratos</a>
+            </li> -->
+            <li *ngIf="PermisosVerificarFirmarContratos">
+                <a routerLink="/Verificar-firmar-contrato" routerLinkActive="active">Verificar y firmar contrato</a>
             </li>
 
             <li *ngIf="PermisosReporteContratos">
                 <a routerLink="/reportar-contratos" routerLinkActive="active">Reporte de administración de contratos</a>
             </li>
 
-            <li *ngIf="PermisosReporteSolicitud">
+            <li>
                 <a routerLink="/reportar-solicitud" routerLinkActive="active">Reporte de estado de solicitudes</a>
             </li>
             <!-- <li *ngIf="PermisosConsultaGeneral" > -->
@@ -43,7 +46,7 @@
         </ul>
 
         <div class="version-aplicacion">
-            <p class="texto-version">Versión 2.2.3</p>
+            <p class="texto-version">Versión 3.1.0</p>
         </div>
     </div>
     </div>
