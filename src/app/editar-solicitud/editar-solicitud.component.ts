@@ -4044,11 +4044,11 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   subirAdjuntoCTS(event) {
-    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', event.target.files[0], '', '');
+    this.condicionTS = new CondicionTecnicaServicios(null, '', null, '', '', null, null, '', event.item(0), '', '');
   }
 
   subirAdjuntoCTB(event) {
-    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.target.files[0], '', '');
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.item(0), '', '');
   }
 
   ctbOnSubmit() {
