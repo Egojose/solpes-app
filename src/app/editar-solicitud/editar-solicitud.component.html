@@ -422,7 +422,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="ceco">Centro de costos / Orden de inversión / ID de Servicios</label>
+                                        <label for="ceco">Centro de costos / Orden de inversión /<span style="color: red"> ID de Servicios (Sólo Colombia)</span></label>
                                         <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
                                                 <option value="">Seleccione</option>
                                                 <option value="Centro de costos">Centro de costos</option>
@@ -1117,7 +1117,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="ceco">Centro de costos / Orden de inversión / ID de Servicios</label>
+                                        <label for="ceco">Centro de costos / Orden de inversión /<span style="color: red"> ID de Servicios (Sólo Colombia)</span></label>
                                         <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
                                         <option value="">Seleccione</option>
                                         <option value="Centro de costos">Centro de costos</option>
