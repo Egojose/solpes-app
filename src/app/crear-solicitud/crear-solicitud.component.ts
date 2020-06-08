@@ -289,10 +289,12 @@ export class CrearSolicitudComponent implements OnInit {
     this.servicioCrm.obtenerToken().then(
       (res)=>{        
         this.token = res;
+        console.log(this.token);
         // localStorage.setItem("id_token",token)
       }
     ).catch(
       (error)=>{
+        console.log(error);
         let objToken = {          
           estado: "false"
         }
