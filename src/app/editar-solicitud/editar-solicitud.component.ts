@@ -631,8 +631,8 @@ export class EditarSolicitudComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionados = this.datos.map(x => {
-        return x.IdServicio
-        // return x.Orden_SAP
+        // return x.IdServicio
+        return x.Orden_SAP
       })
     }
     else if (this.selectAll === true && (cliente !== '' || idServ !== '' || nombreServ !== '' || os !== '')) {
@@ -641,8 +641,8 @@ export class EditarSolicitudComponent implements OnInit {
        return x.IdServicio
       })
       this.dataIdOrdenSeleccionados = this.datosFiltradosBienes.filteredData.map(x => {
-        return x.IdServicio
-        // return x.Orden_SAP
+        // return x.IdServicio
+        return x.Orden_SAP
       })
     }
     else {
@@ -657,13 +657,13 @@ export class EditarSolicitudComponent implements OnInit {
     console.log($event);
     if ($event.checked === true) {
       this.dataSeleccionados.push(idServicioSeleccionado);
-      this.dataIdOrdenSeleccionados.push(element.IdServicio)
-      // this.dataIdOrdenSeleccionados.push(element.Orden_SAP);
+      // this.dataIdOrdenSeleccionados.push(element.IdServicio)
+      this.dataIdOrdenSeleccionados.push(element.Orden_SAP);
     }
     else {
       let index = this.dataSeleccionados.findIndex(x => x === idServicioSeleccionado);
-      let el = this.dataIdOrdenSeleccionados.findIndex(x => x === element.IdServicio)
-      // let el = this.dataIdOrdenSeleccionados.findIndex(x => x === element.Orden_SAP)
+      // let el = this.dataIdOrdenSeleccionados.findIndex(x => x === element.IdServicio)
+      let el = this.dataIdOrdenSeleccionados.findIndex(x => x === element.Orden_SAP)
       this.dataSeleccionados.splice(index, 1);
       this.dataIdOrdenSeleccionados.splice(el, 1);
       if(index === -1 ) {
@@ -742,8 +742,8 @@ export class EditarSolicitudComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionadosServicios = this.datosServicios.map(x => {
-        return x.IdServicio
-        // return x.Orden_SAP
+        // return x.IdServicio
+        return x.Orden_SAP
       })
     }
     else if(this.selectAllServicios === true && (cliente !== '' || orden !== '' || idServicios !== '' || nombreServicios !== '')) {
@@ -752,8 +752,8 @@ export class EditarSolicitudComponent implements OnInit {
         return x.IdServicio
       })
       this.dataIdOrdenSeleccionadosServicios = this.datosFiltradosServicios.filteredData.map(x => {
-        return x.IdServicio
-        // return x.Orden_SAP
+        // return x.IdServicio
+        return x.Orden_SAP
       })
     }
     else {
@@ -767,13 +767,13 @@ export class EditarSolicitudComponent implements OnInit {
     let idServicioSeleccionado = $event.source.value
     if ($event.checked === true) {
       this.dataSeleccionadosServicios.push(idServicioSeleccionado);
-      this.dataIdOrdenSeleccionadosServicios.push(element.IdServicio)
-      // this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
+      // this.dataIdOrdenSeleccionadosServicios.push(element.IdServicio)
+      this.dataIdOrdenSeleccionadosServicios.push(element.Orden_SAP);
     }
     else {
       let index = this.dataSeleccionadosServicios.findIndex(x => x === idServicioSeleccionado);
-      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.IdServicio)
-      // let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
+      // let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.IdServicio)
+      let el = this.dataIdOrdenSeleccionadosServicios.findIndex(x => x === element.Orden_SAP)
       this.dataSeleccionadosServicios.splice(index, 1);
       this.dataIdOrdenSeleccionadosServicios.splice(el, 1);
     }
