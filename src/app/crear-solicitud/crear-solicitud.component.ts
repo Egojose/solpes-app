@@ -265,7 +265,7 @@ export class CrearSolicitudComponent implements OnInit {
     
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.spinner.show();
     this.ObtenerUsuarioActual();
     this.aplicarTemaCalendario();
@@ -280,13 +280,13 @@ export class CrearSolicitudComponent implements OnInit {
     // this.AsignarRequeridosDatosContables();
     this.obtenerTiposSolicitud();
     this.obtenerQueryParams();
-    this.ObtenerToken();
+    await this.ObtenerToken();
     this.obtenerResponsableSoporte();
   }
 
-  ObtenerToken(){
+  async ObtenerToken(){
     // let token;
-    this.servicioCrm.obtenerToken().then(
+    await this.servicioCrm.obtenerToken().then(
       (res)=>{        
         this.token = res;
         console.log(this.token);
