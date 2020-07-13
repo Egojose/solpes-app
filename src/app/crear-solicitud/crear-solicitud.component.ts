@@ -3070,7 +3070,7 @@ deshabilitarCampoServicios() {
     this.ctsFormulario.controls['numCicoCTS'].disable();
   }
   else {
-    this.solpFormulario.controls['numCicoCTS'].enable();
+    this.ctsFormulario.controls['numCicoCTS'].enable();
   }
 }
 
