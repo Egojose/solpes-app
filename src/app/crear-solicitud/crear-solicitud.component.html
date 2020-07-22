@@ -314,7 +314,7 @@
                         </div>
                         <div class="form-group">
                             <label for="descripcion">Descripción del elemento a comprar</label><span class="asterisco-obligatorio">*</span><br>
-                            <span style="color: red" class="helper">Si la solicitud de pedido será distribuida entre varios centros de costos o IDs de Servicio, indique en este campo la distribución en el campo Descripción. Puede ser en Valor, Cantidad o Porcentaje. Ej. Servicio 7835 (82%); Servicio 7890 (18%)</span>
+                            <span style="color: red" class="helper">Si la solicitud de pedido será distribuida entre varios centros de costos o IDs de Servicio, indique en éste campo la distribución. Puede ser en Valor, Cantidad o Porcentaje. Ej. Servicio 7835 (82%); Servicio 7890 (18%)</span>
                             <textarea id="descripcionCTB" name="descripcionCTB" formControlName="descripcionCTB" class="form-control" type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctbSubmitted && f.descripcionCTB.errors }"></textarea>
                             <div *ngIf="ctbSubmitted && f.descripcionCTB.errors" class="invalid-feedback">
                                 <div *ngIf="f.descripcionCTB.errors.required">Este campo es requerido</div>
@@ -548,7 +548,7 @@
                         </div>
                         <div class="form-group">
                             <label for="descripcion">Descripción del elemento a comprar</label><span class="asterisco-obligatorio">*</span><br>
-                            <span style="color: red" class="helper">Si la solicitud de pedido será distribuida entre varios centros de costos o IDs de Servicio, indique en este campo la distribución en el campo Descripción. Puede ser en Valor, Cantidad o Porcentaje. Ej. Servicio 7835 (82%); Servicio 7890 (18%)</span>
+                            <span style="color: red" class="helper">Si la solicitud de pedido será distribuida entre varios centros de costos o IDs de Servicio, indique en éste campo la distribución. Puede ser en Valor, Cantidad o Porcentaje. Ej. Servicio 7835 (82%); Servicio 7890 (18%)</span>
                             <textarea id="descripcionCTS" name="descripcionCTS" formControlName="descripcionCTS" class="form-control" type="text" rows="3" placeholder="Escriba la descripción" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.descripcionCTS.errors }"></textarea>
                             <div *ngIf="ctsSubmitted && f2.descripcionCTS.errors" class="invalid-feedback">
                                 <div *ngIf="f2.descripcionCTS.errors.required">Este campo es requerido</div>
