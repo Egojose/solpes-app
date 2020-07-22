@@ -3070,7 +3070,7 @@ deshabilitarCampoServicios() {
     this.ctsFormulario.controls['numCicoCTS'].disable();
   }
   else {
-    this.solpFormulario.controls['numCicoCTS'].enable();
+    this.ctsFormulario.controls['numCicoCTS'].enable();
   }
 }
 
@@ -3849,6 +3849,7 @@ deshabilitarCampoServicios() {
       this.cadenaJsonCondicionesContractuales += ('{ "condiciones":[');
       this.condicionesContractuales.forEach(condicionContractual => {
         let textoCajon = this.solpFormulario.controls['condicionContractual' + condicionContractual.id].value;
+        textoCajon === null ? textoCajon = '' : textoCajon = textoCajon;
         if (textoCajon != null) {
           var json = textoCajon.replace(/[|&;$%@"<>\()+•,]/g, "");
           this.jsonCondicionesContractuales = json.replace(/(\r\n|\n|\r|\t)/gm," ");
