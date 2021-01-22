@@ -5,6 +5,7 @@ export class CondicionTecnicaBienes {
         public idSolicitud: any,
         public codigo: string,
         public descripcion: string,
+        public nombre: string,
         public modelo: string,
         public fabricante: string,
         public cantidad: number,
@@ -19,7 +20,8 @@ export class CondicionTecnicaBienes {
         public numeroCuenta?: string,
         public orden?: number,
         public tieneIdServicio?: boolean,
-        public idOrdenServicio?: string) { }
+        public idOrdenServicio?: string,
+        public DetalleDistribucion?: string) { }
 
     public static fromJson(element: any) {
         return new CondicionTecnicaBienes(
@@ -28,6 +30,7 @@ export class CondicionTecnicaBienes {
             element.Solicitud,
             element.Codigo,
             element.Descripcion,
+            element.Nombre,
             element.Modelo,
             element.Fabricante,
             element.Cantidad,
@@ -42,7 +45,8 @@ export class CondicionTecnicaBienes {
             element.numeroCuenta,
             element.Orden,
             element.tieneIdServicio,
-            element.IdOrdenServicio);
+            element.IdOrdenServicio,
+            element.DetalleDistribucion);
     }
 
     public static fromJsonList(elements: any) {

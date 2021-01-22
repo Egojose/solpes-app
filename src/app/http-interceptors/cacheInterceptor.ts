@@ -33,11 +33,29 @@ export class CacheInterceptor implements HttpInterceptor {
           }
         }); 
       }
+      else if(objToken.tipoConsulta === 'ServiceNow') {
+        req = req.clone({
+          setHeaders: {
+            'Content-type': 'application/json',
+            'Ocp-Apim-Subscription-key': 'f48651be182744ffa60edcea7a4f9d41',
+            'Authorization': 'Basic ' + btoa('integraciones:Colombia2019')
+          }
+        })
+      }
+      else if(objToken.tipoConsulta === 'SAP') {
+        req = req.clone({
+          setHeaders: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa('cominternexa:InterServ$01')
+          }
+        })
+      }
            
     }
     else {
        req = req.clone({
           headers: new HttpHeaders({
+            'Ocp-Apim-Subscription-Key': 'f48651be182744ffa60edcea7a4f9d41',
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',
             'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT'

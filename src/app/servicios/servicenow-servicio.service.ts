@@ -1,19 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicenowServicioService {
-  private readonly urlServiceNow = 'https://internexatest.service-now.com/api/now/table/cmdb_hardware_product_model'
+  private readonly urlServiceNow = 'https://itxapimanagement.azure-api.net/ServiceNowPrbListaMateriales/api/ints6/webservice_sherpoint_materiales' //'https://internexatest.service-now.com/api/ints6/webservice_sherpoint_materiales'
+  private readonly urlCantidad = 'https://itxapimanagement.azure-api.net/ServiceNowPrbStockMateriales/api/ints6/webservice_sherpoint_activos' //'https://internexatest.service-now.com/api/ints6/webservice_sherpoint_activos'
 
   constructor(private http: HttpClient) { }
 
-  ConsultarDatos(parametros) {
-    const header = {
-      "web.services" : "web.services",
-      "Authorization" : "Basic d2ViLnNlcnZpY2VzOndlYi5zZXJ2aWNlcw=="
-    }
-    return this.http.get(this.urlServiceNow, {headers: header, params: parametros})
+  httpOptions = {
+    headers: new HttpHeaders ({
+      'Content-type': 'application/json',
+      'Ocp-Apim-Subscription-key': 'f48651be182744ffa60edcea7a4f9d41',
+      'Authorization': 'Basic ' + btoa('integraciones:Colombia2019')
+    })
   }
+
+ 
+  
+
+  ConsultarDatosServiceNow(parametros): Promise<any> {
+    return this.http.post(this.urlServiceNow, parametros, this.httpOptions).toPromise()
+  }
+
+  ConsultarCantidad(parametros): Promise<any> {
+    return this.http.post(this.urlCantidad, parametros, this.httpOptions).toPromise()
+  }
+
 }

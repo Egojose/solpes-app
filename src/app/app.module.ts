@@ -43,6 +43,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { VerificarFirmarContratoComponent } from './verificar-firmar-contrato/verificar-firmar-contrato.component';
 import { GestionContratoComponent } from './gestion-contrato/gestion-contrato.component';
+import { ConsultaServicenowComponent } from './comunes/consulta-servicenow/consulta-servicenow.component';
+import { ServicenowServicioService } from './servicios/servicenow-servicio.service'
 
 @NgModule({
   declarations: [
@@ -70,7 +72,8 @@ import { GestionContratoComponent } from './gestion-contrato/gestion-contrato.co
     ReportarSolicitudComponent,
     GestionErroresComponent,
     VerificarFirmarContratoComponent,
-    GestionContratoComponent
+    GestionContratoComponent,
+    ConsultaServicenowComponent
   ],
   entryComponents: [ReasignarComponent],
   imports: [
@@ -133,7 +136,7 @@ import { GestionContratoComponent } from './gestion-contrato/gestion-contrato.co
     ]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent, ExcelService, CrmServicioService],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }, SPServicio, BsModalService, ModalBackdropComponent, ExcelService, CrmServicioService, ServicenowServicioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

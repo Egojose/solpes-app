@@ -289,6 +289,8 @@
                     <button (click)="enviarSolicitud();" class="derecha-boton btn btn-success">Enviar</button>
                     <button type="button" class="derecha-boton btn btn-primary" (click)="guardarParcialSolicitud();">Guardado parcial</button>
                     <button type="button" class="derecha-boton btn btn-danger" (click)="descartarSolicitud(templateConfirmacionDescartar);">Descartar</button>
+                    <button type="button" class="btn btn-default" (click)="registrarActivo()">Enviar a activos</button>
+                    <button type="button" class="btn btn-default" (click)="enviarSolpSap()">Enviar a sap</button>
                 </div>
             </div>
         </div>
@@ -296,7 +298,7 @@
 </div>
 
 
-<div *ngIf="isModalCTBShown" [config]="{ show: true }" (onHidden)="onHiddenCTB()" bsModal #autoShownModalCTB="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+<div *ngIf="isModalCTBShown" [config]="{show: true, backdrop: 'static',  keyboard: false}" (onHidden)="onHiddenCTB()" bsModal #autoShownModalCTB="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -307,11 +309,99 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <form [formGroup]="ctbFormulario" (ngSubmit)="ctbOnSubmit()">
-                        <div class="form-group">
-                            <label for="codigo">Código de material</label>
-                            <input id="codigoCTB" name="codigoCTB" formControlName="codigoCTB" class="form-control" type="text" placeholder="Escriba el código si lo conoce" />
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" placeholder="Código de material" [(ngModel)]="codigo">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="nombre">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Modelo" [(ngModel)]="modelo">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Fabricante" [(ngModel)]="fabricante">
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-outline-primary" type="button" (click)="consultarElementosServiceNow()">IR</button>
+                                </div>
+                            </div>
                         </div>
+                      </div>
+                      <br>
+                      <div class="row" *ngIf="dataSourceServiceNow.data.length > 0">
+                          <div class="col-md-12">
+                              <div class="col-md-3">
+                                <mat-checkbox color="primary">Seleccionar todos los materiales
+                                </mat-checkbox>
+                              </div>
+                          </div>
+                          <table mat-table [dataSource]="dataSourceServiceNow">
+
+                            <ng-container matColumnDef="seleccionar">
+                                <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-checkbox color="primary" value="{{element}}" [checked]="selectAll" (change)="seleccionesSN($event, element)"></mat-checkbox>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Codigo">
+                                <th class="header" mat-header-cell *matHeaderCellDef>Código de material</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <ng-container *ngIf="solpFormulario.controls.pais.value.nombre !== 'Brasil'; else brasil">
+                                        {{element.CodigoLatam}}
+                                    </ng-container>
+                                    <ng-template #brasil>
+                                        {{element.u_cod_material_brasil}}
+                                    </ng-template>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Nombre">
+                                <th class="header" mat-header-cell *matHeaderCellDef>Nombre</th>
+                                <td mat-cell *matCellDef="let element">{{element.Nombre}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Modelo">
+                                <th class="header" mat-header-cell *matHeaderCellDef>Modelo</th>
+                                <td mat-cell *matCellDef="let element">{{element.Modelo}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Fabricante">
+                                <th class="header" mat-header-cell *matHeaderCellDef>Fabricante</th>
+                                <td mat-cell *matCellDef="let element">{{element.Fabricante}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Cantidad">
+                                <th class="header" mat-header-cell *matHeaderCellDef>Cantidad departamento</th>
+                                <td mat-cell *matCellDef="let element">{{element.cantidad}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="CantidadOtros">
+                                <th class="header" mat-header-cell *matHeaderCellDef>Otros departamentos</th>
+                                <td mat-cell *matCellDef="let element">{{element.cantidadOtros}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="CantidadStock">
+                                <th class="header" mat-header-cell *matHeaderCellDef>Stock</th>
+                                <td mat-cell *matCellDef="let element">{{element.stock}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Acciones">
+                                <th class="header" mat-header-cell *matHeaderCellDef></th>
+                                <td mat-cell *matCellDef="let element, index as i">
+                                    <button type="button" class="btn btn-primary" (click)="consultarCantidad(element, i)">Consultar cantidad</button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="columnsServiceNow"></tr>
+                            <tr mat-row *matRowDef="let row; columns: columnsServiceNow;"></tr>
+                          </table>
+                      </div>
+                    <!-- <app-consulta-servicenow [codigoMaterial]='codigo' [nombre]="nombre" [modelo]="modelo" [fabricante]="fabricante" (dataEvent)="mostrarValores($event)"></app-consulta-servicenow> -->
+                    <form [formGroup]="ctbFormulario" (ngSubmit)="ctbOnSubmit()">
                         <div class="form-group">
                             <label for="descripcion">Descripción del elemento a comprar</label><span class="asterisco-obligatorio">*</span><br>
                             <span style="color: red" class="helper">Si la solicitud de pedido será distribuida entre varios centros de costos o IDs de Servicio, indique en éste campo la distribución. Puede ser en Valor, Cantidad o Porcentaje. Ej. Servicio 7835 (82%); Servicio 7890 (18%)</span>
@@ -320,27 +410,39 @@
                                 <div *ngIf="f.descripcionCTB.errors.required">Este campo es requerido</div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="for-group">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="modelo">Modelo</label><span class="asterisco-obligatorio">*</span>
-                                    <input id="modeloCTB" name="modeloCTB" formControlName="modeloCTB" class="form-control" type="text" placeholder="Escriba el modelo" [ngClass]="{ 'is-invalid': ctbSubmitted && f.modeloCTB.errors }" />
-                                    <div *ngIf="ctbSubmitted && f.modeloCTB.errors" class="invalid-feedback">
-                                        <div *ngIf="f.modeloCTB.errors.required">Este campo es requerido</div>
-                                    </div>
+                                    <label for="codigo">Código de material</label>
+                                    <input id="codigoCTB" name="codigoCTB" formControlName="codigoCTB" class="form-control" type="text"
+                                        placeholder="Escriba el código si lo conoce" />
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="fabricante">Fabricante</label><span class="asterisco-obligatorio">*</span>
-                                    <input id="fabricanteCTB" name="fabricanteCTB" formControlName="fabricanteCTB" class="form-control" type="text" placeholder="Escriba el fabricante" [ngClass]="{ 'is-invalid': ctbSubmitted && f.fabricanteCTB.errors }" />
-                                    <div *ngIf="ctbSubmitted && f.fabricanteCTB.errors" class="invalid-feedback">
-                                        <div *ngIf="f.fabricanteCTB.errors.required">Este campo es requerido</div>
+                                    <label for="modelo">Nombre</label><span class="asterisco-obligatorio">*</span>
+                                    <input id="nombreCTB" name="nombreCTB" formControlName="nombreCTB" class="form-control" type="text" placeholder="Escriba el nombre" [ngClass]="{ 'is-invalid': ctbSubmitted && f.modeloCTB.errors }" />
+                                    <div *ngIf="ctbSubmitted && f.nombreCTB.errors" class="invalid-feedback">
+                                        <div *ngIf="f.nombreCTB.errors.required">Este campo es requerido</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <label for="modelo">Modelo</label><span class="asterisco-obligatorio">*</span>
+                                    <input id="modeloCTB" name="modeloCTB" formControlName="modeloCTB" class="form-control" type="text" placeholder="Escriba el modelo" [ngClass]="{ 'is-invalid': ctbSubmitted && f.modeloCTB.errors }" />
+                                    <div *ngIf="ctbSubmitted && f.modeloCTB.errors" class="invalid-feedback">
+                                        <div *ngIf="f.modeloCTB.errors.required">Este campo es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="fabricante">Fabricante</label><span class="asterisco-obligatorio">*</span>
+                                    <input id="fabricanteCTB" name="fabricanteCTB" formControlName="fabricanteCTB" class="form-control" type="text" placeholder="Escriba el fabricante" [ngClass]="{ 'is-invalid': ctbSubmitted && f.fabricanteCTB.errors }" />
+                                    <div *ngIf="ctbSubmitted && f.fabricanteCTB.errors" class="invalid-feedback">
+                                        <div *ngIf="f.fabricanteCTB.errors.required">Este campo es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <label for="cantidad">Cantidad</label><span class="asterisco-obligatorio">*</span>
                                     <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision : 0 }" id="cantidadCTB" name="cantidadCTB" formControlName="cantidadCTB" class="form-control" type="text" placeholder="Escriba la cantidad"
                                         [ngClass]="{ 'is-invalid': ctbSubmitted && f.cantidadCTB.errors }" />
@@ -504,7 +606,63 @@
                             <br>
 
                         </div>
+                        <div class="row" *ngIf="mostrarDatosContables">
+                            <div class="col-md-6">
+                                <label for="Numero centro de costos/orden de inversion">Numero centro de costos</label>
+                                <textarea class="form-control" rows="1" placeholder="ingrese el número de CECO/OI" formControlName="numCicoCTB" (click)="deshabilitarCampo()" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCicoCTB.errors }"></textarea>
+                                <div *ngIf="ctbSubmitted && f.numCicoCTB.errors" class="invalid-feedback">
+                                    <div *ngIf="f.numCicoCTB.errors.required">Este campo es requerido</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Numero de cuenta">Número de cuenta</label>
+                                <input type="text" placeholder="ingrese el número de cuenta" class="form-control" formControlName="numCuentaCTB" [ngClass]="{ 'is-invalid': ctbSubmitted && f.numCuentaCTB.errors }" (keypress)="numberOnly($event)">
+                                <div *ngIf="ctbSubmitted && f.numCuentaCTB.errors" class="invalid-feedback">
+                                    <div *ngIf="f.numCuentaCTB.errors.required">Este campo es requerido</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-md-3 d-flex align-items-center">
+                                <mat-checkbox color="primary" (change)="HabilitarCampoAgregarCecos($event)">Distribuir entre varios cecos
+                                    
+                                </mat-checkbox>
+                            </div>
+                            <div class="col-md-5" *ngIf="distribuir">
+                                <input type="number" class="form-control" tooltip="Este campo hace referencia a la cantidad de elementos para cada Centro de costos / Orden de inversión / ID de servicios" placeholder="Cantiad" formControlName="cantidadDistribucion">
+                            </div>
+                            <div class="col-md-4" *ngIf="distribuir">
+                                <button type="button" class="btn btn-primary btn-block" (click)="AgregarCecos()">Agregar CECO</button>
+                            </div>
+                        </div> -->
+                        <hr>
+                        <div class="row" *ngIf="dataSourceCecos.data.length > 0">
+                            <table mat-table [dataSource]="dataSourceCecos">
+                                <ng-container matColumnDef="Ceco">
+                                    <th class="header" mat-header-cell *matHeaderCellDef>CECO / O. Invesión / ID servicios</th>
+                                    <td mat-cell *matCellDef="let element">{{element.ceco}}</td>
+                                </ng-container>
 
+                                <ng-container matColumnDef="NumCeco">
+                                    <th class="header" mat-header-cell *matHeaderCellDef>Número Ceco / OI / ID servicios</th>
+                                    <td mat-cell *matCellDef="let element">{{element.numeroCeco}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NumCuenta">
+                                    <th class="header" mat-header-cell *matHeaderCellDef>Número de cuenta</th>
+                                    <td mat-cell *matCellDef="let element">{{element.numeroCuenta}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Cantidad">
+                                    <th class="header" mat-header-cell *matHeaderCellDef>Cantidad</th>
+                                    <td mat-cell *matCellDef="let element">{{element.cantidad}}</td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="columnsDistribucion"></tr>
+                                <tr mat-row *matRowDef="let row; columns: columnsDistribucion;"></tr>
+                            </table> 
+                        </div>
+                        <br>
                         <div class="form-group">
                             <label for="adjunto">Adjunto</label>
                             <input id="adjuntoCTB" name="adjuntoCTB" formControlName="adjuntoCTB" type="file" class="form-control" (change)="subirAdjuntoCTB($event.target.files)" />
@@ -518,8 +676,23 @@
                             <label for="comentarios">Comentarios</label>
                             <textarea id="comentariosCTB" name="comentariosCTB" formControlName="comentariosCTB" class="form-control" type="text" rows="3" placeholder="Escriba los comentarios"></textarea>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">{{textoBotonGuardarCTB}} bien</button>
+                        <div class="row">
+                            <div class="col-md-3 offset-9">
+                                <button type="button" class="btn btn-default"><img src="../../assets/icons/first.png"></button>
+                                <button type="button" class="btn btn-default"><img src="../../assets/icons/previous.png"></button><button type="button" class="btn btn-default"><img src="../../assets/icons/next.png"></button><button type="button" class="btn btn-default"><img src="../../assets/icons/last.png"></button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary btn-block">{{textoBotonGuardarCTB}} bien</button>
+                            </div>
+                            <!-- <div class="col-md-4">
+                                <button type="button" class="btn btn-primary btn-block" tooltip="La cantidad en los demás bienes será igual a 1">Guardar todos y usar éstos datos contables</button>
+                            </div>
+                            <div class="col-md-5">
+                                <button type="button" class="btn btn-primary btn-block" tooltip="Tenga en cuenta que con esta opción deberá registrar los datos contables uno a uno antes de poder enviar la solp. La cantidad en los demás bienes será igual a 1" >Guardar todos y agergar datos contables manualmente</button>
+                            </div> -->
                         </div>
                     </form>
                 </div>
@@ -530,7 +703,7 @@
 
 
 
-<div *ngIf="isModalShownCTS" [config]="{ show: true }" (onHidden)="onHiddenCTS()" bsModal #autoShownModalCTS="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+<div *ngIf="isModalShownCTS" [config]="{ show: true, backdrop: 'static',  keyboard: false }" (onHidden)="onHiddenCTS()" bsModal #autoShownModalCTS="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">

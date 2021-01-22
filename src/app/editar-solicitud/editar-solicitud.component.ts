@@ -3377,7 +3377,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   subirAdjuntoCTB(event) {
-    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', event.item(0), '', '');
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', '', null, null, '', event.item(0), '', '');
   }
 
   ctbOnSubmit() {
@@ -3421,6 +3421,7 @@ export class EditarSolicitudComponent implements OnInit {
     let paisValidar = this.solpFormulario.controls["pais"].value
     let codigo = this.ctbFormulario.controls["codigoCTB"].value;
     let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
+    let nombre = this.ctbFormulario.controls["nombreCTB"].value;
     let modelo = this.ctbFormulario.controls["modeloCTB"].value;
     let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
     let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
@@ -3456,7 +3457,7 @@ export class EditarSolicitudComponent implements OnInit {
     }
 
     if (this.condicionTB == null) {
-      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', '', null, null, '', null, '', '');
     }
     if (this.condicionTB.archivoAdjunto != null) {
       adjunto = this.condicionTB.archivoAdjunto.name;
@@ -3470,6 +3471,7 @@ export class EditarSolicitudComponent implements OnInit {
       this.condicionTB.idSolicitud = this.solicitudRecuperada.id;
       this.condicionTB.codigo = codigo;
       this.condicionTB.descripcion = descripcion;
+      this.condicionTB.nombre = nombre;
       this.condicionTB.modelo = modelo;
       this.condicionTB.fabricante = fabricante;
       this.condicionTB.cantidad = cantidad;
@@ -3534,7 +3536,7 @@ export class EditarSolicitudComponent implements OnInit {
     if (this.textoBotonGuardarCTB == "Actualizar") {
 
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.solicitudRecuperada.id, codigo, descripcion, nombre, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda, null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -3542,6 +3544,7 @@ export class EditarSolicitudComponent implements OnInit {
             this.condicionesTB[objIndex].indice = this.condicionTB.indice;
             this.condicionesTB[objIndex].codigo = this.condicionTB.codigo;
             this.condicionesTB[objIndex].descripcion = this.condicionTB.descripcion;
+            this.condicionesTB[objIndex].nombre = this.condicionTB.nombre;
             this.condicionesTB[objIndex].modelo = this.condicionTB.modelo;
             this.condicionesTB[objIndex].fabricante = this.condicionTB.fabricante;
             this.condicionesTB[objIndex].cantidad = this.condicionTB.cantidad;

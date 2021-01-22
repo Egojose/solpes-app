@@ -65,4 +65,8 @@ table tr:nth-child(even) {
 .helper {
     font-size: 14px;
   }
+
+  button img {
+      width: 1.5em;
+  }
     

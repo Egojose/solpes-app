@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, Output } from '@angular/core';
 import { TipoSolicitud } from '../dominio/tipoSolicitud';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { SPServicio } from '../servicios/sp-servicio';
@@ -37,6 +37,9 @@ import { CrmServicioService } from '../servicios/crm-servicio.service';
 import { Observable } from 'rxjs';
 import { ResponsableSoporte } from '../dominio/responsableSoporte';
 import { EmailProperties } from 'sp-pnp-js';
+import { ServicenowServicioService } from '../servicios/servicenow-servicio.service'
+// import { ConsultaServicenowComponent } from '../servicios/'
+import { SapService } from '../servicios/sap.service'
 
 
 @Component({
@@ -52,6 +55,7 @@ import { EmailProperties } from 'sp-pnp-js';
   ],
 })
 export class CrearSolicitudComponent implements OnInit {
+  // @ViewChild(ConsultaServicenowComponent) consultaServiceNow;
   @ViewChild('autoShownModalCTB') autoShownModalCTB: ModalDirective;
   isModalCTBShown = false;
   @ViewChild('autoShownModalCTS') autoShownModalCTS: ModalDirective;
@@ -174,6 +178,8 @@ export class CrearSolicitudComponent implements OnInit {
   enviarCrm: boolean;
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
+  columnsDistribucion: string[] = ['Ceco', 'NumCeco', 'NumCuenta' , 'Cantidad'];
+  columnsServiceNow: string[] = ['seleccionar', 'Codigo', 'Nombre', 'Modelo', 'Fabricante', 'Cantidad', 'CantidadOtros', 'CantidadStock', 'Acciones']
   cargaExcel: boolean;  //se debe habilitar para eliminar dato contables obligatorios en sondeo
   cargaExcelServicios: boolean;
   noMostrarOrdenEstadistica: boolean;
@@ -215,10 +221,22 @@ export class CrearSolicitudComponent implements OnInit {
   token: any;
   responsableSoporte: ResponsableSoporte[] = [];
   soporte: any;
+
+  codigoMaterial: string;
+  nombre: string;
+  modelo: string;
+  fabricante: string;
+  distribuir: boolean;
+  distribucionCecos = [];
+  dataSourceCecos = new MatTableDataSource(this.distribucionCecos)
+  codigo: string;
+  arrayConsultaServiceNow = []
+  dataSourceServiceNow = new MatTableDataSource(this.arrayConsultaServiceNow);
+  arrSeleccionadosServiceNow = [];
+
   
   
-  
-  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
+  constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService, private servicioServiceNow: ServicenowServicioService, private servicioSap: SapService) {
     setTheme('bs4');
     // localStorage.setItem('id_token', '03f4673dd6b04790be91da8e57fddb52')
     this.PermisosCreacion = false;
@@ -284,6 +302,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.obtenerResponsableSoporte();
   }
 
+  
   async ObtenerToken(){
     // let token;
     await this.servicioCrm.obtenerToken().then(
@@ -393,6 +412,213 @@ export class CrearSolicitudComponent implements OnInit {
     else {
       this.mostrarFiltroServicios = false;
     }
+  }
+
+  enviarSolpSap() {
+    let objtoken = {
+      estado: 'SAP',
+      tipoConsulta: 'SAP',
+      suscriptionKey: 'f48651be182744ffa60edcea7a4f9d41'
+    }
+
+    let objTokenStr = JSON.stringify(objtoken)
+    localStorage.setItem('id_token', objTokenStr);
+
+    let solp = {
+      "CrearSolpeds": {
+        "Solped": [
+          {
+            "SolpSP": this.idSolicitudGuardada,
+            "ClaseDocumento": 'IS02',
+            "Textos": "prueba texto para material 1",
+            "ResumenPoscicion": [
+              {
+                "TipoImputacion": "A",
+                "TipoPosicion": "",
+                "TextoBreve": "este es un texto de prueba para bienes",
+                // "FehaEntrega": "String",
+                "Centro": "PL03",
+                "GrupoArticulos": "C-MCR",
+                "GrupoCompras": "G05",
+                "NroNecesidad": "0200000024",
+                // "Solicitante": "",
+                "Precio": "450000",
+                "Moneda": "COP",
+                "Subcategoria": "102030003",
+                "FechaEnvioSoporte": "20201007",
+                "FechaEstInicContrato": "20201012",
+                "DetallePosicion": {
+                  "Bienes": [
+                    {
+                      "CodMaterial": this.condicionesTB[0].codigo,
+                      "Cantidad": this.condicionesTB[0].cantidad,
+                      "CuentaMayor": this.condicionesTB[0].numeroCuenta,
+                      // "CentroCosto": "",
+                      // "Orden": "",
+                      // "ActivoFijo": "",
+                      "CentroGestor": "1.6",
+                      "Fondos": "RP"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+    this.servicioSap.registrarSolpSap(solp).then(
+      (res) => console.log(res)
+    )
+  }
+
+  registrarActivo() {
+    let objtoken = {
+      estado: 'SAP',
+      tipoConsulta: 'SAP',
+      suscriptionKey: 'f48651be182744ffa60edcea7a4f9d41'
+    }
+
+    let objTokenStr = JSON.stringify(objtoken)
+    localStorage.setItem('id_token', objTokenStr);
+
+    let activo = {
+      "ActivoFijo": {
+        "SistemaOrigen": "SP",
+        "Sociedad": "tele",
+        "ClaseActivoFijo": "ITX10301",
+        "Denominacion": "Cable Fibra Óptica (Prueba)",
+        "Denominacion2": "Cable Fibra Óptica (Prueba)",
+        "TextoNum": this.condicionesTB[0].modelo,
+        // "NumSerie": "String",
+        "NumInventario": "IT-00001",
+        "Cantidad": this.condicionesTB[0].cantidad,
+        "CentroCoste": this.condicionesTB[0].numeroCostoInversion,
+        // "CecoResponsable": "String",
+        // "OrdCostes": "String",
+        // "MatriculaVehiculo": "String",
+        // "CriterioClasif1": "String",
+        "CriterioClasif2": "TA01",
+        "CriterioClasif3": "Producto",
+        "CriterioClasif4": "TBD",
+        // "CriterioClasif5": "String",
+        "Fabricante": this.condicionesTB[0].fabricante,
+        "DenominacionTipo": this.condicionesTB[0].codigo,
+        // "ValorOriginal": "String",
+        "OrdenInversion": this.solpFormulario.controls.compraOrdenEstadistica.value,
+        // "Serial": "String"
+      }
+    }
+    this.servicioSap.registarActivos(activo).then(
+      (respuesta) => console.log(respuesta)
+    )
+  }
+
+  consultarElementosServiceNow() {
+    this.arrayConsultaServiceNow = [];
+    this.arrSeleccionadosServiceNow = [];
+    this.spinner.show();
+    let objtoken = {
+      estado: 'ServiceNow',
+      tipoConsulta: 'ServiceNow',
+      suscriptionKey: 'f48651be182744ffa60edcea7a4f9d41'
+    }
+
+    let objTokenStr = JSON.stringify(objtoken)
+    localStorage.setItem('id_token', objTokenStr)
+    // let params = {
+    //   "sysparm_query": `nameLIKE${this.nombre || ''}^manufacturerLIKE${this.fabricante || ''}^model_numberLIKE${this.modelo || ''}`
+    // }
+    let body = {
+      "fabricante": this.fabricante || "",
+      "material": this.modelo || "",
+      "namematerial": this.nombre || "",
+      "codLatam": this.codigo || ""
+    }
+    this.servicioServiceNow.ConsultarDatosServiceNow(body).then(
+      (respuesta: any) => {
+        this.spinner.hide();
+        console.log(respuesta);
+        this.arrayConsultaServiceNow.push(respuesta.results);
+        console.log(this.arrayConsultaServiceNow);
+        this.dataSourceServiceNow.data = this.arrayConsultaServiceNow[0];
+        console.log(this.dataSourceServiceNow.data)
+      }
+    ).catch(
+      (err) => {
+        this.spinner.hide();
+        this.mostrarError('No se pudo consultar con los parámetros que ingresó. Por favor intente cambiando los mismos');
+        console.error(`Consulta elementos service now ${err}`)
+      }
+    )
+  }
+
+  consultarCantidad(element, index: number) {
+    this.spinner.show();
+    let objtoken = {
+      estado: 'ServiceNow',
+      tipoConsulta: 'ServiceNow',
+      suscriptionKey: 'f48651be182744ffa60edcea7a4f9d41'
+    }
+
+    let objTokenStr = JSON.stringify(objtoken)
+    localStorage.setItem('id_token', objTokenStr)
+    let sysID = element.sys_id
+    let pais: string;
+    if(this.solpFormulario.controls.pais.value.nombre === 'Perú') pais = 'peru';
+    if(this.solpFormulario.controls.pais.value.nombre !== 'Perú') pais = this.solpFormulario.controls.pais.value.nombre
+    let body = { "pais": pais.toLowerCase(), "modelo": "6fff908b1b5da814740d33f8cd4bcb34", "solicitante": "wicardona@internexa.com"}
+    // let paisString = pais.toLowerCase();
+    //this.nombreUsuario.toLowerCase()
+    //wicardona@internexa.com
+    // this.servicioServiceNow.ConsultarCantidad(sysID, pais.toLowerCase(), 'wicardona@internexa.com')
+    this.servicioServiceNow.ConsultarCantidad(body)
+    .then(
+      (respuesta) => {
+        this.spinner.hide();
+        let arrCantidad = []
+        console.log(respuesta);
+        if(respuesta) arrCantidad.push(respuesta);
+        console.log(arrCantidad[0].results);
+        if(arrCantidad[0].results.length > 0){
+          this.arrayConsultaServiceNow[0][index].cantidad = arrCantidad[0].results[0].Cantidad_departamento.split(':')[1];
+          this.arrayConsultaServiceNow[0][index].cantidadOtros = arrCantidad[0].results[0].Otros_departamentos;
+          this.arrayConsultaServiceNow[0][index].stock = arrCantidad[0].results[0].Almacen.split(':')[1];
+        } 
+        console.log(this.arrayConsultaServiceNow[0][index]);
+        this.dataSourceServiceNow.data = this.arrayConsultaServiceNow[0];
+      }
+    ).catch(
+      (err) => {
+        this.spinner.hide();
+        this.mostrarError('No se pudo consultar la cantidad para este elemento');
+        console.error(`Consultar cantidad ${err}`)
+      }
+    )
+  }
+
+  async seleccionesSN($event, element) {
+    if($event.checked) {
+      this.arrSeleccionadosServiceNow.push(element)
+      console.log(this.arrSeleccionadosServiceNow)
+    }
+    else {
+      //agregar validación por país*******
+      let index = this.arrSeleccionadosServiceNow.findIndex((x) => {
+        return x.u_cod_materia_latam === element.u_cod_materia_latam
+      })
+      this.arrSeleccionadosServiceNow.splice(index, 1);
+      console.log(this.arrSeleccionadosServiceNow)
+    };
+    await this.asignarSeleccionados();
+  }
+
+  async asignarSeleccionados() {
+    this.ctbFormulario.controls.codigoCTB.setValue(this.arrSeleccionadosServiceNow[0].CodigoLatam);
+    this.ctbFormulario.controls.nombreCTB.setValue(this.arrSeleccionadosServiceNow[0].Nombre);
+    this.ctbFormulario.controls.modeloCTB.setValue(this.arrSeleccionadosServiceNow[0].Modelo);
+    this.ctbFormulario.controls.fabricanteCTB.setValue(this.arrSeleccionadosServiceNow[0].Fabricante);
+    this.ctbFormulario.controls.cantidadCTB.setValue(1);
   }
 
   consultaDatos() {
@@ -589,6 +815,45 @@ export class CrearSolicitudComponent implements OnInit {
 
   terminarSeleccion() {
     this.mostrarTable = false;
+  }
+
+  HabilitarCampoAgregarCecos($event) {
+    this.distribuir = $event.checked
+  }
+
+  AgregarCecos() {
+    let counter = 0;
+    this.ValidarDatosCecos(this.ctbFormulario.controls.cecoCTB.value === '' || !this.ctbFormulario.controls.cecoCTB.value, 'El centro de costos es requerido') && counter++;
+    this.ValidarDatosCecos(this.ctbFormulario.controls.numCicoCTB.value === '' || !this.ctbFormulario.controls.numCicoCTB.value, 'El numero de centro de costo es requerido') && counter++
+    this.ValidarDatosCecos(this.ctbFormulario.controls.numCuentaCTB.value === '' || !this.ctbFormulario.controls.numCuentaCTB.value, 'El número de cuenta es requerido') && counter++
+    this.ValidarDatosCecos(this.ctbFormulario.controls.cantidadDistribucion.value === '' || !this.ctbFormulario.controls.cantidadDistribucion.value, 'La cantidad es requerida') && counter++
+    if(counter > 0) {
+      return false;
+    }
+    let obj = {
+      ceco: this.ctbFormulario.controls.cecoCTB.value,
+      numeroCeco: this.ctbFormulario.controls.numCicoCTB.value,
+      numeroCuenta: this.ctbFormulario.controls.numCuentaCTB.value,
+      cantidad: this.ctbFormulario.controls.cantidadDistribucion.value
+
+    }
+    this.distribucionCecos.push(obj);
+    this.dataSourceCecos.data = this.distribucionCecos;
+    this.LimpiarDatos();
+  }
+
+  ValidarDatosCecos(condicion: boolean, mensaje: string) {
+    if(condicion) {
+      this.mostrarAdvertencia(mensaje)
+    }
+    return false;
+  }
+
+  LimpiarDatos() {
+    this.ctbFormulario.controls.cecoCTB.setValue('');
+    this.ctbFormulario.controls.numCicoCTB.setValue('');
+    this.ctbFormulario.controls.numCuentaCTB.setValue('');
+    this.ctbFormulario.controls.cantidadDistribucion.setValue('')
   }
 
   seleccionarTodosServicios($event) {
@@ -3137,6 +3402,7 @@ deshabilitarCampoServicios() {
     this.ctbFormulario = this.formBuilder.group({
       codigoCTB: [''],
       descripcionCTB: ['', Validators.required],
+      nombreCTB: ['', Validators.required],
       modeloCTB: ['', Validators.required],
       fabricanteCTB: ['', Validators.required],
       cantidadCTB: ['', Validators.required],
@@ -3154,7 +3420,8 @@ deshabilitarCampoServicios() {
       clientBienes: [''],
       ordenServBienes: [''],
       idServBienes: [''],
-      nombreIdServBienes: ['']   
+      nombreIdServBienes: [''],
+      cantidadDistribucion: ['']   
     });
   }
 
@@ -4049,7 +4316,7 @@ deshabilitarCampoServicios() {
     this.setDatosContablesBienes = false;
     this.selectAll = false;
     this.dataIdOrdenSeleccionados = [];
-    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '' ,'', '', '', null, null,'', null, '', '');
     let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
     let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
@@ -4274,6 +4541,7 @@ deshabilitarCampoServicios() {
     let paisValidar = this.solpFormulario.controls["pais"].value.nombre
     let codigo = this.ctbFormulario.controls["codigoCTB"].value;
     let descripcion = this.ctbFormulario.controls["descripcionCTB"].value;
+    let nombre = this.ctbFormulario.controls["nombreCTB"].value;
     let modelo = this.ctbFormulario.controls["modeloCTB"].value;
     let fabricante = this.ctbFormulario.controls["fabricanteCTB"].value;
     let cantidad = this.ctbFormulario.controls["cantidadCTB"].value;
@@ -4309,7 +4577,7 @@ deshabilitarCampoServicios() {
     }
 
     if (this.condicionTB == null) {
-      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '','', '', '', null, null, '', null, '', '');
     }      
     if(this.condicionTB.archivoAdjunto != null)
     {
@@ -4323,6 +4591,7 @@ deshabilitarCampoServicios() {
 
       this.condicionTB.codigo = codigo;
       this.condicionTB.descripcion = descripcion;
+
       this.condicionTB.modelo = modelo;
       this.condicionTB.fabricante = fabricante;
       this.condicionTB.cantidad = cantidad;
@@ -4334,7 +4603,8 @@ deshabilitarCampoServicios() {
       this.condicionTB.numeroCostoInversion = numeroCostoInversion;
       this.condicionTB.numeroCuenta = numeroCuenta;
       this.condicionTB.tieneIdServicio = tieneIdServicio;
-      this.condicionTB.idOrdenServicio = idOrdenServicio
+      this.condicionTB.idOrdenServicio = idOrdenServicio;
+      // this.condicionTB.DetalleDistribucion = 
       if (adjunto != null) {
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
         this.servicio.agregarCondicionesTecnicasBienes(this.condicionTB).then(
@@ -4353,7 +4623,7 @@ deshabilitarCampoServicios() {
                 this.condicionTB = null;
                 this.spinner.hide();
                 this.ctbSubmitted = false;
-                this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+                this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '' ,'', '', '', null, null, '', null, '', '');
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                 this.spinner.hide();
@@ -4379,7 +4649,7 @@ deshabilitarCampoServicios() {
             this.spinner.hide();
             this.ctbSubmitted = false;
 
-            this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+            this.condicionTB = new CondicionTecnicaBienes(null, '', null, '','', '', '', '', null, null, '', null, '', '');
           }, err => {
             this.mostrarError('Error en la creación de la condición técnica de bienes');
             this.spinner.hide();
@@ -4392,7 +4662,7 @@ deshabilitarCampoServicios() {
     if (this.textoBotonGuardarCTB == "Actualizar") {
       // this.validarCodigosBrasil();
       if (adjunto == null) {
-        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
+        this.condicionTB = new CondicionTecnicaBienes(this.indiceCTBActualizar, "Condición Técnicas Bienes" + new Date().toDateString(), this.idSolicitudGuardada, codigo, descripcion, nombre, modelo, fabricante, cantidad, valorEstimado.toString(), comentarios, null, '', tipoMoneda,null, costoInversion, numeroCostoInversion, numeroCuenta, null, tieneIdServicio, idOrdenServicio);
         this.condicionTB.id = this.idCondicionTBGuardada;
         this.servicio.actualizarCondicionesTecnicasBienes(this.condicionTB.id, this.condicionTB).then(
           (item: ItemAddResult) => {
@@ -4420,7 +4690,7 @@ deshabilitarCampoServicios() {
             // this.modalRef.hide();
             this.spinner.hide();
             this.ctbSubmitted = false;
-            this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+            this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '' ,'', '', '', null, null, '', null, '', '');
           }, err => {
             this.mostrarError('Error en la actualización de la condición técnica de bienes');
             this.spinner.hide();
@@ -4484,7 +4754,7 @@ deshabilitarCampoServicios() {
                   // this.modalRef.hide();
                   this.spinner.hide();
                   this.ctbSubmitted = false;
-                  this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+                  this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '',  '', '', '', null, null, '', null, '', '');
                 }, err => {
                   this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                   this.spinner.hide();
@@ -4529,7 +4799,7 @@ deshabilitarCampoServicios() {
                       // this.modalRef.hide();
                       this.spinner.hide();
                       this.ctbSubmitted = false;
-                      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', null, '', '');
+                      this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', '', null, null, '', null, '', '');
                     }, err => {
                       this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                       this.spinner.hide();
@@ -4626,7 +4896,7 @@ deshabilitarCampoServicios() {
   }
 
   subirAdjuntoCTB(files: FileList) {
-    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', null, null, '', files.item(0), '', '');
+    this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '', '', '', '', null, null, '', files.item(0), '', '');
   }
 
   subirAdjuntoCTS(files: FileList) {
