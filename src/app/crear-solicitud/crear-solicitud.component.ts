@@ -40,6 +40,7 @@ import { EmailProperties } from 'sp-pnp-js';
 import { ServicenowServicioService } from '../servicios/servicenow-servicio.service'
 // import { ConsultaServicenowComponent } from '../servicios/'
 import { SapService } from '../servicios/sap.service'
+import { ResultadoServiceNow } from '../dominio/resultadoServiceNow';
 
 
 @Component({
@@ -529,13 +530,39 @@ export class CrearSolicitudComponent implements OnInit {
     // let params = {
     //   "sysparm_query": `nameLIKE${this.nombre || ''}^manufacturerLIKE${this.fabricante || ''}^model_numberLIKE${this.modelo || ''}`
     // }
-    let body = {
-      "fabricante": this.fabricante || "",
-      "material": this.modelo || "",
-      "namematerial": this.nombre || "",
-      "codLatam": this.codigo || ""
+    // let body = {
+    //   "fabricante": (this.fabricante)? this.fabricante : '',
+    //   "material": (this.modelo)? this.modelo : '',
+    //   "namematerial": (this.nombre)? this.nombre : '',
+    //   "codLatam": (this.codigo)? this.codigo : ''
+    // }
+    let brasil = ''
+
+    // const objResultadoServiceNow = new ResultadoServiceNow(
+    //   (this.fabricante)? this.fabricante : '',
+    //   (this.modelo)? this.modelo : '',
+    //   (this.nombre)? this.nombre : '',
+    //   (this.codigo)? this.codigo : '',
+    //   brasil
+      
+    // )
+
+    const body = { 
+      "fabricante": this.fabricante || '', 
+      "material": "", 
+      "nummaterial": "" , 
+      "namematerial": "", 
+      "codLatam": this.codigo || '', 
+      "codBrasil": ""
     }
-    this.servicioServiceNow.ConsultarDatosServiceNow(body).then(
+    
+    // this.servicioServiceNow.sendPostRequest(body).subscribe(
+    //   (respuesta) => {
+    //     console.log(respuesta);
+    //     this.spinner.hide();
+    //   }
+    // )
+    this.servicioServiceNow.sendPostRequestMateriales(body).subscribe(
       (respuesta: any) => {
         this.spinner.hide();
         console.log(respuesta);
@@ -544,13 +571,14 @@ export class CrearSolicitudComponent implements OnInit {
         this.dataSourceServiceNow.data = this.arrayConsultaServiceNow[0];
         console.log(this.dataSourceServiceNow.data)
       }
-    ).catch(
-      (err) => {
-        this.spinner.hide();
-        this.mostrarError('No se pudo consultar con los parámetros que ingresó. Por favor intente cambiando los mismos');
-        console.error(`Consulta elementos service now ${err}`)
-      }
     )
+    // .catch(
+    //   (err) => {
+    //     this.spinner.hide();
+    //     this.mostrarError('No se pudo consultar con los parámetros que ingresó. Por favor intente cambiando los mismos');
+    //     console.error(`Consulta elementos service now ${err}`)
+    //   }
+    // )
   }
 
   consultarCantidad(element, index: number) {
