@@ -180,7 +180,7 @@ export class CrearSolicitudComponent implements OnInit {
   displayedColumns: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   displayedColumnsServicios: string[] = ["seleccionar","cliente", "OS", "idServicio", "nombreIdServicio"];
   columnsDistribucion: string[] = ['Ceco', 'NumCeco', 'NumCuenta' , 'Cantidad'];
-  columnsServiceNow: string[] = ['seleccionar', 'Codigo', 'Nombre', 'Modelo', 'Fabricante', 'Cantidad', 'CantidadOtros', 'CantidadStock', 'Acciones']
+  columnsServiceNow: string[] = ['seleccionar', 'Codigo', 'Nombre', 'Modelo', 'Fabricante', 'Cantidad', 'CantidadOtros', 'CantidadStock']
   cargaExcel: boolean;  //se debe habilitar para eliminar dato contables obligatorios en sondeo
   cargaExcelServicios: boolean;
   noMostrarOrdenEstadistica: boolean;
@@ -189,12 +189,26 @@ export class CrearSolicitudComponent implements OnInit {
   ordenServBienes = new FormControl('');
   idServBienes = new FormControl('');
   nombreIdServBienes = new FormControl('');
+  //form control materiales
+  codigoMateriales = new FormControl('');
+  nombreMateriales = new FormControl('');
+  modeloMateriales = new FormControl('');
+  fabricanteMateriales = new FormControl('');
+  //******* */
   filterValues = {
     Cliente: '',
     OS: '',
     IdServicio: '',
     Nombre_Servicio: ''
   };
+
+  filterValuesMateriales = {
+    Codigo: '',
+    Nombre: '',
+    Modelo: '',
+    Fabricante: ''
+    
+  }
 
   clientServicios = new FormControl('');
   ordenServServicios = new FormControl('');
@@ -234,6 +248,7 @@ export class CrearSolicitudComponent implements OnInit {
   arrayConsultaServiceNow = []
   dataSourceServiceNow = new MatTableDataSource(this.arrayConsultaServiceNow);
   arrSeleccionadosServiceNow = [];
+  valorCantidad = 0
 
   
   
@@ -527,26 +542,7 @@ export class CrearSolicitudComponent implements OnInit {
 
     let objTokenStr = JSON.stringify(objtoken)
     localStorage.setItem('id_token', objTokenStr)
-    // let params = {
-    //   "sysparm_query": `nameLIKE${this.nombre || ''}^manufacturerLIKE${this.fabricante || ''}^model_numberLIKE${this.modelo || ''}`
-    // }
-    // let body = {
-    //   "fabricante": (this.fabricante)? this.fabricante : '',
-    //   "material": (this.modelo)? this.modelo : '',
-    //   "namematerial": (this.nombre)? this.nombre : '',
-    //   "codLatam": (this.codigo)? this.codigo : ''
-    // }
     let brasil = ''
-
-    // const objResultadoServiceNow = new ResultadoServiceNow(
-    //   (this.fabricante)? this.fabricante : '',
-    //   (this.modelo)? this.modelo : '',
-    //   (this.nombre)? this.nombre : '',
-    //   (this.codigo)? this.codigo : '',
-    //   brasil
-      
-    // )
-
     const body = { 
       "fabricante": this.fabricante || '', 
       "material": "", 
@@ -556,12 +552,6 @@ export class CrearSolicitudComponent implements OnInit {
       "codBrasil": ""
     }
     
-    // this.servicioServiceNow.sendPostRequest(body).subscribe(
-    //   (respuesta) => {
-    //     console.log(respuesta);
-    //     this.spinner.hide();
-    //   }
-    // )
     this.servicioServiceNow.sendPostRequestMateriales(body).subscribe(
       (respuesta: any) => {
         this.spinner.hide();
@@ -570,19 +560,16 @@ export class CrearSolicitudComponent implements OnInit {
         console.log(this.arrayConsultaServiceNow);
         this.dataSourceServiceNow.data = this.arrayConsultaServiceNow[0];
         console.log(this.dataSourceServiceNow.data)
+      }, 
+      (error) => {
+        console.log('Error al consultar los materiales ' + error)
       }
     )
-    // .catch(
-    //   (err) => {
-    //     this.spinner.hide();
-    //     this.mostrarError('No se pudo consultar con los parámetros que ingresó. Por favor intente cambiando los mismos');
-    //     console.error(`Consulta elementos service now ${err}`)
-    //   }
-    // )
   }
 
   consultarCantidad(element, index: number) {
     this.spinner.show();
+    console.log(element)
     let objtoken = {
       estado: 'ServiceNow',
       tipoConsulta: 'ServiceNow',
@@ -591,11 +578,11 @@ export class CrearSolicitudComponent implements OnInit {
 
     let objTokenStr = JSON.stringify(objtoken)
     localStorage.setItem('id_token', objTokenStr)
-    let sysID = element.sys_id
+    let sysID = element.Sysid
     let pais: string;
     if(this.solpFormulario.controls.pais.value.nombre === 'Perú') pais = 'peru';
     if(this.solpFormulario.controls.pais.value.nombre !== 'Perú') pais = this.solpFormulario.controls.pais.value.nombre
-    let body = { "pais": pais.toLowerCase(), "modelo": "6fff908b1b5da814740d33f8cd4bcb34", "solicitante": "wicardona@internexa.com"}
+    let body = { "pais": pais.toLowerCase(), "modelo": sysID, "solicitante": "wicardona@internexa.com"}
     // let paisString = pais.toLowerCase();
     //this.nombreUsuario.toLowerCase()
     //wicardona@internexa.com
@@ -625,8 +612,9 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
-  async seleccionesSN($event, element) {
+  async seleccionesSN($event, element, index) {
     if($event.checked) {
+      this.consultarCantidad(element, index);
       this.arrSeleccionadosServiceNow.push(element)
       console.log(this.arrSeleccionadosServiceNow)
     }
@@ -648,6 +636,11 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls.fabricanteCTB.setValue(this.arrSeleccionadosServiceNow[0].Fabricante);
     this.ctbFormulario.controls.cantidadCTB.setValue(1);
   }
+
+  // asignarValorCantidad() {
+  //   alert('Hola')
+  //   // this.valorCantidad = parseInt(this.ctbFormulario.controls.cantidadCTB.value);
+  // }
 
   consultaDatos() {
     this.spinner.show();
@@ -726,6 +719,35 @@ export class CrearSolicitudComponent implements OnInit {
         console.log(err);
       }
     )
+  }
+
+  createFilterMateriales(): (data: any, filter: string) => boolean {
+    let filterFunction = function(data, filter): boolean {
+      let searchTerms = JSON.parse(filter);
+      if(!data.CodigoMateriales) {
+        data.CodigoMateriales = '';
+      }
+      if(!data.NombreMateriales) {
+        data.NombreMateriales = '';
+      }
+      if(!data.ModeloMateriales) {
+        data.ModeloMateriales = '';
+      }
+      if(!data.FabricanteMateriales) {
+        data.FabricanteMateriales = '';
+      }
+
+      data.CodigoMateriales.toLowerCase().indexOf(searchTerms.CodigoMateriales.toLowerCase()) !== -1
+      && data.NombreMateriales.toLowerCase().indexOf(searchTerms.NombreMateriales.toLowerCase()) !== -1
+      && data.ModeloMateriales.toLowerCase().indexOf(searchTerms.toLowerCase()) !== -1
+      && data.FabricanteMateriales.toLowerCase().indexOf(searchTerms.FabricanteMateriales.toLowerCase()) !== -1
+
+      return data.CodigoMateriales.toLowerCase().indexOf(searchTerms.CodigoMateriales.toLowerCase()) !== -1
+      && data.NombreMateriales.toLowerCase().indexOf(searchTerms.NombreMateriales.toLowerCase()) !== -1
+      && data.ModeloMateriales.toLowerCase().indexOf(searchTerms.toLowerCase()) !== -1
+      && data.FabricanteMateriales.toLowerCase().indexOf(searchTerms.FabricanteMateriales.toLowerCase()) !== -1
+    }
+    return filterFunction
   }
   
   createFilter(): (data: any, filter: string) => boolean {
@@ -1113,6 +1135,40 @@ export class CrearSolicitudComponent implements OnInit {
 
   mostrarPersonalizado(mensaje: string) {
     this.toastr.customToastr(mensaje, null, { enableHTML: true });
+  }
+
+  leerFiltrosMateriales() {
+    this.codigoMateriales.valueChanges
+    .subscribe(
+      (codigo) => {
+        this.filterValuesMateriales.Codigo = codigo;
+        this.dataSourceServiceNow.filter = JSON.stringify(this.filterValuesMateriales);
+      }
+    );
+
+    this.nombreMateriales.valueChanges
+    .subscribe(
+      (nombre) => {
+        this.filterValuesMateriales.Nombre = nombre;
+        this.dataSourceServiceNow.filter = JSON.stringify(this.filterValuesMateriales);
+      }
+    );
+
+    this.modeloMateriales.valueChanges
+    .subscribe(
+      (modelo) => {
+        this.filterValuesMateriales.Modelo = modelo;
+        this.dataSourceServiceNow.filter = JSON.stringify(this.filterValuesMateriales);
+      }
+    );
+
+    this.fabricanteMateriales.valueChanges
+    .subscribe(
+      (fabricante) => {
+        this.filterValuesMateriales.Fabricante = fabricante;
+        this.dataSourceServiceNow.filter = JSON.stringify(this.filterValuesMateriales)
+      }
+    )
   }
 
   leerFiltros() {
