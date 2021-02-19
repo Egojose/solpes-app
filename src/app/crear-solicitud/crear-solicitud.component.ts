@@ -612,11 +612,15 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
+  agregarDatosDeConsulta(arr) {
+
+  }
+
   async seleccionesSN($event, element, index) {
     if($event.checked) {
       this.consultarCantidad(element, index);
-      this.arrSeleccionadosServiceNow.push(element)
-      console.log(this.arrSeleccionadosServiceNow)
+      this.arrSeleccionadosServiceNow.push(element);
+      console.log(this.arrSeleccionadosServiceNow);
     }
     else {
       //agregar validación por país*******
@@ -624,9 +628,9 @@ export class CrearSolicitudComponent implements OnInit {
         return x.u_cod_materia_latam === element.u_cod_materia_latam
       })
       this.arrSeleccionadosServiceNow.splice(index, 1);
-      console.log(this.arrSeleccionadosServiceNow)
+      console.log(this.arrSeleccionadosServiceNow);
     };
-    await this.asignarSeleccionados();
+    this.arrSeleccionadosServiceNow.length > 0 ? this.asignarSeleccionados() : this.limpiarSeleccionados();
   }
 
   async asignarSeleccionados() {
@@ -635,6 +639,14 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls.modeloCTB.setValue(this.arrSeleccionadosServiceNow[0].Modelo);
     this.ctbFormulario.controls.fabricanteCTB.setValue(this.arrSeleccionadosServiceNow[0].Fabricante);
     this.ctbFormulario.controls.cantidadCTB.setValue(1);
+  }
+
+  limpiarSeleccionados() {
+    this.ctbFormulario.controls.codigoCTB.setValue('');
+    this.ctbFormulario.controls.nombreCTB.setValue('');
+    this.ctbFormulario.controls.modeloCTB.setValue('');
+    this.ctbFormulario.controls.fabricanteCTB.setValue('');
+    this.ctbFormulario.controls.cantidadCTB.setValue('');
   }
 
   // asignarValorCantidad() {
@@ -4702,7 +4714,7 @@ deshabilitarCampoServicios() {
                 this.CargarTablaCTB();
                 this.limpiarControlesCTB();
                 this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-                this.autoShownModalCTB.hide();
+                // this.autoShownModalCTB.hide();
                 // this.modalRef.hide();
                 this.condicionTB = null;
                 this.spinner.hide();
@@ -4727,7 +4739,7 @@ deshabilitarCampoServicios() {
             this.CargarTablaCTB();
             this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
-            this.autoShownModalCTB.hide();
+            // this.autoShownModalCTB.hide();
             // this.modalRef.hide();
             this.condicionTB = null;
             this.spinner.hide();
@@ -4740,6 +4752,12 @@ deshabilitarCampoServicios() {
            
           }
         )
+      }
+      if(this.arrSeleccionadosServiceNow.length > 1) {
+        this.arrSeleccionadosServiceNow.splice(0, 1);
+      }
+      else {
+        this.autoShownModalCTB.hide();
       }
     }
 
