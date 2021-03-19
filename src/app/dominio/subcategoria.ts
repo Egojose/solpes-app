@@ -7,7 +7,8 @@ export class Subcategoria {
         public codigoAriba: string,
         public cuadrante: string,
         public condicionesContractuales: any,
-        public id: number) { }
+        public id: number,
+        public sap: string) { }
 
     public static fromJson(element: any) {
         return new Subcategoria(element.Title,
@@ -17,7 +18,8 @@ export class Subcategoria {
             element.CodigoAriba,
             element.Cuadrante,
             element.CondicionesTecnicas.results,
-            element.ID);
+            element.ID,
+            element.SAP);
     }
 
     public static fromJsonList(elements: any) {

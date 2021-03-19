@@ -26,5 +26,6 @@ export const environment = {
   listaSolicitudesCrm: 'SolicitudesCrm',
   listaResponsableSoporte: 'ResponsableSoporte',
   listaTipoEjecucion: 'TipoEjecucion',
-  listaCausalIncumplimento: 'CausalIncumplimiento'
+  listaCausalIncumplimento: 'CausalIncumplimiento',
+  listaSapXpais: 'DatosSapPorPais'
 };

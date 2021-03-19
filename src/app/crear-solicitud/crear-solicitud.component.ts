@@ -248,7 +248,11 @@ export class CrearSolicitudComponent implements OnInit {
   arrayConsultaServiceNow = []
   dataSourceServiceNow = new MatTableDataSource(this.arrayConsultaServiceNow);
   arrSeleccionadosServiceNow = [];
-  valorCantidad = 0
+  valorCantidad = 0;
+  habilitarNuevoMaterial: boolean;
+  claseDocumento: string;
+  tipoImputacion: string;
+  datosSapxPais: any[];
 
   
   
@@ -430,7 +434,37 @@ export class CrearSolicitudComponent implements OnInit {
     }
   }
 
-  enviarSolpSap() {
+  async asignarClaseDocuento() {
+    if(this.solpFormulario.controls.pais.value.nombre === 'Colombia') {
+      this.claseDocumento = 'IS02'
+    }
+  }
+
+  async asignarTipoImputación() {
+    let ceco = this.ctbFormulario.controls.cecoCTB.value;
+    if(ceco === 'Centro de costos') {
+      this.tipoImputacion = 'K';
+    }
+    else if(ceco === 'Orden de inversión') {
+      this.tipoImputacion = 'F';
+    }
+    else {
+      this.tipoImputacion = 'A';
+    }
+  }
+
+  datosSapPais() {
+    this.servicio.obtenerDatosSapPais(this.solpFormulario.controls.pais.value.nombre).then(
+      (respuesta) => {
+        this.datosSapxPais = respuesta;
+        console.log(this.datosSapxPais);
+      }
+    )
+  }
+
+ async enviarSolpSap() {
+    await this.asignarClaseDocuento();
+    await this.asignarTipoImputación();
     let objtoken = {
       estado: 'SAP',
       tipoConsulta: 'SAP',
@@ -439,46 +473,50 @@ export class CrearSolicitudComponent implements OnInit {
 
     let objTokenStr = JSON.stringify(objtoken)
     localStorage.setItem('id_token', objTokenStr);
+    let resumenPosicion = [];
+    let bienes = [];
+
+    this.condicionesTB.forEach((x) => {
+     let obj = {
+        "CodMaterial": x.codigo,
+        "Cantidad": x.cantidad.toString(),
+        "CuentaMayor": x.numeroCuenta,
+        "CentroGestor": this.solpFormulario.controls.centroGestor.value,
+        "Fondos": this.datosSapxPais[0].Fondos || '' // para brasil no enviar. Siempre es RP
+      }
+
+      bienes.push(obj);
+
+    let objResumen = {
+        "TipoImputacion": this.tipoImputacion,
+        "TipoPosicion": "",
+        "TextoBreve": "este es un texto de prueba para bienes", // es el nombre del material
+        "Centro": this.datosSapxPais[0].Centro, //estamos pendientes de parametrizar el almacén para obtener este dato
+        "GrupoArticulos": this.datosSapxPais[0].GrupoArticulos, //estamos pendientes de parametrizar la lista de almacén para obtener este dato
+        "GrupoCompras": "G05", // pendiente de parametrizar por departamento para obterner este dato
+        "NroNecesidad": "0200000024", // pendiente de parametrizar por departamento para obterner este dato
+        "Precio": x.valorEstimado,
+        "Moneda": x.tipoMoneda || '',
+        "Subcategoria": this.subcategorias[0].sap || '',
+        "FechaEnvioSoporte": "20201007",
+        "FechaEstInicContrato": "20201012",
+        "DetallePosicion": {
+          "Bienes": bienes
+        }
+    }
+      resumenPosicion.push(objResumen);
+    })
+
+    console.log(resumenPosicion);
 
     let solp = {
       "CrearSolpeds": {
         "Solped": [
           {
             "SolpSP": this.idSolicitudGuardada,
-            "ClaseDocumento": 'IS02',
+            "ClaseDocumento": this.claseDocumento,
             "Textos": "prueba texto para material 1",
-            "ResumenPoscicion": [
-              {
-                "TipoImputacion": "A",
-                "TipoPosicion": "",
-                "TextoBreve": "este es un texto de prueba para bienes",
-                // "FehaEntrega": "String",
-                "Centro": "PL03",
-                "GrupoArticulos": "C-MCR",
-                "GrupoCompras": "G05",
-                "NroNecesidad": "0200000024",
-                // "Solicitante": "",
-                "Precio": "450000",
-                "Moneda": "COP",
-                "Subcategoria": "102030003",
-                "FechaEnvioSoporte": "20201007",
-                "FechaEstInicContrato": "20201012",
-                "DetallePosicion": {
-                  "Bienes": [
-                    {
-                      "CodMaterial": this.condicionesTB[0].codigo,
-                      "Cantidad": this.condicionesTB[0].cantidad,
-                      "CuentaMayor": this.condicionesTB[0].numeroCuenta,
-                      // "CentroCosto": "",
-                      // "Orden": "",
-                      // "ActivoFijo": "",
-                      "CentroGestor": "1.6",
-                      "Fondos": "RP"
-                    }
-                  ]
-                }
-              }
-            ]
+            "ResumenPosicion": resumenPosicion
           }
         ]
       }
@@ -488,7 +526,7 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
-  registrarActivo() {
+ async registrarActivo() {
     let objtoken = {
       estado: 'SAP',
       tipoConsulta: 'SAP',
@@ -498,36 +536,44 @@ export class CrearSolicitudComponent implements OnInit {
     let objTokenStr = JSON.stringify(objtoken)
     localStorage.setItem('id_token', objTokenStr);
 
-    let activo = {
-      "ActivoFijo": {
-        "SistemaOrigen": "SP",
-        "Sociedad": "tele",
-        "ClaseActivoFijo": "ITX10301",
-        "Denominacion": "Cable Fibra Óptica (Prueba)",
-        "Denominacion2": "Cable Fibra Óptica (Prueba)",
-        "TextoNum": this.condicionesTB[0].modelo,
-        // "NumSerie": "String",
-        "NumInventario": "IT-00001",
-        "Cantidad": this.condicionesTB[0].cantidad,
-        "CentroCoste": this.condicionesTB[0].numeroCostoInversion,
-        // "CecoResponsable": "String",
-        // "OrdCostes": "String",
-        // "MatriculaVehiculo": "String",
-        // "CriterioClasif1": "String",
-        "CriterioClasif2": "TA01",
-        "CriterioClasif3": "Producto",
-        "CriterioClasif4": "TBD",
-        // "CriterioClasif5": "String",
-        "Fabricante": this.condicionesTB[0].fabricante,
-        "DenominacionTipo": this.condicionesTB[0].codigo,
-        // "ValorOriginal": "String",
-        "OrdenInversion": this.solpFormulario.controls.compraOrdenEstadistica.value,
-        // "Serial": "String"
+    this.condicionesTB.forEach(async (x) => {
+      let activo = {
+        "ActivoFijo": {
+          "SistemaOrigen": "SP",
+          "Sociedad": this.datosSapxPais[0].Sociedad,
+          "ClaseActivoFijo": "ITX10301", //Ya está llegando en la consulta (TELA: "A450823" TELB: "TE120000 ET450000" TELC: "A450823" TELE: "ITX10408" TELP: "A450823")
+          "Denominacion": "Cable Fibra Óptica (Prueba)", //Nombre del material
+          "Denominacion2": "Cable Fibra Óptica (Prueba)", //Debe llegar desde servicenow
+          "TextoNum": x.modelo,
+          "NumInventario": "IT-00001",
+          "Cantidad": x.cantidad,
+          "CentroCoste":x.numeroCostoInversion,
+          "CriterioClasif2": "TA01",
+          "CriterioClasif3": "Producto",
+          "CriterioClasif4": "TBD",
+          // "CriterioClasif5": "String", // ya está llegando en la consulta de servicenow (UNSPSC: "") para perú es obligatorio
+          "Fabricante": x.fabricante,
+          "DenominacionTipo": x.codigo,
+          "OrdenInversion": this.solpFormulario.controls.numeroOrdenEstadistica.value,
+        }
       }
+      await this.servicioSap.registarActivos(activo).then(
+        (respuesta) => console.log(respuesta)
+      )
+    })    
+  }
+
+ async ejecutarIntegracionesSap() {
+    if(this.solpFormulario.controls.compraOrdenEstadistica.value === 'SI'){
+      await this.registrarActivo();
+      await this.enviarSolpSap();
+      this.mostrarInformacion('Se envió a actvos');
+      this.mostrarInformacion('Se envió a SAP');
     }
-    this.servicioSap.registarActivos(activo).then(
-      (respuesta) => console.log(respuesta)
-    )
+    else {
+      await this.enviarSolpSap();
+      this.mostrarInformacion('Se envió a SAP');
+    }
   }
 
   consultarElementosServiceNow() {
@@ -618,6 +664,7 @@ export class CrearSolicitudComponent implements OnInit {
 
   async seleccionesSN($event, element, index) {
     if($event.checked) {
+      this.habilitarNuevoMaterial = false;
       this.consultarCantidad(element, index);
       this.arrSeleccionadosServiceNow.push(element);
       console.log(this.arrSeleccionadosServiceNow);
@@ -647,6 +694,13 @@ export class CrearSolicitudComponent implements OnInit {
     this.ctbFormulario.controls.modeloCTB.setValue('');
     this.ctbFormulario.controls.fabricanteCTB.setValue('');
     this.ctbFormulario.controls.cantidadCTB.setValue('');
+  }
+
+  crearMaterial() {
+    this.habilitarNuevoMaterial = true;
+    this.arrSeleccionadosServiceNow = [];
+    this.dataSourceServiceNow.data = [];
+    this.limpiarSeleccionados();
   }
 
   // asignarValorCantidad() {
@@ -3522,6 +3576,7 @@ deshabilitarCampoServicios() {
   }
 
   seleccionarOrdenadorGastos(event) {
+    console.log(event);
     if (event != "Seleccione") {
       this.emptyManager = false;
     } else {
@@ -3570,6 +3625,7 @@ deshabilitarCampoServicios() {
       tipoSolicitud: [''],
       cm: [''],
       solicitante: [''],
+      centroGestor: ['', Validators.required],
       // empresa: [''],
       ordenadorGastos: [''],
       pais: [''],
@@ -3728,6 +3784,12 @@ deshabilitarCampoServicios() {
   obtenerProfile() {
     this.servicio.obtenerdatosProfile().subscribe(
       (respuesta) => {
+        let properties = respuesta.UserProfileProperties.results;
+        let department = properties.findIndex((x) => {
+          return x.Key === "Department";
+        })
+        console.log(department);
+        console.log(respuesta);
         if (respuesta.ExtendedManagers.results.length > 0) {
           let posicionManager = respuesta.ExtendedManagers.results.length - 1;
           this.correoManager = respuesta.ExtendedManagers.results[posicionManager];
@@ -3874,6 +3936,7 @@ deshabilitarCampoServicios() {
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let FechaDeCreacion = new Date();
     let solicitantePersona = this.usuarioActual.id;
+    let centroGestor = this.solpFormulario.controls.centroGestor.value;
 
     let datosContables = await this.consultarDatosContables()
 
@@ -3991,7 +4054,7 @@ deshabilitarCampoServicios() {
     let a = await this.validarSiEnviarCrm()
 
     this.servicio.obtenerResponsableProcesos(valorPais.id).subscribe(
-      (respuestaResponsable) => {
+      async (respuestaResponsable) => {
         this.responsableProcesoEstado = responsableProceso.fromJsonList(respuestaResponsable);
         if (tipoSolicitud == 'Sondeo') {
           justificacion = '';
@@ -4044,92 +4107,94 @@ deshabilitarCampoServicios() {
                 this.compraServicios,
                 this.fueSondeo,
                 FechaDeCreacion);
-              this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
-                async (item: ItemAddResult) => {
-                  if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
-                    let respuesta;
-                    let objToken = {
-                      TipoConsulta: "crm",
-                      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
-                      token: this.token,
-                      estado: "true"
-                    }
-                    let objTokenString = JSON.stringify(objToken);
-                    localStorage.setItem("id_token",objTokenString);
-                    let objCrm = {
-                      "numerosolp": `${this.idSolicitudGuardada}`,
-                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
-                      "idservicios": this.dataTotalIds
-                      // "idservicios" : ["0029NQT600001"]
-                      // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
-                    }
-                    let obj = {
-                      Title: `Solicitud ${this.idSolicitudGuardada}`,
-                      NroSolp: `${this.idSolicitudGuardada}`,
-                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
-                      // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
-                      IdServicios: this.dataTotalIds.toString()
-                    }
-                    respuesta = await this.enviarServicioSolicitud(objCrm);
-                    if (respuesta.StatusCode === 200) {
-                      this.MostrarExitoso(respuesta["MensajeExito"]);
-                    }
-                    else {
-                     this.servicio.enviarFallidosListaCrm(obj).then(
-                       (item: ItemAddResult) => {
-                         console.log('Entre a fallidos');
-                          let cuerpo = '<p>Cordial Saludo</p>' +
-                          '<br>' +
-                          '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
-                          '<br>' +
-                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores" target="_blank>este enlace</a></p>'
-                          const emailProps: EmailProperties = {
-                            To: [this.soporte],
-                            Subject: "Notificación de soporte",
-                            Body: cuerpo
-                          }
-                           this.servicio.EnviarNotificacion(emailProps).then(
-                            (res) => {
-                              // this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
-                            }
-                          ), error => {
-                            console.log(error);
-                          }
-                        }
-                      ), error => {
-                        this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
-                      }
-                      // let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
-                      // this.mostrarError('No se pudo enviar a crm. Se guardaron los datos en la lista de gestión de errores');
-                    }
-                  }
-                  // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
-                  //   (item: ItemAddResult) => {
-                      let notificacion = {
-                        IdSolicitud: this.idSolicitudGuardada.toString(),
-                        ResponsableId: responsable,
-                        Estado: estado
-                      };
-                      await this.servicio.agregarNotificacion(notificacion).then(
-                        (item: ItemAddResult) => {
-                          this.MostrarExitoso("La solicitud se ha guardado y enviado correctamente");
-                          this.spinner.hide();
-                          this.router.navigate(['/mis-solicitudes']);
-                        }, err => {
-                          this.mostrarError('Error agregando la notificación');
-                          this.spinner.hide();
-                        }
-                      )
-                    // }, err => {
-                    //   this.mostrarError('Error en la actualización del consecutivo');
-                    //   this.spinner.hide();
-                    // }
-                  // )
-                }, err => {
-                  this.mostrarError('Error en el envío de la solicitud');
-                  this.spinner.hide();
-                }
-              )
+              // this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
+              //   async (item: ItemAddResult) => {
+              //     if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
+              //       let respuesta;
+              //       let objToken = {
+              //         TipoConsulta: "crm",
+              //         suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+              //         token: this.token,
+              //         estado: "true"
+              //       }
+              //       let objTokenString = JSON.stringify(objToken);
+              //       localStorage.setItem("id_token",objTokenString);
+              //       let objCrm = {
+              //         "numerosolp": `${this.idSolicitudGuardada}`,
+              //         "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
+              //         "idservicios": this.dataTotalIds
+              //         // "idservicios" : ["0029NQT600001"]
+              //         // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
+              //       }
+              //       let obj = {
+              //         Title: `Solicitud ${this.idSolicitudGuardada}`,
+              //         NroSolp: `${this.idSolicitudGuardada}`,
+              //         EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
+              //         // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
+              //         IdServicios: this.dataTotalIds.toString()
+              //       }
+              //       respuesta = await this.enviarServicioSolicitud(objCrm);
+              //       if (respuesta.StatusCode === 200) {
+              //         this.MostrarExitoso(respuesta["MensajeExito"]);
+              //       }
+              //       else {
+              //        this.servicio.enviarFallidosListaCrm(obj).then(
+              //          (item: ItemAddResult) => {
+              //            console.log('Entre a fallidos');
+              //             let cuerpo = '<p>Cordial Saludo</p>' +
+              //             '<br>' +
+              //             '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
+              //             '<br>' +
+              //             '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores" target="_blank>este enlace</a></p>'
+              //             const emailProps: EmailProperties = {
+              //               To: [this.soporte],
+              //               Subject: "Notificación de soporte",
+              //               Body: cuerpo
+              //             }
+              //              this.servicio.EnviarNotificacion(emailProps).then(
+              //               (res) => {
+              //                 // this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
+              //               }
+              //             ), error => {
+              //               console.log(error);
+              //             }
+              //           }
+              //         ), error => {
+              //           this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
+              //         }
+              //         // let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
+              //         // this.mostrarError('No se pudo enviar a crm. Se guardaron los datos en la lista de gestión de errores');
+              //       }
+              //     }
+              //     // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
+              //     //   (item: ItemAddResult) => {
+              //         let notificacion = {
+              //           IdSolicitud: this.idSolicitudGuardada.toString(),
+              //           ResponsableId: responsable,
+              //           Estado: estado
+              //         };
+              //         await this.servicio.agregarNotificacion(notificacion).then(
+              //           (item: ItemAddResult) => {
+              //             this.MostrarExitoso("La solicitud se ha guardado y enviado correctamente");
+              //             this.spinner.hide();
+              //             this.router.navigate(['/mis-solicitudes']);
+              //           }, err => {
+              //             this.mostrarError('Error agregando la notificación');
+              //             this.spinner.hide();
+              //           }
+              //         )
+              //       // }, err => {
+              //       //   this.mostrarError('Error en la actualización del consecutivo');
+              //       //   this.spinner.hide();
+              //       // }
+              //     // )
+              //   }, err => {
+              //     this.mostrarError('Error en el envío de la solicitud');
+              //     this.spinner.hide();
+              //   }
+              // )
+              await this.ejecutarIntegracionesSap();
+              this.spinner.hide();
             }
         //   }, err => {
         //     this.mostrarError('Error en obtener parámetros de configuración');
@@ -4418,6 +4483,8 @@ deshabilitarCampoServicios() {
     let ordenEstadistica = this.solpFormulario.controls['compraOrdenEstadistica'].value;
     this.mostrarFiltroBienes = false;
     this.mostrarTable = false;
+    this.arrSeleccionadosServiceNow = [];
+    this.dataSourceServiceNow.data = this.arrSeleccionadosServiceNow;
     if(solicitudTipo !== '' && solicitudTipo !== 'Sondeo' && ordenEstadistica === '') {
       this.mostrarAdvertencia('Debe seleccionar la orden estadística');
       return false;
@@ -4712,7 +4779,7 @@ deshabilitarCampoServicios() {
                 this.condicionesTB.push(this.condicionTB);
                 this.indiceCTB++;
                 this.CargarTablaCTB();
-                this.limpiarControlesCTB();
+                // this.limpiarControlesCTB();
                 this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
                 // this.autoShownModalCTB.hide();
                 // this.modalRef.hide();
@@ -4737,7 +4804,7 @@ deshabilitarCampoServicios() {
             this.condicionesTB.push(this.condicionTB);
             this.indiceCTB++;
             this.CargarTablaCTB();
-            this.limpiarControlesCTB();
+            // this.limpiarControlesCTB();
             this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
             // this.autoShownModalCTB.hide();
             // this.modalRef.hide();
@@ -4755,8 +4822,13 @@ deshabilitarCampoServicios() {
       }
       if(this.arrSeleccionadosServiceNow.length > 1) {
         this.arrSeleccionadosServiceNow.splice(0, 1);
+        this.dataSourceServiceNow.data = this.arrSeleccionadosServiceNow;
+        this.asignarSeleccionados();
+        this.enableCheckDatosContablesBienes = true;
+        this.reservarDatosContablesBienes();
       }
       else {
+        this.dataSourceServiceNow.data = this.arrSeleccionadosServiceNow;
         this.autoShownModalCTB.hide();
       }
     }
@@ -4918,6 +4990,14 @@ deshabilitarCampoServicios() {
             }
           )
         }
+      }
+    }
+  }
+
+  guardarTodos() {
+    for(let i = 0; i < this.arrSeleccionadosServiceNow.length; i++) {
+      if(i < this.arrSeleccionadosServiceNow.length) {
+        this.ctbOnSubmit();
       }
     }
   }
@@ -5316,6 +5396,7 @@ deshabilitarCampoServicios() {
 
   
   editarBienes(element) {
+    this.dataSourceServiceNow.data = [];
     this.indiceCTBActualizar = element.indice;
     this.idCondicionTBGuardada = element.id;
     this.setDatosContablesBienes = false;

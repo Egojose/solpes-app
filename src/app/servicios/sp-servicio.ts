@@ -80,7 +80,7 @@ export class SPServicio {
     }
 
     ObtenerSubcategorias(idCategoria: number, idPais: number) {
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "Pais/Title", "Pais/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID", "CodigoAriba", "Cuadrante").expand("Categoria", "Comprador", "CondicionesTecnicas", "Pais").filter("CategoriaId eq " + idCategoria + "and PaisId eq " + idPais).get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSubcategorias).items.select("ID", "Title", "Categoria/Title", "Categoria/ID", "Comprador/Title", "Comprador/ID", "Pais/Title", "Pais/ID", "CondicionesTecnicas/Title", "CondicionesTecnicas/ID", "CodigoAriba", "Cuadrante", "SAP").expand("Categoria", "Comprador", "CondicionesTecnicas", "Pais").filter("CategoriaId eq " + idCategoria + "and PaisId eq " + idPais).get());
         return respuesta;
     }
 
@@ -786,6 +786,11 @@ export class SPServicio {
 
     ActualizarEstadoSolicitud(idSolicitud, obj) {
         let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(obj);
+        return respuesta;
+    }
+
+    obtenerDatosSapPais(pais: string) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSapXpais).items.select("Sociedad, GrupoArticulos, Centro, Almacen, Fondos").filter("Title eq '"+ pais +"'").getAll();
         return respuesta;
     }
 

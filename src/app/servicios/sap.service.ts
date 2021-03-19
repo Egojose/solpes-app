@@ -6,15 +6,15 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class SapService {
 
-  urlApiActivos = 'https://webdispsap.isa.com.co:50000/RESTAdapter/ActivosFijos/Creacion'
-  urlApiSolpSap = 'https://webdispsap.isa.com.co:50000/RESTAdapter/Solped/Creacion'
+  urlApiActivos = 'https://webdispsapdq.isa.com.co:50050/RESTAdapter/ActivosFijos/Creacion' //'https://webdispsap.isa.com.co:50000/RESTAdapter/ActivosFijos/Creacion'
+  urlApiSolpSap = 'https://webdispsapdq.isa.com.co:50050/RESTAdapter/Solped/Creacion' //'https://webdispsap.isa.com.co:50000/RESTAdapter/Solped/Creacion'
 
   constructor(private http: HttpClient) { }
 
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
-      'Authorization': 'Basic ' + btoa('cominternexa:InterServ$01')
+      'Authorization': 'Basic ' + btoa('cominternexa:InterServ$Q21') //InterServ$D21
     })
   };
   // header = {
