@@ -798,6 +798,17 @@ export class EditarSolicitudComponent implements OnInit {
     this.mostrarTableServicios = false;
   }
 
+  validarIdServicio(controlador, array) {
+    let pais = this.solpFormulario.controls.pais.value.nombre;
+    let idServicioOption = controlador;
+    if(pais === 'Colombia' && idServicioOption === 'ID de Servicios' && array.length === 0) {
+      this.mostrarAdvertencia('Debe seleccionar ids de servicio para poder continuar');
+      return false;
+    }
+    return true;
+  }
+
+
   reservarDatosContablesBienes() {
     this.cargaDesdeExcel = false;
     this.limpiarFiltrosBienes();
@@ -3093,6 +3104,12 @@ export class EditarSolicitudComponent implements OnInit {
       return;
     }
 
+    let idServicioServicios = this.validarIdServicio(this.ctsFormulario.controls.cecoCTS.value, this.dataIdOrdenSeleccionadosServicios);
+
+    if(!idServicioServicios) {
+      return false;
+    }
+
     //--------------------------Eliminar cuando datos contables no obligatorios-------------------
     // this.spinner.show();
     // let solicitudTipo = this.solpFormulario.controls["tipoSolicitud"].value
@@ -3385,6 +3402,12 @@ export class EditarSolicitudComponent implements OnInit {
     this.mostrarFiltroBienes = false;
     if (this.ctbFormulario.invalid) {
       return;
+    }
+
+    let idServiciosBienes = this.validarIdServicio(this.ctbFormulario.controls.cecoCTB.value, this.dataIdOrdenSeleccionados);
+
+    if(!idServiciosBienes) {
+      return false;
     }
 
     //----------------------------------Eliminar cuando datos contables no obligatorios-------------------
