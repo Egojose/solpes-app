@@ -4252,6 +4252,7 @@ deshabilitarCampoServicios() {
     let idServiciosBienes = this.validarIdServicio(this.ctbFormulario.controls.cecoCTB.value, this.dataIdOrdenSeleccionados);
 
     if(!idServiciosBienes) {
+      this.mostrarFiltroBienes = true;
       return false;
     }
 
@@ -4659,6 +4660,7 @@ deshabilitarCampoServicios() {
     let idServicioServicios = this.validarIdServicio(this.ctsFormulario.controls.cecoCTS.value, this.dataIdOrdenSeleccionadosServicios);
 
     if(!idServicioServicios) {
+      this.mostrarFiltroServicios = true;
       return false;
     }
 
