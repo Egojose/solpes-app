@@ -542,8 +542,8 @@ export class CrearSolicitudComponent implements OnInit {
           "SistemaOrigen": "SP",
           "Sociedad": this.datosSapxPais[0].Sociedad,
           "ClaseActivoFijo": "ITX10301", //Ya está llegando en la consulta (TELA: "A450823" TELB: "TE120000 ET450000" TELC: "A450823" TELE: "ITX10408" TELP: "A450823")
-          "Denominacion": "Cable Fibra Óptica (Prueba)", //Nombre del material
-          "Denominacion2": "Cable Fibra Óptica (Prueba)", //Debe llegar desde servicenow
+          "Denominacion": "Cable Fibra Óptica (Prueba)", //Nombre del material (solo el campo nombre) 
+          "Denominacion2": "Cable Fibra Óptica (Prueba)", //Debe llegar desde servicenow (es el nombre del material) solicitar a sn el nombre del material (nombre fabricante modelo)
           "TextoNum": x.modelo,
           "NumInventario": "IT-00001",
           "Cantidad": x.cantidad,
