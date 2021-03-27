@@ -648,6 +648,14 @@ export class CrearSolicitudComponent implements OnInit {
     this.mostrarTableServicios = false;
   }
 
+  limpiarArrayDataSeleccionados() {
+    this.dataIdOrdenSeleccionados = [];
+  }
+
+  limpiarArrayDataSeleccionadosServicios() {
+    this.dataIdOrdenSeleccionadosServicios = []
+  }
+
   validarIdServicio(controlador, array) {
     let pais = this.solpFormulario.controls.pais.value.nombre;
     let idServicioOption = controlador;

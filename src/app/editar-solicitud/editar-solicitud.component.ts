@@ -673,6 +673,14 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
   }
 
+  limpiarArrayDataSeleccionados() {
+    this.dataIdOrdenSeleccionados = [];
+  }
+
+  limpiarArrayDataSeleccionadosServicios() {
+    this.dataIdOrdenSeleccionadosServicios = []
+  }
+
   async validarSiEnviarCrmBienes() {
     let respuestaBienes = await this.servicio.obtenerCtBienes(this.solicitudRecuperada.id);
     let numCostoInversion;
@@ -801,7 +809,7 @@ export class EditarSolicitudComponent implements OnInit {
   validarIdServicio(controlador, array) {
     let pais = this.solpFormulario.controls.pais.value.nombre;
     let idServicioOption = controlador;
-    if(pais === 'Colombia' && idServicioOption === 'ID de Servicios' && array.length === 0) {
+    if(pais === 'Colombia' && idServicioOption === 'ID de Servicios' && array.length === 0 && array === null) {
       this.mostrarAdvertencia('Debe seleccionar ids de servicio para poder continuar');
       return false;
     }
@@ -3099,6 +3107,7 @@ export class EditarSolicitudComponent implements OnInit {
 
   ctsOnSubmit() {
     this.ctsSubmitted = true;
+    console.log(this.dataIdOrdenSeleccionadosServicios);
     this.mostrarFiltroServicios = false;
     if (this.ctsFormulario.invalid) {
       return;
