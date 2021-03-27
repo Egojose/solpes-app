@@ -648,6 +648,14 @@ export class CrearSolicitudComponent implements OnInit {
     this.mostrarTableServicios = false;
   }
 
+  limpiarArrayDataSeleccionados() {
+    this.dataIdOrdenSeleccionados = [];
+  }
+
+  limpiarArrayDataSeleccionadosServicios() {
+    this.dataIdOrdenSeleccionadosServicios = []
+  }
+
   validarIdServicio(controlador, array) {
     let pais = this.solpFormulario.controls.pais.value.nombre;
     let idServicioOption = controlador;
@@ -5018,6 +5026,7 @@ deshabilitarCampoServicios() {
     this.tituloModalCTB = "Actualizar bien";
     this.textoBotonGuardarCTB = "Actualizar";
     this.isModalCTBShown = true;
+    console.log(this.dataIdOrdenSeleccionados);
     // this.modalRef = this.modalServicio.show(
     //   template,
     //   Object.assign({}, { class: 'gray modal-lg' })
