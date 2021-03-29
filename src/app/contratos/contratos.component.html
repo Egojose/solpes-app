@@ -442,7 +442,7 @@
 
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <label for="Ariba">Ariba Sourcing<span class="camposRequeridos">*</span></label>
             <select type="text" class="form-control" formControlName="ariba" (change)="leerAribaValue()">
                 <option value="SI">SI</option>
@@ -458,15 +458,13 @@
                     </option>
                 </select>
             </div>
-        </ng-container>
+        </ng-container> -->
         <div class="form-group col-md-4">
             <label for="adjuntar">Adjuntar contrato y anexos</label>
             <input type="file" name="adjunto" class="form-control" placeholder="Recuerde que sólo pude ajuntar un archivo" (change)="adjuntarArchivo($event)">
             <small id="emailHelp" class="form-text text-muted">Recuerde que sólo pude adjuntar un archivo. Si requiere más de uno comprímalo en formato .zip o .rar</small>
         </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="inputEmail4">Puntaje actual de la evaluación del proveedor<span class="camposRequeridos">*</span></label>
             <select name="" id="" class="form-control" formControlName="puntaje" [ngClass]="{ 'is-invalid': submitted && f.puntaje.errors }" (change)="Puntaje()">
                 <option value="">Seleccione</option>
@@ -478,12 +476,15 @@
             </div>
         </div>
         <ng-container *ngIf="mostrarPuntaje">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="">Escriba el puntaje</label>
                 <input currencyMask [options]="{ prefix: ' ', thousands: '.', decimal: ',', align: 'left' , allowNegative: false, precision: 0 }" type="text" formControlName="valorPuntaje" class="form-control" (keyup)="validarPuntaje()">
             </div>
         </ng-container>
 
+    </div>
+    <div class="row form-group">
+        
     </div>
     <br>
     <div class="form-group row">

@@ -3594,6 +3594,14 @@ deshabilitarCampoServicios() {
       }
     }
 
+    if(tipoSolicitud === 'Orden a CM') {
+      if(this.EsCampoVacio(cm)) {
+        this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     respuesta = this.ValidarCondicionesContractuales();
     if (respuesta == false) {
       this.spinner.hide();
