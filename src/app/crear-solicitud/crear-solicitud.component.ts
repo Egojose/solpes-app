@@ -5140,6 +5140,14 @@ deshabilitarCampoServicios() {
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let estado = "Borrador";
 
+    if(tipoSolicitud === 'Orden a CM') {
+      if(this.EsCampoVacio(cm)) {
+        this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     if (this.condicionesTB.length > 0) {
       this.compraBienes = true;
     }
