@@ -548,9 +548,9 @@ export class CrearSolicitudComponent implements OnInit {
           "NumInventario": "IT-00001",
           "Cantidad": x.cantidad,
           "CentroCoste":x.numeroCostoInversion,
-          "CriterioClasif2": "TA01",
-          "CriterioClasif3": "Producto",
-          "CriterioClasif4": "TBD",
+          "CriterioClasif2": "TA01", //clase de equipo  
+          "CriterioClasif3": "", // Destino 
+          "CriterioClasif4": "T007", // Linea de producto
           // "CriterioClasif5": "String", // ya está llegando en la consulta de servicenow (UNSPSC: "") para perú es obligatorio
           "Fabricante": x.fabricante,
           "DenominacionTipo": x.codigo,
