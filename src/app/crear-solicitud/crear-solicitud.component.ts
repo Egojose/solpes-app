@@ -545,11 +545,11 @@ export class CrearSolicitudComponent implements OnInit {
           "Denominacion": "Cable Fibra Óptica (Prueba)", //Nombre del material (solo el campo nombre) 
           "Denominacion2": "Cable Fibra Óptica (Prueba)", //Debe llegar desde servicenow (es el nombre del material) solicitar a sn el nombre del material (nombre fabricante modelo)
           "TextoNum": x.modelo,
-          "NumInventario": "IT-00001",
+          "NumInventario": "IT-00001", // Código de barras (revisar HU)
           "Cantidad": x.cantidad,
           "CentroCoste":x.numeroCostoInversion,
-          "CriterioClasif2": "TA01", //clase de equipo  
-          "CriterioClasif3": "", // Destino 
+          "CriterioClasif2": "TA01", //clase de equipo se pude dejar TA01
+          "CriterioClasif3": "", // Destino Este no se enviará (se deja vacío)
           "CriterioClasif4": "T007", // Linea de producto
           // "CriterioClasif5": "String", // ya está llegando en la consulta de servicenow (UNSPSC: "") para perú es obligatorio
           "Fabricante": x.fabricante,
