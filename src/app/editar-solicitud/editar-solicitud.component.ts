@@ -27,6 +27,7 @@ import { ActivatedRoute } from "@angular/router";
 import { CrmServicioService } from '../servicios/crm-servicio.service';
 import { ResponsableSoporte } from '../dominio/responsableSoporte';
 import { EmailProperties } from 'sp-pnp-js';
+
 @Component({
   selector: 'app-editar-solicitud',
   templateUrl: './editar-solicitud.component.html',
@@ -807,9 +808,9 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   validarIdServicio(controlador, array) {
-    let pais = this.solpFormulario.controls.pais.value.nombre;
+    let pais = this.solpFormulario.controls.pais.value;
     let idServicioOption = controlador;
-    if(pais === 'Colombia' && idServicioOption === 'ID de Servicios' && array.length === 0 && array === null) {
+    if(pais === 2 && idServicioOption === 'ID de Servicios' && array.length === 0) {
       this.mostrarAdvertencia('Debe seleccionar ids de servicio para poder continuar');
       return false;
     }
@@ -3407,6 +3408,7 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   ctbOnSubmit() {
+    debugger
     this.ctbSubmitted = true;
     this.mostrarFiltroBienes = false;
     if (this.ctbFormulario.invalid) {
@@ -4153,6 +4155,14 @@ export class EditarSolicitudComponent implements OnInit {
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let estado = "Borrador";
 
+    if(tipoSolicitud === 'Orden a CM') {
+      if(this.EsCampoVacio(cm)) {
+        this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     if (this.condicionesTB.length > 0) {
       this.compraBienes = true;
     }
@@ -4283,10 +4293,18 @@ export class EditarSolicitudComponent implements OnInit {
       this.spinner.hide();
       return false;
     }
-
+    
     if (tipoSolicitud == 'Solp' || tipoSolicitud == 'Orden a CM') {
       if (this.EsCampoVacio(justificacion)) {
         this.mostrarAdvertencia("El campo Justificación es requerido");
+        this.spinner.hide();
+        return false;
+      }
+    }
+    debugger
+    if(tipoSolicitud === 'Orden a CM') {
+      if(this.EsCampoVacio(cm)) {
+        this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
         this.spinner.hide();
         return false;
       }
