@@ -252,15 +252,15 @@ export class ContratosComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  leerAribaValue() {
-    if(this.ContratosForm.controls.ariba.value === 'N/A') {
-      this.valorAriba = true;
-    }
-    else {
-      this.valorAriba = false;
-      this.ContratosForm.controls.causa.value === ""
-    }
-  }
+  // leerAribaValue() {
+  //   if(this.ContratosForm.controls.ariba.value === 'N/A') {
+  //     this.valorAriba = true;
+  //   }
+  //   else {
+  //     this.valorAriba = false;
+  //     this.ContratosForm.controls.causa.value === ""
+  //   }
+  // }
 
   Puntaje() {
     if(this.ContratosForm.controls['puntaje'].value === 'Agregar un puntaje') {
@@ -507,12 +507,12 @@ export class ContratosComponent implements OnInit {
     this.ContratosForm.controls['cumpleAtencion'].value === 'Si' ? cumpleAtencion = true : cumpleAtencion = false;
     let causalIncumplimiento = this.ContratosForm.controls['causalIncumplimiento'].value;
 
-    ariba === 'N/A'? causa = causa : causa = "";
-    if(ariba === "" || ariba === null) {
-      this.mostrarAdvertencia('El campo AribaSourcing es requerido');
-      this.spinner.hide();
-      return false;
-    }
+    // ariba === 'N/A'? causa = causa : causa = "";
+    // if(ariba === "" || ariba === null) {
+    //   this.mostrarAdvertencia('El campo AribaSourcing es requerido');
+    //   this.spinner.hide();
+    //   return false;
+    // }
 
     if(Comprador === "") {
       this.mostrarAdvertencia('Debe seleccionar un comprador');
@@ -520,11 +520,11 @@ export class ContratosComponent implements OnInit {
       return false;
     }
 
-    if(ariba === 'N/A' && (causa === "" || causa === null)){
-      this.mostrarAdvertencia('Debe seleccionar una causa de excepción')
-      this.spinner.hide();
-      return false;
-    }
+    // if(ariba === 'N/A' && (causa === "" || causa === null)){
+    //   this.mostrarAdvertencia('Debe seleccionar una causa de excepción')
+    //   this.spinner.hide();
+    //   return false;
+    // }
 
     if(this.ContratosForm.controls['puntaje'].value === "Agregar un puntaje") {
       let puntajeString = parseFloat(valorPuntaje)
@@ -577,8 +577,8 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter,
         FechaDeCreacion: fechaContrato,
-        AribaSourcing: ariba,
-        CausalExcepcion: causa,
+        // AribaSourcing: ariba,
+        // CausalExcepcion: causa,
         RequiereEvaluacion: evaluacion,
         PuntajeActualEvaluacionProveedor: puntaje,
         TipoEjecucion: ejecucion,
@@ -613,8 +613,8 @@ export class ContratosComponent implements OnInit {
         ObservacionesAdicionales: ObervacionesAdicionales,
         SolicitudId: this.idSolicitudParameter,
         FechaDeCreacion: fechaContrato,
-        AribaSourcing: ariba,
-        CausalExcepcion: causa,
+        // AribaSourcing: ariba,
+        // CausalExcepcion: causa,
         RequiereEvaluacion: evaluacion,
         PuntajeActualEvaluacionProveedor: puntaje,
         TipoEjecucion: ejecucion,

@@ -166,7 +166,7 @@ export class VerSolicitudTabComponent implements OnInit {
         this.categoria = solicitud.Categoria;
         this.subCategoria = solicitud.Subcategoria;
         this.comprador = solicitud.Comprador.Title;
-        this.codAriba = solicitud.CodigoAriba;
+        // this.codAriba = solicitud.CodigoAriba;
         this.alcance = solicitud.Alcance;
         this.resultadosondeo = solicitud.ResultadoSondeo;
         this.comentariorevisionsondeo = solicitud.ComentarioRevisionSondeo;

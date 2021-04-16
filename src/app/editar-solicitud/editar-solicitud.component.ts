@@ -27,6 +27,7 @@ import { ActivatedRoute } from "@angular/router";
 import { CrmServicioService } from '../servicios/crm-servicio.service';
 import { ResponsableSoporte } from '../dominio/responsableSoporte';
 import { EmailProperties } from 'sp-pnp-js';
+
 @Component({
   selector: 'app-editar-solicitud',
   templateUrl: './editar-solicitud.component.html',
@@ -673,6 +674,14 @@ export class EditarSolicitudComponent implements OnInit {
     this.ctbFormulario.controls['numCicoCTB'].setValue(this.dataSeleccionados.toString());
   }
 
+  limpiarArrayDataSeleccionados() {
+    this.dataIdOrdenSeleccionados = [];
+  }
+
+  limpiarArrayDataSeleccionadosServicios() {
+    this.dataIdOrdenSeleccionadosServicios = []
+  }
+
   async validarSiEnviarCrmBienes() {
     let respuestaBienes = await this.servicio.obtenerCtBienes(this.solicitudRecuperada.id);
     let numCostoInversion;
@@ -797,6 +806,17 @@ export class EditarSolicitudComponent implements OnInit {
   terminarSeleccionServicios() {
     this.mostrarTableServicios = false;
   }
+
+  validarIdServicio(controlador, array) {
+    let pais = this.solpFormulario.controls.pais.value;
+    let idServicioOption = controlador;
+    if(pais === 2 && idServicioOption === 'ID de Servicios' && array.length === 0) {
+      this.mostrarAdvertencia('Debe seleccionar ids de servicio para poder continuar');
+      return false;
+    }
+    return true;
+  }
+
 
   reservarDatosContablesBienes() {
     this.cargaDesdeExcel = false;
@@ -3088,9 +3108,16 @@ export class EditarSolicitudComponent implements OnInit {
 
   ctsOnSubmit() {
     this.ctsSubmitted = true;
+    console.log(this.dataIdOrdenSeleccionadosServicios);
     this.mostrarFiltroServicios = false;
     if (this.ctsFormulario.invalid) {
       return;
+    }
+
+    let idServicioServicios = this.validarIdServicio(this.ctsFormulario.controls.cecoCTS.value, this.dataIdOrdenSeleccionadosServicios);
+
+    if(!idServicioServicios) {
+      return false;
     }
 
     //--------------------------Eliminar cuando datos contables no obligatorios-------------------
@@ -3381,10 +3408,17 @@ export class EditarSolicitudComponent implements OnInit {
   }
 
   ctbOnSubmit() {
+    debugger
     this.ctbSubmitted = true;
     this.mostrarFiltroBienes = false;
     if (this.ctbFormulario.invalid) {
       return;
+    }
+
+    let idServiciosBienes = this.validarIdServicio(this.ctbFormulario.controls.cecoCTB.value, this.dataIdOrdenSeleccionados);
+
+    if(!idServiciosBienes) {
+      return false;
     }
 
     //----------------------------------Eliminar cuando datos contables no obligatorios-------------------
@@ -4121,6 +4155,14 @@ export class EditarSolicitudComponent implements OnInit {
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let estado = "Borrador";
 
+    if(tipoSolicitud === 'Orden a CM') {
+      if(this.EsCampoVacio(cm)) {
+        this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     if (this.condicionesTB.length > 0) {
       this.compraBienes = true;
     }
@@ -4251,10 +4293,18 @@ export class EditarSolicitudComponent implements OnInit {
       this.spinner.hide();
       return false;
     }
-
+    
     if (tipoSolicitud == 'Solp' || tipoSolicitud == 'Orden a CM') {
       if (this.EsCampoVacio(justificacion)) {
         this.mostrarAdvertencia("El campo Justificación es requerido");
+        this.spinner.hide();
+        return false;
+      }
+    }
+    debugger
+    if(tipoSolicitud === 'Orden a CM') {
+      if(this.EsCampoVacio(cm)) {
+        this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
         this.spinner.hide();
         return false;
       }

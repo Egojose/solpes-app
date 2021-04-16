@@ -648,6 +648,24 @@ export class CrearSolicitudComponent implements OnInit {
     this.mostrarTableServicios = false;
   }
 
+  limpiarArrayDataSeleccionados() {
+    this.dataIdOrdenSeleccionados = [];
+  }
+
+  limpiarArrayDataSeleccionadosServicios() {
+    this.dataIdOrdenSeleccionadosServicios = []
+  }
+
+  validarIdServicio(controlador, array) {
+    let pais = this.solpFormulario.controls.pais.value.nombre;
+    let idServicioOption = controlador;
+    if(pais === 'Colombia' && idServicioOption === 'ID de Servicios' && array.length === 0) {
+      this.mostrarAdvertencia('Debe seleccionar ids de servicio para poder continuar');
+      return false;
+    }
+    return true;
+  }
+
   reservarDatosContablesBienes() {
     this.cargaDesdeExcel = false;
     this.limpiarFiltrosBienes();
@@ -3576,6 +3594,14 @@ deshabilitarCampoServicios() {
       }
     }
 
+    if(tipoSolicitud === 'Orden a CM') {
+      if(this.EsCampoVacio(cm)) {
+        this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     respuesta = this.ValidarCondicionesContractuales();
     if (respuesta == false) {
       this.spinner.hide();
@@ -4234,6 +4260,13 @@ deshabilitarCampoServicios() {
       return;
     }
 
+    let idServiciosBienes = this.validarIdServicio(this.ctbFormulario.controls.cecoCTB.value, this.dataIdOrdenSeleccionados);
+
+    if(!idServiciosBienes) {
+      this.mostrarFiltroBienes = true;
+      return false;
+    }
+
 
     //-------------------Eliminar cuando datos contables no obligatorios (revisar nuevos datos)-----------------
     // this.spinner.show();
@@ -4635,6 +4668,13 @@ deshabilitarCampoServicios() {
       return;
     }
 
+    let idServicioServicios = this.validarIdServicio(this.ctsFormulario.controls.cecoCTS.value, this.dataIdOrdenSeleccionadosServicios);
+
+    if(!idServicioServicios) {
+      this.mostrarFiltroServicios = true;
+      return false;
+    }
+
 
     //----------------------------------Eliminar cuando datos contables no obligatorios---------------
     // this.spinner.show();
@@ -4989,6 +5029,7 @@ deshabilitarCampoServicios() {
     this.tituloModalCTB = "Actualizar bien";
     this.textoBotonGuardarCTB = "Actualizar";
     this.isModalCTBShown = true;
+    console.log(this.dataIdOrdenSeleccionados);
     // this.modalRef = this.modalServicio.show(
     //   template,
     //   Object.assign({}, { class: 'gray modal-lg' })
@@ -5093,6 +5134,14 @@ deshabilitarCampoServicios() {
     let valorcompraOrdenEstadistica = this.solpFormulario.controls["compraOrdenEstadistica"].value;
     let valornumeroOrdenEstadistica = this.solpFormulario.controls["numeroOrdenEstadistica"].value;
     let estado = "Borrador";
+
+    if(tipoSolicitud === 'Orden a CM') {
+      if(this.EsCampoVacio(cm)) {
+        this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
 
     if (this.condicionesTB.length > 0) {
       this.compraBienes = true;

@@ -414,7 +414,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="ceco">Centro de costos / Orden de inversión /<span style="color: red"> ID de Servicios (Sólo Colombia)</span></label>
-                                        <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
+                                        <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)" (change)="limpiarArrayDataSeleccionados()">
                                                 <option value="">Seleccione</option>
                                                 <option value="Centro de costos">Centro de costos</option>
                                                 <option value="Orden de inversión">Orden de inversión</option>
@@ -626,7 +626,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="ceco">Centro de costos / Orden de inversión /<span style="color: red"> ID de Servicios (Sólo Colombia)</span></label>
-                                        <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
+                                        <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)" (change)="limpiarArrayDataSeleccionadosServicios()">
                                         <option value="">Seleccione</option>
                                         <option value="Centro de costos">Centro de costos</option>
                                         <option value="Orden de inversión">Orden de inversión</option>
