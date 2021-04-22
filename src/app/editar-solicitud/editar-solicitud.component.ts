@@ -4172,6 +4172,14 @@ export class EditarSolicitudComponent implements OnInit {
       }
     }
 
+    if(tipoSolicitud === 'Cláusula adicional') {
+      if(this.EsCampoVacio(nroContrato)) {
+        this.mostrarAdvertencia('El campo Número de Contrato es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     if (this.condicionesTB.length > 0) {
       this.compraBienes = true;
     }
@@ -4321,7 +4329,7 @@ export class EditarSolicitudComponent implements OnInit {
       }
     }
 
-    if(tipoSolicitud === 'Clausula adicional') {
+    if(tipoSolicitud === 'Cláusula adicional') {
       if(this.EsCampoVacio(nroContrato)) {
         this.mostrarAdvertencia('El campo Número de Contrato es obligatorio');
         this.spinner.hide();
