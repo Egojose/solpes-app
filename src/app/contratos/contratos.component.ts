@@ -327,8 +327,10 @@ export class ContratosComponent implements OnInit {
             this.cuadrante = this.ObjSolicitud.Cuadrante;
             this.Pais = this.ObjSolicitud.Pais.Title;
             this.paisId = this.ObjSolicitud.Pais.Id;
-            this.categoria = this.ObjSolicitud.Categoria;
-            this.subCategoria = this.ObjSolicitud.Subcategoria;
+            this.categoria = this.ObjSolicitud.CategoriaReasignar ? this.ObjSolicitud.CategoriaReasignar : this.ObjSolicitud.Categoria;
+            this.subCategoria = this.ObjSolicitud.CategoriaReasignar ? this.ObjSolicitud.SubcategoriaReasignar : this.ObjSolicitud.Subcategoria;
+            // this.categoria = this.ObjSolicitud.Categoria;
+            // this.subCategoria = this.ObjSolicitud.Subcategoria;
             this.comprador = this.ObjSolicitud.Comprador.Title;
             this.alcance = this.ObjSolicitud.Alcance;
             this.justificacion = this.ObjSolicitud.Justificacion;

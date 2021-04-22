@@ -150,8 +150,10 @@ export class VerificarMaterialComponent implements OnInit {
       this.paisId = solicitud.Pais.Id;
       this.numOrdenEstadistica = solicitud.NumeroOrdenEstadistica;
       this.OrdenEstadistica = solicitud.OrdenEstadistica;
-      this.categoria = solicitud.Categoria;
-      this.subCategoria = solicitud.Subcategoria;
+      this.categoria = solicitud.CategoriaReasignar ? solicitud.CategoriaReasignar : solicitud.Categoria;
+      this.subCategoria = solicitud.CategoriaReasignar ? solicitud.CategoriaReasignar : solicitud.Subcategoria;
+      // this.categoria = solicitud.Categoria;
+      // this.subCategoria = solicitud.Subcategoria;
       this.comprador = solicitud.Comprador.Title;
       this.alcance = solicitud.Alcance;
       this.justificacion = solicitud.Justificacion;
