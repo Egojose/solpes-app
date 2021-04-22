@@ -4,6 +4,7 @@ export class Solicitud {
         public titulo: string,
         public tipoSolicitud: string,
         public cm: string,
+        public nroContrato: string,
         public solicitante: string,
         public empresa: any,
         public ordenadorGastos: any,
@@ -35,7 +36,7 @@ export class Solicitud {
         public suspendida?: boolean,
         public reactivada?: boolean,
         public categoriaReasignar?: string,
-        public subcategoriaReasignar?: string
+        public subcategoriaReasignar?: string,
        ) { }
 
     public static fromJson(element: any) {
@@ -43,6 +44,7 @@ export class Solicitud {
             element.Title, 
             element.TipoSolicitud, 
             element.CM, 
+            element.NumeroContrato || '',
             element.Solicitante, 
             (element.Empresa != null) ? element.Empresa : null, 
             (element.OrdenadorGastos) ? element.OrdenadorGastos : null, 
@@ -74,7 +76,8 @@ export class Solicitud {
             element.Suspendida,
             element.Reactivada,
             element.CategoriaReasignar,
-            element.SubcategoriaReasignar
+            element.SubcategoriaReasignar,
+            
            );
     }
 

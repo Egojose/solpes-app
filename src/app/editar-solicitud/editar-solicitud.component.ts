@@ -206,6 +206,7 @@ export class EditarSolicitudComponent implements OnInit {
   responsableSoporte: ResponsableSoporte[] = [];
   soporte: string;
   token: any;
+  mostrarContrato: boolean;
 
   constructor(private formBuilder: FormBuilder, private servicio: SPServicio, private modalServicio: BsModalService, public toastr: ToastrManager, private router: Router, private spinner: NgxSpinnerService, private route: ActivatedRoute, private servicioCrm: CrmServicioService) {
     this.usuarioActual = JSON.parse(sessionStorage.getItem('usuario'));
@@ -2565,6 +2566,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.solpFormulario = this.formBuilder.group({
       tipoSolicitud: [''],
       cm: [''],
+      nroContrato: [''],
       solicitante: [''],
       // empresa: [''],
       ordenadorGastos: [''],
@@ -2786,6 +2788,14 @@ export class EditarSolicitudComponent implements OnInit {
 
     if (this.solicitudRecuperada.cm != null) {
       this.solpFormulario.controls["cm"].setValue(this.solicitudRecuperada.cm);
+    }
+
+    if(this.solicitudRecuperada.tipoSolicitud === 'Cláusula adicional') {
+      this.mostrarContrato = true;
+    }
+
+    if(this.solicitudRecuperada.nroContrato) {
+      this.solpFormulario.controls['nroContrato'].setValue(this.solicitudRecuperada.nroContrato)
     }
 
     if (this.solicitudRecuperada.solicitante != null) {
@@ -4126,6 +4136,7 @@ export class EditarSolicitudComponent implements OnInit {
     this.spinner.show();
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
+    let nroContrato = this.solpFormulario.controls["nroContrato"].value;
     let solicitante = this.solpFormulario.controls["solicitante"].value;
     let empresa = 1;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
@@ -4177,6 +4188,7 @@ export class EditarSolicitudComponent implements OnInit {
       'Solicitud Solpes: ' + new Date(),
       (tipoSolicitud != '') ? tipoSolicitud : '',
       (cm != '') ? cm : '',
+      nroContrato,
       (solicitante != '') ? solicitante : '',
       empresa,
       (ordenadorGastos != 'Seleccione') ? ordenadorGastos : null,
@@ -4221,6 +4233,7 @@ export class EditarSolicitudComponent implements OnInit {
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let solicitante = this.solpFormulario.controls["solicitante"].value;
     let cm = this.solpFormulario.controls["cm"].value;
+    let nroContrato = this.solpFormulario.controls["nroContrato"].value;
     let empresa = 1;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
     let valorPais = this.solpFormulario.controls["pais"].value;
@@ -4310,6 +4323,14 @@ export class EditarSolicitudComponent implements OnInit {
       }
     }
 
+    if(tipoSolicitud === 'Clausula adicional') {
+      if(this.EsCampoVacio(nroContrato)) {
+        this.mostrarAdvertencia('El campo Número de Contrato es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     respuesta = this.ValidarCondicionesContractuales();
     if (respuesta == false) {
       this.spinner.hide();
@@ -4392,6 +4413,7 @@ export class EditarSolicitudComponent implements OnInit {
                 'Solicitud Solpes: ' + this.solicitudRecuperada.id,
                 tipoSolicitud,
                 cm,
+                nroContrato,
                 solicitante,
                 empresa,
                 ordenadorGastos,

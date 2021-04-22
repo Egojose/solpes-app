@@ -134,11 +134,16 @@ export class SPServicio {
         return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(Idsolicitud).delete();
     }
 
+    // actualizarSolicitud(idSolicitud: number, solicitud: Solicitud) {
+    //     return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update(solicitud);
+    // }
+
     actualizarSolicitud(idSolicitud: number, solicitud: Solicitud){
         return this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(idSolicitud).update({
             Title: solicitud.titulo,
             TipoSolicitud: solicitud.tipoSolicitud,
             CM: solicitud.cm,
+            NumeroContrato: solicitud.nroContrato,
             Solicitante: solicitud.solicitante,
             EmpresaId: solicitud.empresa,
             OrdenadorGastosId: solicitud.ordenadorGastos,
@@ -163,7 +168,8 @@ export class SPServicio {
             OrdenEstadistica: solicitud.compraOrdenEstadistica,
             NumeroOrdenEstadistica: solicitud.numeroOrdenEstadistica,
             SolicitantePersonaId: solicitud.solicitantePersona,
-            FechaDeCreacion: solicitud.fechaCreacion
+            FechaDeCreacion: solicitud.fechaCreacion,
+           
         });
     }
 
@@ -371,7 +377,7 @@ export class SPServicio {
     }
 
    async ObtenerSolicitudTab(IdSolicitud): Promise<any> {
-        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","FechaRegistrarSolpsap","Solicitante","Responsable/Title","OrdenadorGastos/Title","OrdenadorGastos/Department","OrdenadorGastos/Id" ,"Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo", "FechaDeCreacion","Consecutivo", "SolicitantePersona/Title", "SolicitantePersona/Id", "Estado", "CategoriaReasignar", "SubcategoriaReasignar").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles", "SolicitantePersona").get();
+        let respuesta = await this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.getById(IdSolicitud).select("Id","TipoSolicitud","CM","FechaDeseadaEntrega","FechaRegistrarSolpsap","Solicitante","Responsable/Title","OrdenadorGastos/Title","OrdenadorGastos/Department","OrdenadorGastos/Id" ,"Empresa/Title","Pais/Title","Pais/Id","Categoria","Subcategoria","Comprador/Title", "Comprador/ID", "Alcance","Justificacion","CondicionesContractuales","AuthorId","Author/Title","ComentarioSondeo", "ResultadoSondeo","ComentarioRevisionSondeo","ComentarioVerificarMaterial","EstadoRegistrarSAP","ComentarioRegistrarSAP","NumSolSAP","CodigoAriba","CompraBienes","CompraServicios","OrdenEstadistica","NumeroOrdenEstadistica","AttachmentFiles","Attachments","FaltaRecepcionServicios","FaltaRecepcionBienes", "ComentarioRegistroActivos", "FueSondeo", "FechaDeCreacion","Consecutivo", "SolicitantePersona/Title", "SolicitantePersona/Id", "Estado", "CategoriaReasignar", "SubcategoriaReasignar", "NumeroContrato").expand("OrdenadorGastos","Responsable","Comprador","Empresa","Pais","Author","AttachmentFiles", "SolicitantePersona").get();
         return respuesta;
     }
 
@@ -540,7 +546,7 @@ export class SPServicio {
     }
     
     ObtenerMisPendientes(usuarioId){
-        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "OrdenadorGastos/ID", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created","Responsable/Title", "Responsable/ID", "CompraBienes", "CompraServicios", "CodigoAriba", "Consecutivo", "OrdenEstadistica", "NumeroOrdenEstadistica","FaltaRecepcionServicios","FaltaRecepcionBienes", "FueSondeo", "Suspendida", "Reactivada", "SuspendidaSondeo", "ReactivadaSondeo", "ResponsableSondeo/Title", "ResponsableSondeo/ID", "ResponsableSondeo/EMail", "ReasignadoRevisarSondeo", "SolicitantePersona/Title", "SolicitantePersona/EMail", "SolicitantePersona/ID", "OcultarBtnFechaAcordada").expand("Empresa", "Pais", "OrdenadorGastos", "Comprador", "Responsable", "Author", "ResponsableSondeo", "SolicitantePersona").filter("Responsable eq '"+usuarioId+"' and Estado ne 'Finalizado' and Estado ne 'Rechazado' and Estado ne 'Descartado' and Estado ne 'Inicial' and Estado ne 'Recibido'").orderBy('Consecutivo', true).top(4999).get());
+        let respuesta = from(this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSolicitudes).items.select("ID", "Title", "TipoSolicitud", "Solicitante", "Empresa/Title", "OrdenadorGastos/Title", "OrdenadorGastos/ID", "Pais/ID", "Pais/Title", "Empresa/Title", "Empresa/ID", "Comprador/Title", "Comprador/ID", "Categoria", "Subcategoria", "CM", "CondicionesContractuales", "Alcance", "Justificacion", "FechaDeseadaEntrega", "Estado", "Author/Title", "Author/ID", "Created","Responsable/Title", "Responsable/ID", "CompraBienes", "CompraServicios", "CodigoAriba", "Consecutivo", "OrdenEstadistica", "NumeroOrdenEstadistica","FaltaRecepcionServicios","FaltaRecepcionBienes", "FueSondeo", "Suspendida", "Reactivada", "SuspendidaSondeo", "ReactivadaSondeo", "ResponsableSondeo/Title", "ResponsableSondeo/ID", "ResponsableSondeo/EMail", "ReasignadoRevisarSondeo", "SolicitantePersona/Title", "SolicitantePersona/EMail", "SolicitantePersona/ID", "OcultarBtnFechaAcordada", "NumeroContrato").expand("Empresa", "Pais", "OrdenadorGastos", "Comprador", "Responsable", "Author", "ResponsableSondeo", "SolicitantePersona").filter("Responsable eq '"+usuarioId+"' and Estado ne 'Finalizado' and Estado ne 'Rechazado' and Estado ne 'Descartado' and Estado ne 'Inicial' and Estado ne 'Recibido'").orderBy('Consecutivo', true).top(4999).get());
         return respuesta;
     }
 
