@@ -3610,7 +3610,7 @@ deshabilitarCampoServicios() {
       }
     }
 
-    if(tipoSolicitud === 'Clausula adicional') {
+    if(tipoSolicitud === 'Cláusula adicional') {
       if(this.EsCampoVacio(nroContrato)) {
         this.mostrarAdvertencia('El campo Número de Contrato es obligatorio');
         this.spinner.hide();
@@ -5163,6 +5163,14 @@ deshabilitarCampoServicios() {
     if(tipoSolicitud === 'Orden a CM') {
       if(this.EsCampoVacio(cm)) {
         this.mostrarAdvertencia('El campo Contrato Marco es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
+    if(tipoSolicitud === 'Cláusula adicional') {
+      if(this.EsCampoVacio(nroContrato)) {
+        this.mostrarAdvertencia('El campo Número de Contrato es obligatorio');
         this.spinner.hide();
         return false;
       }
