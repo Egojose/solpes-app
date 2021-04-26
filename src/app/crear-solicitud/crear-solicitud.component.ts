@@ -177,6 +177,7 @@ export class CrearSolicitudComponent implements OnInit {
   cargaExcel: boolean;  //se debe habilitar para eliminar dato contables obligatorios en sondeo
   cargaExcelServicios: boolean;
   noMostrarOrdenEstadistica: boolean;
+  mostrarContrato: boolean;
 
   clientBienes = new FormControl('');
   ordenServBienes = new FormControl('');
@@ -3224,6 +3225,7 @@ deshabilitarCampoServicios() {
     this.solpFormulario = this.formBuilder.group({
       tipoSolicitud: [''],
       cm: [''],
+      nroContrato: [''],
       solicitante: [''],
       // empresa: [''],
       ordenadorGastos: [''],
@@ -3269,6 +3271,7 @@ deshabilitarCampoServicios() {
   ValidacionesTipoSolicitud(tipoSolicitud) {
     console.log(tipoSolicitud);
     this.mostrarCM(tipoSolicitud);
+    this.mostrarCampoContrato(tipoSolicitud);
     this.deshabilitarJustificacion(tipoSolicitud);
     if(tipoSolicitud.nombre !== 'Sondeo') {
       this.noMostrarOrdenEstadistica = false;
@@ -3300,6 +3303,10 @@ deshabilitarCampoServicios() {
       this.mostrarContratoMarco = false;
       this.LimpiarContratoMarco();
     }
+  }
+
+  mostrarCampoContrato(tipoSolicitud) {
+    tipoSolicitud.nombre === 'Cláusula adicional' ? this.mostrarContrato = true : this.mostrarContrato = false 
   }
 
   LimpiarContratoMarco(): any {
@@ -3416,7 +3423,7 @@ deshabilitarCampoServicios() {
   }
 
   agregarSolicitudInicial(): any {
-    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', this.usuarioActual.nombre, null, null, null, '', '', null, '','', null, '', '', '', 'Inicial', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
+    this.solicitudGuardar = new Solicitud('Solicitud Solpes: ' + new Date(), '', '', '', this.usuarioActual.nombre, null, null, null, '', '', null, '','', null, '', '', '', 'Inicial', this.usuarioActual.id, false, false, null, this.usuarioActual.id, '');
     this.servicio.agregarSolicitud(this.solicitudGuardar).then(
       (item: ItemAddResult) => {
         this.idSolicitudGuardada = item.data.Id;
@@ -3513,6 +3520,7 @@ deshabilitarCampoServicios() {
     let responsable;
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
+    let nroContrato = this.solpFormulario.controls["nroContrato"].value;
     let empresa = 1;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
     let valorPais = this.solpFormulario.controls["pais"].value;
@@ -3602,6 +3610,14 @@ deshabilitarCampoServicios() {
       }
     }
 
+    if(tipoSolicitud === 'Cláusula adicional') {
+      if(this.EsCampoVacio(nroContrato)) {
+        this.mostrarAdvertencia('El campo Número de Contrato es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     respuesta = this.ValidarCondicionesContractuales();
     if (respuesta == false) {
       this.spinner.hide();
@@ -3675,10 +3691,12 @@ deshabilitarCampoServicios() {
         //   (respuestaConfiguracion) => {
             this.consecutivoActual = this.idSolicitudGuardada;            
             if (respuesta == true) {
+             
               this.solicitudGuardar = new Solicitud(
                 'Solicitud: ' + this.idSolicitudGuardada,
                 tipoSolicitud,
                 cm,
+                nroContrato,
                 this.usuarioActual.nombre,
                 empresa,
                 ordenadorGastos,
@@ -3707,6 +3725,7 @@ deshabilitarCampoServicios() {
                 this.compraServicios,
                 this.fueSondeo,
                 FechaDeCreacion);
+                debugger
               this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
                 async (item: ItemAddResult) => {
                   if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
@@ -5120,6 +5139,7 @@ deshabilitarCampoServicios() {
     this.spinner.show();
     let tipoSolicitud = this.solpFormulario.controls["tipoSolicitud"].value;
     let cm = this.solpFormulario.controls["cm"].value;
+    let nroContrato = this.solpFormulario.controls["nroContrato"].value;
     let empresa = 1;
     let ordenadorGastos = this.solpFormulario.controls["ordenadorGastos"].value;
     let valorPais = this.solpFormulario.controls["pais"].value;
@@ -5143,6 +5163,14 @@ deshabilitarCampoServicios() {
       }
     }
 
+    if(tipoSolicitud === 'Cláusula adicional') {
+      if(this.EsCampoVacio(nroContrato)) {
+        this.mostrarAdvertencia('El campo Número de Contrato es obligatorio');
+        this.spinner.hide();
+        return false;
+      }
+    }
+
     if (this.condicionesTB.length > 0) {
       this.compraBienes = true;
     }
@@ -5157,6 +5185,7 @@ deshabilitarCampoServicios() {
       'Solicitud Solpes: ' + new Date(),
       (tipoSolicitud != '') ? tipoSolicitud : '',
       (cm != '') ? cm : '',
+      nroContrato,
       this.usuarioActual.nombre,
       empresa,
       (ordenadorGastos != 'Seleccione') ? ordenadorGastos : null,
