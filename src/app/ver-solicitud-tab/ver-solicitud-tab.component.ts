@@ -102,6 +102,7 @@ export class VerSolicitudTabComponent implements OnInit {
   ObjCondicionesTB: resultadoCondicionesTB[] = [];
   CTS: boolean;
   CTB: boolean;
+  nroContrato: any;
 
   constructor(private servicio: SPServicio, private router: Router, private spinner: NgxSpinnerService, public toastr: ToastrManager, private modalService: BsModalService, private route: ActivatedRoute) {}
 
@@ -163,9 +164,12 @@ export class VerSolicitudTabComponent implements OnInit {
         this.contratoMarco = solicitud.CM;
         this.empresa = solicitud.Empresa.Title;
         this.pais = solicitud.Pais.Title;
-        this.categoria = solicitud.Categoria;
-        this.subCategoria = solicitud.Subcategoria;
+        this.categoria = solicitud.CategoriaReasignar ? solicitud.CategoriaReasignar : solicitud.Categoria;
+        this.subCategoria = solicitud.CategoriaReasingar ? solicitud.SubcategoriaReasignar : solicitud.Subcategoria;
+        // this.categoria = solicitud.Categoria;
+        // this.subCategoria = solicitud.Subcategoria;
         this.comprador = solicitud.Comprador.Title;
+        this.nroContrato = solicitud.NumeroContrato;
         // this.codAriba = solicitud.CodigoAriba;
         this.alcance = solicitud.Alcance;
         this.resultadosondeo = solicitud.ResultadoSondeo;

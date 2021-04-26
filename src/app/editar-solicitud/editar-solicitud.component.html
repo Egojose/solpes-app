@@ -15,8 +15,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4" *ngIf="mostrarContrato">
+                <div class="zona-contrato-marco">
+                    <label for="nroContrato">Número de contrato</label>
+                    <input type="text" id="nroContrato" name="nroContrato" class="form-control" formControlName="nroContrato" autocomplete="off">
+                </div>
+            </div>
             <div class="col-md-4">
-                <div class="zona-contrato-marco" [hidden]="!mostrarContratoMarco">
+                <div class="zona-contrato-marco" *ngIf="mostrarContratoMarco">
                     <label for="contrato-marco">Contrato Marco</label>
                     <input type="text" id="cm" name="cm" class="form-control" formControlName="cm" autocomplete="off">
                 </div>
