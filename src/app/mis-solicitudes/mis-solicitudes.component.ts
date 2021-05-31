@@ -104,6 +104,7 @@ export class MisSolicitudesComponent implements OnInit {
       'Solicitud Solpes: ' + new Date(),
       solicitudDuplicar.tipoSolicitud,
       solicitudDuplicar.cm,
+      solicitudDuplicar.nroContrato,
       solicitudDuplicar.solicitante,
       1,
       solicitudDuplicar.ordenadorGastos.ID,

@@ -13,8 +13,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="zona-contrato-marco" [hidden]="!mostrarContratoMarco">
+            <div class="col-md-4" *ngIf="mostrarContrato">
+                <div class="zona-contrato-marco">
+                    <label for="nroContrato">Número de contrato</label>
+                    <input type="text" id="nroContrato" name="nroContrato" class="form-control" formControlName="nroContrato" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-md-4" *ngIf="mostrarContratoMarco">
+                <div class="zona-contrato-marco">
                     <label for="contrato-marco">Contrato Marco</label>
                     <input type="text" id="cm" name="cm" class="form-control" formControlName="cm" autocomplete="off">
                 </div>
@@ -525,7 +531,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="ceco">Centro de costos / Orden de inversión /<span style="color: red"> ID de Servicios (Sólo Colombia)</span></label>
-                                        <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
+                                        <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)" (change)="limpiarArrayDataSeleccionados()">
                                                 <option value="">Seleccione</option>
                                                 <option value="Centro de costos" [disabled]="habilitarOrdenInversion">Centro de costos</option>
                                                 <option value="Orden de inversión" [disabled]="!habilitarOrdenInversion">Orden de inversión</option>
@@ -806,7 +812,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="ceco">Centro de costos / Orden de inversión /<span style="color: red"> ID de Servicios (Sólo Colombia)</span></label>
-                                        <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
+                                        <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)" (change)="limpiarArrayDataSeleccionadosServicios()">
                                         <option value="">Seleccione</option>
                                         <option value="Centro de costos" [disabled]="habilitarOrdenInversion">Centro de costos</option>
                                         <option value="Orden de inversión" [disabled]="!habilitarOrdenInversion">Orden de inversión</option>

@@ -6,7 +6,7 @@ export class ReporteSolicitud {
         public tipoSolicitud: string,
         public numeroSolpSap: string,
         public solicitante: string,
-        public numeroContrato: string,
+        // public numeroContrato: string,
         public ordenadorGastos: any,
         public comprador: any,
         public categoria: string,
@@ -31,11 +31,18 @@ export class ReporteSolicitud {
         public fechaReasignadoContratos: string,
         public departamento?: string,
         public fechaAcordada?: string,
-        public cuadrante?:string
+        public cuadrante?:string,
+        public categoriaAnterior?: string,
+        public subcategoriaAnterior?: string,
+        public motivoReasignar?: string
         ) {}
 
         
         public static fromJson(element: any) {
+            let categoria = element.CategoriaReasignar ? element.CategoriaReasignar : element.Categoria;
+            let subcategoria = element.CategoriaReasignar ? element.SubcategoriaReasignar : element.Subcategoria;
+            let categoriaAnterior = element.CategoriaReasignar ? element.Categoria : '';
+            let subcategoriaAnterior = element.CategoriaReasignar ? element.Subcategoria : '';
             return new ReporteSolicitud(
                 element.Consecutivo,
                 element.Estado,
@@ -43,11 +50,13 @@ export class ReporteSolicitud {
                 element.TipoSolicitud,
                 element.NumSolSAP,
                 element.Solicitante,
-                element.NumeroDeContrato,
+                // element.NumeroDeContrato,
                 element.OrdenadorGastos.Title,
                 element.Comprador.Title,
-                element.Categoria,
-                element.Subcategoria,
+                categoria,
+                subcategoria,
+                // element.Categoria,
+                // element.Subcategoria,
                 element.Pais.Title,
                 element.Alcance,
                 element.FueSondeo,
@@ -68,7 +77,12 @@ export class ReporteSolicitud {
                 element.FechaReasignadoContratos !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaReasignadoContratos)) : "",
                 element.Author.Department,
                 element.FechaAcordada !== null ? ReporteSolicitud.ObtenerFormatoFecha(new Date(element.FechaAcordada)) : '',
-                element.Cuadrante
+                element.Cuadrante,
+                categoriaAnterior,
+                subcategoriaAnterior,
+                // element.CategoriaReasignar,
+                // element.SubcategoriaReasignar,
+                element.MotivoReasignar || ''
                 
             )}
 
