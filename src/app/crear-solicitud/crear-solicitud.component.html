@@ -42,7 +42,7 @@
         <div class="form-group row">
             <div class="col-md-6">
                 <label for="ordenadorGastos" class="col-form-label">Ordenador de gastos</label><span class="asterisco-obligatorio">*</span>
-                <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" (update)="seleccionarOrdenadorGastos($event)">
+                <select2 formControlName="ordenadorGastos" [data]="dataUsuarios" [minCountForSearch]="1" [value]="valorUsuarioPorDefecto" class="form-control" (update)="seleccionarOrdenadorGastos($event)" (update)="consultarCapacidades()">
                 </select2>
                 <div class="alert alert-primary" role="alert" [hidden]="!emptyManager">
                     No tiene un jefe asignado en Office 365, debe seleccionar uno
@@ -87,7 +87,7 @@
             </div>
             <div class="col-md-6">
                 <label for="fecha-entrega-deseada">Fecha entrega deseada</label><span class="asterisco-obligatorio">*</span>
-                <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text" [minDate]="minDate" autocomplete="off" placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker>
+                <input formControlName="fechaEntregaDeseada" id="fechaEntregaDeseada" name="fechaEntregaDeseada" type="text" [minDate]="minDate" autocomplete="off" placeholder="Fecha de entrega deseada" class="form-control" #dp="bsDatepicker" [bsConfig]="bsConfig" bsDatepicker (dateChange)="formatoFechaEntrega()">
             </div>
         </div>
 
@@ -142,16 +142,26 @@
 
         <hr>
         <div class="form-group row">
-            <div class="col-md-6" [hidden]="noMostrarOrdenEstadistica">
+            <div class="col-md-6">
+                <label for="pais" class="col-form-label">Tipo de orden</label><span class="asterisco-obligatorio">*</span>
+                <select id="" name="" formControlName="selectTipoOrden" class="form-control" (change)="desbloquearBtnBienesServicios($event)">
+                    <option value="">Seleccione</option>
+                    <option value="Orden de inversion">Orden de inversión</option>
+                    <option value="Orden estadistica">Orden estadística</option>
+                    <option value="Orden de equipos para la venta">Orden de equipos para la venta</option>
+                    <option value="Consumibles">Consumibles</option>
+                </select>
+            </div>
+            <!-- <div class="col-md-6" [hidden]="noMostrarOrdenEstadistica">
                 <label for="CompraEstadística">Compra orden de estadística</label>
                 <mat-radio-group class="orden-estadistica-group" layout="row" formControlName="compraOrdenEstadistica">
                     <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="NO" (change)="mostrarNumeroOrdenEstadistica($event.value)">NO</mat-radio-button>
                     <mat-radio-button class="md-primary" ng-style="{'display':'inline'}" value="SI" (change)="mostrarNumeroOrdenEstadistica($event.value)">SI</mat-radio-button>
                 </mat-radio-group>
-            </div>
-            <div class="col-md-6">
-                <div class="numero-orden-estadistica" [hidden]="!emptyNumeroOrdenEstadistica">
-                    <label for="numeroOrdenEstadistica">Número de orden estadística</label>
+            </div> -->
+            <div class="col-md-6 numero-orden" *ngIf="mostrarCampoNumeroOrden">
+                <div class="numero-orden-estadistica">
+                    <label for="numeroOrdenEstadistica">{{label_field}}</label>
                     <input id="numeroOrdenEstadistica" name="numeroOrdenEstadistica" formControlName="numeroOrdenEstadistica" class="form-control" />
                 </div>
             </div>
@@ -161,9 +171,9 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-bienes">Bienes solicitados</label>
                 <div class="btn-agregar-condiciones-bienes">
-                    <button class="btn btn-primary" (click)="abrirModalCTB()" (click)="reservarDatosContablesBienes()">Agregar bien</button>
+                    <button class="btn btn-primary" (click)="abrirModalCTB()" (click)="reservarDatosContablesBienes()" [disabled]="!desbloquearBienes">Agregar bien</button>
                     <!-- <button class="btn btn-primary" (click)="abrirModalCTB(templateCondicionesTecnicasBienes)" (click)="reservarDatosContablesBienes()">Agregar bien</button> -->
-                    <button class="btn btn-primary justify-content-center" id="textInfo" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes desde archivo</button>
+                    <!-- <button class="btn btn-primary justify-content-center" id="textInfo" (click)="abrirModalArchivoCsvBienes(templateCargarListaBienes)">Cargar bienes desde archivo</button> -->
                 </div>
                 <br/>
                 <mat-toolbar class="toolBar" color="accent" [hidden]="!emptyCTB">No hay condiciones técnicas de bienes agregadas</mat-toolbar>
@@ -228,9 +238,9 @@
             <div class="col-md-12">
                 <label class="titulo-label" for="condiciones-tecnicas-servicios">Servicios solicitados</label>
                 <div class="btn-agregar-condiciones-servicios">
-                    <button class="btn btn-primary" (click)="abrirModalCTS()" (click)="reservarDatosContablesServicios()">Agregar servicio</button>
+                    <button class="btn btn-primary" (click)="abrirModalCTS()" (click)="reservarDatosContablesServicios()" [disabled]="!desbloquearServicios">Agregar servicio</button>
                     <!-- <button class="btn btn-primary" (click)="abrirModalCTS(templateCondicionesTecnicasServicios)" (click)="reservarDatosContablesServicios()">Agregar servicio</button> -->
-                    <button class="btn btn-default justify-content-center" id="textInfo" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button>
+                    <!-- <button class="btn btn-default justify-content-center" id="textInfo" (click)="abrirModalArchivoCsvServicios(templateCargarListaServicios)">Cargar servicios desde archivo</button> -->
                 </div>
                 <br/>
                 <mat-toolbar color="accent" [hidden]="!emptyCTS">No hay condiciones técnicas de servicios agregadas</mat-toolbar>
@@ -517,9 +527,9 @@
                                         <label for="ceco">Centro de costos / Orden de inversión /<span style="color: red"> ID de Servicios (Sólo Colombia)</span></label>
                                         <select name="ceco" id="ceco" formControlName="cecoCTB" class="form-control" [ngClass]="{ 'is-invalid': ctbSubmitted && f.cecoCTB.errors }" (change)="showFilterBienes($event)">
                                                 <option value="">Seleccione</option>
-                                                <option value="Centro de costos">Centro de costos</option>
-                                                <option value="Orden de inversión">Orden de inversión</option>
-                                                <option value="ID de Servicios">ID de Servicios</option>
+                                                <option value="Centro de costos" [disabled]="habilitarOrdenInversion">Centro de costos</option>
+                                                <option value="Orden de inversión" [disabled]="!habilitarOrdenInversion">Orden de inversión</option>
+                                                <option value="ID de Servicios" [disabled]="habilitarOrdenInversion">ID de Servicios</option>
                                             </select>
                                             <span>Seleccione ID de Servicios para cargar la compra a un servicio de cliente</span>
                                         <div *ngIf="ctbSubmitted && f.cecoCTB.errors" class="invalid-feedback">
@@ -798,9 +808,9 @@
                                         <label for="ceco">Centro de costos / Orden de inversión /<span style="color: red"> ID de Servicios (Sólo Colombia)</span></label>
                                         <select name="cecoCTS" id="cecoCTS" formControlName="cecoCTS" class="form-control" [ngClass]="{ 'is-invalid': ctsSubmitted && f2.cecoCTS.errors }" (change)="showFilterServicios($event)">
                                         <option value="">Seleccione</option>
-                                        <option value="Centro de costos">Centro de costos</option>
-                                        <option value="Orden de inversión">Orden de inversión</option>
-                                        <option value="ID de Servicios">ID de Servicios</option>
+                                        <option value="Centro de costos" [disabled]="habilitarOrdenInversion">Centro de costos</option>
+                                        <option value="Orden de inversión" [disabled]="!habilitarOrdenInversion">Orden de inversión</option>
+                                        <option value="ID de Servicios" [disabled]="habilitarOrdenInversion">ID de Servicios</option>
                                     </select>
                                     <span>Seleccione ID de Servicios para cargar la compra a un servicio de cliente</span>
                                         <div *ngIf="ctsSubmitted && f2.cecoCTS.errors" class="invalid-feedback">

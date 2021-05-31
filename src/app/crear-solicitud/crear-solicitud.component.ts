@@ -253,6 +253,17 @@ export class CrearSolicitudComponent implements OnInit {
   claseDocumento: string;
   tipoImputacion: string;
   datosSapxPais: any[];
+  arrayTipoImputacion: any[];
+  desbloquearBienes: any;
+  desbloquearServicios: boolean;
+  label_field: string;
+  mostrarCampoNumeroOrden: boolean;
+  arrDatosOrdenador: any[];
+  habilitarOrdenInversion: boolean;
+  arrayActivos = [];
+  arraySolpSap = [];
+  arrayObjcts = [];
+  codBarras: string;
 
   
   
@@ -453,6 +464,14 @@ export class CrearSolicitudComponent implements OnInit {
     }
   }
 
+  habilitarOpcionOrdenInversion() {
+    if(this.solpFormulario.controls.selectTipoOrden.value === 'Orden de inversion') this.habilitarOrdenInversion = true;
+  }
+
+  habilitarOpcionOrdenInversionServicios() {
+    if(this.solpFormulario.controls.selectTipoOrden.value === 'Orden de inversion') this.habilitarOrdenInversion = true;
+  }
+
   datosSapPais() {
     this.servicio.obtenerDatosSapPais(this.solpFormulario.controls.pais.value.nombre).then(
       (respuesta) => {
@@ -462,7 +481,26 @@ export class CrearSolicitudComponent implements OnInit {
     )
   }
 
+  async consultarCapacidades() {
+    let idOrdenador = this.solpFormulario.controls.ordenadorGastos.value;
+    if(idOrdenador !== 'Seleccione')
+    await this.servicio.consultarCapacidades(idOrdenador).then(
+      (respuesta) => {
+        console.log(respuesta);
+        this.arrDatosOrdenador = respuesta;
+      }
+    )
+  }
+
+  async formatoFechaEntrega() {
+    let fecha = new Date(this.solpFormulario.controls.fechaEntregaDeseada.value).toISOString();
+    let fecha1 = fecha.split('T');
+    let fecha2 = fecha1[0].replace(/[^0-9]/g, '');
+    return fecha2
+  }
+
  async enviarSolpSap() {
+    let fecha = await this.formatoFechaEntrega();
     await this.asignarClaseDocuento();
     await this.asignarTipoImputación();
     let objtoken = {
@@ -473,33 +511,41 @@ export class CrearSolicitudComponent implements OnInit {
 
     let objTokenStr = JSON.stringify(objtoken)
     localStorage.setItem('id_token', objTokenStr);
+    let Fondos = this.solpFormulario.controls.pais.value.nombre !== 'Brasil' ? 'RP': '';
     let resumenPosicion = [];
     let bienes = [];
+    let index = 0;
 
     this.condicionesTB.forEach((x) => {
+      let dataServiceNow = JSON.parse(x.dataServiceNow);
+      let nombreMaterial = dataServiceNow.NombreMaterial;
+     
      let obj = {
+        // "index": index,
         "CodMaterial": x.codigo,
         "Cantidad": x.cantidad.toString(),
         "CuentaMayor": x.numeroCuenta,
         "CentroGestor": this.solpFormulario.controls.centroGestor.value,
-        "Fondos": this.datosSapxPais[0].Fondos || '' // para brasil no enviar. Siempre es RP
+        "Fondos": Fondos,
+        "ActivoFijo": ""
       }
 
       bienes.push(obj);
+      index++
 
     let objResumen = {
         "TipoImputacion": this.tipoImputacion,
         "TipoPosicion": "",
-        "TextoBreve": "este es un texto de prueba para bienes", // es el nombre del material
+        "TextoBreve": nombreMaterial || 'texto de prueba para bienes',// es el nombre del material
         "Centro": this.datosSapxPais[0].Centro, //estamos pendientes de parametrizar el almacén para obtener este dato
         "GrupoArticulos": this.datosSapxPais[0].GrupoArticulos, //estamos pendientes de parametrizar la lista de almacén para obtener este dato
-        "GrupoCompras": "G05", // pendiente de parametrizar por departamento para obterner este dato
-        "NroNecesidad": "0200000024", // pendiente de parametrizar por departamento para obterner este dato
+        "GrupoCompras": this.arrDatosOrdenador[0].grupoCompras, // pendiente de parametrizar por departamento para obterner este dato
+        "NroNecesidad": this.arrDatosOrdenador[0].NroNecesidad, // pendiente de parametrizar por departamento para obterner este dato
         "Precio": x.valorEstimado,
         "Moneda": x.tipoMoneda || '',
         "Subcategoria": this.subcategorias[0].sap || '',
-        "FechaEnvioSoporte": "20201007",
-        "FechaEstInicContrato": "20201012",
+        "FechaEnvioSoporte": fecha,  //pendiente funcionalidad para formatear fecha;
+        "FechaEstInicContrato": fecha,
         "DetallePosicion": {
           "Bienes": bienes
         }
@@ -515,18 +561,33 @@ export class CrearSolicitudComponent implements OnInit {
           {
             "SolpSP": this.idSolicitudGuardada,
             "ClaseDocumento": this.claseDocumento,
-            "Textos": "prueba texto para material 1",
+            "Textos": "prueba texto para material 1", // considerar alcance,
             "ResumenPosicion": resumenPosicion
           }
         ]
       }
     }
+
     this.servicioSap.registrarSolpSap(solp).then(
       (res) => console.log(res)
     )
+    // let crearSolp = {
+    //   "CrearSolpeds": {
+    //     "Solped": solp
+    //   }
+    // }
+    // if(this.solpFormulario.controls.selectTipoOrden.value === 'Orden estadistica'){
+    //   this.arraySolpSap.push(this.arrayActivos)
+    //   this.arraySolpSap.push(crearSolp)
+    // } else {
+    //   this.servicioSap.registrarSolpSap(solp).then(
+    //     (res) => console.log(res)
+    //   )
+    // } 
   }
 
  async registrarActivo() {
+
     let objtoken = {
       estado: 'SAP',
       tipoConsulta: 'SAP',
@@ -535,44 +596,91 @@ export class CrearSolicitudComponent implements OnInit {
 
     let objTokenStr = JSON.stringify(objtoken)
     localStorage.setItem('id_token', objTokenStr);
+    let idSolicitud = +this.idSolicitudGuardada;
+    let claseActivo: string;
+    let index = 0;
 
     this.condicionesTB.forEach(async (x) => {
-      let activo = {
+      let idBienes = +x.id;
+      let claseActivoArr = JSON.parse(x.dataServiceNow);
+      if(this.solpFormulario.controls.pais.value.nombre === 'Colombia') claseActivo = claseActivoArr.TELE
+      if(this.solpFormulario.controls.pais.value.nombre === 'Argentina') claseActivo = claseActivoArr.TELA;
+      if(this.solpFormulario.controls.pais.value.nombre === 'Brasil') claseActivo = claseActivoArr.TELB;
+      if(this.solpFormulario.controls.pais.value.nombre === 'Perú') claseActivo = claseActivoArr.TELP;
+      let activo = { 
+        // "idSolicitud": this.idSolicitudGuardada,
+        // "idBienes": idBienes,
+        // "index": index,
         "ActivoFijo": {
           "SistemaOrigen": "SP",
           "Sociedad": this.datosSapxPais[0].Sociedad,
-          "ClaseActivoFijo": "ITX10301", //Ya está llegando en la consulta (TELA: "A450823" TELB: "TE120000 ET450000" TELC: "A450823" TELE: "ITX10408" TELP: "A450823")
-          "Denominacion": "Cable Fibra Óptica (Prueba)", //Nombre del material (solo el campo nombre) 
-          "Denominacion2": "Cable Fibra Óptica (Prueba)", //Debe llegar desde servicenow (es el nombre del material) solicitar a sn el nombre del material (nombre fabricante modelo)
+          "ClaseActivoFijo": claseActivo || "ITX10301", //"ITX10301", //Ya está llegando en la consulta (TELA: "A450823" TELB: "TE120000 ET450000" TELC: "A450823" TELE: "ITX10408" TELP: "A450823")
+          "Denominacion": claseActivoArr.NombreMaterial, //"Cable Fibra Óptica (Prueba)", //Nombre del material (solo el campo nombre) 
+          "Denominacion2": claseActivoArr.NombreTecnico,//"Cable Fibra Óptica (Prueba)", //Debe llegar desde servicenow (es el nombre del material) solicitar a sn el nombre del material (nombre fabricante modelo)
           "TextoNum": x.modelo,
-          "NumInventario": "IT-00001", // Código de barras (revisar HU)
+          "NumInventario": x.codBarras,//"IT-00001", // Código de barras (revisar HU)
           "Cantidad": x.cantidad,
           "CentroCoste":x.numeroCostoInversion,
           "CriterioClasif2": "TA01", //clase de equipo se pude dejar TA01
           "CriterioClasif3": "", // Destino Este no se enviará (se deja vacío)
           "CriterioClasif4": "T007", // Linea de producto
-          // "CriterioClasif5": "String", // ya está llegando en la consulta de servicenow (UNSPSC: "") para perú es obligatorio
+          "CriterioClasif5":  (this.solpFormulario.controls.pais.value.nombre === 'Perú') ? claseActivoArr.UNSPSC : '', // ya está llegando en la consulta de servicenow (UNSPSC: "") para perú es obligatorio
           "Fabricante": x.fabricante,
           "DenominacionTipo": x.codigo,
           "OrdenInversion": this.solpFormulario.controls.numeroOrdenEstadistica.value,
         }
       }
+      // this.arrayActivos.push(activo)
+      // index++
       await this.servicioSap.registarActivos(activo).then(
-        (respuesta) => console.log(respuesta)
+        async (respuesta) => {
+          console.log(respuesta.RespuestaActivoFijo.Estado);
+          const {Tipo, Mensaje} = respuesta.RespuestaActivoFijo.Estado
+          if(Tipo !== 'S') {  //pendiente preguntar qué pasa con los otros estados.
+            let objError = {
+              idSolicitud,
+              idBienes,
+              activo: JSON.stringify(activo),
+              tipoError: Tipo,
+              mensajeError: Mensaje
+            }
+            await this.guaradarErrorActivos(objError);
+          }
+          if(Tipo === 'S') {
+            const {NumActivo} = respuesta.RespuestaActivoFijo;
+            let obj = {
+              numeroActivoFijo: NumActivo,
+
+            }
+            this.actualizarNumeroActivoFijo(idBienes, obj);
+          }
+        }
       )
     })    
   }
+  
+
+  async guaradarErrorActivos(obj: Object) {
+    this.servicio.guardarErrorActivos(obj).then(
+      (respuesta) => {
+        console.log('Se guardó el activo en lista de errores')
+      }
+    ).catch(
+      (err) => console.log('No se pudo guardar el activo en lista de errores', err)
+    )
+  }
+
+  actualizarNumeroActivoFijo(idBienes: number, obj: Object) {
+    this.servicio.actualiazarDatosContablesBienes(idBienes, obj)
+  }
 
  async ejecutarIntegracionesSap() {
-    if(this.solpFormulario.controls.compraOrdenEstadistica.value === 'SI'){
+    if(this.solpFormulario.controls.selectTipoOrden.value === 'Orden estadistica'){
       await this.registrarActivo();
       await this.enviarSolpSap();
-      this.mostrarInformacion('Se envió a actvos');
-      this.mostrarInformacion('Se envió a SAP');
     }
     else {
       await this.enviarSolpSap();
-      this.mostrarInformacion('Se envió a SAP');
     }
   }
 
@@ -682,7 +790,7 @@ export class CrearSolicitudComponent implements OnInit {
 
   async asignarSeleccionados() {
     this.ctbFormulario.controls.codigoCTB.setValue(this.arrSeleccionadosServiceNow[0].CodigoLatam);
-    this.ctbFormulario.controls.nombreCTB.setValue(this.arrSeleccionadosServiceNow[0].Nombre);
+    this.ctbFormulario.controls.nombreCTB.setValue(this.arrSeleccionadosServiceNow[0].Nombre || 'Sin nombre');
     this.ctbFormulario.controls.modeloCTB.setValue(this.arrSeleccionadosServiceNow[0].Modelo);
     this.ctbFormulario.controls.fabricanteCTB.setValue(this.arrSeleccionadosServiceNow[0].Fabricante);
     this.ctbFormulario.controls.cantidadCTB.setValue(1);
@@ -3638,7 +3746,8 @@ deshabilitarCampoServicios() {
       alcance: [''],
       justificacion: [''],
       compraOrdenEstadistica: ['NO'],
-      numeroOrdenEstadistica: ['']
+      numeroOrdenEstadistica: [''],
+      selectTipoOrden: ['']
     });
 
   }
@@ -3659,6 +3768,21 @@ deshabilitarCampoServicios() {
         console.log('Error obteniendo tipos de solicitud: ' + err);
       }
     )
+  }
+
+  desbloquearBtnBienesServicios() {
+    let value = this.solpFormulario.controls.selectTipoOrden.value;
+    let valueField = this.solpFormulario.controls.numeroOrdenEstadistica.value;
+    (value && value !== '') ? this.desbloquearBienes = true : this.desbloquearBienes = false;
+    // ((value === 'Orden estadistica' || value === 'Orden de equipos para la venta') && (valueField && valueField !== '' )) ? this.desbloquearBienes = true : this.desbloquearBienes = false;
+    (value && value !== 'Orden estadistica') ? this.desbloquearServicios = true : this.desbloquearServicios = false;
+    this.asignarValorField(value);
+  }
+
+  asignarValorField(value) {
+    (value === 'Orden estadistica' || value === 'Orden de equipos para la venta') ? this.mostrarCampoNumeroOrden = true : this.mostrarCampoNumeroOrden = false;
+    if(value === 'Orden estadistica') this.label_field = 'Ingrese el número de orden estadística';
+    if(value === 'Orden de equipos para la venta') this.label_field = 'Ingrese el número de orden de equipos para la venta'
   }
 
   // ValidacionesTipoSolicitud(tipoSolicitud) {
@@ -4107,92 +4231,92 @@ deshabilitarCampoServicios() {
                 this.compraServicios,
                 this.fueSondeo,
                 FechaDeCreacion);
-              // this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
-              //   async (item: ItemAddResult) => {
-              //     if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
-              //       let respuesta;
-              //       let objToken = {
-              //         TipoConsulta: "crm",
-              //         suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
-              //         token: this.token,
-              //         estado: "true"
-              //       }
-              //       let objTokenString = JSON.stringify(objToken);
-              //       localStorage.setItem("id_token",objTokenString);
-              //       let objCrm = {
-              //         "numerosolp": `${this.idSolicitudGuardada}`,
-              //         "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
-              //         "idservicios": this.dataTotalIds
-              //         // "idservicios" : ["0029NQT600001"]
-              //         // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
-              //       }
-              //       let obj = {
-              //         Title: `Solicitud ${this.idSolicitudGuardada}`,
-              //         NroSolp: `${this.idSolicitudGuardada}`,
-              //         EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
-              //         // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
-              //         IdServicios: this.dataTotalIds.toString()
-              //       }
-              //       respuesta = await this.enviarServicioSolicitud(objCrm);
-              //       if (respuesta.StatusCode === 200) {
-              //         this.MostrarExitoso(respuesta["MensajeExito"]);
-              //       }
-              //       else {
-              //        this.servicio.enviarFallidosListaCrm(obj).then(
-              //          (item: ItemAddResult) => {
-              //            console.log('Entre a fallidos');
-              //             let cuerpo = '<p>Cordial Saludo</p>' +
-              //             '<br>' +
-              //             '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
-              //             '<br>' +
-              //             '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores" target="_blank>este enlace</a></p>'
-              //             const emailProps: EmailProperties = {
-              //               To: [this.soporte],
-              //               Subject: "Notificación de soporte",
-              //               Body: cuerpo
-              //             }
-              //              this.servicio.EnviarNotificacion(emailProps).then(
-              //               (res) => {
-              //                 // this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
-              //               }
-              //             ), error => {
-              //               console.log(error);
-              //             }
-              //           }
-              //         ), error => {
-              //           this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
-              //         }
-              //         // let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
-              //         // this.mostrarError('No se pudo enviar a crm. Se guardaron los datos en la lista de gestión de errores');
-              //       }
-              //     }
-              //     // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
-              //     //   (item: ItemAddResult) => {
-              //         let notificacion = {
-              //           IdSolicitud: this.idSolicitudGuardada.toString(),
-              //           ResponsableId: responsable,
-              //           Estado: estado
-              //         };
-              //         await this.servicio.agregarNotificacion(notificacion).then(
-              //           (item: ItemAddResult) => {
-              //             this.MostrarExitoso("La solicitud se ha guardado y enviado correctamente");
-              //             this.spinner.hide();
-              //             this.router.navigate(['/mis-solicitudes']);
-              //           }, err => {
-              //             this.mostrarError('Error agregando la notificación');
-              //             this.spinner.hide();
-              //           }
-              //         )
-              //       // }, err => {
-              //       //   this.mostrarError('Error en la actualización del consecutivo');
-              //       //   this.spinner.hide();
-              //       // }
-              //     // )
-              //   }, err => {
-              //     this.mostrarError('Error en el envío de la solicitud');
-              //     this.spinner.hide();
-              //   }
-              // )
+              this.servicio.actualizarSolicitud(this.idSolicitudGuardada, this.solicitudGuardar).then(
+                async (item: ItemAddResult) => {
+                  if(this.enviarCrm === true && this.solpFormulario.controls['tipoSolicitud'].value !== 'Sondeo') {
+                    let respuesta;
+                    let objToken = {
+                      TipoConsulta: "crm",
+                      suscriptionKey: "c3d10e5bd16e48d3bd936bb9460bddef",
+                      token: this.token,
+                      estado: "true"
+                    }
+                    let objTokenString = JSON.stringify(objToken);
+                    localStorage.setItem("id_token",objTokenString);
+                    let objCrm = {
+                      "numerosolp": `${this.idSolicitudGuardada}`,
+                      "linksolp": `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`,
+                      "idservicios": this.dataTotalIds
+                      // "idservicios" : ["0029NQT600001"]
+                      // "linksolp": "https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general",
+                    }
+                    let obj = {
+                      Title: `Solicitud ${this.idSolicitudGuardada}`,
+                      NroSolp: `${this.idSolicitudGuardada}`,
+                      EnlaceSolp: `https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes_test/SiteAssets/gestion-solpes/index.aspx/ver-solicitud-tab?idSolicitud=${this.idSolicitudGuardada}`, 
+                      // EnlaceSolp: 'https://isaempresas.sharepoint.com/sites/INTERNEXA/Solpes/SiteAssets/gestion-solpes/index.aspx/consulta-general',
+                      IdServicios: this.dataTotalIds.toString()
+                    }
+                    respuesta = await this.enviarServicioSolicitud(objCrm);
+                    if (respuesta.StatusCode === 200) {
+                      this.MostrarExitoso(respuesta["MensajeExito"]);
+                    }
+                    else {
+                     this.servicio.enviarFallidosListaCrm(obj).then(
+                       (item: ItemAddResult) => {
+                         console.log('Entre a fallidos');
+                          let cuerpo = '<p>Cordial Saludo</p>' +
+                          '<br>' +
+                          '<p>La orden <strong>' + this.idSolicitudGuardada + '</strong> requiere de su intervención para enviar los datos al CRM</p>' +
+                          '<br>' +
+                          '<p>Puede consultarla en <a href="https://enovelsoluciones.sharepoint.com/sites/jam/solpes/SiteAssets/gestion-solpes-2/index.aspx/gestion-errores" target="_blank>este enlace</a></p>'
+                          const emailProps: EmailProperties = {
+                            To: [this.soporte],
+                            Subject: "Notificación de soporte",
+                            Body: cuerpo
+                          }
+                           this.servicio.EnviarNotificacion(emailProps).then(
+                            (res) => {
+                              // this.mostrarInformacion('Se enviaron los datos para manejo más tarde')    
+                            }
+                          ), error => {
+                            console.log(error);
+                          }
+                        }
+                      ), error => {
+                        this.mostrarError('No se pudo almacenar la solicitud en la lista Solicitudes CRM')
+                      }
+                      // let repsuestaGuardarError = await this.GuardarErrorSolicitudCrm(obj);
+                      // this.mostrarError('No se pudo enviar a crm. Se guardaron los datos en la lista de gestión de errores');
+                    }
+                  }
+                  // this.servicio.actualizarConsecutivo(consecutivoNuevo).then(
+                  //   (item: ItemAddResult) => {
+                      let notificacion = {
+                        IdSolicitud: this.idSolicitudGuardada.toString(),
+                        ResponsableId: responsable,
+                        Estado: estado
+                      };
+                      await this.servicio.agregarNotificacion(notificacion).then(
+                        (item: ItemAddResult) => {
+                          this.MostrarExitoso("La solicitud se ha guardado y enviado correctamente");
+                          this.spinner.hide();
+                          this.router.navigate(['/mis-solicitudes']);
+                        }, err => {
+                          this.mostrarError('Error agregando la notificación');
+                          this.spinner.hide();
+                        }
+                      )
+                    // }, err => {
+                    //   this.mostrarError('Error en la actualización del consecutivo');
+                    //   this.spinner.hide();
+                    // }
+                  // )
+                }, err => {
+                  this.mostrarError('Error en el envío de la solicitud');
+                  this.spinner.hide();
+                }
+              )
               await this.ejecutarIntegracionesSap();
               this.spinner.hide();
             }
@@ -4474,6 +4598,7 @@ deshabilitarCampoServicios() {
   // }
 
   abrirModalCTB() {
+    this.habilitarOpcionOrdenInversion();
     this.setDatosContablesBienes = false;
     this.selectAll = false;
     this.dataIdOrdenSeleccionados = [];
@@ -4641,7 +4766,12 @@ deshabilitarCampoServicios() {
       )
       this.cargaExcelServicios = true;
     }
-  }                                          // Hasta aquí
+  } 
+  // Hasta aquí
+
+  asignarCodigoBarras() {
+
+  }
 
 //------------------------------Eliminar cuando datos contables no obligatorios---------------------
   // abrirModalArchivoCsvServicios(template: TemplateRef<any>) {
@@ -4661,11 +4791,12 @@ deshabilitarCampoServicios() {
  // --------------------------------------Hasta aquí-----------------------------------------------
 
 
-  ctbOnSubmit() {
+  async ctbOnSubmit() {
     this.ctbSubmitted = true;
     this.mostrarFiltroBienes = false;
     
     if (this.ctbFormulario.invalid) {
+      this.mostrarAdvertencia('revisar formulario')
       return;
     }
 
@@ -4720,6 +4851,7 @@ deshabilitarCampoServicios() {
     let adjunto = null;
     let tieneIdServicio;
     let idOrdenServicio;
+    let dataServiceNow = JSON.stringify(this.arrSeleccionadosServiceNow[0]);
     // costoInversion === 'ID de Servicios' ? tieneIdServicio = true : tieneIdServicio = false;
     if(costoInversion === 'ID de Servicios') {
         tieneIdServicio = true;
@@ -4745,8 +4877,102 @@ deshabilitarCampoServicios() {
     if(this.condicionTB.archivoAdjunto != null)
     {
       adjunto = this.condicionTB.archivoAdjunto.name;          
-    }   
-    if (this.textoBotonGuardarCTB == "Guardar") {
+    }
+    
+    if(this.textoBotonGuardarCTB === 'Guardar' && this.solpFormulario.controls.selectTipoOrden.value === 'Orden estadistica') {
+      let counter = 1;
+      let preCounter: string
+      let cantidadAguardar = +this.ctbFormulario.controls["cantidadCTB"].value;
+
+      
+
+      for(let i = 0; i < cantidadAguardar; i++) {
+        if(counter < 10) preCounter = '00';
+      if(counter >= 10 && counter < 100) preCounter = '0';
+      if(counter >= 100) preCounter = ''
+      let numeroInventario = `${this.idSolicitudGuardada}-${preCounter}${counter}`
+        this.condicionTB.indice = this.indiceCTB;
+      this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
+      this.condicionTB.idSolicitud = this.idSolicitudGuardada;
+
+      this.condicionTB.codigo = codigo;
+      this.condicionTB.descripcion = descripcion;
+
+      this.condicionTB.modelo = modelo;
+      this.condicionTB.fabricante = fabricante;
+      this.condicionTB.cantidad = 1;
+
+      this.condicionTB.valorEstimado = valorEstimado.toString();
+      this.condicionTB.tipoMoneda = tipoMoneda;
+      this.condicionTB.comentarios = comentarios;
+      this.condicionTB.costoInversion = costoInversion;
+      this.condicionTB.numeroCostoInversion = numeroCostoInversion;
+      this.condicionTB.numeroCuenta = numeroCuenta;
+      this.condicionTB.tieneIdServicio = tieneIdServicio;
+      this.condicionTB.idOrdenServicio = idOrdenServicio;
+      this.condicionTB.dataServiceNow = dataServiceNow;
+      this.condicionTB.codBarras = numeroInventario;
+      if (adjunto != null) {
+        let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
+        this.servicio.agregarCondicionesTecnicasBienes(this.condicionTB).then(
+          async (item: ItemAddResult) => {
+            this.condicionTB.id = item.data.Id;
+            await this.servicio.agregarAdjuntoCondicionesTecnicasBienes(this.condicionTB.id, nombreArchivo, this.condicionTB.archivoAdjunto).then(
+              (respuesta) => {
+                this.condicionTB.rutaAdjunto = environment.urlRaiz + respuesta.data.ServerRelativeUrl;
+                this.condicionesTB.push(this.condicionTB);
+                this.indiceCTB++;
+                this.CargarTablaCTB();
+                // this.limpiarControlesCTB();
+                // this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
+                // this.autoShownModalCTB.hide();
+                // this.modalRef.hide();
+                // this.condicionTB = null;
+                this.spinner.hide();
+                this.ctbSubmitted = false;
+                this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '' ,'', '', '', null, null, '', null, '', '', '', '');
+              }, err => {
+                this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
+                this.spinner.hide();
+              }
+            )
+          }, err => {
+            this.mostrarError('Error en la creación de la condición técnica de bienes');
+            this.spinner.hide();
+          }
+        )
+      } else {
+        await this.servicio.agregarCondicionesTecnicasBienes(this.condicionTB).then(
+          (item: ItemAddResult) => {
+            debugger
+            this.condicionTB.id = item.data.Id;
+            this.condicionesTB.push(this.condicionTB);
+            this.indiceCTB++;
+            this.CargarTablaCTB();
+            // this.limpiarControlesCTB();
+            // this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
+            // this.autoShownModalCTB.hide();
+            // this.modalRef.hide();
+            // this.condicionTB = null;
+            this.spinner.hide();
+            this.ctbSubmitted = false;
+
+            this.condicionTB = new CondicionTecnicaBienes(null, '', null, '','', '', '', '', null, null, '', null, '', '', '', '');
+          }, err => {
+            this.mostrarError('Error en la creación de la condición técnica de bienes');
+            this.spinner.hide();
+           
+          }
+        )
+      }
+      counter++
+    }
+    this.mostrarInformacion("Condición técnica de bienes agregada correctamente");
+    this.condicionTB = null;
+    //  this.modalRef.hide();
+  }
+    
+    if (this.textoBotonGuardarCTB == "Guardar" && this.solpFormulario.controls.selectTipoOrden.value !== 'Orden estadistica') {
       
       this.condicionTB.indice = this.indiceCTB;
       this.condicionTB.titulo = "Condición Técnicas Bienes " + new Date().toDateString();
@@ -4767,6 +4993,7 @@ deshabilitarCampoServicios() {
       this.condicionTB.numeroCuenta = numeroCuenta;
       this.condicionTB.tieneIdServicio = tieneIdServicio;
       this.condicionTB.idOrdenServicio = idOrdenServicio;
+      this.condicionTB.dataServiceNow = dataServiceNow;
       // this.condicionTB.DetalleDistribucion = 
       if (adjunto != null) {
         let nombreArchivo = "solp-" + this.generarllaveSoporte() + "-" + this.condicionTB.archivoAdjunto.name;
@@ -4786,7 +5013,7 @@ deshabilitarCampoServicios() {
                 this.condicionTB = null;
                 this.spinner.hide();
                 this.ctbSubmitted = false;
-                this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '' ,'', '', '', null, null, '', null, '', '');
+                this.condicionTB = new CondicionTecnicaBienes(null, '', null, '', '' ,'', '', '', null, null, '', null, '', '', '');
               }, err => {
                 this.mostrarError('Error adjuntando el archivo en las condiciones técnicas de bienes');
                 this.spinner.hide();

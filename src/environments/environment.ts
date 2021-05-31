@@ -28,5 +28,7 @@ export const environment = {
   listaResponsableSoporte: 'ResponsableSoporte',
   listaTipoEjecucion: 'TipoEjecucion',
   listaCausalIncumplimento: 'CausalIncumplimiento',
-  listaSapXpais: 'DatosSapPorPais'
+  listaSapXpais: 'DatosSapPorPais',
+  listaCapacidades: 'Capacidades',
+  listaErrorActivos: 'logErroresActivoFijo'
 };

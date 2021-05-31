@@ -196,7 +196,9 @@ export class SPServicio {
             numeroCuenta: condicionTecnicaBienes.numeroCuenta,
             tieneIdServicio: condicionTecnicaBienes.tieneIdServicio,
             IdOrdenServicio: (condicionTecnicaBienes.idOrdenServicio !== null && condicionTecnicaBienes.idOrdenServicio !== undefined) ? condicionTecnicaBienes.idOrdenServicio.toString() : '',
-            DetalleDistribuion: condicionTecnicaBienes.DetalleDistribucion
+            DetalleDistribuion: condicionTecnicaBienes.DetalleDistribucion,
+            dataServiceNow: condicionTecnicaBienes.dataServiceNow,
+            CodigoBarras: condicionTecnicaBienes.codBarras
         });
     }
     
@@ -791,6 +793,16 @@ export class SPServicio {
 
     obtenerDatosSapPais(pais: string) {
         let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaSapXpais).items.select("Sociedad, GrupoArticulos, Centro, Almacen, Fondos").filter("Title eq '"+ pais +"'").getAll();
+        return respuesta;
+    }
+
+    consultarCapacidades(id: number) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaCapacidades).items.select("usuario/Title, usuario/Id, usuario/EMail", "grupoCompras", "NroNecesidad", "departamento").expand("usuario").filter(`usuarioId eq ${id}`).getAll();
+        return respuesta;
+    }
+
+    guardarErrorActivos(obj: Object) {
+        let respuesta = this.ObtenerConfiguracion().web.lists.getByTitle(environment.listaErrorActivos).items.add(obj);
         return respuesta;
     }
 

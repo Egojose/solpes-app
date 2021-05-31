@@ -14,6 +14,8 @@ export class CondicionTecnicaBienes {
         public archivoAdjunto?: File,
         public rutaAdjunto?: string,
         public tipoMoneda?: string,
+        public dataServiceNow?: string,
+        public codBarras?: string,
         public id?: number,
         public costoInversion?: string,
         public numeroCostoInversion?: string,
@@ -21,7 +23,8 @@ export class CondicionTecnicaBienes {
         public orden?: number,
         public tieneIdServicio?: boolean,
         public idOrdenServicio?: string,
-        public DetalleDistribucion?: string) { }
+        public DetalleDistribucion?: string,
+        ) { }
 
     public static fromJson(element: any) {
         return new CondicionTecnicaBienes(
@@ -39,6 +42,8 @@ export class CondicionTecnicaBienes {
             element.AttachmentFiles,
             element.AttachmentFiles,
             element.TipoMoneda,
+            element.dataServiceNow || '',
+            element.CodigoBarras,
             element.ID,
             element.costoInversion,
             element.numeroCostoInversion,
@@ -46,7 +51,7 @@ export class CondicionTecnicaBienes {
             element.Orden,
             element.tieneIdServicio,
             element.IdOrdenServicio,
-            element.DetalleDistribucion);
+            element.DetalleDistribucion)
     }
 
     public static fromJsonList(elements: any) {

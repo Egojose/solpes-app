@@ -69,4 +69,8 @@ table tr:nth-child(even) {
   button img {
       width: 1.5em;
   }
+
+  .numero-orden {
+      margin-top: 5px;
+  }
     
